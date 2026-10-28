@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\n#check_failure Roth.\u0398_nonneg\n#check @Real.sSup_nonneg\n#check @Real.sSup_nonneg'\n#check @Real.sInf_nonneg\nnamespace ThetaNonneg188Isolated\nuniverse u v\ntheorem law {s : Set \u211d} (hs : \u2200 x \u2208 s, 0 \u2264 x) : 0 \u2264 sSup s :=\n  Real.sSup_nonneg hs\ntheorem family {A : Type u} {H : Type v} (f : A \u2192 H \u2192 \u211d) (s : Set A) (t : Set H)\n    (hf : \u2200 a \u2208 s, \u2200 h \u2208 t, 0 \u2264 f a h) : 0 \u2264 sSup (Set.image2 f s t) :=\n  Real.sSup_nonneg (Set.forall_mem_image2.mpr hf)\ntheorem witness {s : Set \u211d} (hs : \u2203 x \u2208 s, 0 \u2264 x) : 0 \u2264 sSup s :=\n  Real.sSup_nonneg' hs\ntheorem empty : sSup (\u2205 : Set \u211d) = 0 := Real.sSup_empty\ntheorem unbounded {s : Set \u211d} (hs : \u00ac BddAbove s) : sSup s = 0 :=\n  Real.sSup_of_not_bddAbove hs\ntheorem signed_guard : \u00ac (\u2200 s : Set \u211d, 0 \u2264 sSup s) := by\n  intro h\n  have := h ({-1} : Set \u211d)\n  simp only [csSup_singleton] at this\n  norm_num at this\n#print axioms signed_guard\n#print axioms law\n#print axioms family\n#print axioms witness\n#print axioms empty\n#print axioms unbounded\nend ThetaNonneg188Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.\u0398_nonneg`\",\n      \"line\": 16,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sSup_nonneg : \u2200 {s : Set \u211d}, (\u2200 x \u2208 s, 0 \u2264 x) \u2192 0 \u2264 sSup s\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sSup_nonneg' : \u2200 {s : Set \u211d}, (\u2203 x \u2208 s, 0 \u2264 x) \u2192 0 \u2264 sSup s\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sInf_nonneg : \u2200 {s : Set \u211d}, (\u2200 x \u2208 s, 0 \u2264 x) \u2192 0 \u2264 sInf s\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaNonneg188Isolated.signed_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaNonneg188Isolated.law' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaNonneg188Isolated.family' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaNonneg188Isolated.witness' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaNonneg188Isolated.empty' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaNonneg188Isolated.unbounded' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.\u0398_nonneg`",
+          "line": 16,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sSup_nonneg : \u2200 {s : Set \u211d}, (\u2200 x \u2208 s, 0 \u2264 x) \u2192 0 \u2264 sSup s",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sSup_nonneg' : \u2200 {s : Set \u211d}, (\u2203 x \u2208 s, 0 \u2264 x) \u2192 0 \u2264 sSup s",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sInf_nonneg : \u2200 {s : Set \u211d}, (\u2200 x \u2208 s, 0 \u2264 x) \u2192 0 \u2264 sInf s",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaNonneg188Isolated.signed_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaNonneg188Isolated.law' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaNonneg188Isolated.family' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaNonneg188Isolated.witness' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaNonneg188Isolated.empty' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaNonneg188Isolated.unbounded' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 303
+}

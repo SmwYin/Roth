@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 187/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 188/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 187; remaining: 106.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 41 NO-mathlib-has-it, 56 BORDERLINE-needs-human, 33 SKIP.
+- Completed applicable assessments: 188; remaining: 105.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 42 NO-mathlib-has-it, 56 BORDERLINE-needs-human, 33 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2159,6 +2159,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Three explicit call occurrences in two declarations: private index_separated_mul_le_aux twice; main_lemma once. Canonical kernel audit: two value consumers, zero type consumers.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_le_Θ.md).
 
+### Completed: `Roth.Θ_nonneg`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] {B : ℝ} (q : σ → ℕ) {r : σ → ℕ}, 0 ≤ Roth.Θ B q r`
+- What: The polynomial-index supremum Θ is nonnegative for every coefficient bound, denominator and natural weight vector.
+- How: Real.sSup_nonneg applied to pointwise nonnegative index values; independent verification expands real support infimum, finite sums and natural ratios.
+- Hypotheses: σ : Type u, Fintype σ, B : ℝ arbitrary, q r : σ → ℕ arbitrary; no additional proof premises
+- Project dependencies: Roth.Θ, Roth.indexSet, Roth.index, Roth.weight, Roth.index_nonneg
+- Caller summary: declarations: Roth.index_le_lem6; source line: 583; call occurrences: 2; direct kernel value consumers: 1; direct type consumers: 0; external module consumers: 0
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.Θ_nonneg.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2559,6 +2569,8 @@ Completed `Roth.indexSet_bddAbove`: Set.forall_mem_image2 gives one-call structu
 
 Completed `Roth.index_le_Θ`: Pinned le_csSup exactly supplies the abstract membership-to-supremum law; Set.mem_image2_of_mem independently verifies image2 membership.
 
+Completed `Roth.Θ_nonneg`: law: Real.sSup_nonneg; parent: SupSet.sSup; pointwise: Real.sInf_nonneg, Finset.sum_nonneg, div_nonneg, Nat.cast_nonneg; family transport: Set.forall_mem_image2.mpr; defaults: Real.sSup_empty, Real.sSup_of_not_bddAbove; status: 15 search cells and five clean native sets
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2934,6 +2946,8 @@ Completed `Roth.indexSet_nonempty`: Binary-image nonemptiness after accepted180 
 Completed `Roth.indexSet_bddAbove`: Θ_le_card repeats the same mapped-degree/index bound inside a stronger numeric supremum estimate; full target is useful local side-condition API.
 
 Completed `Roth.index_le_Θ`: Dependent law of parent Θ, already exact SupSet.sSup; re-aim gate applies after independent native law/bridge checks.
+
+Completed `Roth.Θ_nonneg`: Existing nonnegative real supremum law specialized to the project family; parent re-aim independently checked.
 
 ## Part 5: Generalization opportunities
 
@@ -3321,6 +3335,8 @@ Completed `Roth.indexSet_bddAbove`: No mechanical deletion of target assumptions
 
 Completed `Roth.index_le_Θ`: Fixed polynomial interface needs Fintype; expanded generic conditionally complete lattice member law is already le_csSup, verified without Roth imports. Verified expanded allow_zero removes the hidden R≠0 conjunct, handling zero via index0=0 and independent Θ_nonneg; this separate real-default extension does not alter original member-law duplication.
 
+Completed `Roth.Θ_nonneg`: unchanged parent: No extra premise to drop; Fintype fixed by current index interface.; expanded: Arbitrary Set ℝ or arbitrary real two-argument family with pointwise nonnegativity; already existing law.; guard: Negative singleton rules out deleting the nonnegative-value premise; preserve real default0.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3697,6 +3713,8 @@ Completed `Roth.indexSet_nonempty`: No missing binary-image nonempty law. Accept
 Completed `Roth.indexSet_bddAbove`: Upstream design choice for reusable weighted Taylor degree-envelope law; generic binary-image packaging needs no new theorem.
 
 Completed `Roth.index_le_Θ`: No missing generic supremum law. Substantive arithmetic boundedness remains project API, accepted186 BORDERLINE; it is not a mathlib building block.
+
+Completed `Roth.Θ_nonneg`: None
 
 ## Part 7: Junk / removable
 
@@ -4077,6 +4095,8 @@ Completed `Roth.indexSet_bddAbove`: Not dead: two explicit uses. Docstring wrong
 
 Completed `Roth.index_le_Θ`: Useful local helper; not dead. Upstream duplicate of generic supremum API.
 
+Completed `Roth.Θ_nonneg`: Not dead code: two explicit calls in one declaration; not tagged simp.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4268,6 +4288,7 @@ Completed `Roth.index_le_Θ`: Useful local helper; not dead. Upstream duplicate 
 | 185 | `Roth.indexSet_nonempty` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.indexSet_nonempty.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.indexSet_nonempty/root-acceptance.json) |
 | 186 | `Roth.indexSet_bddAbove` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.indexSet_bddAbove.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.indexSet_bddAbove/root-acceptance.json) |
 | 187 | `Roth.index_le_Θ` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_le_Θ.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_le_Θ/root-acceptance.json) |
+| 188 | `Roth.Θ_nonneg` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_nonneg/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4641,12 +4662,14 @@ Completed `Roth.indexSet_bddAbove` action: BORDERLINE-needs-human: retain Roth/T
 
 Completed `Roth.index_le_Θ` action: Do not upstream this theorem. Inline le_csSup with explicit project boundedness and membership at all three call occurrences, or retain local helper in Roth/Theta.lean as project ergonomics. No production edits made.
 
+Completed `Roth.Θ_nonneg` action: NO-mathlib-has-it. Inline Real.sSup_nonneg at both index_le_lem6 occurrences with independent pointwise premise, or retain project-local manuscript convenience theorem; no upstream addition.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.Θ_nonneg` next. Supporting identities receive their own applicable checks.
+   `Roth.Θ_le_card` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,536 @@
+[
+  {
+    "form": "current",
+    "method": "Finder",
+    "query": "Roth polynomial index supremum theta nonnegative",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"rothNumberNat_le\",\n      \"informal_name\": \"Roth Number Upper Bound: $ \\\\text{rothNumberNat}(N) \\\\leq N $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (N : ℕ), rothNumberNat N ≤ N\",\n      \"informal_description\": \"For any natural number $ N $, the Roth number $ \\\\text{rothNumberNat}(N) $, which denotes the maximum size of a subset of $ \\\\{0, 1, \\\\ldots, N-1\\\\} $ containing no three distinct elements forming an arithmetic progression, satisfies $ \\\\text{rothNumberNat}(N) \\\\leq N $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\"\n    },\n    {\n      \"formal_name\": \"Behrend.roth_lower_bound\",\n      \"informal_name\": \"Behrend's Lower Bound for Roth Numbers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {N : ℕ}, ↑N * Real.exp (-4 * √(Real.log ↑N)) ≤ ↑(rothNumberNat N)\",\n      \"informal_description\": \"For any natural number $ N $, the Roth number $ \\\\text{rothNumberNat}(N) $ satisfies the inequality $ N \\\\cdot e^{-4 \\\\sqrt{\\\\ln N}} \\\\leq \\\\text{rothNumberNat}(N) $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Behrend\"\n    },\n    {\n      \"formal_name\": \"cornersTheoremBound\",\n      \"informal_name\": \"Corners Theorem Bound\",\n      \"kind\": \"definition\",\n      \"type\": \"ℝ → ℕ\",\n      \"informal_description\": \"The bound is defined as $\\\\left\\\\lfloor \\\\left(27 \\\\cdot \\\\text{triangleRemovalBound}\\\\left(\\\\frac{\\\\varepsilon}{9}\\\\right)\\\\right)^{-1} \\\\right\\\\rfloor_+ + 1$, where $\\\\varepsilon$ is a positive real parameter. This expression quantifies a threshold in the corners theorem, derived from the triangle removal lemma bound applied to $\\\\varepsilon/9$, scaled by 27, inverted, floored to a natural number, and incremented by 1.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.Corner.Roth\"\n    },\n    {\n      \"formal_name\": \"Behrend.bound_aux'\",\n      \"informal_name\": \"Behrend's Upper Bound for Roth Numbers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n d : ℕ), ↑(d ^ n) / ↑(n * d ^ 2) ≤ ↑(rothNumberNat ((2 * d - 1) ^ n))\",\n      \"informal_description\": \"For any natural numbers $n$ and $d$, the real number $\\\\frac{\\\\binom{d^n}{k}}{\\\\binom{n d^2}{m}}$ is less than or equal to the Roth number $R\\\\left((2d - 1)^n\\\\right)$, where $R(m)$ denotes the maximum size of a subset of $\\\\{0, 1, \\\\ldots, m-1\\\\}$ without a three-term arithmetic progression.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Behrend\"\n    },\n    {\n      \"formal_name\": \"ThreeAPFree.le_rothNumberNat\",\n      \"informal_name\": \"Three-term AP-free sets have size bounded by the Roth number\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k n : ℕ} (s : Finset ℕ), ThreeAPFree ↑s → (∀ x ∈ s, x < n) → s.card = k → k ≤ rothNumberNat n\",\n      \"informal_description\": \"For any finite three-term arithmetic progression-free subset $ s \\\\subseteq \\\\{0, 1, \\\\ldots, n-1\\\\} $ with cardinality $ k $, it holds that $ k \\\\leq \\\\text{rothNumberNat}(n) $, where $ \\\\text{rothNumberNat}(n) $ denotes the maximum size of such subsets in the interval $ \\\\{0, 1, \\\\ldots, n-1\\\\} $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "rothNumberNat_le",
+            "informal_name": "Roth Number Upper Bound: $ \\text{rothNumberNat}(N) \\leq N $",
+            "kind": "theorem",
+            "type": "∀ (N : ℕ), rothNumberNat N ≤ N",
+            "informal_description": "For any natural number $ N $, the Roth number $ \\text{rothNumberNat}(N) $, which denotes the maximum size of a subset of $ \\{0, 1, \\ldots, N-1\\} $ containing no three distinct elements forming an arithmetic progression, satisfies $ \\text{rothNumberNat}(N) \\leq N $.",
+            "path": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+          },
+          {
+            "formal_name": "Behrend.roth_lower_bound",
+            "informal_name": "Behrend's Lower Bound for Roth Numbers",
+            "kind": "theorem",
+            "type": "∀ {N : ℕ}, ↑N * Real.exp (-4 * √(Real.log ↑N)) ≤ ↑(rothNumberNat N)",
+            "informal_description": "For any natural number $ N $, the Roth number $ \\text{rothNumberNat}(N) $ satisfies the inequality $ N \\cdot e^{-4 \\sqrt{\\ln N}} \\leq \\text{rothNumberNat}(N) $.",
+            "path": "Mathlib.Combinatorics.Additive.AP.Three.Behrend"
+          },
+          {
+            "formal_name": "cornersTheoremBound",
+            "informal_name": "Corners Theorem Bound",
+            "kind": "definition",
+            "type": "ℝ → ℕ",
+            "informal_description": "The bound is defined as $\\left\\lfloor \\left(27 \\cdot \\text{triangleRemovalBound}\\left(\\frac{\\varepsilon}{9}\\right)\\right)^{-1} \\right\\rfloor_+ + 1$, where $\\varepsilon$ is a positive real parameter. This expression quantifies a threshold in the corners theorem, derived from the triangle removal lemma bound applied to $\\varepsilon/9$, scaled by 27, inverted, floored to a natural number, and incremented by 1.",
+            "path": "Mathlib.Combinatorics.Additive.Corner.Roth"
+          },
+          {
+            "formal_name": "Behrend.bound_aux'",
+            "informal_name": "Behrend's Upper Bound for Roth Numbers",
+            "kind": "theorem",
+            "type": "∀ (n d : ℕ), ↑(d ^ n) / ↑(n * d ^ 2) ≤ ↑(rothNumberNat ((2 * d - 1) ^ n))",
+            "informal_description": "For any natural numbers $n$ and $d$, the real number $\\frac{\\binom{d^n}{k}}{\\binom{n d^2}{m}}$ is less than or equal to the Roth number $R\\left((2d - 1)^n\\right)$, where $R(m)$ denotes the maximum size of a subset of $\\{0, 1, \\ldots, m-1\\}$ without a three-term arithmetic progression.",
+            "path": "Mathlib.Combinatorics.Additive.AP.Three.Behrend"
+          },
+          {
+            "formal_name": "ThreeAPFree.le_rothNumberNat",
+            "informal_name": "Three-term AP-free sets have size bounded by the Roth number",
+            "kind": "theorem",
+            "type": "∀ {k n : ℕ} (s : Finset ℕ), ThreeAPFree ↑s → (∀ x ∈ s, x < n) → s.card = k → k ≤ rothNumberNat n",
+            "informal_description": "For any finite three-term arithmetic progression-free subset $ s \\subseteq \\{0, 1, \\ldots, n-1\\} $ with cardinality $ k $, it holds that $ k \\leq \\text{rothNumberNat}(n) $, where $ \\text{rothNumberNat}(n) $ denotes the maximum size of such subsets in the interval $ \\{0, 1, \\ldots, n-1\\} $.",
+            "path": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "Loogle",
+    "query": "\"sSup_nonneg\"",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sSup_nonneg\",\n      \"type\": \" {s : Set ℝ} (hs : ∀ x ∈ s, 0 ≤ x) : 0 ≤ sSup s\",\n      \"module\": \"Mathlib.Algebra.Order.Archimedean.Real.Basic\"\n    },\n    {\n      \"name\": \"Real.sSup_nonneg'\",\n      \"type\": \" {s : Set ℝ} (hs : ∃ x ∈ s, 0 ≤ x) : 0 ≤ sSup s\",\n      \"module\": \"Mathlib.Algebra.Order.Archimedean.Real.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sSup_nonneg",
+            "type": " {s : Set ℝ} (hs : ∀ x ∈ s, 0 ≤ x) : 0 ≤ sSup s",
+            "module": "Mathlib.Algebra.Order.Archimedean.Real.Basic"
+          },
+          {
+            "name": "Real.sSup_nonneg'",
+            "type": " {s : Set ℝ} (hs : ∃ x ∈ s, 0 ≤ x) : 0 ≤ sSup s",
+            "module": "Mathlib.Algebra.Order.Archimedean.Real.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "LeanSearch",
+    "query": "The supremum of nonnegative polynomial indices is nonnegative",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.iSup_nonneg'\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∃ i, 0 ≤ f i) → 0 ≤ ⨆ i, f i\"\n    },\n    {\n      \"name\": \"Real.iSup_nonneg\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i\"\n    },\n    {\n      \"name\": \"Real.sSup_nonneg\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\"\n    },\n    {\n      \"name\": \"Real.sSup_nonpos\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∀ x ∈ s, x ≤ 0) → sSup s ≤ 0\"\n    },\n    {\n      \"name\": \"Real.iSup_nonpos\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), f i ≤ 0) → ⨆ i, f i ≤ 0\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.iSup_nonneg'",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∃ i, 0 ≤ f i) → 0 ≤ ⨆ i, f i"
+          },
+          {
+            "name": "Real.iSup_nonneg",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i"
+          },
+          {
+            "name": "Real.sSup_nonneg",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s"
+          },
+          {
+            "name": "Real.sSup_nonpos",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∀ x ∈ s, x ≤ 0) → sSup s ≤ 0"
+          },
+          {
+            "name": "Real.iSup_nonpos",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), f i ≤ 0) → ⨆ i, f i ≤ 0"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "query": "sSup_nonneg",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sSup_nonneg\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_nonneg'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sSup_nonneg",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "Real.sSup_nonneg'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "Finder",
+    "query": "supremum of a set of nonnegative real numbers is nonnegative even empty",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Real.sSup_nonneg\",\n      \"informal_name\": \"Supremum of Non-Negative Set is Non-Negative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\",\n      \"informal_description\": \"If every element of a set $ S $ of real numbers is non-negative, then the supremum of $ S $ is also non-negative. Formally, if $ \\\\forall x \\\\in S, 0 \\\\leq x $, then $ 0 \\\\leq \\\\sup S $.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.iSup_nonneg\",\n      \"informal_name\": \"Supremum of Non-Negative Family is Non-Negative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i\",\n      \"informal_description\": \"For any family $\\\\{f(i)\\\\}_i$ of real numbers such that $0 \\\\leq f(i)$ for all $i$, the supremum $\\\\bigvee_i f(i)$ satisfies $0 \\\\leq \\\\bigvee_i f(i)$.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.sSup_nonneg'\",\n      \"informal_name\": \"Supremum Non-Negativity for Sets Containing Non-Negative Elements\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\",\n      \"informal_description\": \"If a set of real numbers contains at least one element $x$ satisfying $0 \\\\leq x$, then the supremum of the set satisfies $0 \\\\leq \\\\sup s$.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.iSup_nonneg'\",\n      \"informal_name\": \"Non-Negativity of Indexed Supremum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∃ i, 0 ≤ f i) → 0 ≤ ⨆ i, f i\",\n      \"informal_description\": \"If there exists an index $i$ such that $f(i) \\\\geq 0$, then the supremum of the indexed family $\\\\{f(i)\\\\}_{i \\\\in \\\\iota}$ satisfies $0 \\\\leq \\\\bigvee_{i \\\\in \\\\iota} f(i)$.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.sSup_empty\",\n      \"informal_name\": \"Supremum of Empty Set in ℝ is Zero\",\n      \"kind\": \"theorem\",\n      \"type\": \"sSup ∅ = 0\",\n      \"informal_description\": \"The supremum of the empty set in the real numbers is equal to zero, i.e., $\\\\sup(\\\\emptyset) = 0$.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Real.sSup_nonneg",
+            "informal_name": "Supremum of Non-Negative Set is Non-Negative",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s",
+            "informal_description": "If every element of a set $ S $ of real numbers is non-negative, then the supremum of $ S $ is also non-negative. Formally, if $ \\forall x \\in S, 0 \\leq x $, then $ 0 \\leq \\sup S $.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.iSup_nonneg",
+            "informal_name": "Supremum of Non-Negative Family is Non-Negative",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i",
+            "informal_description": "For any family $\\{f(i)\\}_i$ of real numbers such that $0 \\leq f(i)$ for all $i$, the supremum $\\bigvee_i f(i)$ satisfies $0 \\leq \\bigvee_i f(i)$.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.sSup_nonneg'",
+            "informal_name": "Supremum Non-Negativity for Sets Containing Non-Negative Elements",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s",
+            "informal_description": "If a set of real numbers contains at least one element $x$ satisfying $0 \\leq x$, then the supremum of the set satisfies $0 \\leq \\sup s$.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.iSup_nonneg'",
+            "informal_name": "Non-Negativity of Indexed Supremum",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∃ i, 0 ≤ f i) → 0 ≤ ⨆ i, f i",
+            "informal_description": "If there exists an index $i$ such that $f(i) \\geq 0$, then the supremum of the indexed family $\\{f(i)\\}_{i \\in \\iota}$ satisfies $0 \\leq \\bigvee_{i \\in \\iota} f(i)$.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.sSup_empty",
+            "informal_name": "Supremum of Empty Set in ℝ is Zero",
+            "kind": "theorem",
+            "type": "sSup ∅ = 0",
+            "informal_description": "The supremum of the empty set in the real numbers is equal to zero, i.e., $\\sup(\\emptyset) = 0$.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "Loogle",
+    "query": "(∀ x ∈ ?s, 0 ≤ x) → 0 ≤ sSup ?s",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sSup_nonneg\",\n      \"type\": \" {s : Set ℝ} (hs : ∀ x ∈ s, 0 ≤ x) : 0 ≤ sSup s\",\n      \"module\": \"Mathlib.Algebra.Order.Archimedean.Real.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sSup_nonneg",
+            "type": " {s : Set ℝ} (hs : ∀ x ∈ s, 0 ≤ x) : 0 ≤ sSup s",
+            "module": "Mathlib.Algebra.Order.Archimedean.Real.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "LeanSearch",
+    "query": "The supremum of any set of nonnegative real numbers is nonnegative even if empty or unbounded",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sSup_nonneg'\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\"\n    },\n    {\n      \"name\": \"Real.sSup_nonneg\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\"\n    },\n    {\n      \"name\": \"Real.iSup_nonneg\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i\"\n    },\n    {\n      \"name\": \"Real.sSup_def\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (s : Set ℝ), sSup s = if h : s.Nonempty ∧ BddAbove s then Classical.choose ⋯ else 0\"\n    },\n    {\n      \"name\": \"Real.instSupSet\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"instance\",\n      \"type\": \"SupSet ℝ\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sSup_nonneg'",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s"
+          },
+          {
+            "name": "Real.sSup_nonneg",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s"
+          },
+          {
+            "name": "Real.iSup_nonneg",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i"
+          },
+          {
+            "name": "Real.sSup_def",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ (s : Set ℝ), sSup s = if h : s.Nonempty ∧ BddAbove s then Classical.choose ⋯ else 0"
+          },
+          {
+            "name": "Real.instSupSet",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "instance",
+            "type": "SupSet ℝ"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "local",
+    "query": "Real.sSup",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sSup_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_def\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_univ\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_empty\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_nonneg\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_nonpos\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_nonneg'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_smul_of_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Basic/Real/Pointwise.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_smul_of_nonpos\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Basic/Real/Pointwise.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_of_not_bddAbove\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"ENNReal.sSup_add\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Basic/ENNReal/Operations.lean\"\n    },\n    {\n      \"name\": \"ENNReal.sSup_div\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Basic/ENNReal/Inv.lean\"\n    },\n    {\n      \"name\": \"ENNReal.sSup_mul\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Basic/ENNReal/Inv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sSup_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "Real.sSup_def",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "Real.sSup_neg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "Real.sSup_univ",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "Real.sSup_empty",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "Real.sSup_nonneg",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "Real.sSup_nonpos",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "Real.sSup_nonneg'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "Real.sSup_smul_of_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Basic/Real/Pointwise.lean"
+          },
+          {
+            "name": "Real.sSup_smul_of_nonpos",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Basic/Real/Pointwise.lean"
+          },
+          {
+            "name": "Real.sSup_of_not_bddAbove",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "ENNReal.sSup_add",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Basic/ENNReal/Operations.lean"
+          },
+          {
+            "name": "ENNReal.sSup_div",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Basic/ENNReal/Inv.lean"
+          },
+          {
+            "name": "ENNReal.sSup_mul",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Basic/ENNReal/Inv.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Finder",
+    "query": "nonnegative real supremum image2 given pointwise nonnegative function",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Real.iSup_nonneg\",\n      \"informal_name\": \"Supremum of Non-Negative Family is Non-Negative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i\",\n      \"informal_description\": \"For any family $\\\\{f(i)\\\\}_i$ of real numbers such that $0 \\\\leq f(i)$ for all $i$, the supremum $\\\\bigvee_i f(i)$ satisfies $0 \\\\leq \\\\bigvee_i f(i)$.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.iSup_nonneg'\",\n      \"informal_name\": \"Non-Negativity of Indexed Supremum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∃ i, 0 ≤ f i) → 0 ≤ ⨆ i, f i\",\n      \"informal_description\": \"If there exists an index $i$ such that $f(i) \\\\geq 0$, then the supremum of the indexed family $\\\\{f(i)\\\\}_{i \\\\in \\\\iota}$ satisfies $0 \\\\leq \\\\bigvee_{i \\\\in \\\\iota} f(i)$.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.sSup_nonneg\",\n      \"informal_name\": \"Supremum of Non-Negative Set is Non-Negative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\",\n      \"informal_description\": \"If every element of a set $ S $ of real numbers is non-negative, then the supremum of $ S $ is also non-negative. Formally, if $ \\\\forall x \\\\in S, 0 \\\\leq x $, then $ 0 \\\\leq \\\\sup S $.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"NNReal.coe_iSup\",\n      \"informal_name\": \"Supremum Coercion Equality for Non-Negative Reals\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_2} (s : ι → NNReal), ↑(⨆ i, s i) = ⨆ i, ↑(s i)\",\n      \"informal_description\": \"For any family of non-negative real numbers $(s_i)_{i \\\\in I}$, the supremum of the family in the non-negative reals, when included into the real numbers, equals the supremum of the family in the real numbers. Symbolically, $\\\\uparrow\\\\left(\\\\bigvee_{i \\\\in I} s_i\\\\right) = \\\\bigvee_{i \\\\in I} \\\\uparrow s_i$.\",\n      \"path\": \"Mathlib.Data.NNReal.Defs\"\n    },\n    {\n      \"formal_name\": \"Real.sSup_nonneg'\",\n      \"informal_name\": \"Supremum Non-Negativity for Sets Containing Non-Negative Elements\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\",\n      \"informal_description\": \"If a set of real numbers contains at least one element $x$ satisfying $0 \\\\leq x$, then the supremum of the set satisfies $0 \\\\leq \\\\sup s$.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Real.iSup_nonneg",
+            "informal_name": "Supremum of Non-Negative Family is Non-Negative",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i",
+            "informal_description": "For any family $\\{f(i)\\}_i$ of real numbers such that $0 \\leq f(i)$ for all $i$, the supremum $\\bigvee_i f(i)$ satisfies $0 \\leq \\bigvee_i f(i)$.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.iSup_nonneg'",
+            "informal_name": "Non-Negativity of Indexed Supremum",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∃ i, 0 ≤ f i) → 0 ≤ ⨆ i, f i",
+            "informal_description": "If there exists an index $i$ such that $f(i) \\geq 0$, then the supremum of the indexed family $\\{f(i)\\}_{i \\in \\iota}$ satisfies $0 \\leq \\bigvee_{i \\in \\iota} f(i)$.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.sSup_nonneg",
+            "informal_name": "Supremum of Non-Negative Set is Non-Negative",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s",
+            "informal_description": "If every element of a set $ S $ of real numbers is non-negative, then the supremum of $ S $ is also non-negative. Formally, if $ \\forall x \\in S, 0 \\leq x $, then $ 0 \\leq \\sup S $.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "NNReal.coe_iSup",
+            "informal_name": "Supremum Coercion Equality for Non-Negative Reals",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_2} (s : ι → NNReal), ↑(⨆ i, s i) = ⨆ i, ↑(s i)",
+            "informal_description": "For any family of non-negative real numbers $(s_i)_{i \\in I}$, the supremum of the family in the non-negative reals, when included into the real numbers, equals the supremum of the family in the real numbers. Symbolically, $\\uparrow\\left(\\bigvee_{i \\in I} s_i\\right) = \\bigvee_{i \\in I} \\uparrow s_i$.",
+            "path": "Mathlib.Data.NNReal.Defs"
+          },
+          {
+            "formal_name": "Real.sSup_nonneg'",
+            "informal_name": "Supremum Non-Negativity for Sets Containing Non-Negative Elements",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s",
+            "informal_description": "If a set of real numbers contains at least one element $x$ satisfying $0 \\leq x$, then the supremum of the set satisfies $0 \\leq \\sup s$.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Loogle",
+    "query": "Real.sSup_nonneg",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sSup_nonneg\",\n      \"type\": \" {s : Set ℝ} (hs : ∀ x ∈ s, 0 ≤ x) : 0 ≤ sSup s\",\n      \"module\": \"Mathlib.Algebra.Order.Archimedean.Real.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sSup_nonneg",
+            "type": " {s : Set ℝ} (hs : ∀ x ∈ s, 0 ≤ x) : 0 ≤ sSup s",
+            "module": "Mathlib.Algebra.Order.Archimedean.Real.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "LeanSearch",
+    "query": "Supremum contains a nonnegative element implies supremum nonnegative real numbers",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sSup_nonneg'\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\"\n    },\n    {\n      \"name\": \"Real.sSup_nonneg\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\"\n    },\n    {\n      \"name\": \"Real.iSup_nonneg\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i\"\n    },\n    {\n      \"name\": \"Real.iSup_nonneg'\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∃ i, 0 ≤ f i) → 0 ≤ ⨆ i, f i\"\n    },\n    {\n      \"name\": \"Real.iSup_nonpos\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), f i ≤ 0) → ⨆ i, f i ≤ 0\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sSup_nonneg'",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s"
+          },
+          {
+            "name": "Real.sSup_nonneg",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s"
+          },
+          {
+            "name": "Real.iSup_nonneg",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), 0 ≤ f i) → 0 ≤ ⨆ i, f i"
+          },
+          {
+            "name": "Real.iSup_nonneg'",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∃ i, 0 ≤ f i) → 0 ≤ ⨆ i, f i"
+          },
+          {
+            "name": "Real.iSup_nonpos",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ}, (∀ (i : ι), f i ≤ 0) → ⨆ i, f i ≤ 0"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local",
+    "query": "sSup_nonneg'",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sSup_nonneg'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sSup_nonneg'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

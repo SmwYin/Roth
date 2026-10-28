@@ -1,0 +1,18 @@
+namespace ThetaNonneg188
+open MvPolynomial
+theorem bridge {σ : Type*} [Fintype σ] (B : ℝ) (q r : σ → ℕ) :
+    Roth.Θ B q r = SupSet.sSup (Roth.indexSet B q r) := rfl
+theorem pointwise {σ : Type*} [Fintype σ] (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) : 0 ≤ Roth.index P α r := by
+  apply Real.sInf_nonneg
+  rintro _ ⟨d, _, rfl⟩
+  exact Finset.sum_nonneg fun j _ ↦ div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+theorem replacement {σ : Type*} [Fintype σ] {B : ℝ} (q : σ → ℕ)
+    {r : σ → ℕ} : 0 ≤ Roth.Θ B q r := by
+  apply Real.sSup_nonneg
+  rintro _ ⟨R, _, h, _, rfl⟩
+  exact pointwise _ _ _
+#print axioms bridge
+#print axioms pointwise
+#print axioms replacement
+end ThetaNonneg188
