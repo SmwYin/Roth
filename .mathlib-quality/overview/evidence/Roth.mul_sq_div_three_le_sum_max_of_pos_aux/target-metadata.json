@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 322,
+  "name": "Roth.mul_sq_div_three_le_sum_max_of_pos_aux",
+  "short": "mul_sq_div_three_le_sum_max_of_pos_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 345,
+  "source": "private lemma mul_sq_div_three_le_sum_max_of_pos_aux {θ r : ℝ} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}\n    (hl : θ * r < l) : r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  set n := ⌊θ * r⌋₊\n  have hnle : (n : ℝ) ≤ θ * r := Nat.floor_le (mul_nonneg hθ hr.le)\n  have hnlt : θ * r < n + 1 := Nat.lt_floor_add_one _\n  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (n + 1))\n  push_cast [Nat.add_sub_cancel] at hsum\n  have hbound : (θ * r) ^ 2 / 3 ≤ ∑ ν ∈ Finset.range (n + 1), (θ * r - ν) := by\n    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n    push_cast\n    generalize θ * r = a at hnle hnlt ⊢\n    linear_combination hsum / 2 + sq_nonneg a / 6 + (le_trans (Nat.cast_nonneg n) hnle) / 2 +\n      mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le) / 2\n  calc\n    r * θ ^ 2 / 3 = (θ * r) ^ 2 / 3 / r := (eq_div_iff hr.ne').2 (by ring)\n    _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=\n      (div_le_div_iff_of_pos_right hr).2 hbound\n    _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by\n      simp only [Finset.sum_div, sub_div, mul_div_cancel_right₀ _ hr.ne']\n      exact Finset.sum_le_sum fun ν _ ↦ le_max_right _ _\n    _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=\n      Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2\n        ((Nat.floor_lt (mul_nonneg hθ hr.le)).2 hl))\n        fun _ _ _ ↦ le_max_left _ _",
+  "signature": "private lemma mul_sq_div_three_le_sum_max_of_pos_aux {θ r : ℝ} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}\n    (hl : θ * r < l) : r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r)",
+  "body": "by\n  set n := ⌊θ * r⌋₊\n  have hnle : (n : ℝ) ≤ θ * r := Nat.floor_le (mul_nonneg hθ hr.le)\n  have hnlt : θ * r < n + 1 := Nat.lt_floor_add_one _\n  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (n + 1))\n  push_cast [Nat.add_sub_cancel] at hsum\n  have hbound : (θ * r) ^ 2 / 3 ≤ ∑ ν ∈ Finset.range (n + 1), (θ * r - ν) := by\n    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n    push_cast\n    generalize θ * r = a at hnle hnlt ⊢\n    linear_combination hsum / 2 + sq_nonneg a / 6 + (le_trans (Nat.cast_nonneg n) hnle) / 2 +\n      mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le) / 2\n  calc\n    r * θ ^ 2 / 3 = (θ * r) ^ 2 / 3 / r := (eq_div_iff hr.ne').2 (by ring)\n    _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=\n      (div_le_div_iff_of_pos_right hr).2 hbound\n    _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by\n      simp only [Finset.sum_div, sub_div, mul_div_cancel_right₀ _ hr.ne']\n      exact Finset.sum_le_sum fun ν _ ↦ le_max_right _ _\n    _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=\n      Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2\n        ((Nat.floor_lt (mul_nonneg hθ hr.le)).2 hl))\n        fun _ _ _ ↦ le_max_left _ _",
+  "proof_lines": 23,
+  "sha256": "e1662eae8e458a465497f9445242871df0fdda0fecd54ba167b8a48b7c9232b7",
+  "what": "For a long truncation and positive scale, residual positive parts dominate one third of scale times squared height.",
+  "how": "Truncate at the natural floor, evaluate the arithmetic progression via Finset.sum_range_id_mul_two, divide by scale, and enlarge the nonnegative sum.",
+  "hypotheses": "Positive real scale, nonnegative height, truncation longer than height times scale.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.mul_sq_div_three_le_sum_max_aux",
+      "file": "Roth/Theta.lean",
+      "line": 347
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.mul_sq_div_three_le_sum_max_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 176,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.mul_sq_div_three_le_sum_max_aux",
+      "file": "Roth/Theta.lean",
+      "line": 347
+    }
+  ]
+}

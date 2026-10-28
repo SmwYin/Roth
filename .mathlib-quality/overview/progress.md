@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-28. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 203 / 293 written declarations.**
+**Completed: 204 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -211,8 +211,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 201 | `Roth.floor_sq_div_two_le_sum` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.floor_sq_div_two_le_sum.md) |
 | 202 | `Roth.sq_div_three_lt_floor_sq_div_two` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.sq_div_three_lt_floor_sq_div_two.md) |
 | 203 | `Roth.mul_div_two_le_sum_max_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.mul_div_two_le_sum_max_aux.md) |
+| 204 | `Roth.mul_sq_div_three_le_sum_max_of_pos_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.mul_sq_div_three_le_sum_max_of_pos_aux.md) |
 
-**Next declaration: `Roth.mul_sq_div_three_le_sum_max_of_pos_aux`**, `Roth/Theta.lean:322`.
+**Next declaration: `Roth.mul_sq_div_three_le_sum_max_aux`**, `Roth/Theta.lean:347`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and
