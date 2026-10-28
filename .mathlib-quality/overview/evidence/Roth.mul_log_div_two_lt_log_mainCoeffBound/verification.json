@@ -1,0 +1,127 @@
+{
+  "declaration": "Roth.mul_log_div_two_lt_log_mainCoeffBound",
+  "canonical_index": 239,
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "b3254cef2dc8819a2b7a1a95859aaa0372bfdd0e5bd74c2642b0f81ff4a70f8b",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Roth.mul_log_div_two_lt_log_mainCoeffBound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Original.replay' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "LOG239_FULL_TYPE: ∀ {δ : ℝ} {q₁ r₁ : ℕ},\n  2 ≤ ↑q₁ ^ (δ * ↑r₁) → δ * ↑r₁ * Real.log ↑q₁ / 2 < Real.log ↑(Roth.mainCoeffBound δ q₁ r₁)",
+        "LOG239_SIGNATURE_IDENTICAL",
+        "LOG239_DIRECT_CONSUMER: Roth.three_small_factors",
+        "LOG239_AUDIT: requested=293; unique=293",
+        "LOG239_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "43bff7ce5c4bad6d06e483d16434e7071e3e7f6eea9a560c339f9b4cdb0980c0",
+      "receipt": "isolated-receipt.json",
+      "format": "raw",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.mul_log_div_two_lt_log_mainCoeffBound\nnamespace Log239Isolated\n#check @Real.log_lt_log\n#check @Real.log_lt_log_iff\n#check @Real.log_sqrt\n#check @Real.log_rpow\n#check @Real.lt_log_of_rpow_lt\n#check @Nat.le_floor\n#check @Nat.lt_floor_add_one\n#check @Nat.floor_eq_iff\n#check @Real.sqrt_lt'\n#check @Real.one_lt_rpow_iff\n\ntheorem rootFloor {X : ℝ} (hX : 2 ≤ X) : Real.sqrt X < (⌊X⌋₊ : ℝ) := by\n  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  exact (Real.sqrt_lt' (by positivity)).2\n    (by nlinarith only [Nat.lt_floor_add_one X, hfloor])\n\ntheorem logFloor {X : ℝ} (hX : 2 ≤ X) : Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by\n  have hpos : 0 < X := lt_of_lt_of_le (by norm_num) hX\n  simpa only [Real.log_sqrt hpos.le] using\n    Real.log_lt_log (Real.sqrt_pos.mpr hpos) (rootFloor hX)\n\ntheorem realPower {q z : ℝ} (hq : 0 ≤ q) (hX : 2 ≤ q ^ z) :\n    z * Real.log q / 2 < Real.log (⌊q ^ z⌋₊ : ℝ) := by\n  have hpos : 0 < q :=\n    ((Real.one_lt_rpow_iff hq).1\n      (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left\n  simpa only [Real.log_rpow hpos] using logFloor hX\n\ntheorem original {δ : ℝ} {q₁ r₁ : ℕ} (hX : 2 ≤ (q₁ : ℝ) ^ (δ * r₁)) :\n    δ * r₁ * Real.log q₁ / 2 < Real.log (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) :=\n  realPower (Nat.cast_nonneg _) hX\n\ntheorem existingAbstract {X B : ℝ} (hX : 0 < X) (h : Real.sqrt X < B) :\n    Real.log X / 2 < Real.log B :=\n  (Real.log_sqrt hX.le) ▸ Real.log_lt_log (Real.sqrt_pos.mpr hX) h\n\ntheorem existingExponent {X B c : ℝ} (hX : 0 < X) (h : X ^ c < B) :\n    c * Real.log X < Real.log B := Real.lt_log_of_rpow_lt hX h\n\ntheorem positiveDomain {X : ℝ} (hX : 1 ≤ X) :\n    Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) ↔ 2 ≤ X := by\n  constructor\n  · intro h\n    by_contra! hlt\n    have hf : ⌊X⌋₊ = 1 := by\n      apply (Nat.floor_eq_iff (by positivity)).2\n      norm_num\n      exact ⟨hX, hlt⟩\n    rw [hf] at h\n    norm_num at h\n    linarith only [h, Real.log_nonneg hX]\n  · exact logFloor\n\ntheorem betweenZeroOne {X : ℝ} (hX : 0 < X) (h1 : X < 1) :\n    ⌊X⌋₊ = 0 ∧ Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by\n  have hf := Nat.floor_eq_zero.mpr h1\n  refine ⟨hf, ?_⟩\n  rw [hf]\n  norm_num\n  exact div_neg_of_neg_of_pos (Real.log_neg hX h1) (by norm_num)\n\ntheorem fullPositiveDomain {X : ℝ} (hX : 0 < X) :\n    Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) ↔ X < 1 ∨ 2 ≤ X := by\n  by_cases h1 : X < 1\n  · exact iff_of_true (betweenZeroOne hX h1).2 (Or.inl h1)\n  · simpa only [h1, false_or] using positiveDomain (le_of_not_gt h1)\n\ntheorem atOne : ¬Real.log 1 / 2 < Real.log (⌊(1 : ℝ)⌋₊ : ℝ) := by norm_num\n\ntheorem betweenOneTwo {X : ℝ} (hX : 1 ≤ X) (h2 : X < 2) :\n    ¬Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) :=\n  fun h ↦ h2.not_ge ((positiveDomain hX).mp h)\n\ntheorem atTwo : Real.log 2 / 2 < Real.log (⌊(2 : ℝ)⌋₊ : ℝ) := logFloor (by norm_num)\n\ntheorem halfBaseNegativeExponent :\n    (-1 : ℝ) * Real.log (1 / 2) / 2 < Real.log (⌊(1 / 2 : ℝ) ^ (-1 : ℝ)⌋₊ : ℝ) :=\n  realPower (by norm_num) (by norm_num)\n\ntheorem noBoundFails :\n    ¬(1 : ℝ) * (1 : ℕ) * Real.log (1 : ℕ) / 2 <\n      Real.log (⌊(1 : ℝ) ^ ((1 : ℝ) * (1 : ℕ))⌋₊ : ℝ) := by norm_num\n\ntheorem primitiveProbe {X : ℝ} (hX : 2 ≤ X) :\n    Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by\n  fail_if_success\n    exact Real.log_lt_log (by positivity : 0 < X) hX\n  fail_if_success\n    exact Real.lt_log_of_rpow_lt (by positivity : 0 < X) hX\n  exact logFloor hX\n\n#print axioms rootFloor\n#print axioms logFloor\n#print axioms realPower\n#print axioms original\n#print axioms existingAbstract\n#print axioms existingExponent\n#print axioms positiveDomain\n#print axioms betweenZeroOne\n#print axioms fullPositiveDomain\n#print axioms atOne\n#print axioms betweenOneTwo\n#print axioms atTwo\n#print axioms halfBaseNegativeExponent\n#print axioms noBoundFails\n#print axioms primitiveProbe\nend Log239Isolated\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Log239Isolated.rootFloor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.logFloor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.realPower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.existingAbstract' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.existingExponent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.positiveDomain' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.betweenZeroOne' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.fullPositiveDomain' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.atOne' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.betweenOneTwo' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.atTwo' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.halfBaseNegativeExponent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.noBoundFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Isolated.primitiveProbe' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "e835a1fe3fa5a9bb3d5097bb1e5a529aeb02ac9d4ebcf9ade0c43b50ebce4bc8",
+      "receipt": "inline-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "LOG239_INLINE_SIGNATURE_IDENTICAL: Roth.three_small_factors",
+        "LOG239_INLINE_NO_TARGET: Log239Inline.three_small_factors",
+        "LOG239_INLINE_SIGNATURE_IDENTICAL: Roth.main_lemma",
+        "LOG239_INLINE_NO_TARGET: Log239Inline.main_lemma",
+        "'Log239Inline.three_small_factors' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Log239Inline.main_lemma' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "rejected-isolated-executed.lean.txt",
+      "receipt": "rejected-isolated-receipt.json",
+      "format": "raw",
+      "reason": "Boundary proof required explicit natural-floor numeral normalization and division-by-positive transport. Recovered sorryAx appears only in rejected receipt."
+    },
+    {
+      "source": "rejected-inline-executed.lean.txt",
+      "receipt": "rejected-inline-receipt.json",
+      "format": "disk",
+      "reason": "Literal original simpa proof failed under expanded caller context; repaired with explicit hpow/hq and simp only. Recovered sorryAx appears only in rejected receipt."
+    }
+  ],
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293,
+    "exact_source_order_gate": "preparation-checks.json"
+  },
+  "full_actual_callers": {
+    "source": "inline-executed.lean.txt",
+    "receipt": "inline-receipt.json",
+    "complete_modules": [
+      "Roth.MainLemma"
+    ],
+    "original_signatures_verified": 2,
+    "direct_target_absence_verified": 2,
+    "target_declaration_removed": true,
+    "proof_note": "Original mathematical argument inlined; explicit hpow/hq and simp-only normalization replace context-sensitive positivity placeholders. Not a verbatim proof-text claim."
+  },
+  "composition": {
+    "original_existing_only_three_call_witness": false,
+    "new_proofs_count_as_existing_api": false,
+    "existing_final_transport_verified": true,
+    "broad_exact_search": "not run: targeted actual candidate probes avoid previously observed numerical search timeout; no semantic absence claim"
+  },
+  "root_acceptance": "pending",
+  "controls": {
+    "stable_virtual_prefix": "isolated-prefix.lean.txt",
+    "stable_disk_prefix": "disk-prefix.lean.txt",
+    "no_import_changes": true
+  },
+  "secret_guard": "secret-guard.json",
+  "native_ownership_release": "Explicit release after validator and secret guard PASS."
+}

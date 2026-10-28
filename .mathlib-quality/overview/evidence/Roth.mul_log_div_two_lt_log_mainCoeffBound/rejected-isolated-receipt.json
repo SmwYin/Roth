@@ -1,0 +1,282 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.mul_log_div_two_lt_log_mainCoeffBound\nnamespace Log239Isolated\n#check @Real.log_lt_log\n#check @Real.log_lt_log_iff\n#check @Real.log_sqrt\n#check @Real.log_rpow\n#check @Real.lt_log_of_rpow_lt\n#check @Nat.le_floor\n#check @Nat.lt_floor_add_one\n#check @Nat.floor_eq_iff\n#check @Real.sqrt_lt'\n#check @Real.one_lt_rpow_iff\n\ntheorem rootFloor {X : ℝ} (hX : 2 ≤ X) : Real.sqrt X < (⌊X⌋₊ : ℝ) := by\n  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  exact (Real.sqrt_lt' (by positivity)).2\n    (by nlinarith only [Nat.lt_floor_add_one X, hfloor])\n\ntheorem logFloor {X : ℝ} (hX : 2 ≤ X) : Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by\n  have hpos : 0 < X := lt_of_lt_of_le (by norm_num) hX\n  simpa only [Real.log_sqrt hpos.le] using\n    Real.log_lt_log (Real.sqrt_pos.mpr hpos) (rootFloor hX)\n\ntheorem realPower {q z : ℝ} (hq : 0 ≤ q) (hX : 2 ≤ q ^ z) :\n    z * Real.log q / 2 < Real.log (⌊q ^ z⌋₊ : ℝ) := by\n  have hpos : 0 < q :=\n    ((Real.one_lt_rpow_iff hq).1\n      (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left\n  simpa only [Real.log_rpow hpos] using logFloor hX\n\ntheorem original {δ : ℝ} {q₁ r₁ : ℕ} (hX : 2 ≤ (q₁ : ℝ) ^ (δ * r₁)) :\n    δ * r₁ * Real.log q₁ / 2 < Real.log (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) :=\n  realPower (Nat.cast_nonneg _) hX\n\ntheorem existingAbstract {X B : ℝ} (hX : 0 < X) (h : Real.sqrt X < B) :\n    Real.log X / 2 < Real.log B :=\n  (Real.log_sqrt hX.le) ▸ Real.log_lt_log (Real.sqrt_pos.mpr hX) h\n\ntheorem existingExponent {X B c : ℝ} (hX : 0 < X) (h : X ^ c < B) :\n    c * Real.log X < Real.log B := Real.lt_log_of_rpow_lt hX h\n\ntheorem positiveDomain {X : ℝ} (hX : 1 ≤ X) :\n    Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) ↔ 2 ≤ X := by\n  constructor\n  · intro h\n    by_contra! hlt\n    have hf : ⌊X⌋₊ = 1 := (Nat.floor_eq_iff (by positivity)).2 ⟨hX, by simpa using hlt⟩\n    rw [hf] at h\n    norm_num at h\n    linarith only [h, Real.log_nonneg hX]\n  · exact logFloor\n\ntheorem betweenZeroOne {X : ℝ} (hX : 0 < X) (h1 : X < 1) :\n    ⌊X⌋₊ = 0 ∧ Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by\n  have hf := Nat.floor_eq_zero.mpr h1\n  refine ⟨hf, ?_⟩\n  rw [hf]\n  norm_num\n  exact Real.log_neg hX h1\n\ntheorem fullPositiveDomain {X : ℝ} (hX : 0 < X) :\n    Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) ↔ X < 1 ∨ 2 ≤ X := by\n  by_cases h1 : X < 1\n  · exact iff_of_true (betweenZeroOne hX h1).2 (Or.inl h1)\n  · simpa only [h1, false_or] using positiveDomain (le_of_not_gt h1)\n\ntheorem atOne : ¬Real.log 1 / 2 < Real.log (⌊(1 : ℝ)⌋₊ : ℝ) := by norm_num\n\ntheorem betweenOneTwo {X : ℝ} (hX : 1 ≤ X) (h2 : X < 2) :\n    ¬Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) :=\n  fun h ↦ h2.not_ge ((positiveDomain hX).mp h)\n\ntheorem atTwo : Real.log 2 / 2 < Real.log (⌊(2 : ℝ)⌋₊ : ℝ) := logFloor (by norm_num)\n\ntheorem halfBaseNegativeExponent :\n    (-1 : ℝ) * Real.log (1 / 2) / 2 < Real.log (⌊(1 / 2 : ℝ) ^ (-1 : ℝ)⌋₊ : ℝ) :=\n  realPower (by norm_num) (by norm_num)\n\ntheorem noBoundFails :\n    ¬(1 : ℝ) * (1 : ℕ) * Real.log (1 : ℕ) / 2 <\n      Real.log (⌊(1 : ℝ) ^ ((1 : ℝ) * (1 : ℕ))⌋₊ : ℝ) := by norm_num\n\ntheorem primitiveProbe {X : ℝ} (hX : 2 ≤ X) :\n    Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by\n  fail_if_success\n    exact Real.log_lt_log (by positivity : 0 < X) hX\n  fail_if_success\n    exact Real.lt_log_of_rpow_lt (by positivity : 0 < X) hX\n  exact logFloor hX\n\n#print axioms rootFloor\n#print axioms logFloor\n#print axioms realPower\n#print axioms original\n#print axioms existingAbstract\n#print axioms existingExponent\n#print axioms positiveDomain\n#print axioms betweenZeroOne\n#print axioms fullPositiveDomain\n#print axioms atOne\n#print axioms betweenOneTwo\n#print axioms atTwo\n#print axioms halfBaseNegativeExponent\n#print axioms noBoundFails\n#print axioms primitiveProbe\nend Log239Isolated\n"
+  },
+  "elapsed_ms": 138050,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.mul_log_div_two_lt_log_mainCoeffBound`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_lt_log : ∀ {x y : ℝ}, 0 < x → x < y → Real.log x < Real.log y\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_lt_log_iff : ∀ {x y : ℝ}, 0 < x → 0 < y → (Real.log x < Real.log y ↔ x < y)\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_sqrt : ∀ {x : ℝ}, 0 ≤ x → Real.log √x = Real.log x / 2\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_rpow : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), Real.log (x ^ y) = y * Real.log x\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.lt_log_of_rpow_lt : ∀ {x y z : ℝ}, 0 < x → x ^ z < y → z * Real.log x < Real.log y\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.le_floor : ∀ {α : Type u_1} [inst : Semiring α] [inst_1 : PartialOrder α] [inst_2 : FloorSemiring α] {a : α}\\n  {n : ℕ}, ↑n ≤ a → n ≤ ⌊a⌋₊\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\\n  (a : R), a < ↑⌊a⌋₊ + 1\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.floor_eq_iff : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R}\\n  {n : ℕ}, 0 ≤ a → (⌊a⌋₊ = n ↔ ↑n ≤ a ∧ a < ↑n + 1)\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sqrt_lt' : ∀ {x y : ℝ}, 0 < y → (√x < y ↔ x < y ^ 2)\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.one_lt_rpow_iff : ∀ {x y : ℝ}, 0 ≤ x → (1 < x ^ y ↔ 1 < x ∧ 0 < y ∨ 0 < x ∧ x < 1 ∧ y < 0)\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch\\n  Real.log_neg hX h1\\nhas type\\n  Real.log X < 0\\nbut is expected to have type\\n  Real.log X / 2 < 0\",\n      \"line\": 78,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Application type mismatch: The argument\\n  hX\\nhas type\\n  1 ≤ X\\nbut is expected to have type\\n  ↑1 ≤ X\\nin the application\\n  And.intro hX\",\n      \"line\": 66,\n      \"column\": 65,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch: After simplification, term\\n  hlt\\n has type\\n  X < 2\\nbut is expected to have type\\n  X < 1 + 1\",\n      \"line\": 66,\n      \"column\": 72,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.rootFloor' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 110,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.logFloor' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 111,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.realPower' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 112,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 113,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.existingAbstract' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 114,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.existingExponent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 115,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.positiveDomain' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 116,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.betweenZeroOne' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 117,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.fullPositiveDomain' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 118,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.atOne' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 119,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.betweenOneTwo' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 120,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.atTwo' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 121,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.halfBaseNegativeExponent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 122,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.noBoundFails' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 123,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Log239Isolated.primitiveProbe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 124,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.mul_log_div_two_lt_log_mainCoeffBound`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_lt_log : ∀ {x y : ℝ}, 0 < x → x < y → Real.log x < Real.log y",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_lt_log_iff : ∀ {x y : ℝ}, 0 < x → 0 < y → (Real.log x < Real.log y ↔ x < y)",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_sqrt : ∀ {x : ℝ}, 0 ≤ x → Real.log √x = Real.log x / 2",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_rpow : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), Real.log (x ^ y) = y * Real.log x",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.lt_log_of_rpow_lt : ∀ {x y z : ℝ}, 0 < x → x ^ z < y → z * Real.log x < Real.log y",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.le_floor : ∀ {α : Type u_1} [inst : Semiring α] [inst_1 : PartialOrder α] [inst_2 : FloorSemiring α] {a : α}\n  {n : ℕ}, ↑n ≤ a → n ≤ ⌊a⌋₊",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\n  (a : R), a < ↑⌊a⌋₊ + 1",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.floor_eq_iff : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R}\n  {n : ℕ}, 0 ≤ a → (⌊a⌋₊ = n ↔ ↑n ≤ a ∧ a < ↑n + 1)",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sqrt_lt' : ∀ {x y : ℝ}, 0 < y → (√x < y ↔ x < y ^ 2)",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.one_lt_rpow_iff : ∀ {x y : ℝ}, 0 ≤ x → (1 < x ^ y ↔ 1 < x ∧ 0 < y ∨ 0 < x ∧ x < 1 ∧ y < 0)",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch\n  Real.log_neg hX h1\nhas type\n  Real.log X < 0\nbut is expected to have type\n  Real.log X / 2 < 0",
+          "line": 78,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Application type mismatch: The argument\n  hX\nhas type\n  1 ≤ X\nbut is expected to have type\n  ↑1 ≤ X\nin the application\n  And.intro hX",
+          "line": 66,
+          "column": 65,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch: After simplification, term\n  hlt\n has type\n  X < 2\nbut is expected to have type\n  X < 1 + 1",
+          "line": 66,
+          "column": 72,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.rootFloor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 110,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.logFloor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 111,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.realPower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 112,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 113,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.existingAbstract' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 114,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.existingExponent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 115,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.positiveDomain' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 116,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.betweenZeroOne' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 117,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.fullPositiveDomain' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 118,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.atOne' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 119,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.betweenOneTwo' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 120,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.atTwo' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 121,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.halfBaseNegativeExponent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 122,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.noBoundFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 123,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Log239Isolated.primitiveProbe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 124,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,128 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.mul_log_div_two_lt_log_mainCoeffBound
+namespace Log239Isolated
+#check @Real.log_lt_log
+#check @Real.log_lt_log_iff
+#check @Real.log_sqrt
+#check @Real.log_rpow
+#check @Real.lt_log_of_rpow_lt
+#check @Nat.le_floor
+#check @Nat.lt_floor_add_one
+#check @Nat.floor_eq_iff
+#check @Real.sqrt_lt'
+#check @Real.one_lt_rpow_iff
+
+theorem rootFloor {X : ℝ} (hX : 2 ≤ X) : Real.sqrt X < (⌊X⌋₊ : ℝ) := by
+  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX
+  exact (Real.sqrt_lt' (by positivity)).2
+    (by nlinarith only [Nat.lt_floor_add_one X, hfloor])
+
+theorem logFloor {X : ℝ} (hX : 2 ≤ X) : Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by
+  have hpos : 0 < X := lt_of_lt_of_le (by norm_num) hX
+  simpa only [Real.log_sqrt hpos.le] using
+    Real.log_lt_log (Real.sqrt_pos.mpr hpos) (rootFloor hX)
+
+theorem realPower {q z : ℝ} (hq : 0 ≤ q) (hX : 2 ≤ q ^ z) :
+    z * Real.log q / 2 < Real.log (⌊q ^ z⌋₊ : ℝ) := by
+  have hpos : 0 < q :=
+    ((Real.one_lt_rpow_iff hq).1
+      (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left
+  simpa only [Real.log_rpow hpos] using logFloor hX
+
+theorem original {δ : ℝ} {q₁ r₁ : ℕ} (hX : 2 ≤ (q₁ : ℝ) ^ (δ * r₁)) :
+    δ * r₁ * Real.log q₁ / 2 < Real.log (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) :=
+  realPower (Nat.cast_nonneg _) hX
+
+theorem existingAbstract {X B : ℝ} (hX : 0 < X) (h : Real.sqrt X < B) :
+    Real.log X / 2 < Real.log B :=
+  (Real.log_sqrt hX.le) ▸ Real.log_lt_log (Real.sqrt_pos.mpr hX) h
+
+theorem existingExponent {X B c : ℝ} (hX : 0 < X) (h : X ^ c < B) :
+    c * Real.log X < Real.log B := Real.lt_log_of_rpow_lt hX h
+
+theorem positiveDomain {X : ℝ} (hX : 1 ≤ X) :
+    Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) ↔ 2 ≤ X := by
+  constructor
+  · intro h
+    by_contra! hlt
+    have hf : ⌊X⌋₊ = 1 := by
+      apply (Nat.floor_eq_iff (by positivity)).2
+      norm_num
+      exact ⟨hX, hlt⟩
+    rw [hf] at h
+    norm_num at h
+    linarith only [h, Real.log_nonneg hX]
+  · exact logFloor
+
+theorem betweenZeroOne {X : ℝ} (hX : 0 < X) (h1 : X < 1) :
+    ⌊X⌋₊ = 0 ∧ Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by
+  have hf := Nat.floor_eq_zero.mpr h1
+  refine ⟨hf, ?_⟩
+  rw [hf]
+  norm_num
+  exact div_neg_of_neg_of_pos (Real.log_neg hX h1) (by norm_num)
+
+theorem fullPositiveDomain {X : ℝ} (hX : 0 < X) :
+    Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) ↔ X < 1 ∨ 2 ≤ X := by
+  by_cases h1 : X < 1
+  · exact iff_of_true (betweenZeroOne hX h1).2 (Or.inl h1)
+  · simpa only [h1, false_or] using positiveDomain (le_of_not_gt h1)
+
+theorem atOne : ¬Real.log 1 / 2 < Real.log (⌊(1 : ℝ)⌋₊ : ℝ) := by norm_num
+
+theorem betweenOneTwo {X : ℝ} (hX : 1 ≤ X) (h2 : X < 2) :
+    ¬Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) :=
+  fun h ↦ h2.not_ge ((positiveDomain hX).mp h)
+
+theorem atTwo : Real.log 2 / 2 < Real.log (⌊(2 : ℝ)⌋₊ : ℝ) := logFloor (by norm_num)
+
+theorem halfBaseNegativeExponent :
+    (-1 : ℝ) * Real.log (1 / 2) / 2 < Real.log (⌊(1 / 2 : ℝ) ^ (-1 : ℝ)⌋₊ : ℝ) :=
+  realPower (by norm_num) (by norm_num)
+
+theorem noBoundFails :
+    ¬(1 : ℝ) * (1 : ℕ) * Real.log (1 : ℕ) / 2 <
+      Real.log (⌊(1 : ℝ) ^ ((1 : ℝ) * (1 : ℕ))⌋₊ : ℝ) := by norm_num
+
+theorem primitiveProbe {X : ℝ} (hX : 2 ≤ X) :
+    Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by
+  fail_if_success
+    exact Real.log_lt_log (by positivity : 0 < X) hX
+  fail_if_success
+    exact Real.lt_log_of_rpow_lt (by positivity : 0 < X) hX
+  exact logFloor hX
+
+#print axioms rootFloor
+#print axioms logFloor
+#print axioms realPower
+#print axioms original
+#print axioms existingAbstract
+#print axioms existingExponent
+#print axioms positiveDomain
+#print axioms betweenZeroOne
+#print axioms fullPositiveDomain
+#print axioms atOne
+#print axioms betweenOneTwo
+#print axioms atTwo
+#print axioms halfBaseNegativeExponent
+#print axioms noBoundFails
+#print axioms primitiveProbe
+end Log239Isolated

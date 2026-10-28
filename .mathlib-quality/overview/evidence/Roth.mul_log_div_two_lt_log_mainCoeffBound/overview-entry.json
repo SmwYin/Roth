@@ -1,0 +1,21 @@
+{
+  "type": "∀ {δ : ℝ} {q₁ r₁ : ℕ},\n  2 ≤ ↑q₁ ^ (δ * ↑r₁) → δ * ↑r₁ * Real.log ↑q₁ / 2 < Real.log ↑(Roth.mainCoeffBound δ q₁ r₁)",
+  "kind": "theorem",
+  "what": "For X=q₁^(δr₁) at least two, half of δr₁ log q₁ is strictly below the logarithm of the natural coefficient floor.",
+  "how": "Apply log monotonicity to Roth.sqrt_lt_floor, then rewrite log of sqrt and log of a positive-base real power; hX supplies all signs.",
+  "hypotheses": [
+    "δ is real; q₁,r₁ are natural numbers.",
+    "The sole explicit condition is 2 ≤ (q₁ : ℝ) ^ (δ * r₁); separate delta/degree/base positivity assumptions are unnecessary."
+  ],
+  "project_dependencies": [
+    "Roth.mainCoeffBound",
+    "Roth.sqrt_lt_floor"
+  ],
+  "caller_summary": "One explicit body occurrence, Roth.three_small_factors at MainLemma:205; zero external-to-file uses and zero direct type consumers. Full original caller replay with inlined argument and main_lemma both retain original signatures.",
+  "mathlib_api_audit": "Real.log_lt_log, Real.log_sqrt, Real.log_rpow and Real.lt_log_of_rpow_lt provide transport, not the missing root-to-natural-floor inequality. All15 formal cells checked; local index warming limits absence inference.",
+  "moral_duplications": "A log corollary of sqrt_lt_floor rather than the same statement; realPower and logFloor remove project coefficient representation. No independently rederived inline counterpart found.",
+  "generalization": "Compiled mathlib-only logFloor: ∀ {X : ℝ}, 2 ≤ X → Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ); realPower allows nonnegative real q and arbitrary real z. Positive-floor-domain sharp iff holds under 1 ≤ X. New helper proofs are not existing library declarations.",
+  "missing_api": "Potential generic logarithm-of-natural-floor lower-bound API; primary square-root-floor interface versus logarithmic corollary packaging remains a future upstream design choice.",
+  "junk": "Used and mathematically valid; not dead code. No demonstrated ≤3-existing-call replacement for original statement. Coefficient-specific public name should remain project-local pending generic API choice.",
+  "action": "BORDERLINE-needs-human: retain production unchanged; resolve three concrete future upstream interface questions in report. Any future deletion must inline the verified argument at the sole three_small_factors caller."
+}

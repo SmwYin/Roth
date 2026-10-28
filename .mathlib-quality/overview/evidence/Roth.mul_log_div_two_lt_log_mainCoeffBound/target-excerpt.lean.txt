@@ -1,0 +1,7 @@
+theorem mul_log_div_two_lt_log_mainCoeffBound {δ : ℝ} {q₁ r₁ : ℕ} (hX : 2 ≤ (q₁ : ℝ) ^ (δ * r₁)) :
+    δ * r₁ * Real.log q₁ / 2 < Real.log (mainCoeffBound δ q₁ r₁) := by
+  simpa [mainCoeffBound, Real.log_sqrt (by positivity), Real.log_rpow
+    (((Real.one_lt_rpow_iff (Nat.cast_nonneg q₁)).1
+      (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left)] using
+    Real.log_lt_log (Real.sqrt_pos.2 (lt_of_lt_of_le (by norm_num) hX)) (sqrt_lt_floor hX).1
+

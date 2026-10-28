@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-28. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 238 / 293 written declarations.**
+**Completed: 239 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -246,8 +246,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 236 | `Roth.sqrt_lt_nat_floor_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.sqrt_lt_nat_floor_aux.md) |
 | 237 | `Roth.sqrt_lt_floor` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.sqrt_lt_floor.md) |
 | 238 | `Roth.four_lt_rpow` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.four_lt_rpow.md) |
+| 239 | `Roth.mul_log_div_two_lt_log_mainCoeffBound` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.mul_log_div_two_lt_log_mainCoeffBound.md) |
 
-**Next declaration: `Roth.mul_log_div_two_lt_log_mainCoeffBound`**, `Roth/MainLemma.lean:149`.
+**Next declaration: `Roth.two_lt_rpow_aux`**, `Roth/MainLemma.lean:156`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and
