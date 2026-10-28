@@ -1,0 +1,32 @@
+private lemma exists_norm_coeff_reduction_aux {R : Type*} [SeminormedRing R] {f P : Polynomial R}
+    {A C : ℝ} (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ}
+    (hs : P.natDegree ≤ s) (hf1 : f ≠ 1) (hself : P %ₘ f ≠ P) : 0 < f.natDegree ∧ f.natDegree ≤ s ∧
+    ∃ Q : Polynomial R, Q.natDegree ≤ s - 1 ∧ (∀ i, ‖Q.coeff i‖ ≤ (1 + A) * C) ∧
+    P %ₘ f = Q %ₘ f := by
+  have : Nontrivial R := Polynomial.Nontrivial.of_polynomial_ne hself
+  have hf : f.Monic := by
+    by_contra hf
+    exact hself (Polynomial.modByMonic_eq_of_not_monic P hf)
+  have hP0 : P ≠ 0 := fun h ↦ hself (by simp [h])
+  have hdeg : f.degree ≤ P.degree := le_of_not_gt fun h ↦
+    hself ((Polynomial.modByMonic_eq_self_iff hf).2 h)
+  let Q := P - f * (Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree))
+  have hmod : P %ₘ f = Q %ₘ f := by
+    conv_lhs =>
+      rw [Polynomial.modByMonic, dite_eq_left hf, Polynomial.divModByMonicAux,
+        dite_eq_left ⟨hdeg, hP0⟩]
+    rw [Polynomial.modByMonic, dite_eq_left hf]
+  refine ⟨Nat.pos_of_ne_zero (fun hn ↦ hf1 (Polynomial.eq_one_of_monic_natDegree_zero hf hn)),
+    (Polynomial.natDegree_le_natDegree hdeg).trans hs, Q, ?_, ?_, hmod⟩
+  · by_cases hQ0 : Q = 0
+    · simp [hQ0]
+    · exact Nat.le_sub_one_of_lt ((Polynomial.natDegree_lt_natDegree hQ0
+        (Polynomial.div_wf_lemma ⟨hdeg, hP0⟩ hf)).trans_le hs)
+  · intro i
+    rw [Polynomial.coeff_sub, ← mul_assoc, Polynomial.coeff_mul_X_pow', add_mul, one_mul]
+    refine (norm_sub_le _ _).trans (add_le_add (hP i) ?_)
+    split_ifs
+    · rw [Polynomial.coeff_mul_C]
+      exact (norm_mul_le _ _).trans (mul_le_mul (hfA _) (hP _) (norm_nonneg _)
+        ((norm_nonneg _).trans (hfA 0)))
+    · simpa using mul_nonneg ((norm_nonneg _).trans (hfA 0)) ((norm_nonneg _).trans (hP 0))

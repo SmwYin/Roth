@@ -1,0 +1,16 @@
+{
+  "declaration": "Roth.exists_norm_coeff_reduction_aux",
+  "kind": "lemma",
+  "type": "∀ {R : Type u_1} [inst : SeminormedRing R] {f P : Polynomial R} {A C : ℝ},\n  (∀ (i : ℕ), ‖f.coeff i‖ ≤ A) →\n    (∀ (i : ℕ), ‖P.coeff i‖ ≤ C) →\n      ∀ {s : ℕ},\n        P.natDegree ≤ s →\n          f ≠ 1 →\n            P %ₘ f ≠ P →\n              0 < f.natDegree ∧\n                f.natDegree ≤ s ∧\n                  ∃ (Q : Polynomial R), Q.natDegree ≤ s - 1 ∧ (∀ (i : ℕ), ‖Q.coeff i‖ ≤ (1 + A) * C) ∧ P %ₘ f = Q %ₘ f",
+  "what": "Whenever P %ₘ f differs from P and f is not1, one leading-term elimination lowers the degree ceiling, multiplies the coefficient budget by1+A, and preserves the remainder; monicity is derived.",
+  "how": "Inspect Polynomial.divModByMonicAux to identify leading-term elimination, use Polynomial.div_wf_lemma for degree descent and norm_sub_le for coefficients.",
+  "hypotheses": "Seminormed ring, coefficient bounds, bounded input degree, divisor not one and remainder different from input. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [],
+  "caller_summary": "One explicit source caller and one direct original value consumer, norm_coeff_modByMonic_le; full MainLemma induction and dependent proof replay succeeds.",
+  "mathlib_api_audit": "Nontriviality follows from the changed remainder. Nonmonic divisors leave P unchanged, so the divisor is monic; the same changed-remainder condition gives P nonzero and divisor degree<=P degree. Define Q by subtracting the leading monomial multiple of f. The division recursion identifies the same remainder, its well-founded degree lemma yields the strict degree drop, and coefficient formulas plus norm_sub_le/norm_mul_le give the new bound. The public coefficient-remainder theorem iterates this step by strong induction; this helper is not itself the full iterated estimate.",
+  "moral_duplications": "One leading-term elimination and coefficient-budget step, distinct from the iterated public remainder estimate. The latter uses strong induction and a saturated natural exponent. No inherited contribution verdict.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

@@ -1,0 +1,45 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 212,
+  "name": "Roth.exists_norm_coeff_reduction_aux",
+  "short": "exists_norm_coeff_reduction_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 243,
+  "source": "private lemma exists_norm_coeff_reduction_aux {R : Type*} [SeminormedRing R] {f P : Polynomial R}\n    {A C : ℝ} (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ}\n    (hs : P.natDegree ≤ s) (hf1 : f ≠ 1) (hself : P %ₘ f ≠ P) : 0 < f.natDegree ∧ f.natDegree ≤ s ∧\n    ∃ Q : Polynomial R, Q.natDegree ≤ s - 1 ∧ (∀ i, ‖Q.coeff i‖ ≤ (1 + A) * C) ∧\n    P %ₘ f = Q %ₘ f := by\n  have : Nontrivial R := Polynomial.Nontrivial.of_polynomial_ne hself\n  have hf : f.Monic := by\n    by_contra hf\n    exact hself (Polynomial.modByMonic_eq_of_not_monic P hf)\n  have hP0 : P ≠ 0 := fun h ↦ hself (by simp [h])\n  have hdeg : f.degree ≤ P.degree := le_of_not_gt fun h ↦\n    hself ((Polynomial.modByMonic_eq_self_iff hf).2 h)\n  let Q := P - f * (Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree))\n  have hmod : P %ₘ f = Q %ₘ f := by\n    conv_lhs =>\n      rw [Polynomial.modByMonic, dite_eq_left hf, Polynomial.divModByMonicAux,\n        dite_eq_left ⟨hdeg, hP0⟩]\n    rw [Polynomial.modByMonic, dite_eq_left hf]\n  refine ⟨Nat.pos_of_ne_zero (fun hn ↦ hf1 (Polynomial.eq_one_of_monic_natDegree_zero hf hn)),\n    (Polynomial.natDegree_le_natDegree hdeg).trans hs, Q, ?_, ?_, hmod⟩\n  · by_cases hQ0 : Q = 0\n    · simp [hQ0]\n    · exact Nat.le_sub_one_of_lt ((Polynomial.natDegree_lt_natDegree hQ0\n        (Polynomial.div_wf_lemma ⟨hdeg, hP0⟩ hf)).trans_le hs)\n  · intro i\n    rw [Polynomial.coeff_sub, ← mul_assoc, Polynomial.coeff_mul_X_pow', add_mul, one_mul]\n    refine (norm_sub_le _ _).trans (add_le_add (hP i) ?_)\n    split_ifs\n    · rw [Polynomial.coeff_mul_C]\n      exact (norm_mul_le _ _).trans (mul_le_mul (hfA _) (hP _) (norm_nonneg _)\n        ((norm_nonneg _).trans (hfA 0)))\n    · simpa using mul_nonneg ((norm_nonneg _).trans (hfA 0)) ((norm_nonneg _).trans (hP 0))",
+  "signature": "private lemma exists_norm_coeff_reduction_aux {R : Type*} [SeminormedRing R] {f P : Polynomial R}\n    {A C : ℝ} (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ}\n    (hs : P.natDegree ≤ s) (hf1 : f ≠ 1) (hself : P %ₘ f ≠ P) : 0 < f.natDegree ∧ f.natDegree ≤ s ∧\n    ∃ Q : Polynomial R, Q.natDegree ≤ s - 1 ∧ (∀ i, ‖Q.coeff i‖ ≤ (1 + A) * C) ∧\n    P %ₘ f = Q %ₘ f",
+  "body": "by\n  have : Nontrivial R := Polynomial.Nontrivial.of_polynomial_ne hself\n  have hf : f.Monic := by\n    by_contra hf\n    exact hself (Polynomial.modByMonic_eq_of_not_monic P hf)\n  have hP0 : P ≠ 0 := fun h ↦ hself (by simp [h])\n  have hdeg : f.degree ≤ P.degree := le_of_not_gt fun h ↦\n    hself ((Polynomial.modByMonic_eq_self_iff hf).2 h)\n  let Q := P - f * (Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree))\n  have hmod : P %ₘ f = Q %ₘ f := by\n    conv_lhs =>\n      rw [Polynomial.modByMonic, dite_eq_left hf, Polynomial.divModByMonicAux,\n        dite_eq_left ⟨hdeg, hP0⟩]\n    rw [Polynomial.modByMonic, dite_eq_left hf]\n  refine ⟨Nat.pos_of_ne_zero (fun hn ↦ hf1 (Polynomial.eq_one_of_monic_natDegree_zero hf hn)),\n    (Polynomial.natDegree_le_natDegree hdeg).trans hs, Q, ?_, ?_, hmod⟩\n  · by_cases hQ0 : Q = 0\n    · simp [hQ0]\n    · exact Nat.le_sub_one_of_lt ((Polynomial.natDegree_lt_natDegree hQ0\n        (Polynomial.div_wf_lemma ⟨hdeg, hP0⟩ hf)).trans_le hs)\n  · intro i\n    rw [Polynomial.coeff_sub, ← mul_assoc, Polynomial.coeff_mul_X_pow', add_mul, one_mul]\n    refine (norm_sub_le _ _).trans (add_le_add (hP i) ?_)\n    split_ifs\n    · rw [Polynomial.coeff_mul_C]\n      exact (norm_mul_le _ _).trans (mul_le_mul (hfA _) (hP _) (norm_nonneg _)\n        ((norm_nonneg _).trans (hfA 0)))\n    · simpa using mul_nonneg ((norm_nonneg _).trans (hfA 0)) ((norm_nonneg _).trans (hP 0))",
+  "proof_lines": 28,
+  "sha256": "8036cf617651d096e302d8f52d4589051c5a213d2ef93c10ee5813de73956a44",
+  "what": "One nontrivial monic division step lowers degree and inflates coefficient bounds by at most one plus the divisor bound.",
+  "how": "Inspect Polynomial.divModByMonicAux to identify leading-term elimination, use Polynomial.div_wf_lemma for degree descent and norm_sub_le for coefficients.",
+  "hypotheses": "Seminormed ring, coefficient bounds, bounded input degree, divisor not one and remainder different from input.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.norm_coeff_modByMonic_le",
+      "file": "Roth/MainLemma.lean",
+      "line": 252
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.norm_coeff_modByMonic_le"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 378,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.norm_coeff_modByMonic_le",
+      "file": "Roth/MainLemma.lean",
+      "line": 252
+    }
+  ]
+}
