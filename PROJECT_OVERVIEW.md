@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 224/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 225/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 224; remaining: 69.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 70 BORDERLINE-needs-human, 51 SKIP.
+- Completed applicable assessments: 225; remaining: 68.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 70 BORDERLINE-needs-human, 52 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2724,6 +2724,42 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 3 explicit source caller declarations, all in Theta.lean; 3 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.theta_denominators_one_lt_aux.md).
 
+### Completed: `Roth.theta_phi_lt_aux`
+
+- Type: `∀ {n : ℕ} {δ : ℝ},
+  0 < δ →
+    δ ≤ 1 / (↑n + 1 + 1) →
+      δ < 1 →
+        ∀ {r q : Fin (n + 2) → ℕ},
+          Antitone r →
+            3 ≤ ↑(r (Fin.last (n + 1))) →
+              (∀ (i : Fin (n + 1)), ↑(r i.succ) ≤ δ * ↑(r i.castSucc)) →
+                (↑n + 1 + 1) * (2 * (↑n + 1 + 1) + 1) / δ ≤ Real.log ↑(q 0) →
+                  (∀ (j : Fin (n + 2)), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →
+                    (∀ {δ : ℝ},
+                        0 < δ →
+                          δ ≤ 1 / (↑n + 1) →
+                            ∀ {r q : Fin (n + 1) → ℕ},
+                              3 ≤ ↑(r (Fin.last n)) →
+                                (∀ (i : Fin n), ↑(r i.succ) ≤ δ * ↑(r i.castSucc)) →
+                                  (↑n + 1) * (2 * (↑n + 1) + 1) / δ ≤ Real.log ↑(q 0) →
+                                    (∀ (j : Fin (n + 1)), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →
+                                      Roth.Θ (↑(q 0) ^ (δ * ↑(r 0))) q r < 10 ^ (n + 1) * δ ^ (1 / 2) ^ (n + 1)) →
+                      ∀ {l : ℕ},
+                        l ∈ Finset.Icc 1 (r (Fin.last (n + 1)) + 1) →
+                          have M := Roth.lem6M (n + 2) (r 0) (↑(q 0) ^ (δ * ↑(r 0))) l;
+                          have Φ :=
+                            (Roth.Θ M (fun (x : Unit) ↦ q (Fin.last (n + 1))) fun (x : Unit) ↦
+                                l * r (Fin.last (n + 1))) +
+                              Roth.Θ M (fun (j : Fin (n + 1)) ↦ q j.castSucc) fun (j : Fin (n + 1)) ↦ l * r j.castSucc;
+                          Φ + √Φ + √δ < 10 ^ (n + 2) * δ ^ (1 / 2) ^ (n + 2) / 2`
+- What: For every allowed determinant rank, the sum of singleton and prefix extremal indices, plus its square root and sqrt δ, is strictly below half the next-dimensional target.
+- How: Use lem6M_lt for the coefficient scale, theta_scaled_unique_le_aux for the singleton term, theta_prefix_lt_aux for the prefix, then lem7_Φ_bound and lem7_numeric.
+- Hypotheses: Small positive delta, antitone degree sequence, minimum last degree, ratios, denominator logarithm growth and the previous-dimensional induction hypothesis. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.lem6M, Roth.lem6M_lt, Roth.lem7_numeric, Roth.lem7_Φ_bound, Roth.one_le_lem6M, Roth.theta_delta_succ_lt_aux, Roth.theta_denominators_one_lt_aux, Roth.theta_prefix_lt_aux, Roth.theta_scaled_unique_le_aux, Roth.Θ
+- Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.theta_phi_lt_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3198,6 +3234,8 @@ Completed `Roth.theta_lt_base_aux`: Apply Θ_unique_le, compute Real.log_rpow an
 
 Completed `Roth.theta_denominators_one_lt_aux`: The first weighted logarithm is positive. Its lower bound on r_j log(q_j), together with nonnegative natural r_j, forces log(q_j)>0 via pos_of_mul_pos_right. Apply Real.log_pos_iff for the nonnegative natural base and cast back to 1<q_j. This supplies denominator positivity in the singleton, successor and final index estimates.
 
+Completed `Roth.theta_phi_lt_aux`: Derive all weights positive from antitonicity and the last-weight bound, and denominator positivity from theta_denominators_one_lt_aux. Set ε=δ(1+1/(n+2)); use one_le_lem6M and lem6M_lt for the height envelope, theta_scaled_unique_le_aux for the singleton term, and theta_prefix_lt_aux with theta_delta_succ_lt_aux for the induction term. Combine them through lem7_Φ_bound and lem7_numeric to reach the strict half-target. This is the per-rank quantitative stage used after Θ_option_le.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3647,6 +3685,8 @@ Completed `Roth.theta_prefix_lt_aux`: The prefix bound uses the supplied lower-d
 Completed `Roth.theta_lt_base_aux`: This small-delta one-variable base case derives Θ≤δ from Θ_unique_le and then a strict square-root target. The large-delta helper instead uses the dimension bound; the singleton scaled helper also uses logarithms but has a different balanced-denominator conclusion.
 
 Completed `Roth.theta_denominators_one_lt_aux`: Uses the same positive-product/logarithm primitives as other denominator preparations, but supplies a uniform denominator conclusion shared by three callers rather than an extremal-index inequality. Retain the private preparation boundary.
+
+Completed `Roth.theta_phi_lt_aux`: Combines the distinct singleton logarithmic and prefix-induction estimates with two numerical absorption stages for each determinant rank. It is not the finite-maximum successor theorem or a reproof of its ingredients.
 
 ## Part 5: Generalization opportunities
 
@@ -4108,6 +4148,8 @@ Completed `Roth.theta_lt_base_aux`: No public generality claim under the private
 
 Completed `Roth.theta_denominators_one_lt_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.theta_phi_lt_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4558,6 +4600,8 @@ Completed `Roth.theta_prefix_lt_aux`: No new primitive is needed for this intern
 Completed `Roth.theta_lt_base_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.theta_denominators_one_lt_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.theta_phi_lt_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -5012,6 +5056,8 @@ Completed `Roth.theta_lt_base_aux`: Retain a live private proof interface. No pl
 
 Completed `Roth.theta_denominators_one_lt_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.theta_phi_lt_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5240,6 +5286,7 @@ Completed `Roth.theta_denominators_one_lt_aux`: Retain a live private proof inte
 | 222 | `Roth.theta_prefix_lt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_prefix_lt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_prefix_lt_aux/root-acceptance.json) |
 | 223 | `Roth.theta_lt_base_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_base_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_lt_base_aux/root-acceptance.json) |
 | 224 | `Roth.theta_denominators_one_lt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_denominators_one_lt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_denominators_one_lt_aux/root-acceptance.json) |
+| 225 | `Roth.theta_phi_lt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_phi_lt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_phi_lt_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5687,12 +5734,14 @@ Completed `Roth.theta_lt_base_aux` action: Keep unchanged; complete private-pref
 
 Completed `Roth.theta_denominators_one_lt_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.theta_phi_lt_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.theta_phi_lt_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.theta_lt_succ_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

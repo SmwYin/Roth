@@ -1,0 +1,27 @@
+{
+  "declaration": "Roth.theta_phi_lt_aux",
+  "kind": "lemma",
+  "type": "∀ {n : ℕ} {δ : ℝ},\n  0 < δ →\n    δ ≤ 1 / (↑n + 1 + 1) →\n      δ < 1 →\n        ∀ {r q : Fin (n + 2) → ℕ},\n          Antitone r →\n            3 ≤ ↑(r (Fin.last (n + 1))) →\n              (∀ (i : Fin (n + 1)), ↑(r i.succ) ≤ δ * ↑(r i.castSucc)) →\n                (↑n + 1 + 1) * (2 * (↑n + 1 + 1) + 1) / δ ≤ Real.log ↑(q 0) →\n                  (∀ (j : Fin (n + 2)), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →\n                    (∀ {δ : ℝ},\n                        0 < δ →\n                          δ ≤ 1 / (↑n + 1) →\n                            ∀ {r q : Fin (n + 1) → ℕ},\n                              3 ≤ ↑(r (Fin.last n)) →\n                                (∀ (i : Fin n), ↑(r i.succ) ≤ δ * ↑(r i.castSucc)) →\n                                  (↑n + 1) * (2 * (↑n + 1) + 1) / δ ≤ Real.log ↑(q 0) →\n                                    (∀ (j : Fin (n + 1)), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →\n                                      Roth.Θ (↑(q 0) ^ (δ * ↑(r 0))) q r < 10 ^ (n + 1) * δ ^ (1 / 2) ^ (n + 1)) →\n                      ∀ {l : ℕ},\n                        l ∈ Finset.Icc 1 (r (Fin.last (n + 1)) + 1) →\n                          have M := Roth.lem6M (n + 2) (r 0) (↑(q 0) ^ (δ * ↑(r 0))) l;\n                          have Φ :=\n                            (Roth.Θ M (fun (x : Unit) ↦ q (Fin.last (n + 1))) fun (x : Unit) ↦\n                                l * r (Fin.last (n + 1))) +\n                              Roth.Θ M (fun (j : Fin (n + 1)) ↦ q j.castSucc) fun (j : Fin (n + 1)) ↦ l * r j.castSucc;\n                          Φ + √Φ + √δ < 10 ^ (n + 2) * δ ^ (1 / 2) ^ (n + 2) / 2",
+  "what": "For every allowed determinant rank, the sum of singleton and prefix extremal indices, plus its square root and sqrt δ, is strictly below half the next-dimensional target.",
+  "how": "Use lem6M_lt for the coefficient scale, theta_scaled_unique_le_aux for the singleton term, theta_prefix_lt_aux for the prefix, then lem7_Φ_bound and lem7_numeric.",
+  "hypotheses": "Small positive delta, antitone degree sequence, minimum last degree, ratios, denominator logarithm growth and the previous-dimensional induction hypothesis. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.lem6M",
+    "Roth.lem6M_lt",
+    "Roth.lem7_numeric",
+    "Roth.lem7_Φ_bound",
+    "Roth.one_le_lem6M",
+    "Roth.theta_delta_succ_lt_aux",
+    "Roth.theta_denominators_one_lt_aux",
+    "Roth.theta_prefix_lt_aux",
+    "Roth.theta_scaled_unique_le_aux",
+    "Roth.Θ"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Derive all weights positive from antitonicity and the last-weight bound, and denominator positivity from theta_denominators_one_lt_aux. Set ε=δ(1+1/(n+2)); use one_le_lem6M and lem6M_lt for the height envelope, theta_scaled_unique_le_aux for the singleton term, and theta_prefix_lt_aux with theta_delta_succ_lt_aux for the induction term. Combine them through lem7_Φ_bound and lem7_numeric to reach the strict half-target. This is the per-rank quantitative stage used after Θ_option_le.",
+  "moral_duplications": "Combines the distinct singleton logarithmic and prefix-induction estimates with two numerical absorption stages for each determinant rank. It is not the finite-maximum successor theorem or a reproof of its ingredients.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
