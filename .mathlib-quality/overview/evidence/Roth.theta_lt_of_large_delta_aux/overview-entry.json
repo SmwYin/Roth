@@ -1,0 +1,19 @@
+{
+  "declaration": "Roth.theta_lt_of_large_delta_aux",
+  "kind": "lemma",
+  "type": "∀ {n : ℕ} {δ : ℝ},\n  1 / (↑n + 1) ≤ δ →\n    ∀ {r q : Fin (n + 1) → ℕ}, Roth.Θ (↑(q 0) ^ (δ * ↑(r 0))) q r < 10 ^ (n + 1) * δ ^ (1 / 2) ^ (n + 1)",
+  "what": "When δ≥1/(n+1), the target strict extremal-index bound follows for all natural weights and denominators without growth or balanced-log assumptions.",
+  "how": "Use Θ_le_card and Nat.lt_two_pow_self to bound the dimension by a power of ten divided by the dimension; Real.self_le_rpow_of_le_one and Real.rpow_le_rpow compare that reciprocal with the delta power.",
+  "hypotheses": "Delta at least reciprocal dimension; no denominator or degree positivity needed. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.Θ",
+    "Roth.Θ_le_card"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Use Θ_le_card for the dimension bound p=n+1. Nat.lt_two_pow_self gives p²<4^p≤10^p, hence p<10^p/p. Bound 1/p by its own exponent-2^(-p) power using Real.self_le_rpow_of_le_one and then by δ to that exponent using Real.rpow_le_rpow. This handles both base and successor large-error branches of Θ_lt.",
+  "moral_duplications": "This large-delta branch uses only the dimension upper bound and scalar power comparisons. The small-delta base uses a logarithmic singleton estimate, and the successor uses determinant/finite-maximum induction; their conclusions agree on different premise regimes.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
