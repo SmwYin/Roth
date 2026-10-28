@@ -1,0 +1,62 @@
+[
+  {
+    "file": "Roth/MainLemma.lean",
+    "line": 671,
+    "name": "Roth.theta_lt_eta_of_sq_log_bound_aux",
+    "short": "theta_lt_eta_of_sq_log_bound_aux",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 690,
+    "source": "private lemma theta_lt_eta_of_sq_log_bound_aux {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ)\n    (hδm : δ * (m : ℝ) ≤ 1) {r q : Fin m → ℕ} (hrlast : 3 ≤ r (Fin.rev 0))\n    (hratio : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)\n    (hL : 2 * (m : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0))\n    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :\n    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < eta δ m := by\n  obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)\n  let M : ℝ := (n + 1 : ℕ)\n  have hδpos : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by\n    simpa [← he] using ((by positivity : 0 < 2 * M + 1).trans_le hL)\n  have hq : M * (2 * M + 1) / δ ≤ Real.log (q 0) := by\n    apply (mul_le_mul_iff_of_pos_right (sq_pos_of_pos hδpos)).1\n    convert ((mul_le_mul_of_nonneg_right hδm (by positivity : 0 ≤ 2 * M + 1)).trans_eq\n      (one_mul _)).trans hL using 1\n    all_goals field_simp\n    all_goals ring\n  simpa [eta] using Θ_lt n hδpos\n    (by simpa only [Fin.rev_zero, Nat.cast_ofNat] using (Nat.cast_le (α := ℝ)).2 hrlast)\n    (fun i ↦ by simpa [mul_comm] using ((div_le_iff₀ hδpos).1 (hratio _ _ (by simp))))\n    (by simpa [M] using hq) hqr",
+    "signature": "private lemma theta_lt_eta_of_sq_log_bound_aux {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ)\n    (hδm : δ * (m : ℝ) ≤ 1) {r q : Fin m → ℕ} (hrlast : 3 ≤ r (Fin.rev 0))\n    (hratio : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)\n    (hL : 2 * (m : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0))\n    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :\n    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < eta δ m",
+    "body": "by\n  obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)\n  let M : ℝ := (n + 1 : ℕ)\n  have hδpos : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by\n    simpa [← he] using ((by positivity : 0 < 2 * M + 1).trans_le hL)\n  have hq : M * (2 * M + 1) / δ ≤ Real.log (q 0) := by\n    apply (mul_le_mul_iff_of_pos_right (sq_pos_of_pos hδpos)).1\n    convert ((mul_le_mul_of_nonneg_right hδm (by positivity : 0 ≤ 2 * M + 1)).trans_eq\n      (one_mul _)).trans hL using 1\n    all_goals field_simp\n    all_goals ring\n  simpa [eta] using Θ_lt n hδpos\n    (by simpa only [Fin.rev_zero, Nat.cast_ofNat] using (Nat.cast_le (α := ℝ)).2 hrlast)\n    (fun i ↦ by simpa [mul_comm] using ((div_le_iff₀ hδpos).1 (hratio _ _ (by simp))))\n    (by simpa [M] using hq) hqr",
+    "proof_lines": 15,
+    "sha256": "e4e9990cd9a663ace2e510a235595a3f29313dafef3a9e2839fe6fdb8eaf9400",
+    "what": "The squared-delta log hypotheses imply the extremal index is strictly below eta.",
+    "how": "Rewrite the positive dimension as a successor, derive delta positivity and the Lemma7 logarithm bound, and specialize Θ_lt.",
+    "hypotheses": "Nonzero dimension, nonnegative delta with delta times dimension at most one, last degree at least three and ratio/balancing/logarithmic hypotheses.",
+    "source_body_refs": [
+      "Roth.eta",
+      "Roth.Θ_lt"
+    ],
+    "source_type_refs": [
+      "Roth.eta",
+      "Roth.Θ"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 692
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+    "uses_from_project": [
+      "Roth.eta",
+      "Roth.Θ_lt"
+    ],
+    "used_by_in_file": [
+      "Roth.exists_auxiliary_polynomial_with_index_gap_aux"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 398,
+    "project_body_refs": [
+      "Roth.eta",
+      "Roth.Θ_lt"
+    ],
+    "project_type_refs": [
+      "Roth.eta",
+      "Roth.Θ"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 692
+      }
+    ]
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "declaration": "Roth.Θ_lt",
+  "kind": "theorem",
+  "type": "∀ (n : ℕ) {δ : ℝ},\n  0 < δ →\n    ∀ {r q : Fin (n + 1) → ℕ},\n      3 ≤ ↑(r (Fin.last n)) →\n        (∀ (i : Fin n), ↑(r i.succ) ≤ δ * ↑(r i.castSucc)) →\n          (↑n + 1) * (2 * (↑n + 1) + 1) / δ ≤ Real.log ↑(q 0) →\n            (∀ (j : Fin (n + 1)), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →\n              Roth.Θ (↑(q 0) ^ (δ * ↑(r 0))) q r < 10 ^ (n + 1) * δ ^ (1 / 2) ^ (n + 1)",
+  "what": "Roth Lemma7: under weak degree growth and balanced denominator-log conditions, the supremum of bounded-height integer-polynomial indices is strictly less than10^m δ^(2^-m), for everyδ>0.",
+  "how": "Induct on dimension, generalizingδ. The base uses theta_lt_base_aux and theta_denominators_one_lt_aux, or theta_lt_of_large_delta_aux. The successor uses theta_lt_succ_aux for smallδ, otherwise theta_lt_of_large_delta_aux. The successor transports by Θ_equiv to Θ_option_le and bounds the finite maximum through theta_phi_lt_aux, lem6M_lt, theta_scaled_unique_le_aux, theta_prefix_lt_aux, theta_delta_succ_lt_aux, lem7_Φ_bound and lem7_numeric.",
+  "hypotheses": "n+1 positive finite dimension;δ>0;natural degrees and denominators;last degree≥3;weak adjacent ratios;weak log threshold and balanced weighted logs. Noδ upper bound or explicit denominator positivity. Fresh complete proof permits last degree≥1 via stronger scratch finite-sum/Lemma6 ingredients.",
+  "project_dependencies": [
+    "Roth.theta_denominators_one_lt_aux",
+    "Roth.theta_lt_base_aux",
+    "Roth.theta_lt_of_large_delta_aux",
+    "Roth.theta_lt_succ_aux",
+    "Roth.Θ"
+  ],
+  "caller_summary": {
+    "explicit_callers": 1,
+    "application_occurrences": 1,
+    "external_to_file_modules": 1,
+    "names": [
+      "Roth.theta_lt_eta_of_sq_log_bound_aux"
+    ],
+    "direct_kernel_value_consumers": [
+      "_private.Roth.MainLemma.0.Roth.theta_lt_eta_of_sq_log_bound_aux"
+    ],
+    "validation": "Complete originalΘ module and293 private-aware direct audit; complete MainLemma replay with broadened endpoint and caller statement preserved; exact original endpoint proof inlined into actual caller and complete MainLemma replay."
+  },
+  "mathlib_api_audit": "All15 actual Finder/Loogle/LeanSearch/rg/local cells on current, literature and abstract forms; external indexes revision-distinct and local warming. Pinned csSup_le/Real.sSup_le/finite strict-sup/weighted-order signatures and actual generic transports compiled. Reconstructed mathlib-only arithmetic endpoint exact? probe did not close. Supremum and weighted-support APIs do not supply its arithmetic uniform-bound premise.",
+  "moral_duplications": "Θ is a sSup and index has weighted-support representations; generic upper/strict supremum laws organize bounds already supplied. Schwartz–Zippel counts roots over finite products, and additive Roth bounds/Chevalley complexity are different mathematics. No identified exact existing-law replacement of the full quantitative endpoint.",
+  "generalization": "Verified full theorem last degree≥1, and natural-positive form; complete sole caller adapts. Stronger finite-sum /2 and Lemma6 numeric proofs are carried explicitly, not existing mathlib. One-variable case only needsq>1 andr>0;δ=0 counterexample meets other public premises. No joint numeric extension, zero-weight necessity, general-field theorem or maximality claim.",
+  "missing_api": "Potential reusable generalized-Wronskian separation, determinant coefficient-height estimates and rational-point weighted-index API. No missing generic supremum transport. Upstream inclusion/grain of the specialized10^m endpoint remains an explicit bounded design question.",
+  "junk": "Live sole direct caller supplies the strictΘ<eta estimate used in the auxiliary-polynomial index gap and main lemma. Complete inlining compiles but retains the same project arithmetic proof; neither dead code nor≤3 existing-call redundancy.",
+  "action": "Keep Roth/Theta.lean endpoint. A future edit can adopt≥1/positive-natural last weight together with the proven stronger Lemma6/finite-sum and private induction interfaces, using the verified sole caller adaptation. Resolve upstream API grain before proposing a mathlib contribution; no production edits in this review."
+}

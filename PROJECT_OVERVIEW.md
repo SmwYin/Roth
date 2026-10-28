@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 227/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 228/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 227; remaining: 66.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 70 BORDERLINE-needs-human, 54 SKIP.
+- Completed applicable assessments: 228; remaining: 65.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 71 BORDERLINE-needs-human, 54 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2799,6 +2799,23 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_of_large_delta_aux.md).
 
+### Completed: `Roth.Θ_lt`
+
+- Type: `∀ (n : ℕ) {δ : ℝ},
+  0 < δ →
+    ∀ {r q : Fin (n + 1) → ℕ},
+      3 ≤ ↑(r (Fin.last n)) →
+        (∀ (i : Fin n), ↑(r i.succ) ≤ δ * ↑(r i.castSucc)) →
+          (↑n + 1) * (2 * (↑n + 1) + 1) / δ ≤ Real.log ↑(q 0) →
+            (∀ (j : Fin (n + 1)), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →
+              Roth.Θ (↑(q 0) ^ (δ * ↑(r 0))) q r < 10 ^ (n + 1) * δ ^ (1 / 2) ^ (n + 1)`
+- What: Roth Lemma7: under weak degree growth and balanced denominator-log conditions, the supremum of bounded-height integer-polynomial indices is strictly less than10^m δ^(2^-m), for everyδ>0.
+- How: Induct on dimension, generalizingδ. The base uses theta_lt_base_aux and theta_denominators_one_lt_aux, or theta_lt_of_large_delta_aux. The successor uses theta_lt_succ_aux for smallδ, otherwise theta_lt_of_large_delta_aux. The successor transports by Θ_equiv to Θ_option_le and bounds the finite maximum through theta_phi_lt_aux, lem6M_lt, theta_scaled_unique_le_aux, theta_prefix_lt_aux, theta_delta_succ_lt_aux, lem7_Φ_bound and lem7_numeric.
+- Hypotheses: n+1 positive finite dimension;δ>0;natural degrees and denominators;last degree≥3;weak adjacent ratios;weak log threshold and balanced weighted logs. Noδ upper bound or explicit denominator positivity. Fresh complete proof permits last degree≥1 via stronger scratch finite-sum/Lemma6 ingredients.
+- Project dependencies: Roth.theta_denominators_one_lt_aux, Roth.theta_lt_base_aux, Roth.theta_lt_of_large_delta_aux, Roth.theta_lt_succ_aux, Roth.Θ
+- Caller summary: explicit callers: 1; application occurrences: 1; external to file modules: 1; names: Roth.theta_lt_eta_of_sq_log_bound_aux; direct kernel value consumers: _private.Roth.MainLemma.0.Roth.theta_lt_eta_of_sq_log_bound_aux; validation: Complete originalΘ module and293 private-aware direct audit; complete MainLemma replay with broadened endpoint and caller statement preserved; exact original endpoint proof inlined into actual caller and complete MainLemma replay.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.Θ_lt.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3279,6 +3296,8 @@ Completed `Roth.theta_lt_succ_aux`: Derive δ<1, antitonicity of r, positive den
 
 Completed `Roth.theta_lt_of_large_delta_aux`: Use Θ_le_card for the dimension bound p=n+1. Nat.lt_two_pow_self gives p²<4^p≤10^p, hence p<10^p/p. Bound 1/p by its own exponent-2^(-p) power using Real.self_le_rpow_of_le_one and then by δ to that exponent using Real.rpow_le_rpow. This handles both base and successor large-error branches of Θ_lt.
 
+Completed `Roth.Θ_lt`: All15 actual Finder/Loogle/LeanSearch/rg/local cells on current, literature and abstract forms; external indexes revision-distinct and local warming. Pinned csSup_le/Real.sSup_le/finite strict-sup/weighted-order signatures and actual generic transports compiled. Reconstructed mathlib-only arithmetic endpoint exact? probe did not close. Supremum and weighted-support APIs do not supply its arithmetic uniform-bound premise.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3734,6 +3753,8 @@ Completed `Roth.theta_phi_lt_aux`: Combines the distinct singleton logarithmic a
 Completed `Roth.theta_lt_succ_aux`: Converts the recursive Option-coordinate supremum bound into the next-dimensional target by uniformly bounding every rank. The per-rank theta_phi_lt_aux proves the numerical input; this helper supplies variable transport and finite-maximum aggregation, while the large-delta branch uses a different dimension bound.
 
 Completed `Roth.theta_lt_of_large_delta_aux`: This large-delta branch uses only the dimension upper bound and scalar power comparisons. The small-delta base uses a logarithmic singleton estimate, and the successor uses determinant/finite-maximum induction; their conclusions agree on different premise regimes.
+
+Completed `Roth.Θ_lt`: Θ is a sSup and index has weighted-support representations; generic upper/strict supremum laws organize bounds already supplied. Schwartz–Zippel counts roots over finite products, and additive Roth bounds/Chevalley complexity are different mathematics. No identified exact existing-law replacement of the full quantitative endpoint.
 
 ## Part 5: Generalization opportunities
 
@@ -4201,6 +4222,8 @@ Completed `Roth.theta_lt_succ_aux`: No public generality claim under the private
 
 Completed `Roth.theta_lt_of_large_delta_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.Θ_lt`: Verified full theorem last degree≥1, and natural-positive form; complete sole caller adapts. Stronger finite-sum /2 and Lemma6 numeric proofs are carried explicitly, not existing mathlib. One-variable case only needsq>1 andr>0;δ=0 counterexample meets other public premises. No joint numeric extension, zero-weight necessity, general-field theorem or maximality claim.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4657,6 +4680,8 @@ Completed `Roth.theta_phi_lt_aux`: No new primitive is needed for this internal 
 Completed `Roth.theta_lt_succ_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.theta_lt_of_large_delta_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.Θ_lt`: Potential reusable generalized-Wronskian separation, determinant coefficient-height estimates and rational-point weighted-index API. No missing generic supremum transport. Upstream inclusion/grain of the specialized10^m endpoint remains an explicit bounded design question.
 
 ## Part 7: Junk / removable
 
@@ -5117,6 +5142,8 @@ Completed `Roth.theta_lt_succ_aux`: Retain a live private proof interface. No pl
 
 Completed `Roth.theta_lt_of_large_delta_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.Θ_lt`: Live sole direct caller supplies the strictΘ<eta estimate used in the auxiliary-polynomial index gap and main lemma. Complete inlining compiles but retains the same project arithmetic proof; neither dead code nor≤3 existing-call redundancy.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5348,6 +5375,7 @@ Completed `Roth.theta_lt_of_large_delta_aux`: Retain a live private proof interf
 | 225 | `Roth.theta_phi_lt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_phi_lt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_phi_lt_aux/root-acceptance.json) |
 | 226 | `Roth.theta_lt_succ_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_succ_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_lt_succ_aux/root-acceptance.json) |
 | 227 | `Roth.theta_lt_of_large_delta_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_of_large_delta_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_lt_of_large_delta_aux/root-acceptance.json) |
+| 228 | `Roth.Θ_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_lt/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5801,12 +5829,14 @@ Completed `Roth.theta_lt_succ_aux` action: Keep unchanged; complete private-pref
 
 Completed `Roth.theta_lt_of_large_delta_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.Θ_lt` action: Keep Roth/Theta.lean endpoint. A future edit can adopt≥1/positive-natural last weight together with the proven stronger Lemma6/finite-sum and private induction interfaces, using the verified sole caller adaptation. Resolve upstream API grain before proposing a mathlib contribution; no production edits in this review.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.Θ_lt` next. Supporting identities receive their own applicable checks.
+   `Roth.lam` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

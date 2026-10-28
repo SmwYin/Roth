@@ -1,0 +1,20 @@
+theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) {r q : Fin (n + 1) → ℕ}
+    (hrlast : 3 ≤ (r (Fin.last n) : ℝ)) (hratio : ∀ i : Fin n, (r i.succ : ℝ) ≤ δ * r i.castSucc)
+    (hq1 : ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ ≤ Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
+    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ (n + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1)) := by
+  induction n generalizing δ with
+  | zero =>
+    have hr : 0 < r 0 := by
+      exact_mod_cast (lt_of_lt_of_le (by norm_num : (0 : ℝ) < 3)
+        (by simpa using hrlast : (3 : ℝ) ≤ r 0))
+    by_cases hδ : δ ≤ 1
+    · exact theta_lt_base_aux hδ0 hδ hr
+        (theta_denominators_one_lt_aux hr (lt_of_lt_of_le (by positivity) hq1) hqr 0)
+    · exact theta_lt_of_large_delta_aux (by simpa using (not_le.mp hδ).le)
+  | succ n ih =>
+    by_cases hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1)
+    · exact theta_lt_succ_aux hδ0 hδ hrlast hratio
+        (by simpa only [Nat.cast_add, Nat.cast_one] using hq1) hqr (fun {δ} hδ0 _ ↦ ih hδ0)
+    · exact theta_lt_of_large_delta_aux
+        (by simpa only [Nat.cast_add, Nat.cast_one] using (not_le.mp hδ).le)
