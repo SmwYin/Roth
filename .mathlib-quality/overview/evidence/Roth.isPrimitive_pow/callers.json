@@ -1,0 +1,56 @@
+[
+  {
+    "file": "Roth/Theta.lean",
+    "line": 184,
+    "name": "Roth.exists_eq_pow_mul_of_rootMultiplicity",
+    "short": "exists_eq_pow_mul_of_rootMultiplicity",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 199,
+    "source": "theorem exists_eq_pow_mul_of_rootMultiplicity {R : Polynomial ℤ} {h : ℤ} {q : ℕ} (hq : 0 < q)\n    (hcop : IsCoprime h (q : ℤ)) : ∃ Q : Polynomial ℤ, R =\n      (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h) ^\n      Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) * Q := by\n  set t := Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ))\n  have hq' : (q : ℚ) ≠ 0 := by exact_mod_cast hq.ne'\n  have hmap : (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h).map (Int.castRingHom ℚ) =\n      Polynomial.C (q : ℚ) * (Polynomial.X - Polynomial.C ((h : ℚ) / q)) := by\n    rw [Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_X,\n      Polynomial.map_C, mul_sub, ← Polynomial.C_mul, mul_div_cancel₀ _ hq']\n    simp\n  apply (Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast _ _\n    (isPrimitive_pow (isPrimitive_linear hcop) t)).2\n  rw [Polynomial.map_pow, hmap, mul_pow, ← Polynomial.C_pow,\n    Polynomial.C_mul_dvd (pow_ne_zero _ hq')]\n  exact Polynomial.pow_rootMultiplicity_dvd _ _",
+    "signature": "theorem exists_eq_pow_mul_of_rootMultiplicity {R : Polynomial ℤ} {h : ℤ} {q : ℕ} (hq : 0 < q)\n    (hcop : IsCoprime h (q : ℤ)) : ∃ Q : Polynomial ℤ, R =\n      (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h) ^\n      Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) * Q",
+    "body": "by\n  set t := Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ))\n  have hq' : (q : ℚ) ≠ 0 := by exact_mod_cast hq.ne'\n  have hmap : (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h).map (Int.castRingHom ℚ) =\n      Polynomial.C (q : ℚ) * (Polynomial.X - Polynomial.C ((h : ℚ) / q)) := by\n    rw [Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_X,\n      Polynomial.map_C, mul_sub, ← Polynomial.C_mul, mul_div_cancel₀ _ hq']\n    simp\n  apply (Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast _ _\n    (isPrimitive_pow (isPrimitive_linear hcop) t)).2\n  rw [Polynomial.map_pow, hmap, mul_pow, ← Polynomial.C_pow,\n    Polynomial.C_mul_dvd (pow_ne_zero _ hq')]\n  exact Polynomial.pow_rootMultiplicity_dvd _ _",
+    "proof_lines": 13,
+    "sha256": "cbb249b46ad5fed7867ae8fa159ab756e6e8b4c258c58184ebe8e0996257e3c9",
+    "what": "An integer polynomial is divisible over the integers by the primitive linear root factor to its rational root multiplicity.",
+    "how": "Use isPrimitive_pow and Gauss's Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast; normalize the rational linear factor and apply Polynomial.pow_rootMultiplicity_dvd.",
+    "hypotheses": "Positive denominator and coprime numerator; zero polynomial allowed in the formal statement.",
+    "source_body_refs": [
+      "Roth.isPrimitive_linear",
+      "Roth.isPrimitive_pow"
+    ],
+    "source_type_refs": [],
+    "source_callers": [
+      {
+        "name": "Roth.pow_rootMultiplicity_le",
+        "file": "Roth/Theta.lean",
+        "line": 206
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+    "uses_from_project": [
+      "Roth.isPrimitive_linear",
+      "Roth.isPrimitive_pow"
+    ],
+    "used_by_in_file": [
+      "Roth.pow_rootMultiplicity_le"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 296,
+    "project_body_refs": [
+      "Roth.isPrimitive_linear",
+      "Roth.isPrimitive_pow"
+    ],
+    "project_type_refs": [],
+    "project_callers": [
+      {
+        "name": "Roth.pow_rootMultiplicity_le",
+        "file": "Roth/Theta.lean",
+        "line": 206
+      }
+    ]
+  }
+]

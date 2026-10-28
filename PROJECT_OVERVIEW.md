@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 194/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 195/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 194; remaining: 99.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 44 NO-mathlib-has-it, 58 BORDERLINE-needs-human, 35 SKIP.
+- Completed applicable assessments: 195; remaining: 98.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 44 NO-mathlib-has-it, 58 BORDERLINE-needs-human, 36 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2241,6 +2241,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.isPrimitive_linear.md).
 
+### Completed: `Roth.isPrimitive_pow`
+
+- Type: `∀ {p : Polynomial ℤ}, p.IsPrimitive → ∀ (t : ℕ), (p ^ t).IsPrimitive`
+- What: Every natural power of a primitive integer polynomial is primitive.
+- How: Induct on the exponent using Polynomial.isPrimitive_one and primitive-product closure.
+- Hypotheses: Primitive integer polynomial. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: None
+- Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.isPrimitive_pow.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2655,6 +2665,8 @@ Completed `Roth.Θ_equiv`: Existing congrArg and SupSet Equiv.iSup_congr cover t
 
 Completed `Roth.isPrimitive_linear`: A scalar dividing every polynomial coefficient divides both the constant coefficient -h and the linear coefficient q. Coprimality forces this scalar to be a unit. This primitive linear-factor fact feeds Gauss descent in exists_eq_pow_mul_of_rootMultiplicity; it is distinct from closure of primitive polynomials under powers.
 
+Completed `Roth.isPrimitive_pow`: Induct on the exponent: the constant polynomial one is primitive, and a successor power is a product of primitive polynomials. This multiplicative closure helper combines with primitive qX-h for the Gauss descent argument. It is distinct from proving that particular linear polynomial primitive.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3044,6 +3056,8 @@ Completed `Roth.indexSet_comp_subset`: The inclusion transport is used in both d
 Completed `Roth.Θ_equiv`: No independent duplicate Theta invariance found; generic supremum congruence is already available but has an unprovided admissible-family equivalence/equality premise.
 
 Completed `Roth.isPrimitive_linear`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.isPrimitive_pow`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -3445,6 +3459,8 @@ Completed `Roth.Θ_equiv`: No mechanical weakening established under fixed Theta
 
 Completed `Roth.isPrimitive_linear`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.isPrimitive_pow`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3835,6 +3851,8 @@ Completed `Roth.indexSet_comp_subset`: No new primitive is needed for this inter
 Completed `Roth.Θ_equiv`: Potential bounded-polynomial/height family transport interface; upstream design question, not an established missing generic supremum law.
 
 Completed `Roth.isPrimitive_linear`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.isPrimitive_pow`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -4229,6 +4247,8 @@ Completed `Roth.Θ_equiv`: Live theorem; sole caller changes Fin coordinates to 
 
 Completed `Roth.isPrimitive_linear`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.isPrimitive_pow`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4427,6 +4447,7 @@ Completed `Roth.isPrimitive_linear`: Retain a live private proof interface. No p
 | 192 | `Roth.indexSet_comp_subset` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.indexSet_comp_subset.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.indexSet_comp_subset/root-acceptance.json) |
 | 193 | `Roth.Θ_equiv` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_equiv.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_equiv/root-acceptance.json) |
 | 194 | `Roth.isPrimitive_linear` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.isPrimitive_linear.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.isPrimitive_linear/root-acceptance.json) |
+| 195 | `Roth.isPrimitive_pow` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.isPrimitive_pow.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.isPrimitive_pow/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4814,12 +4835,14 @@ Completed `Roth.Θ_equiv` action: BORDERLINE: retain in Roth/Theta.lean and sole
 
 Completed `Roth.isPrimitive_linear` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.isPrimitive_pow` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.isPrimitive_pow` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_eq_pow_mul_of_rootMultiplicity` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
