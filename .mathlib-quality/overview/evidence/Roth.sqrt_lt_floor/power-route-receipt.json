@@ -1,0 +1,57 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sqrt_lt_floor\nnamespace Sqrt237PowerRoute\n#check @lt_self_pow₀\ntheorem floorSquare {K : Type*} [Semiring K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {X : K} (hX : 2 ≤ X) : X < (⌊X⌋₊ : K) ^ 2 := by\n  have hn : 1 < ⌊X⌋₊ := (by decide : 1 < 2).trans_le (Nat.le_floor hX)\n  have hp : ⌊X⌋₊ + 1 ≤ ⌊X⌋₊ ^ 2 := lt_self_pow₀ hn (by decide : 1 < 2)\n  exact (Nat.lt_floor_add_one X).trans_le (by exact_mod_cast hp)\ntheorem fullBounds {X : ℝ} (hX : 2 ≤ X) :\n    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X := by\n  have hf : (0 : ℝ) < (⌊X⌋₊ : ℝ) := by\n    exact_mod_cast (by decide : 0 < 2).trans_le (Nat.le_floor hX)\n  exact ⟨(Real.sqrt_lt' hf).2 (floorSquare hX), Nat.floor_le (by positivity)⟩\n#print axioms floorSquare\n#print axioms fullBounds\nend Sqrt237PowerRoute\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sqrt_lt_floor`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@lt_self_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : PartialOrder M₀] {a : M₀} {m : ℕ}\\n  [PosMulStrictMono M₀] [ZeroLEOneClass M₀], 1 < a → 1 < m → a < a ^ m\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237PowerRoute.floorSquare' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237PowerRoute.fullBounds' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sqrt_lt_floor`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@lt_self_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : PartialOrder M₀] {a : M₀} {m : ℕ}\n  [PosMulStrictMono M₀] [ZeroLEOneClass M₀], 1 < a → 1 < m → a < a ^ m",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237PowerRoute.floorSquare' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237PowerRoute.fullBounds' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1977
+}

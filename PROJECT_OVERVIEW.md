@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 236/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 237/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 236; remaining: 57.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 77 BORDERLINE-needs-human, 55 SKIP.
+- Completed applicable assessments: 237; remaining: 56.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 78 BORDERLINE-needs-human, 55 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2899,6 +2899,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit source caller, all in MainLemma.lean; one direct original value consumer. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.sqrt_lt_nat_floor_aux.md).
 
+### Completed: `Roth.sqrt_lt_floor`
+
+- Type: `∀ {X : ℝ}, 2 ≤ X → √X < ↑⌊X⌋₊ ∧ ↑⌊X⌋₊ ≤ X`
+- What: For real X at least two, the natural floor cast to real lies strictly above sqrt X and at most X.
+- How: The private lower proof uses the unit floor gap and floor at least two to obtain X < floor(X)^2, then square-root order; the upper bound is Nat.floor_le.
+- Hypotheses: X is real, 2 ≤ X; sharp by verified iff
+- Project dependencies: Roth.sqrt_lt_nat_floor_aux
+- Caller summary: Three direct source/body callers: mul_log_div_two_lt_log_mainCoeffBound and three_small_factors use .1; private Main.roth_product_bound_aux uses both. Full MainLemma+Main inline proofs and seven original signatures verified.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sqrt_lt_floor.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3397,6 +3407,8 @@ Completed `Roth.eta_lt_gam_iff`: lt_sub_iff_add_lt is the canonical additive ord
 
 Completed `Roth.sqrt_lt_nat_floor_aux`: Nat.le_floor gives floorX>=2, while Nat.lt_floor_add_one bounds X<floorX+1. Together these force X<floorX squared. Apply Real.sqrt_lt' with positive floor. This is the strict lower-bound half of the public two-sided floor statement, distinct from Nat.floor_le.
 
+Completed `Roth.sqrt_lt_floor`: Nat.le_floor/Nat.lt_floor_add_one/Real.sqrt_lt' are building blocks; Nat.floor_le supplies upper projection. No certified existing-only at-most-three-call proof of full conjunction.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3870,6 +3882,8 @@ Completed `Roth.exists_delta_bound`: Shares neighborhood shrinking with Roth.exi
 Completed `Roth.eta_lt_gam_iff`: The exact eta formula has no role in the equivalence. Morally a translated strict inequality; exists_delta_bound supplies a substantive numerical bound rather than this equivalence.
 
 Completed `Roth.sqrt_lt_nat_floor_aux`: The helper proves the strict lower bound used by sqrt_lt_floor, while Nat.floor_le supplies its non-strict upper bound; the two halves are distinct mathematical facts.
+
+Completed `Roth.sqrt_lt_floor`: Lower content equals the private helper; upper projection equals Nat.floor_le. Natural-input floor-sqrt identity needs a new bridge for arbitrary real X.
 
 ## Part 5: Generalization opportunities
 
@@ -4355,6 +4369,8 @@ Completed `Roth.eta_lt_gam_iff`: Verified arbitrary e:ℝ in place of eta and ar
 
 Completed `Roth.sqrt_lt_nat_floor_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.sqrt_lt_floor`: 2 ≤ X is exact; meaningful ordered-semiring floorSquare and rootBound with y²≤X compile as new proofs, including a rational witness and full original specialization. Not preexisting mathlib API. Final power route proves the generic quadratic kernel from three existing blocks; full original requires additional sqrt and upper-bound APIs.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4829,6 +4845,8 @@ Completed `Roth.exists_delta_bound`: Possible convenience helper for positive-po
 Completed `Roth.eta_lt_gam_iff`: No established mathematical gap; upstream naming of the normalized scalar identity or a future Roth parameter API remains a design question.
 
 Completed `Roth.sqrt_lt_nat_floor_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.sqrt_lt_floor`: Candidate standalone strict/iff sqrt-floor or broader root-witness API; arbitrary-real floor/sqrt bridge also proved. Generic floorSquare is verified three-block composition, not a missing primitive.
 
 ## Part 7: Junk / removable
 
@@ -5307,6 +5325,8 @@ Completed `Roth.eta_lt_gam_iff`: Not dead: two critical proof consumers. Full ca
 
 Completed `Roth.sqrt_lt_nat_floor_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.sqrt_lt_floor`: Not dead (three callers); conjunction is useful local coefficient-bound packaging, not proven existing-only composable.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5547,6 +5567,7 @@ Completed `Roth.sqrt_lt_nat_floor_aux`: Retain a live private proof interface. N
 | 234 | `Roth.exists_delta_bound` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_delta_bound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_delta_bound/root-acceptance.json) |
 | 235 | `Roth.eta_lt_gam_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eta_lt_gam_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eta_lt_gam_iff/root-acceptance.json) |
 | 236 | `Roth.sqrt_lt_nat_floor_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.sqrt_lt_nat_floor_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sqrt_lt_nat_floor_aux/root-acceptance.json) |
+| 237 | `Roth.sqrt_lt_floor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sqrt_lt_floor.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sqrt_lt_floor/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6018,12 +6039,14 @@ Completed `Roth.eta_lt_gam_iff` action: BORDERLINE-needs-human: retain locally i
 
 Completed `Roth.sqrt_lt_nat_floor_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.sqrt_lt_floor` action: BORDERLINE-needs-human: retain project-local package pending three concrete upstream API choices; do not inherit private-helper SKIP or mainCoeffBound NO.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.sqrt_lt_floor` next. Supporting identities receive their own applicable checks.
+   `Roth.four_lt_rpow` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

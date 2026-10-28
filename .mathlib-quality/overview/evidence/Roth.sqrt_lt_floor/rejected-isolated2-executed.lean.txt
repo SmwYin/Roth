@@ -1,0 +1,93 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.sqrt_lt_floor
+#check_failure Roth.sqrt_lt_nat_floor_aux
+namespace Sqrt237Isolated
+#check @Nat.floor_le
+#check @Nat.le_floor
+#check @Nat.lt_floor_add_one
+#check_failure Nat.mul_lt_floor
+#check_failure Nat.div_two_lt_floor
+#check @Real.sqrt_lt'
+#check @Real.nat_floor_real_sqrt_eq_nat_sqrt
+#check @Nat.sqrt_lt_self
+
+theorem lower {X : ℝ} (hX : 2 ≤ X) : √X < (⌊X⌋₊ : ℝ) :=
+  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX
+  (Real.sqrt_lt' (by positivity)).2 (by nlinarith only [Nat.lt_floor_add_one X, hfloor])
+theorem bounds {X : ℝ} (hX : 2 ≤ X) : √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X :=
+  ⟨lower hX, Nat.floor_le (by positivity)⟩
+theorem endpoint : √(2 : ℝ) < (⌊(2 : ℝ)⌋₊ : ℝ) ∧ (⌊(2 : ℝ)⌋₊ : ℝ) ≤ 2 :=
+  bounds le_rfl
+theorem threshold {X : ℝ} : √X < (⌊X⌋₊ : ℝ) ↔ 2 ≤ X := by
+  refine ⟨fun h ↦ ?_, lower⟩
+  have hn : 0 < ⌊X⌋₊ := by exact_mod_cast (Real.sqrt_nonneg X).trans_lt h
+  have hX1 : 1 ≤ X := Nat.floor_pos.1 hn
+  by_contra! hX
+  have hn2 : ⌊X⌋₊ < 2 := (Nat.floor_lt' (by decide : 2 ≠ 0)).2 hX
+  have heq : ⌊X⌋₊ = 1 := by omega
+  have hs : (1 : ℝ) ≤ √X := by simpa using Real.sqrt_le_sqrt hX1
+  exact hs.not_gt (by simpa [heq] using h)
+theorem bounds_iff {X : ℝ} :
+    (√X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X) ↔ 2 ≤ X :=
+  ⟨fun h ↦ threshold.1 h.1, bounds⟩
+theorem belowTwo {X : ℝ} (hX : X < 2) : ¬√X < (⌊X⌋₊ : ℝ) :=
+  fun h ↦ hX.not_ge (threshold.1 h)
+theorem failsAtOne : ¬(√(1 : ℝ) < (⌊(1 : ℝ)⌋₊ : ℝ)) := by norm_num
+theorem failsAtZero : ¬(√(0 : ℝ) < (⌊(0 : ℝ)⌋₊ : ℝ)) := by norm_num
+theorem failsAtNegativeOne : ¬(√(-1 : ℝ) < (⌊(-1 : ℝ)⌋₊ : ℝ)) := by norm_num
+
+theorem floorSquare {K : Type*} [CommSemiring K] [LinearOrder K] [IsStrictOrderedRing K]
+    [FloorSemiring K] {X : K} (hX : 2 ≤ X) : X < (⌊X⌋₊ : K) ^ 2 := by
+  have hfloor : (2 : K) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX
+  nlinarith only [Nat.lt_floor_add_one X, hfloor]
+theorem rootBound {K : Type*} [CommSemiring K] [LinearOrder K] [IsStrictOrderedRing K]
+    [FloorSemiring K] {X y : K} (hX : 2 ≤ X) (hy : y ^ 2 ≤ X) : y < (⌊X⌋₊ : K) := by
+  by_contra! h
+  have hf : (0 : K) ≤ (⌊X⌋₊ : K) := Nat.cast_nonneg _
+  exact (hy.trans_lt (floorSquare hX)).not_ge (pow_le_pow_left₀ hf h 2)
+theorem rationalWitness : (1 : ℚ) < (⌊(2 : ℚ)⌋₊ : ℚ) :=
+  rootBound (by norm_num) (by norm_num)
+theorem rootToOriginal {X : ℝ} (hX : 2 ≤ X) :
+    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X :=
+  ⟨rootBound hX (Real.sq_sqrt (by positivity)).le, Nat.floor_le (by positivity)⟩
+theorem primitiveProbe {X : ℝ} (hX : 2 ≤ X) :
+    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X := by
+  fail_if_success
+    solve | exact Nat.floor_le (show 0 ≤ X by positivity)
+  fail_if_success
+    solve | simp only [Nat.floor_le, Nat.le_floor, Nat.lt_floor_add_one, Real.sqrt_lt']
+  exact bounds hX
+
+#print axioms lower
+#print axioms bounds
+#print axioms endpoint
+#print axioms threshold
+#print axioms bounds_iff
+#print axioms belowTwo
+#print axioms failsAtOne
+#print axioms failsAtZero
+#print axioms failsAtNegativeOne
+#print axioms floorSquare
+#print axioms rootBound
+#print axioms rationalWitness
+#print axioms rootToOriginal
+#print axioms primitiveProbe
+end Sqrt237Isolated

@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sqrt_lt_floor\nnamespace Sqrt237Route\n\ntheorem upper {X : ℝ} (hX : 0 ≤ X) : √X < (Nat.sqrt ⌊X⌋₊ : ℝ) + 1 := by\n  apply (Real.sqrt_lt' (by positivity)).2\n  have h := (Nat.floor_lt hX).1 (Nat.lt_succ_sqrt' ⌊X⌋₊)\n  exact_mod_cast h\ntheorem bridge {X : ℝ} (hX : 0 ≤ X) : ⌊√X⌋₊ = Nat.sqrt ⌊X⌋₊ := by\n  fail_if_success exact Real.nat_floor_real_sqrt_eq_nat_sqrt (a := ⌊X⌋₊)\n  rw [Nat.floor_eq_iff (Real.sqrt_nonneg X)]\n  refine ⟨(Real.le_sqrt (Nat.cast_nonneg _) hX).2 ?_, upper hX⟩\n  exact (by exact_mod_cast Nat.sqrt_le' ⌊X⌋₊).trans (Nat.floor_le hX)\ntheorem viaBridge {X : ℝ} (hX : 2 ≤ X) : √X < (⌊X⌋₊ : ℝ) := by\n  have hn : 1 < ⌊X⌋₊ := (by decide : 1 < 2).trans_le (Nat.le_floor hX)\n  have hc : (Nat.sqrt ⌊X⌋₊ : ℝ) + 1 ≤ (⌊X⌋₊ : ℝ) := by\n    exact_mod_cast Nat.succ_le_of_lt (Nat.sqrt_lt_self hn)\n  exact (by simpa [bridge (by positivity : 0 ≤ X)] using Nat.lt_floor_add_one (√X)).trans_le hc\n#print axioms upper\n#print axioms bridge\n#print axioms viaBridge\nend Sqrt237Route\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sqrt_lt_floor`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"invalid 'by' tactic, expected type has not been provided\",\n      \"line\": 31,\n      \"column\": 10,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"invalid 'by' tactic, expected type has not been provided\",\n      \"line\": 36,\n      \"column\": 10,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Route.upper' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Route.bridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Route.viaBridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sqrt_lt_floor`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "invalid 'by' tactic, expected type has not been provided",
+          "line": 31,
+          "column": 10,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "invalid 'by' tactic, expected type has not been provided",
+          "line": 36,
+          "column": 10,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Route.upper' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Route.bridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Route.viaBridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 79447
+}

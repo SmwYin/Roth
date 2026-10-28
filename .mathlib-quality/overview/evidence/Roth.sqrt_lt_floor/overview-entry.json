@@ -1,0 +1,20 @@
+{
+  "type": "∀ {X : ℝ}, 2 ≤ X → √X < ↑⌊X⌋₊ ∧ ↑⌊X⌋₊ ≤ X",
+  "kind": "theorem",
+  "what": "For real X at least two, the natural floor cast to real lies strictly above sqrt X and at most X.",
+  "how": "The private lower proof uses the unit floor gap and floor at least two to obtain X < floor(X)^2, then square-root order; the upper bound is Nat.floor_le.",
+  "hypotheses": [
+    "X is real",
+    "2 ≤ X; sharp by verified iff"
+  ],
+  "project_dependencies": [
+    "Roth.sqrt_lt_nat_floor_aux"
+  ],
+  "caller_summary": "Three direct source/body callers: mul_log_div_two_lt_log_mainCoeffBound and three_small_factors use .1; private Main.roth_product_bound_aux uses both. Full MainLemma+Main inline proofs and seven original signatures verified.",
+  "mathlib_api_audit": "Nat.le_floor/Nat.lt_floor_add_one/Real.sqrt_lt' are building blocks; Nat.floor_le supplies upper projection. No certified existing-only at-most-three-call proof of full conjunction.",
+  "moral_duplications": "Lower content equals the private helper; upper projection equals Nat.floor_le. Natural-input floor-sqrt identity needs a new bridge for arbitrary real X.",
+  "generalization": "2 ≤ X is exact; meaningful ordered-semiring floorSquare and rootBound with y²≤X compile as new proofs, including a rational witness and full original specialization. Not preexisting mathlib API. Final power route proves the generic quadratic kernel from three existing blocks; full original requires additional sqrt and upper-bound APIs.",
+  "missing_api": "Candidate standalone strict/iff sqrt-floor or broader root-witness API; arbitrary-real floor/sqrt bridge also proved. Generic floorSquare is verified three-block composition, not a missing primitive.",
+  "junk": "Not dead (three callers); conjunction is useful local coefficient-bound packaging, not proven existing-only composable.",
+  "action": "BORDERLINE-needs-human: retain project-local package pending three concrete upstream API choices; do not inherit private-helper SKIP or mainCoeffBound NO."
+}

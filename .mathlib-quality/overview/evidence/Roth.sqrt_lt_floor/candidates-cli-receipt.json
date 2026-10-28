@@ -1,0 +1,18 @@
+{
+  "request": {
+    "command": [
+      "/Users/ramin/.elan/bin/lake",
+      "env",
+      "lean",
+      "--stdin"
+    ],
+    "cwd": "/Users/ramin/LEAN/Roth",
+    "stdin": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.Order.Floor.Semifield\n\n#check_failure Roth.sqrt_lt_floor\n#check @Nat.mul_lt_floor\n#check @Nat.div_two_lt_floor\nnamespace Sqrt237Candidates\n\ntheorem halfRouteFails : ¬√(2 : ℝ) ≤ 2 / 2 := by\n  intro h\n  norm_num at h\ntheorem genericSearchProbe {X : ℝ} (hX : 2 ≤ X) :\n    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X := by\n  fail_if_success solve | exact?\n  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  exact ⟨(Real.sqrt_lt' (by positivity)).2\n    (by nlinarith only [Nat.lt_floor_add_one X, hfloor]), Nat.floor_le (by positivity)⟩\n#print axioms halfRouteFails\n#print axioms genericSearchProbe\nend Sqrt237Candidates\n"
+  },
+  "result": {
+    "exit_code": 0,
+    "stdout": "Unknown identifier `Roth.sqrt_lt_floor`\n@Nat.mul_lt_floor : ∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsOrderedRing K]\n  [inst_3 : FloorSemiring K] {a b : K}, 0 < b → b < 1 → ↑⌈b / (1 - b)⌉₊ ≤ a → b * a < ↑⌊a⌋₊\n@Nat.div_two_lt_floor : ∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsOrderedRing K]\n  [inst_3 : FloorSemiring K] {a : K}, 1 ≤ a → a / 2 < ↑⌊a⌋₊\n'Sqrt237Candidates.halfRouteFails' depends on axioms: [propext, Classical.choice, Quot.sound]\n'Sqrt237Candidates.genericSearchProbe' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+    "stderr": ""
+  },
+  "elapsed_ms": 155162
+}

@@ -1,0 +1,49 @@
+{
+  "callers": [
+    {
+      "name": "Roth.mul_log_div_two_lt_log_mainCoeffBound",
+      "file": "Roth/MainLemma.lean",
+      "line": 149,
+      "end_line": 154,
+      "source": "theorem mul_log_div_two_lt_log_mainCoeffBound {δ : ℝ} {q₁ r₁ : ℕ} (hX : 2 ≤ (q₁ : ℝ) ^ (δ * r₁)) :\n    δ * r₁ * Real.log q₁ / 2 < Real.log (mainCoeffBound δ q₁ r₁) := by\n  simpa [mainCoeffBound, Real.log_sqrt (by positivity), Real.log_rpow\n    (((Real.one_lt_rpow_iff (Nat.cast_nonneg q₁)).1\n      (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left)] using\n    Real.log_lt_log (Real.sqrt_pos.2 (lt_of_lt_of_le (by norm_num) hX)) (sqrt_lt_floor hX).1\n",
+      "sha256": "56966fddac1e474e9db642f0dfc4e009e7f3dab9009e2031983d9785db98081e",
+      "occurrences": 1,
+      "signature_occurrences": 0,
+      "projection": ".1",
+      "full_proof_replayed": true,
+      "signature_checked": true
+    },
+    {
+      "name": "Roth.three_small_factors",
+      "file": "Roth/MainLemma.lean",
+      "line": 180,
+      "end_line": 210,
+      "source": "theorem three_small_factors {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr₁ : 0 < r₁) {A α : ℝ}\n    (hA : 0 ≤ A) (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log q₁) : (2 : ℝ) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧\n    (1 + A) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧\n    (1 + |α|) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ := by\n  have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m\n  have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (le_add_of_nonneg_right hA)\n  have hlogα : 0 ≤ Real.log (1 + |α|) :=\n    Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))\n  have h1 : 1 ≤ δ ^ 2 * Real.log q₁ := by\n    nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα]\n  have hlog2 : Real.log 2 < 1 := by\n    linarith only [Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)]\n  have hX := (two_lt_rpow_aux hδ0 hr₁ (hlog2.trans_le h1)).le\n  have hδ : 0 < δ := lt_of_le_of_ne hδ0 (by\n    rintro rfl\n    norm_num at h1)\n  -- `t^{m r₁} < mainCoeffBound^δ` as soon as `2 m log t < δ² log q₁`\n  have key (t : ℝ) (h : 2 * m * Real.log t ≤ δ ^ 2 * Real.log q₁) :\n      t ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ := by\n    apply Real.lt_rpow_of_log_lt (y := mainCoeffBound δ q₁ r₁) <|\n      (Real.sqrt_nonneg _).trans_lt (sqrt_lt_floor hX).1\n    rw [Real.log_pow]\n    push_cast\n    nlinarith only [mul_le_mul_of_nonneg_left h (Nat.cast_nonneg r₁),\n      mul_lt_mul_of_pos_left (mul_log_div_two_lt_log_mainCoeffBound hX) hδ]\n  refine ⟨key 2 ?_, key _ ?_, key _ ?_⟩\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα,\n      mul_nonneg hm0 (sub_nonneg.mpr hlog2.le)]\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogα]\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA]\n",
+      "sha256": "ca3d221558560e40559c76dd852df1593215682e359cd567e3684d257c33447d",
+      "occurrences": 1,
+      "signature_occurrences": 0,
+      "projection": ".1",
+      "full_proof_replayed": true,
+      "signature_checked": true
+    },
+    {
+      "name": "Roth.roth_product_bound_aux",
+      "file": "Roth/Main.lean",
+      "line": 481,
+      "end_line": 501,
+      "source": "private lemma roth_product_bound_aux {m : ℕ} [NeZero m] {α A δ : ℝ} (hδ0 : 0 ≤ δ) (hA : 0 ≤ A)\n    {q r : Fin m → ℕ} (hr0 : 0 < r 0) (hr0max : ∀ j, r j ≤ r 0)\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0)) : 0 < (mainCoeffBound δ (q 0) (r 0) : ℝ) ∧\n      (mainCoeffBound δ (q 0) (r 0) : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) ∧\n      (∏ j, ((r j : ℝ) + 1)) < (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ δ := by\n  -- `B` is at most `q_0^{δ r_0}` and `∏ (r_j + 1) < B^δ`\n  have hm1 : (1 : ℝ) ≤ m := by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)\n  have h32' : 3 ≤ δ ^ 2 * Real.log (q 0) := by\n    have := mul_nonneg (Nat.cast_nonneg m) (Real.log_nonneg (le_add_of_nonneg_right hA))\n    have := mul_nonneg (Nat.cast_nonneg m)\n      (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α)))\n    linarith\n  obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor ((by norm_num : (2 : ℝ) ≤ 4).trans\n    (four_lt_rpow hδ0 hr0 h32').le)\n  refine ⟨(Real.sqrt_nonneg _).trans_lt hsqB, hBX, ?_⟩\n  have hprod : ∏ j, (r j + 1) ≤ (2 ^ r 0) ^ m := by\n    simpa using Finset.prod_le_pow_card Finset.univ (fun j ↦ r j + 1) (2 ^ r 0)\n      (fun j _ ↦ Nat.lt_two_pow_self.trans_le (Nat.pow_le_pow_right (by norm_num) (hr0max j)))\n  have hprodR : (∏ j, ((r j : ℝ) + 1)) ≤ (2 : ℝ) ^ (m * r 0) := by\n    exact_mod_cast (by simpa [← pow_mul, mul_comm] using hprod)\n",
+      "sha256": "72c572e9e9f98bab7893794fb2b1fbb33afd2369c4d05b40d1cba17740d70bb5",
+      "occurrences": 1,
+      "signature_occurrences": 0,
+      "projection": "both",
+      "full_proof_replayed": true,
+      "signature_checked": true
+    }
+  ],
+  "executable_occurrences": 3,
+  "distinct_declarations": 3,
+  "external_to_file_declarations": 1,
+  "external_to_file_files": 1,
+  "inline_derivations": [],
+  "simp_attribute": false
+}

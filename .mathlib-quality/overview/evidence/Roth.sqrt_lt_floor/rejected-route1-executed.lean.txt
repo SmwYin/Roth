@@ -1,0 +1,40 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.sqrt_lt_floor
+namespace Sqrt237Route
+
+theorem upper {X : ℝ} (hX : 0 ≤ X) : √X < (Nat.sqrt ⌊X⌋₊ : ℝ) + 1 := by
+  apply (Real.sqrt_lt' (by positivity)).2
+  have h := (Nat.floor_lt hX).1 (Nat.lt_succ_sqrt' ⌊X⌋₊)
+  exact_mod_cast h
+theorem bridge {X : ℝ} (hX : 0 ≤ X) : ⌊√X⌋₊ = Nat.sqrt ⌊X⌋₊ := by
+  fail_if_success exact Real.nat_floor_real_sqrt_eq_nat_sqrt (a := ⌊X⌋₊)
+  rw [Nat.floor_eq_iff (Real.sqrt_nonneg X)]
+  refine ⟨(Real.le_sqrt (Nat.cast_nonneg _) hX).2 ?_, upper hX⟩
+  exact (by exact_mod_cast Nat.sqrt_le' ⌊X⌋₊).trans (Nat.floor_le hX)
+theorem viaBridge {X : ℝ} (hX : 2 ≤ X) : √X < (⌊X⌋₊ : ℝ) := by
+  have hn : 1 < ⌊X⌋₊ := (by decide : 1 < 2).trans_le (Nat.le_floor hX)
+  have hc : (Nat.sqrt ⌊X⌋₊ : ℝ) + 1 ≤ (⌊X⌋₊ : ℝ) := by
+    exact_mod_cast Nat.succ_le_of_lt (Nat.sqrt_lt_self hn)
+  exact (by simpa [bridge (by positivity : 0 ≤ X)] using Nat.lt_floor_add_one (√X)).trans_le hc
+#print axioms upper
+#print axioms bridge
+#print axioms viaBridge
+end Sqrt237Route

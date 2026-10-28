@@ -1,0 +1,246 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sqrt_lt_floor\n#check_failure Roth.sqrt_lt_nat_floor_aux\nnamespace Sqrt237Isolated\n#check @Nat.floor_le\n#check @Nat.le_floor\n#check @Nat.lt_floor_add_one\n#check_failure Nat.mul_lt_floor\n#check_failure Nat.div_two_lt_floor\n#check @Real.sqrt_lt'\n#check @Real.nat_floor_real_sqrt_eq_nat_sqrt\n#check @Nat.sqrt_lt_self\n\ntheorem lower {X : ℝ} (hX : 2 ≤ X) : √X < (⌊X⌋₊ : ℝ) :=\n  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  (Real.sqrt_lt' (by positivity)).2 (by nlinarith only [Nat.lt_floor_add_one X, hfloor])\ntheorem bounds {X : ℝ} (hX : 2 ≤ X) : √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X :=\n  ⟨lower hX, Nat.floor_le (by positivity)⟩\ntheorem endpoint : √(2 : ℝ) < (⌊(2 : ℝ)⌋₊ : ℝ) ∧ (⌊(2 : ℝ)⌋₊ : ℝ) ≤ 2 :=\n  bounds le_rfl\ntheorem threshold {X : ℝ} : √X < (⌊X⌋₊ : ℝ) ↔ 2 ≤ X := by\n  refine ⟨fun h ↦ ?_, lower⟩\n  have hn : 0 < ⌊X⌋₊ := by exact_mod_cast (Real.sqrt_nonneg X).trans_lt h\n  have hX1 : 1 ≤ X := Nat.floor_pos.1 hn\n  by_contra! hX\n  have hn2 : ⌊X⌋₊ < 2 := (Nat.floor_lt' (by decide : 2 ≠ 0)).2 hX\n  have heq : ⌊X⌋₊ = 1 := by omega\n  have hs : (1 : ℝ) ≤ √X := by simpa using Real.sqrt_le_sqrt hX1\n  exact hs.not_gt (by simpa [heq] using h)\ntheorem bounds_iff {X : ℝ} :\n    (√X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X) ↔ 2 ≤ X :=\n  ⟨fun h ↦ threshold.1 h.1, bounds⟩\ntheorem belowTwo {X : ℝ} (hX : X < 2) : ¬√X < (⌊X⌋₊ : ℝ) :=\n  fun h ↦ hX.not_ge (threshold.1 h)\ntheorem failsAtOne : ¬(√(1 : ℝ) < (⌊(1 : ℝ)⌋₊ : ℝ)) := by norm_num\ntheorem failsAtZero : ¬(√(0 : ℝ) < (⌊(0 : ℝ)⌋₊ : ℝ)) := by norm_num\ntheorem failsAtNegativeOne : ¬(√(-1 : ℝ) < (⌊(-1 : ℝ)⌋₊ : ℝ)) := by norm_num\n\ntheorem floorSquare {K : Type*} [CommSemiring K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {X : K} (hX : 2 ≤ X) : X < (⌊X⌋₊ : K) ^ 2 := by\n  have hfloor : (2 : K) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  nlinarith only [Nat.lt_floor_add_one X, hfloor]\ntheorem rootBound {K : Type*} [CommSemiring K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {X y : K} (hX : 2 ≤ X) (hy : y ^ 2 ≤ X) : y < (⌊X⌋₊ : K) := by\n  by_contra! h\n  have hf : (0 : K) ≤ (⌊X⌋₊ : K) := Nat.cast_nonneg _\n  exact (hy.trans_lt (floorSquare hX)).not_ge (pow_le_pow_left₀ hf h 2)\ntheorem rationalWitness : (1 : ℚ) < (⌊(2 : ℚ)⌋₊ : ℚ) :=\n  rootBound (by norm_num) (by norm_num)\ntheorem rootToOriginal {X : ℝ} (hX : 2 ≤ X) :\n    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X :=\n  ⟨rootBound hX (Real.sq_sqrt (by positivity)).le, Nat.floor_le (by positivity)⟩\ntheorem primitiveProbe {X : ℝ} (hX : 2 ≤ X) :\n    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X := by\n  fail_if_success\n    solve | exact Nat.floor_le (show 0 ≤ X by positivity)\n  fail_if_success\n    solve | simp only [Nat.floor_le, Nat.le_floor, Nat.lt_floor_add_one, Real.sqrt_lt']\n  exact bounds hX\n\n#print axioms lower\n#print axioms bounds\n#print axioms endpoint\n#print axioms threshold\n#print axioms bounds_iff\n#print axioms belowTwo\n#print axioms failsAtOne\n#print axioms failsAtZero\n#print axioms failsAtNegativeOne\n#print axioms floorSquare\n#print axioms rootBound\n#print axioms rationalWitness\n#print axioms rootToOriginal\n#print axioms primitiveProbe\nend Sqrt237Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sqrt_lt_floor`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sqrt_lt_nat_floor_aux`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.floor_le : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R},\\n  0 ≤ a → ↑⌊a⌋₊ ≤ a\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.le_floor : ∀ {α : Type u_1} [inst : Semiring α] [inst_1 : PartialOrder α] [inst_2 : FloorSemiring α] {a : α}\\n  {n : ℕ}, ↑n ≤ a → n ≤ ⌊a⌋₊\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\\n  (a : R), a < ↑⌊a⌋₊ + 1\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `Nat.mul_lt_floor`\",\n      \"line\": 26,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `Nat.div_two_lt_floor`\",\n      \"line\": 27,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sqrt_lt' : ∀ {x y : ℝ}, 0 < y → (√x < y ↔ x < y ^ 2)\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.nat_floor_real_sqrt_eq_nat_sqrt : ∀ {a : ℕ}, ⌊√↑a⌋₊ = a.sqrt\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.sqrt_lt_self : ∀ {n : ℕ}, 1 < n → n.sqrt < n\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"linarith failed to find a contradiction\\nK : Type u_1\\ninst✝³ : CommSemiring K\\ninst✝² : LinearOrder K\\ninst✝¹ : IsStrictOrderedRing K\\ninst✝ : FloorSemiring K\\nX : K\\nhX : 2 ≤ X\\nhfloor : 2 ≤ ↑⌊X⌋₊\\na✝ : ↑⌊X⌋₊ ^ 2 ≤ X\\n⊢ False\\nfailed\",\n      \"line\": 60,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.lower' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 79,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.bounds' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 80,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 81,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.threshold' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 82,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.bounds_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 83,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.belowTwo' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 84,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.failsAtOne' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 85,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.failsAtZero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 86,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.failsAtNegativeOne' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 87,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.floorSquare' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 88,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.rootBound' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 89,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.rationalWitness' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 90,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.rootToOriginal' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 91,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Sqrt237Isolated.primitiveProbe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 92,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sqrt_lt_floor`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sqrt_lt_nat_floor_aux`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.floor_le : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R},\n  0 ≤ a → ↑⌊a⌋₊ ≤ a",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.le_floor : ∀ {α : Type u_1} [inst : Semiring α] [inst_1 : PartialOrder α] [inst_2 : FloorSemiring α] {a : α}\n  {n : ℕ}, ↑n ≤ a → n ≤ ⌊a⌋₊",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\n  (a : R), a < ↑⌊a⌋₊ + 1",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `Nat.mul_lt_floor`",
+          "line": 26,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `Nat.div_two_lt_floor`",
+          "line": 27,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sqrt_lt' : ∀ {x y : ℝ}, 0 < y → (√x < y ↔ x < y ^ 2)",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.nat_floor_real_sqrt_eq_nat_sqrt : ∀ {a : ℕ}, ⌊√↑a⌋₊ = a.sqrt",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.sqrt_lt_self : ∀ {n : ℕ}, 1 < n → n.sqrt < n",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "linarith failed to find a contradiction\nK : Type u_1\ninst✝³ : CommSemiring K\ninst✝² : LinearOrder K\ninst✝¹ : IsStrictOrderedRing K\ninst✝ : FloorSemiring K\nX : K\nhX : 2 ≤ X\nhfloor : 2 ≤ ↑⌊X⌋₊\na✝ : ↑⌊X⌋₊ ^ 2 ≤ X\n⊢ False\nfailed",
+          "line": 60,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.lower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 79,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.bounds' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 80,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 81,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.threshold' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 82,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.bounds_iff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 83,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.belowTwo' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 84,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.failsAtOne' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 85,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.failsAtZero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 86,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.failsAtNegativeOne' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 87,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.floorSquare' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 88,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.rootBound' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 89,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.rationalWitness' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 90,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.rootToOriginal' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 91,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Sqrt237Isolated.primitiveProbe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 92,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 814
+}

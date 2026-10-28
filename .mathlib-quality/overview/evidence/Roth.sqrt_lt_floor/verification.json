@@ -1,0 +1,198 @@
+{
+  "declaration": "Roth.sqrt_lt_floor",
+  "canonical_index": 237,
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "7b1ef828ff59fba4b5fec00995df147801d424e866b4b03f768f870b9366c9fa",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "SQRT237_FULL_TYPE: ∀ {X : ℝ}, 2 ≤ X → √X < ↑⌊X⌋₊ ∧ ↑⌊X⌋₊ ≤ X",
+        "SQRT237_SIGNATURE_IDENTICAL",
+        "SQRT237_AUDIT: requested=293; unique=293",
+        "SQRT237_AUDIT_PRESENT: present=293; values=293",
+        "'Sqrt237Original.replay' depends on axioms:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "e4d958bb2e9c067e6c890f75b3ee019320c8de88928584cc1546d0e6e7670686",
+      "receipt": "isolated-receipt.json",
+      "format": "raw",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sqrt_lt_floor\n#check_failure Roth.sqrt_lt_nat_floor_aux\nnamespace Sqrt237Isolated\n#check @Nat.floor_le\n#check @Nat.le_floor\n#check @Nat.lt_floor_add_one\n#check_failure Nat.mul_lt_floor\n#check_failure Nat.div_two_lt_floor\n#check @Real.sqrt_lt'\n#check @Real.nat_floor_real_sqrt_eq_nat_sqrt\n#check @Nat.sqrt_lt_self\n\ntheorem lower {X : ℝ} (hX : 2 ≤ X) : √X < (⌊X⌋₊ : ℝ) :=\n  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  (Real.sqrt_lt' (by positivity)).2 (by nlinarith only [Nat.lt_floor_add_one X, hfloor])\ntheorem bounds {X : ℝ} (hX : 2 ≤ X) : √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X :=\n  ⟨lower hX, Nat.floor_le (by positivity)⟩\ntheorem endpoint : √(2 : ℝ) < (⌊(2 : ℝ)⌋₊ : ℝ) ∧ (⌊(2 : ℝ)⌋₊ : ℝ) ≤ 2 :=\n  bounds le_rfl\ntheorem threshold {X : ℝ} : √X < (⌊X⌋₊ : ℝ) ↔ 2 ≤ X := by\n  refine ⟨fun h ↦ ?_, lower⟩\n  have hn : 0 < ⌊X⌋₊ := by exact_mod_cast (Real.sqrt_nonneg X).trans_lt h\n  have hX1 : 1 ≤ X := Nat.floor_pos.1 hn\n  by_contra! hX\n  have hn2 : ⌊X⌋₊ < 2 := (Nat.floor_lt' (by decide : 2 ≠ 0)).2 hX\n  have heq : ⌊X⌋₊ = 1 := by omega\n  have hs : (1 : ℝ) ≤ √X := by simpa using Real.sqrt_le_sqrt hX1\n  exact hs.not_gt (by simpa [heq] using h)\ntheorem bounds_iff {X : ℝ} :\n    (√X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X) ↔ 2 ≤ X :=\n  ⟨fun h ↦ threshold.1 h.1, bounds⟩\ntheorem belowTwo {X : ℝ} (hX : X < 2) : ¬√X < (⌊X⌋₊ : ℝ) :=\n  fun h ↦ hX.not_ge (threshold.1 h)\ntheorem failsAtOne : ¬(√(1 : ℝ) < (⌊(1 : ℝ)⌋₊ : ℝ)) := by norm_num\ntheorem failsAtZero : ¬(√(0 : ℝ) < (⌊(0 : ℝ)⌋₊ : ℝ)) := by norm_num\ntheorem failsAtNegativeOne : ¬(√(-1 : ℝ) < (⌊(-1 : ℝ)⌋₊ : ℝ)) := by norm_num\n\ntheorem floorSquare {K : Type*} [Semiring K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {X : K} (hX : 2 ≤ X) : X < (⌊X⌋₊ : K) ^ 2 := by\n  have hn : 2 ≤ ⌊X⌋₊ := Nat.le_floor hX\n  have hnSquare : ⌊X⌋₊ + 1 ≤ ⌊X⌋₊ ^ 2 := by nlinarith only [hn]\n  exact (Nat.lt_floor_add_one X).trans_le (by exact_mod_cast hnSquare)\n\ntheorem rootBound {K : Type*} [Semiring K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {X y : K} (hX : 2 ≤ X) (hy : y ^ 2 ≤ X) : y < (⌊X⌋₊ : K) := by\n  by_contra! h\n  have hf : (0 : K) ≤ (⌊X⌋₊ : K) := Nat.cast_nonneg _\n  exact (hy.trans_lt (floorSquare hX)).not_ge (pow_le_pow_left₀ hf h 2)\ntheorem rationalWitness : (1 : ℚ) < (⌊(2 : ℚ)⌋₊ : ℚ) :=\n  rootBound (by norm_num) (by norm_num)\ntheorem rootToOriginal {X : ℝ} (hX : 2 ≤ X) :\n    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X :=\n  ⟨rootBound hX (Real.sq_sqrt (by positivity)).le, Nat.floor_le (by positivity)⟩\ntheorem primitiveProbe {X : ℝ} (hX : 2 ≤ X) :\n    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X := by\n  fail_if_success\n    solve | exact Nat.floor_le (show 0 ≤ X by positivity)\n  fail_if_success\n    solve | simp only [Nat.floor_le, Nat.le_floor, Nat.lt_floor_add_one, Real.sqrt_lt']\n  exact bounds hX\n\n#print axioms lower\n#print axioms bounds\n#print axioms endpoint\n#print axioms threshold\n#print axioms bounds_iff\n#print axioms belowTwo\n#print axioms failsAtOne\n#print axioms failsAtZero\n#print axioms failsAtNegativeOne\n#print axioms floorSquare\n#print axioms rootBound\n#print axioms rationalWitness\n#print axioms rootToOriginal\n#print axioms primitiveProbe\nend Sqrt237Isolated\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Sqrt237Isolated.lower' depends on axioms:",
+        "'Sqrt237Isolated.bounds' depends on axioms:",
+        "'Sqrt237Isolated.endpoint' depends on axioms:",
+        "'Sqrt237Isolated.threshold' depends on axioms:",
+        "'Sqrt237Isolated.bounds_iff' depends on axioms:",
+        "'Sqrt237Isolated.belowTwo' depends on axioms:",
+        "'Sqrt237Isolated.failsAtOne' depends on axioms:",
+        "'Sqrt237Isolated.failsAtZero' depends on axioms:",
+        "'Sqrt237Isolated.failsAtNegativeOne' depends on axioms:",
+        "'Sqrt237Isolated.floorSquare' depends on axioms:",
+        "'Sqrt237Isolated.rootBound' depends on axioms:",
+        "'Sqrt237Isolated.rationalWitness' depends on axioms:",
+        "'Sqrt237Isolated.rootToOriginal' depends on axioms:",
+        "'Sqrt237Isolated.primitiveProbe' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "a03b9fa71aee517515ca5f4e4d2202fec4ac136818ef3a6f7c82d563992b98a8",
+      "receipt": "inline-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "SQRT237_INLINE_SIGNATURE_IDENTICAL: Roth.mul_log_div_two_lt_log_mainCoeffBound",
+        "SQRT237_INLINE_SIGNATURE_IDENTICAL: Roth.three_small_factors",
+        "SQRT237_INLINE_SIGNATURE_IDENTICAL: _private.Roth.Main.0.Roth.roth_product_bound_aux",
+        "SQRT237_INLINE_SIGNATURE_IDENTICAL: Roth.main_lemma",
+        "SQRT237_INLINE_SIGNATURE_IDENTICAL: Roth.roth_of_isIntegral",
+        "SQRT237_INLINE_SIGNATURE_IDENTICAL: Roth.roth",
+        "SQRT237_INLINE_SIGNATURE_IDENTICAL: Roth.roth_rat"
+      ]
+    },
+    {
+      "label": "sqrt-route",
+      "source": "sqrt-route-executed.lean.txt",
+      "source_sha256": "be63e16301aa2fdb3d131b758e7efa6042c5d07bbf8bd4bd1e99cbd4cff0ec36",
+      "receipt": "sqrt-route-receipt.json",
+      "format": "raw",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sqrt_lt_floor\nnamespace Sqrt237Route\n\ntheorem upper {X : ℝ} (hX : 0 ≤ X) : √X < (Nat.sqrt ⌊X⌋₊ : ℝ) + 1 := by\n  apply (Real.sqrt_lt' (by positivity)).2\n  have h := (Nat.floor_lt hX).1 (Nat.lt_succ_sqrt' ⌊X⌋₊)\n  exact_mod_cast h\ntheorem bridge {X : ℝ} (hX : 0 ≤ X) : ⌊√X⌋₊ = Nat.sqrt ⌊X⌋₊ := by\n  fail_if_success exact Real.nat_floor_real_sqrt_eq_nat_sqrt (a := ⌊X⌋₊)\n  rw [Nat.floor_eq_iff (Real.sqrt_nonneg X)]\n  refine ⟨(Real.le_sqrt (Nat.cast_nonneg _) hX).2 ?_, upper hX⟩\n  have hsq : (Nat.sqrt ⌊X⌋₊ : ℝ) ^ 2 ≤ (⌊X⌋₊ : ℝ) := by\n    exact_mod_cast Nat.sqrt_le' ⌊X⌋₊\n  exact hsq.trans (Nat.floor_le hX)\ntheorem viaBridge {X : ℝ} (hX : 2 ≤ X) : √X < (⌊X⌋₊ : ℝ) := by\n  have hn : 1 < ⌊X⌋₊ := (by decide : 1 < 2).trans_le (Nat.le_floor hX)\n  have hc : (Nat.sqrt ⌊X⌋₊ : ℝ) + 1 ≤ (⌊X⌋₊ : ℝ) := by\n    exact_mod_cast Nat.succ_le_of_lt (Nat.sqrt_lt_self hn)\n  have hu : √X < (Nat.sqrt ⌊X⌋₊ : ℝ) + 1 := by\n    simpa [bridge (by positivity : 0 ≤ X)] using Nat.lt_floor_add_one (√X)\n  exact hu.trans_le hc\n#print axioms upper\n#print axioms bridge\n#print axioms viaBridge\nend Sqrt237Route\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Sqrt237Route.upper' depends on axioms:",
+        "'Sqrt237Route.bridge' depends on axioms:",
+        "'Sqrt237Route.viaBridge' depends on axioms:"
+      ]
+    },
+    {
+      "label": "candidates-cli",
+      "source": "candidates-cli-executed.lean.txt",
+      "source_sha256": "052a8074a1371660ee1daccee3a4ee20aad1d0ead0fc0d49529c069a13c20cd8",
+      "receipt": "candidates-cli-receipt.json",
+      "format": "cli",
+      "original_execution_request": {
+        "command": [
+          "/Users/ramin/.elan/bin/lake",
+          "env",
+          "lean",
+          "--stdin"
+        ],
+        "cwd": "/Users/ramin/LEAN/Roth",
+        "stdin": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.Order.Floor.Semifield\n\n#check_failure Roth.sqrt_lt_floor\n#check @Nat.mul_lt_floor\n#check @Nat.div_two_lt_floor\nnamespace Sqrt237Candidates\n\ntheorem halfRouteFails : ¬√(2 : ℝ) ≤ 2 / 2 := by\n  intro h\n  norm_num at h\ntheorem genericSearchProbe {X : ℝ} (hX : 2 ≤ X) :\n    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X := by\n  fail_if_success solve | exact?\n  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  exact ⟨(Real.sqrt_lt' (by positivity)).2\n    (by nlinarith only [Nat.lt_floor_add_one X, hfloor]), Nat.floor_le (by positivity)⟩\n#print axioms halfRouteFails\n#print axioms genericSearchProbe\nend Sqrt237Candidates\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "@Nat.mul_lt_floor",
+        "@Nat.div_two_lt_floor",
+        "'Sqrt237Candidates.halfRouteFails' depends on axioms:",
+        "'Sqrt237Candidates.genericSearchProbe' depends on axioms:"
+      ]
+    },
+    {
+      "label": "power-route",
+      "source": "power-route-executed.lean.txt",
+      "source_sha256": "ffdb4bcbb56d5a989212381b27a8f817c5398a81c26b3b322b5251bf0c11d465",
+      "receipt": "power-route-receipt.json",
+      "format": "raw",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sqrt_lt_floor\nnamespace Sqrt237PowerRoute\n#check @lt_self_pow₀\ntheorem floorSquare {K : Type*} [Semiring K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {X : K} (hX : 2 ≤ X) : X < (⌊X⌋₊ : K) ^ 2 := by\n  have hn : 1 < ⌊X⌋₊ := (by decide : 1 < 2).trans_le (Nat.le_floor hX)\n  have hp : ⌊X⌋₊ + 1 ≤ ⌊X⌋₊ ^ 2 := lt_self_pow₀ hn (by decide : 1 < 2)\n  exact (Nat.lt_floor_add_one X).trans_le (by exact_mod_cast hp)\ntheorem fullBounds {X : ℝ} (hX : 2 ≤ X) :\n    √X < (⌊X⌋₊ : ℝ) ∧ (⌊X⌋₊ : ℝ) ≤ X := by\n  have hf : (0 : ℝ) < (⌊X⌋₊ : ℝ) := by\n    exact_mod_cast (by decide : 0 < 2).trans_le (Nat.le_floor hX)\n  exact ⟨(Real.sqrt_lt' hf).2 (floorSquare hX), Nat.floor_le (by positivity)⟩\n#print axioms floorSquare\n#print axioms fullBounds\nend Sqrt237PowerRoute\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "@lt_self_pow₀",
+        "'Sqrt237PowerRoute.floorSquare' depends on axioms:",
+        "'Sqrt237PowerRoute.fullBounds' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "rejected-isolated1-executed.lean.txt",
+      "receipt": "rejected-isolated1-receipt.json",
+      "format": "raw"
+    },
+    {
+      "source": "rejected-isolated2-executed.lean.txt",
+      "receipt": "rejected-isolated2-receipt.json",
+      "format": "raw"
+    },
+    {
+      "source": "rejected-route1-executed.lean.txt",
+      "receipt": "rejected-route1-receipt.json",
+      "format": "raw"
+    },
+    {
+      "source": "rejected-candidates1-executed.lean.txt",
+      "receipt": "rejected-candidates1-receipt.json",
+      "format": "cli"
+    }
+  ],
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293,
+    "preparation_receipt": "preparation-checks.json"
+  },
+  "composition": {
+    "full_original": "NOT-COMPOSABLE in certified existing-only at-most-three-call sense",
+    "private_project_helper_counts_as_mathlib": false,
+    "new_witness_proofs_count_as_existing_api": false,
+    "generic_quadratic_kernel_three_existing_blocks": [
+      "Nat.le_floor",
+      "lt_self_pow₀",
+      "Nat.lt_floor_add_one"
+    ],
+    "full_target_requires_additional": [
+      "Real.sqrt_lt'",
+      "Nat.floor_le",
+      "positive-floor cast transport"
+    ]
+  },
+  "full_actual_callers": {
+    "source": "inline-executed.lean.txt",
+    "receipt": "inline-receipt.json",
+    "original_signatures_verified": 7,
+    "complete_modules": [
+      "Roth.MainLemma",
+      "Roth.Main"
+    ],
+    "target_and_helper_removed": true
+  },
+  "root_acceptance": "pending",
+  "native_ownership_release": "Native execution complete. Package frozen and ownership released only after successful final portable validator invocation.",
+  "controls": {
+    "stable_virtual_prefix": "isolated-prefix.lean.txt",
+    "stable_disk_prefix": "disk-prefix.lean.txt",
+    "supplementary_only": "candidates-cli adds authorized Mathlib.Algebra.Order.Floor.Semifield; stable files unchanged"
+  },
+  "source_gate_provenance": "Original pre-execution gate observed in session; freeze-time repeat saved honestly as recheck.",
+  "secret_guard": "secret-guard.json"
+}

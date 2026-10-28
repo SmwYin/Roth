@@ -1,0 +1,13 @@
+private lemma sqrt_lt_nat_floor_aux {X : ℝ} (hX : 2 ≤ X) : √X < ⌊X⌋₊ :=
+  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX
+  (Real.sqrt_lt' (by positivity)).2 (by nlinarith only [Nat.lt_floor_add_one X, hfloor])
+
+/-- If `X ≥ 2` then `√X < ⌊X⌋ ≤ X`.
+
+The natural floor gives an integer coefficient bound; use `.1` for its square-root lower
+bound and `.2` for its non-strict upper bound.
+
+Source: §6 ("writing `X = q_1^{δ r_1}`, we have `X > 4`, whence `B_1 = ⌊X⌋ > X - 1 > √X`"
+and the Lean note "Retain the non-strict upper bound `B_1 ≤ X`"). -/
+theorem sqrt_lt_floor {X : ℝ} (hX : 2 ≤ X) : √X < ⌊X⌋₊ ∧ (⌊X⌋₊ : ℝ) ≤ X :=
+  ⟨sqrt_lt_nat_floor_aux hX, Nat.floor_le (by positivity)⟩
