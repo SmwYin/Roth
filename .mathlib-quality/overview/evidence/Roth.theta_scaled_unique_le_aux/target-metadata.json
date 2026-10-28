@@ -1,0 +1,58 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 742,
+  "name": "Roth.theta_scaled_unique_le_aux",
+  "short": "theta_scaled_unique_le_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 765,
+  "source": "private lemma theta_scaled_unique_le_aux {δ M : ℝ} {q₁ q₂ r₁ r₂ l : ℕ} (hq₁ : 1 < q₁) (hr₁ : 0 < r₁)\n    (hl : 0 < l) (hqr : (r₁ : ℝ) * Real.log q₁ ≤ r₂ * Real.log q₂) (hM1 : 1 ≤ M)\n    (hM : M ≤ (q₁ : ℝ) ^ (δ * (l * r₁))) : Θ M (fun _ : Unit ↦ q₂) (fun _ ↦ l * r₂) ≤ δ := by\n  have hδ0 : 0 ≤ δ := by\n    have h : (0 : ℝ) ≤ δ * (l * r₁) :=\n      (Real.rpow_le_rpow_left_iff (x := (q₁ : ℝ)) (by exact_mod_cast hq₁)).1\n        (by simpa using hM1.trans hM)\n    exact nonneg_of_mul_nonneg_left h\n      (mul_pos (by exact_mod_cast hl : (0 : ℝ) < l)\n        (by exact_mod_cast hr₁ : (0 : ℝ) < r₁))\n  have hL : (0 : ℝ) < r₂ * Real.log q₂ :=\n    (mul_pos (by exact_mod_cast hr₁) (Real.log_pos (by exact_mod_cast hq₁))).trans_le hqr\n  have hL₂ : 0 < Real.log (q₂ : ℝ) := pos_of_mul_pos_right hL (Nat.cast_nonneg r₂)\n  have hr₂ : 0 < r₂ := by exact_mod_cast pos_of_mul_pos_left hL hL₂.le\n  have hq₂ : 1 < q₂ := by\n    exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg q₂)).1 hL₂\n  refine (Θ_mono hM1 hM _).trans\n    ((Θ_unique_le (q := fun _ : Unit ↦ q₂) (r := fun _ ↦ l * r₂)\n      (hM1.trans hM) hq₂).trans ?_)\n  rw [Real.log_rpow (by positivity), div_le_iff₀ (by\n    push_cast\n    exact mul_pos (mul_pos (by exact_mod_cast hl) (by exact_mod_cast hr₂)) hL₂)]\n  push_cast\n  nlinarith only [mul_le_mul_of_nonneg_left hqr (mul_nonneg hδ0 (Nat.cast_nonneg l))]",
+  "signature": "private lemma theta_scaled_unique_le_aux {δ M : ℝ} {q₁ q₂ r₁ r₂ l : ℕ} (hq₁ : 1 < q₁) (hr₁ : 0 < r₁)\n    (hl : 0 < l) (hqr : (r₁ : ℝ) * Real.log q₁ ≤ r₂ * Real.log q₂) (hM1 : 1 ≤ M)\n    (hM : M ≤ (q₁ : ℝ) ^ (δ * (l * r₁))) : Θ M (fun _ : Unit ↦ q₂) (fun _ ↦ l * r₂) ≤ δ",
+  "body": "by\n  have hδ0 : 0 ≤ δ := by\n    have h : (0 : ℝ) ≤ δ * (l * r₁) :=\n      (Real.rpow_le_rpow_left_iff (x := (q₁ : ℝ)) (by exact_mod_cast hq₁)).1\n        (by simpa using hM1.trans hM)\n    exact nonneg_of_mul_nonneg_left h\n      (mul_pos (by exact_mod_cast hl : (0 : ℝ) < l)\n        (by exact_mod_cast hr₁ : (0 : ℝ) < r₁))\n  have hL : (0 : ℝ) < r₂ * Real.log q₂ :=\n    (mul_pos (by exact_mod_cast hr₁) (Real.log_pos (by exact_mod_cast hq₁))).trans_le hqr\n  have hL₂ : 0 < Real.log (q₂ : ℝ) := pos_of_mul_pos_right hL (Nat.cast_nonneg r₂)\n  have hr₂ : 0 < r₂ := by exact_mod_cast pos_of_mul_pos_left hL hL₂.le\n  have hq₂ : 1 < q₂ := by\n    exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg q₂)).1 hL₂\n  refine (Θ_mono hM1 hM _).trans\n    ((Θ_unique_le (q := fun _ : Unit ↦ q₂) (r := fun _ ↦ l * r₂)\n      (hM1.trans hM) hq₂).trans ?_)\n  rw [Real.log_rpow (by positivity), div_le_iff₀ (by\n    push_cast\n    exact mul_pos (mul_pos (by exact_mod_cast hl) (by exact_mod_cast hr₂)) hL₂)]\n  push_cast\n  nlinarith only [mul_le_mul_of_nonneg_left hqr (mul_nonneg hδ0 (Nat.cast_nonneg l))]",
+  "proof_lines": 22,
+  "sha256": "adc0ba40bce0da3f12a98dc0033a8a30cafc966d9b96b3fcde5f12f23d938cf4",
+  "what": "A scaled singleton extremal index is bounded by delta under balanced denominator logarithms.",
+  "how": "Increase the coefficient bound with Θ_mono, apply Θ_unique_le, and compare logarithms using the balanced degree-log product.",
+  "hypotheses": "First denominator greater than one, positive first degree and scale, balanced degree-log products and coefficient bounds between one and the target power.",
+  "source_body_refs": [
+    "Roth.Θ_mono",
+    "Roth.Θ_unique_le"
+  ],
+  "source_type_refs": [
+    "Roth.Θ"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [
+    "Roth.Θ_mono",
+    "Roth.Θ_unique_le"
+  ],
+  "used_by_in_file": [
+    "Roth.theta_phi_lt_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 270,
+  "project_body_refs": [
+    "Roth.Θ_mono",
+    "Roth.Θ_unique_le"
+  ],
+  "project_type_refs": [
+    "Roth.Θ"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ]
+}

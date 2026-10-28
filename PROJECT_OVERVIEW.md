@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 219/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 220/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 219; remaining: 74.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 70 BORDERLINE-needs-human, 46 SKIP.
+- Completed applicable assessments: 220; remaining: 73.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 70 BORDERLINE-needs-human, 47 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2643,6 +2643,21 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit in file: 1; external to file: 0; source callers: Roth.theta_phi_lt_aux; source call location: Roth/Theta.lean:879; direct kernel value consumers: _private.Roth.Theta.0.Roth.theta_phi_lt_aux; note: Entire actual caller840–889 and all downstream module proofs compile with the full numeric proof locally inlined; lexical use and direct kernel use are separately measured. Complete source metadata remains in callers.json.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.lem7_numeric.md).
 
+### Completed: `Roth.theta_scaled_unique_le_aux`
+
+- Type: `∀ {δ M : ℝ} {q₁ q₂ r₁ r₂ l : ℕ},
+  1 < q₁ →
+    0 < r₁ →
+      0 < l →
+        ↑r₁ * Real.log ↑q₁ ≤ ↑r₂ * Real.log ↑q₂ →
+          1 ≤ M → M ≤ ↑q₁ ^ (δ * (↑l * ↑r₁)) → (Roth.Θ M (fun x ↦ q₂) fun x ↦ l * r₂) ≤ δ`
+- What: A one-variable extremal index at height M is at most δ after scaling its weight by l, when M lies below the first denominator power and weighted denominator logarithms are balanced.
+- How: Increase the coefficient bound with Θ_mono, apply Θ_unique_le, and compare logarithms using the balanced degree-log product.
+- Hypotheses: First denominator greater than one, positive first degree and scale, balanced degree-log products and coefficient bounds between one and the target power. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.Θ, Roth.Θ_mono, Roth.Θ_unique_le
+- Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.theta_scaled_unique_le_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3107,6 +3122,8 @@ Completed `Roth.lem7_Φ_bound`: Fifteen actual current/standard/abstract method 
 
 Completed `Roth.lem7_numeric`: 15 fresh method/form cells; pinned sqrt/rpow/order ingredients verified. No exact hit or≤3-existing-call proof established; local index warming.
 
+Completed `Roth.theta_scaled_unique_le_aux`: First derive δ≥0 from M≥1, M≤q₁^(δlr₁), q₁>1 and positive lr₁. The balanced logarithms force q₂>1 and r₂>0. Apply Θ_mono to enlarge M, then Θ_unique_le. Rewrite Real.log_rpow, clear the positive scaled-weight logarithm, and use the balanced-log inequality. This is the singleton-factor contribution to theta_phi_lt_aux, distinct from the complementary-prefix induction.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3546,6 +3563,8 @@ Completed `Roth.lem6M_lt`: A source-specific application of factorial majorizati
 Completed `Roth.lem7_Φ_bound`: The real-power ingredients and generic ordered weighted transport are existing API. The concrete constants and simultaneous absorption still require numerical reasoning; new generic envelope is a proved helper, not an existing mathlib replacement.
 
 Completed `Roth.lem7_numeric`: Classical square-root upper bounds and dyadic power normalization are ingredients, not an identified duplicate of the combined absorption.
+
+Completed `Roth.theta_scaled_unique_le_aux`: The singleton scaled logarithmic bound is distinct from the prefix induction and the subsequent two-term/root absorption; it reuses Θ_mono and Θ_unique_le rather than duplicating their proofs.
 
 ## Part 5: Generalization opportunities
 
@@ -3997,6 +4016,8 @@ Completed `Roth.lem7_Φ_bound`: Verified delta<=2 with original wrapper and unch
 
 Completed `Roth.lem7_numeric`: Compiled coefficient4 cap with δ≤1 and arbitrary negative Φ; generic real scalar envelope with free a,c,b,d,L,x,s also compiled. No δ-range or optimality claim.
 
+Completed `Roth.theta_scaled_unique_le_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4437,6 +4458,8 @@ Completed `Roth.lem6M_lt`: Potential public package: determinant coefficient-hei
 Completed `Roth.lem7_Φ_bound`: Potential generic weighted real-power absorption interface; no universal absence claim. Public usefulness and choice between primitive product/exponent bounds and a packaged envelope remain upstream API-design questions.
 
 Completed `Roth.lem7_numeric`: Potential public weighted square-root absorption API, subject to demonstrated audience; scratch envelope is new proof, not existing mathlib.
+
+Completed `Roth.theta_scaled_unique_le_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -4881,6 +4904,8 @@ Completed `Roth.lem7_Φ_bound`: Not dead code: sole explicit caller theta_phi_lt
 
 Completed `Roth.lem7_numeric`: Used once by theta_phi_lt_aux; verified actual caller and downstreamΘ_lt replay. Not dead code.
 
+Completed `Roth.theta_scaled_unique_le_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5104,6 +5129,7 @@ Completed `Roth.lem7_numeric`: Used once by theta_phi_lt_aux; verified actual ca
 | 217 | `Roth.lem6M_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lem6M_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem6M_lt/root-acceptance.json) |
 | 218 | `Roth.lem7_Φ_bound` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lem7_Φ_bound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem7_Φ_bound/root-acceptance.json) |
 | 219 | `Roth.lem7_numeric` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lem7_numeric.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem7_numeric/root-acceptance.json) |
+| 220 | `Roth.theta_scaled_unique_le_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_scaled_unique_le_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_scaled_unique_le_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5541,12 +5567,14 @@ Completed `Roth.lem7_Φ_bound` action: BORDERLINE-needs-human. Keep at Roth/Thet
 
 Completed `Roth.lem7_numeric` action: BORDERLINE: retain in Roth/Theta.lean while future upstream audience/constant/envelope design is decided. Full caller-local inline and broader wrapper alternatives compile.
 
+Completed `Roth.theta_scaled_unique_le_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.theta_scaled_unique_le_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.theta_delta_succ_lt_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

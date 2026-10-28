@@ -1,0 +1,24 @@
+private lemma theta_scaled_unique_le_aux {δ M : ℝ} {q₁ q₂ r₁ r₂ l : ℕ} (hq₁ : 1 < q₁) (hr₁ : 0 < r₁)
+    (hl : 0 < l) (hqr : (r₁ : ℝ) * Real.log q₁ ≤ r₂ * Real.log q₂) (hM1 : 1 ≤ M)
+    (hM : M ≤ (q₁ : ℝ) ^ (δ * (l * r₁))) : Θ M (fun _ : Unit ↦ q₂) (fun _ ↦ l * r₂) ≤ δ := by
+  have hδ0 : 0 ≤ δ := by
+    have h : (0 : ℝ) ≤ δ * (l * r₁) :=
+      (Real.rpow_le_rpow_left_iff (x := (q₁ : ℝ)) (by exact_mod_cast hq₁)).1
+        (by simpa using hM1.trans hM)
+    exact nonneg_of_mul_nonneg_left h
+      (mul_pos (by exact_mod_cast hl : (0 : ℝ) < l)
+        (by exact_mod_cast hr₁ : (0 : ℝ) < r₁))
+  have hL : (0 : ℝ) < r₂ * Real.log q₂ :=
+    (mul_pos (by exact_mod_cast hr₁) (Real.log_pos (by exact_mod_cast hq₁))).trans_le hqr
+  have hL₂ : 0 < Real.log (q₂ : ℝ) := pos_of_mul_pos_right hL (Nat.cast_nonneg r₂)
+  have hr₂ : 0 < r₂ := by exact_mod_cast pos_of_mul_pos_left hL hL₂.le
+  have hq₂ : 1 < q₂ := by
+    exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg q₂)).1 hL₂
+  refine (Θ_mono hM1 hM _).trans
+    ((Θ_unique_le (q := fun _ : Unit ↦ q₂) (r := fun _ ↦ l * r₂)
+      (hM1.trans hM) hq₂).trans ?_)
+  rw [Real.log_rpow (by positivity), div_le_iff₀ (by
+    push_cast
+    exact mul_pos (mul_pos (by exact_mod_cast hl) (by exact_mod_cast hr₂)) hL₂)]
+  push_cast
+  nlinarith only [mul_le_mul_of_nonneg_left hqr (mul_nonneg hδ0 (Nat.cast_nonneg l))]

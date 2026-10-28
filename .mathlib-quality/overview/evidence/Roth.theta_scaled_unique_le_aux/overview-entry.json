@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.theta_scaled_unique_le_aux",
+  "kind": "lemma",
+  "type": "∀ {δ M : ℝ} {q₁ q₂ r₁ r₂ l : ℕ},\n  1 < q₁ →\n    0 < r₁ →\n      0 < l →\n        ↑r₁ * Real.log ↑q₁ ≤ ↑r₂ * Real.log ↑q₂ →\n          1 ≤ M → M ≤ ↑q₁ ^ (δ * (↑l * ↑r₁)) → (Roth.Θ M (fun x ↦ q₂) fun x ↦ l * r₂) ≤ δ",
+  "what": "A one-variable extremal index at height M is at most δ after scaling its weight by l, when M lies below the first denominator power and weighted denominator logarithms are balanced.",
+  "how": "Increase the coefficient bound with Θ_mono, apply Θ_unique_le, and compare logarithms using the balanced degree-log product.",
+  "hypotheses": "First denominator greater than one, positive first degree and scale, balanced degree-log products and coefficient bounds between one and the target power. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.Θ",
+    "Roth.Θ_mono",
+    "Roth.Θ_unique_le"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "First derive δ≥0 from M≥1, M≤q₁^(δlr₁), q₁>1 and positive lr₁. The balanced logarithms force q₂>1 and r₂>0. Apply Θ_mono to enlarge M, then Θ_unique_le. Rewrite Real.log_rpow, clear the positive scaled-weight logarithm, and use the balanced-log inequality. This is the singleton-factor contribution to theta_phi_lt_aux, distinct from the complementary-prefix induction.",
+  "moral_duplications": "The singleton scaled logarithmic bound is distinct from the prefix induction and the subsequent two-term/root absorption; it reuses Θ_mono and Θ_unique_le rather than duplicating their proofs.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
