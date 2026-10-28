@@ -1,0 +1,58 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 223,
+  "name": "Roth.index_unique_le_log_div",
+  "short": "index_unique_le_log_div",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 250,
+  "source": "private lemma index_unique_le_log_div [Unique σ] {B : ℝ} {q r : σ → ℕ} (hq : 1 < q default)\n    {R : MvPolynomial σ ℤ} (hR : R ≠ 0) (hRB : |((uniqueAlgEquiv ℤ σ R).leadingCoeff : ℝ)| ≤ B)\n    {h : σ → ℤ} (hh : IsCoprime (h default) (q default : ℤ)) :\n    index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤\n      Real.log B / (r default * Real.log (q default)) := by\n  classical\n  let R1 : Polynomial ℤ := uniqueAlgEquiv ℤ σ R\n  have hmapeq : uniqueAlgEquiv ℝ σ (map (Int.castRingHom ℝ) R) =\n      R1.map (Int.castRingHom ℝ) := by\n    dsimp only [R1]\n    ext n\n    rw [coeff_uniqueAlgEquiv, Polynomial.coeff_map, coeff_uniqueAlgEquiv, coeff_map]\n  have hmult : Polynomial.rootMultiplicity ((h default : ℝ) / q default)\n      (R1.map (Int.castRingHom ℝ)) =\n      Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)) := by\n    rw [Polynomial.eq_rootMultiplicity_map (f := Rat.castHom ℝ) Rat.cast_injective,\n      Polynomial.map_map]\n    congr 1\n    simp\n  rw [index_unique ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR), hmapeq, hmult]\n  have hlog := Real.log_le_log (by positivity : (0 : ℝ) < (q default : ℝ) ^\n    Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)))\n    (pow_rootMultiplicity_le ((map_ne_zero_iff _ (uniqueAlgEquiv ℤ σ).injective).2 hR)\n      (Nat.zero_lt_of_lt hq) hh hRB)\n  rw [Real.log_pow] at hlog\n  simpa [div_div, mul_comm] using\n    div_le_div_of_nonneg_right\n      ((le_div_iff₀ (Real.log_pos (by exact_mod_cast hq))).2 hlog) (Nat.cast_nonneg _)",
+  "signature": "private lemma index_unique_le_log_div [Unique σ] {B : ℝ} {q r : σ → ℕ} (hq : 1 < q default)\n    {R : MvPolynomial σ ℤ} (hR : R ≠ 0) (hRB : |((uniqueAlgEquiv ℤ σ R).leadingCoeff : ℝ)| ≤ B)\n    {h : σ → ℤ} (hh : IsCoprime (h default) (q default : ℤ)) :\n    index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤\n      Real.log B / (r default * Real.log (q default))",
+  "body": "by\n  classical\n  let R1 : Polynomial ℤ := uniqueAlgEquiv ℤ σ R\n  have hmapeq : uniqueAlgEquiv ℝ σ (map (Int.castRingHom ℝ) R) =\n      R1.map (Int.castRingHom ℝ) := by\n    dsimp only [R1]\n    ext n\n    rw [coeff_uniqueAlgEquiv, Polynomial.coeff_map, coeff_uniqueAlgEquiv, coeff_map]\n  have hmult : Polynomial.rootMultiplicity ((h default : ℝ) / q default)\n      (R1.map (Int.castRingHom ℝ)) =\n      Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)) := by\n    rw [Polynomial.eq_rootMultiplicity_map (f := Rat.castHom ℝ) Rat.cast_injective,\n      Polynomial.map_map]\n    congr 1\n    simp\n  rw [index_unique ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR), hmapeq, hmult]\n  have hlog := Real.log_le_log (by positivity : (0 : ℝ) < (q default : ℝ) ^\n    Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)))\n    (pow_rootMultiplicity_le ((map_ne_zero_iff _ (uniqueAlgEquiv ℤ σ).injective).2 hR)\n      (Nat.zero_lt_of_lt hq) hh hRB)\n  rw [Real.log_pow] at hlog\n  simpa [div_div, mul_comm] using\n    div_le_div_of_nonneg_right\n      ((le_div_iff₀ (Real.log_pos (by exact_mod_cast hq))).2 hlog) (Nat.cast_nonneg _)",
+  "proof_lines": 24,
+  "sha256": "0d6c4bafa10ea12cc23a95b96f5666b30a7305f18a1e40823c8866ac679f2e17",
+  "what": "In one variable the weighted index is bounded by log B divided by degree weight times log denominator.",
+  "how": "Use index_unique, transport root multiplicities between rational and real maps, apply pow_rootMultiplicity_le, and take logarithms.",
+  "hypotheses": "Singleton finite variable type; denominator greater than one; nonzero polynomial with bounded leading coefficient and coprime numerator.",
+  "source_body_refs": [
+    "Roth.index_unique",
+    "Roth.pow_rootMultiplicity_le"
+  ],
+  "source_type_refs": [
+    "Roth.index"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.Θ_unique_le",
+      "file": "Roth/Theta.lean",
+      "line": 256
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [
+    "Roth.index_unique",
+    "Roth.pow_rootMultiplicity_le"
+  ],
+  "used_by_in_file": [
+    "Roth.Θ_unique_le"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 373,
+  "project_body_refs": [
+    "Roth.index_unique",
+    "Roth.pow_rootMultiplicity_le"
+  ],
+  "project_type_refs": [
+    "Roth.index"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.Θ_unique_le",
+      "file": "Roth/Theta.lean",
+      "line": 256
+    }
+  ]
+}

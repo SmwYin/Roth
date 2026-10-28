@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.index_unique_le_log_div",
+  "kind": "lemma",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : Unique σ] {B : ℝ}\n  {q r : σ → ℕ},\n  1 < q default →\n    ∀ {R : MvPolynomial σ ℤ},\n      R ≠ 0 →\n        |↑((uniqueAlgEquiv ℤ σ) R).leadingCoeff| ≤ B →\n          ∀ {h : σ → ℤ},\n            IsCoprime (h default) ↑(q default) →\n              Roth.index ((map (Int.castRingHom ℝ)) R) (fun j ↦ ↑(h j) / ↑(q j)) r ≤\n                Real.log B / (↑(r default) * Real.log ↑(q default))",
+  "what": "For a nonzero one-variable integer polynomial and a reduced rational evaluation point with denominator greater than one, its weighted index is at most log B divided by the weighted logarithm of that denominator, provided its absolute leading coefficient is bounded by B.",
+  "how": "Use index_unique, transport root multiplicities between rational and real maps, apply pow_rootMultiplicity_le, and take logarithms.",
+  "hypotheses": "Singleton finite variable type; denominator greater than one; nonzero polynomial with bounded leading coefficient and coprime numerator. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.index_unique",
+    "Roth.pow_rootMultiplicity_le"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Identify the one-variable polynomial after injective integer-to-real mapping, transport root multiplicity from rational to real coefficients, and rewrite the unique-variable index as multiplicity divided by its natural weight. Apply pow_rootMultiplicity_le, take logarithms using positivity of the denominator power, then normalize log_pow and divide by positive log q and nonnegative weight. This is the live private logarithmic bridge between the denominator-power coefficient bound and the public one-variable Theta bound; it is distinct from both the algebraic factor theorem and the supremum wrapper.",
+  "moral_duplications": "The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

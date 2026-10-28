@@ -1,0 +1,28 @@
+private lemma index_unique_le_log_div [Unique σ] {B : ℝ} {q r : σ → ℕ} (hq : 1 < q default)
+    {R : MvPolynomial σ ℤ} (hR : R ≠ 0) (hRB : |((uniqueAlgEquiv ℤ σ R).leadingCoeff : ℝ)| ≤ B)
+    {h : σ → ℤ} (hh : IsCoprime (h default) (q default : ℤ)) :
+    index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤
+      Real.log B / (r default * Real.log (q default)) := by
+  classical
+  let R1 : Polynomial ℤ := uniqueAlgEquiv ℤ σ R
+  have hmapeq : uniqueAlgEquiv ℝ σ (map (Int.castRingHom ℝ) R) =
+      R1.map (Int.castRingHom ℝ) := by
+    dsimp only [R1]
+    ext n
+    rw [coeff_uniqueAlgEquiv, Polynomial.coeff_map, coeff_uniqueAlgEquiv, coeff_map]
+  have hmult : Polynomial.rootMultiplicity ((h default : ℝ) / q default)
+      (R1.map (Int.castRingHom ℝ)) =
+      Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)) := by
+    rw [Polynomial.eq_rootMultiplicity_map (f := Rat.castHom ℝ) Rat.cast_injective,
+      Polynomial.map_map]
+    congr 1
+    simp
+  rw [index_unique ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR), hmapeq, hmult]
+  have hlog := Real.log_le_log (by positivity : (0 : ℝ) < (q default : ℝ) ^
+    Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)))
+    (pow_rootMultiplicity_le ((map_ne_zero_iff _ (uniqueAlgEquiv ℤ σ).injective).2 hR)
+      (Nat.zero_lt_of_lt hq) hh hRB)
+  rw [Real.log_pow] at hlog
+  simpa [div_div, mul_comm] using
+    div_le_div_of_nonneg_right
+      ((le_div_iff₀ (Real.log_pos (by exact_mod_cast hq))).2 hlog) (Nat.cast_nonneg _)

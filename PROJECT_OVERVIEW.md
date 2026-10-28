@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 197/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 198/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 197; remaining: 96.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 58 BORDERLINE-needs-human, 36 SKIP.
+- Completed applicable assessments: 198; remaining: 95.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 58 BORDERLINE-needs-human, 37 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2285,6 +2285,25 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit within-file caller: private Roth.index_unique_le_log_div at Theta:245; zero outside file; canonical1value/0type.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.pow_rootMultiplicity_le.md).
 
+### Completed: `Roth.index_unique_le_log_div`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : Unique σ] {B : ℝ}
+  {q r : σ → ℕ},
+  1 < q default →
+    ∀ {R : MvPolynomial σ ℤ},
+      R ≠ 0 →
+        |↑((uniqueAlgEquiv ℤ σ) R).leadingCoeff| ≤ B →
+          ∀ {h : σ → ℤ},
+            IsCoprime (h default) ↑(q default) →
+              Roth.index ((map (Int.castRingHom ℝ)) R) (fun j ↦ ↑(h j) / ↑(q j)) r ≤
+                Real.log B / (↑(r default) * Real.log ↑(q default))`
+- What: For a nonzero one-variable integer polynomial and a reduced rational evaluation point with denominator greater than one, its weighted index is at most log B divided by the weighted logarithm of that denominator, provided its absolute leading coefficient is bounded by B.
+- How: Use index_unique, transport root multiplicities between rational and real maps, apply pow_rootMultiplicity_le, and take logarithms.
+- Hypotheses: Singleton finite variable type; denominator greater than one; nonzero polynomial with bounded leading coefficient and coprime numerator. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.index, Roth.index_unique, Roth.pow_rootMultiplicity_le
+- Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_unique_le_log_div.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2705,6 +2724,8 @@ Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: 15 actual method/form ce
 
 Completed `Roth.pow_rootMultiplicity_le`: Related pow_rootMultiplicity_dvd, Gauss descent, leadingCoeff_dvd_leadingCoeff, den_dvd_of_is_root and Int.natAbs_le_of_dvd_ne_zero verified; no exact retrieved replacement.
 
+Completed `Roth.index_unique_le_log_div`: Identify the one-variable polynomial after injective integer-to-real mapping, transport root multiplicity from rational to real coefficients, and rewrite the unique-variable index as multiplicity divided by its natural weight. Apply pow_rootMultiplicity_le, take logarithms using positivity of the denominator power, then normalize log_pow and divide by positive log q and nonnegative weight. This is the live private logarithmic bridge between the denominator-power coefficient bound and the public one-variable Theta bound; it is distinct from both the algebraic factor theorem and the supremum wrapper.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3100,6 +3121,8 @@ Completed `Roth.isPrimitive_pow`: The helper has a distinct role in the polynomi
 Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: Classical Gauss lemma plus root multiplicity divisibility; the missing bridge handles primitive qX-h and the full mapped root multiplicity. Existing rational-root numerator/denominator bounds are first-order partial analogues.
 
 Completed `Roth.pow_rootMultiplicity_le`: Rational root theorem with multiplicity; determinant coefficient proofs reuse integer discreteness but do not rederive this bound.
+
+Completed `Roth.index_unique_le_log_div`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -3507,6 +3530,8 @@ Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: Verified no-positive-den
 
 Completed `Roth.pow_rootMultiplicity_le`: Verified signed integer denominator, no positivity, Ring L ordered target, direct abs lc bound; separate GCD-domain/fraction-field denominator-power divisibility for q≠0. IsRelPrime strictly generalizes Bézout condition only in generic coefficient domains; numerical law retains ℤ coefficients.
 
+Completed `Roth.index_unique_le_log_div`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3903,6 +3928,8 @@ Completed `Roth.isPrimitive_pow`: No new primitive is needed for this internal o
 Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: Polynomial.pow_linear_dvd_of_rootMultiplicity: primitive reduced linear-factor power divides over a GCD domain to the full fraction-field root multiplicity. Generic primitive-linear and primitive-power helpers are additional new-proof candidates, not existing mathlib replacements.
 
 Completed `Roth.pow_rootMultiplicity_le`: Generic multiplicity integral-linear-factor descent and denominator-power leading-coefficient divisor; numeric discrete-order corollary.
+
+Completed `Roth.index_unique_le_log_div`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -4303,6 +4330,8 @@ Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: No dead-code finding. Do
 
 Completed `Roth.pow_rootMultiplicity_le`: False
 
+Completed `Roth.index_unique_le_log_div`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4504,6 +4533,7 @@ Completed `Roth.pow_rootMultiplicity_le`: False
 | 195 | `Roth.isPrimitive_pow` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.isPrimitive_pow.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.isPrimitive_pow/root-acceptance.json) |
 | 196 | `Roth.exists_eq_pow_mul_of_rootMultiplicity` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_eq_pow_mul_of_rootMultiplicity.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_eq_pow_mul_of_rootMultiplicity/root-acceptance.json) |
 | 197 | `Roth.pow_rootMultiplicity_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.pow_rootMultiplicity_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.pow_rootMultiplicity_le/root-acceptance.json) |
+| 198 | `Roth.index_unique_le_log_div` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.index_unique_le_log_div.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_unique_le_log_div/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4897,12 +4927,14 @@ Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity` action: YES-but-generalis
 
 Completed `Roth.pow_rootMultiplicity_le` action: YES-but-generalise-first; group accepted196 factor theorem, algebraic divisor and ordered integer bound; generalise and cleanup before PR.
 
+Completed `Roth.index_unique_le_log_div` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_unique_le_log_div` next. Supporting identities receive their own applicable checks.
+   `Roth.Θ_unique_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
