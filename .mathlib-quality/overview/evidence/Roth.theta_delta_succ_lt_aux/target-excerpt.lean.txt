@@ -1,0 +1,8 @@
+private lemma theta_delta_succ_lt_aux (n : ℕ) {δ : ℝ} (hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1)) :
+    δ * (1 + 1 / ((n : ℝ) + 1 + 1)) < 1 / ((n : ℝ) + 1) := by
+  have hN : 0 < (n : ℝ) + 1 := by positivity
+  have hN2 : 0 < (n : ℝ) + 1 + 1 := by positivity
+  refine (mul_le_mul_of_nonneg_right hδ (by positivity)).trans_lt ?_
+  apply (lt_div_iff₀ hN).2
+  nlinarith only [one_div_mul_cancel (ne_of_gt hN2),
+    sq_pos_of_pos (one_div_pos.mpr hN2)]

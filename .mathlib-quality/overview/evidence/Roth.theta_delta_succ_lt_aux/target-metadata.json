@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 767,
+  "name": "Roth.theta_delta_succ_lt_aux",
+  "short": "theta_delta_succ_lt_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 774,
+  "source": "private lemma theta_delta_succ_lt_aux (n : ℕ) {δ : ℝ} (hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1)) :\n    δ * (1 + 1 / ((n : ℝ) + 1 + 1)) < 1 / ((n : ℝ) + 1) := by\n  have hN : 0 < (n : ℝ) + 1 := by positivity\n  have hN2 : 0 < (n : ℝ) + 1 + 1 := by positivity\n  refine (mul_le_mul_of_nonneg_right hδ (by positivity)).trans_lt ?_\n  apply (lt_div_iff₀ hN).2\n  nlinarith only [one_div_mul_cancel (ne_of_gt hN2),\n    sq_pos_of_pos (one_div_pos.mpr hN2)]",
+  "signature": "private lemma theta_delta_succ_lt_aux (n : ℕ) {δ : ℝ} (hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1)) :\n    δ * (1 + 1 / ((n : ℝ) + 1 + 1)) < 1 / ((n : ℝ) + 1)",
+  "body": "by\n  have hN : 0 < (n : ℝ) + 1 := by positivity\n  have hN2 : 0 < (n : ℝ) + 1 + 1 := by positivity\n  refine (mul_le_mul_of_nonneg_right hδ (by positivity)).trans_lt ?_\n  apply (lt_div_iff₀ hN).2\n  nlinarith only [one_div_mul_cancel (ne_of_gt hN2),\n    sq_pos_of_pos (one_div_pos.mpr hN2)]",
+  "proof_lines": 7,
+  "sha256": "dc8d5508979299aa4c07869bdb38bcaa211d6e85d1b86d9ae8f7298f140bbf2d",
+  "what": "The inductively inflated delta stays below the previous reciprocal dimension threshold.",
+  "how": "Multiply the reciprocal bounds and use one_div_mul_cancel plus a strict square inequality.",
+  "hypotheses": "Delta bounded by the reciprocal of the successor dimension.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.theta_phi_lt_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 145,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ]
+}
