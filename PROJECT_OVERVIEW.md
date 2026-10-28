@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 206/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 207/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 206; remaining: 87.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 63 BORDERLINE-needs-human, 40 SKIP.
+- Completed applicable assessments: 207; remaining: 86.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 64 BORDERLINE-needs-human, 40 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2390,6 +2390,27 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit call index_le_lem6 at Theta:586, one canonical direct value consumer, zero type consumers among293ordered unique proof constants. Complete module replay through Theta_lt and complete inline actual caller pass.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.min_le_sum_max.md).
 
+### Completed: `Roth.sum_max_sub_le_index_det`
+
+- Type: `∀ {τ : Type u_2} [inst : Fintype τ] {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D : Fin l → τ →₀ ℕ),
+  (∀ (μ : Fin l), Finsupp.degree (D μ) ≤ ↑μ) →
+    (Matrix.of fun (μ ν : Fin l) ↦ (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det ≠ 0 →
+      ∀ (α : Option τ → ℝ) {r : Option τ → ℕ},
+        (∀ (j : Option τ), 0 < r j) →
+          ∀ {δ : ℝ},
+            (∀ (d : τ →₀ ℕ), Finsupp.degree d ≤ l - 1 → Roth.weight (r ∘ some) d ≤ δ) →
+              ∑ ν ∈ Finset.range l, max 0 (Roth.index R α r - ↑ν / ↑(r none)) - ↑l * δ ≤
+                Roth.index
+                  (Matrix.of fun (μ ν : Fin l) ↦
+                      (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det
+                  α r`
+- What: Bounds the index of a nonzero mixed Hasse derivative determinant below by the positive-part column sum minus lδ.
+- How: Use index_sub_weight_le_index_hasseDeriv and index_nonneg to bound each nonzero entry by its positive-part column contribution minus δ. Expand with Matrix.det_apply'; index_C_mul removes each permutation sign, index_prod adds the indices of its nonzero entries, and le_index_sum transports their common lower bound to the nonzero determinant.
+- Hypotheses: Fintype τ; real coefficient/point/index interface; degree(Dμ)≤μ; nonzero determinant; positive natural denominator weights; uniform weight≤δ for every degree≤l−1 multi-index. No l>0 or separate δ≥0 premise.
+- Project dependencies: MvPolynomial.hasseDeriv, Roth.index, Roth.weight, Roth.index_sub_weight_le_index_hasseDeriv, Roth.weight_add, Roth.weight_mapDomain, Roth.weight_single, Roth.weight_nonneg, Roth.index_nonneg, Roth.le_index_sum, Roth.index_C_mul, Roth.index_prod
+- Caller summary: One explicit use in Roth.index_le_lem6 at Theta:576; zero external-file calls; exact293 audit finds one direct kernel-value consumer and zero direct type consumers. Complete caller and full Theta replay pass, including a direct weakened-signature caller.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sum_max_sub_le_index_det.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2828,6 +2849,8 @@ Completed `Roth.mul_sq_div_three_le_sum_max_aux`: If r≤0 the desired lower bou
 
 Completed `Roth.min_le_sum_max`: 15actual cells across current/standard/abstract forms plus qualified Loogle retries. Gauss sum, finite subset sum, min and floor/findGreatest APIs verified. No existing theorem or strict ≤3-existing-call term established; index warming is not absence.
 
+Completed `Roth.sum_max_sub_le_index_det`: Existing det_apply′, finite sums/products, infDegree additive/product inequalities and weightedOrder laws supply primitives; no exact determinant lower estimate located. All15current/standard/abstract search cells plus5infDegree re-aim cells executed. External indexes are not pinned absence proofs.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3241,6 +3264,8 @@ Completed `Roth.mul_sq_div_three_le_sum_max_of_pos_aux`: The helper has a distin
 Completed `Roth.mul_sq_div_three_le_sum_max_aux`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.min_le_sum_max`: Three private helpers are complementary branches, not independent unconditional minimum duplicates. index_numeric_bound_aux consumes a bound. Paper floor FACTs are bypassed by stronger direct remainder proof.
+
+Completed `Roth.sum_max_sub_le_index_det`: Abstract determinant-order argument parallels valuation/tropical determinant lower bound; Matrix.det_le is an absolute-value upper bound and is not a replacement. Project index helpers do not count as existing mathlib.
 
 ## Part 5: Generalization opportunities
 
@@ -3666,6 +3691,8 @@ Completed `Roth.mul_sq_div_three_le_sum_max_aux`: No public generality claim und
 
 Completed `Roth.min_le_sum_max`: Verified arbitrary scalar scale over ordered Field. FloorSemiring eliminated via bounded Nat.findGreatest. Quadratic /2 estimate verified; it strengthens original natural-scale /3 endpoint, whose bridge uses Nat.cast_nonneg. No uniform coefficient comparison for negative scale, minimal hierarchy or optimal constant claim.
 
+Completed `Roth.sum_max_sub_le_index_det`: Compiled new generic row/column schema for any commutative domain with supplied finite-sum, product and integer-unit invariance laws, with values in an ordered additive commutative group. Compiled project weakening replaces hD plus globalhδ by only ∀μ weight(Dμ)≤δ; original follows and actual caller compiles. No bundled valuation or arbitrary-coefficient Hasse replacement is claimed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4080,6 +4107,8 @@ Completed `Roth.mul_sq_div_three_le_sum_max_of_pos_aux`: No new primitive is nee
 Completed `Roth.mul_sq_div_three_le_sum_max_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.min_le_sum_max`: Potential finite positive-part arithmetic-progression estimate at ordered-field level, with quadratic denominator2; audience and public endpoint versus branch API remain design questions. All candidate helpers are newly proved.
+
+Completed `Roth.sum_max_sub_le_index_det`: Upstream design choice: generic determinant lower bound against valuation/infDegree with top, and separation of entry Hasse bound from matrix transport. Current real index maps zero to0, requiring nonvanishing guards.
 
 ## Part 7: Junk / removable
 
@@ -4498,6 +4527,8 @@ Completed `Roth.mul_sq_div_three_le_sum_max_aux`: Retain a live private proof in
 
 Completed `Roth.min_le_sum_max`: Not dead: sole explicit determinant-index consumer is substantive; no simp attribute or external deadness claim.
 
+Completed `Roth.sum_max_sub_le_index_det`: Live, not simp-tagged; one explicit caller and one canonical value consumer. Its source formula is specialized proof plumbing, while its matrix layer is reusable.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4708,6 +4739,7 @@ Completed `Roth.min_le_sum_max`: Not dead: sole explicit determinant-index consu
 | 204 | `Roth.mul_sq_div_three_le_sum_max_of_pos_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_sq_div_three_le_sum_max_of_pos_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_sq_div_three_le_sum_max_of_pos_aux/root-acceptance.json) |
 | 205 | `Roth.mul_sq_div_three_le_sum_max_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_sq_div_three_le_sum_max_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_sq_div_three_le_sum_max_aux/root-acceptance.json) |
 | 206 | `Roth.min_le_sum_max` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.min_le_sum_max.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.min_le_sum_max/root-acceptance.json) |
+| 207 | `Roth.sum_max_sub_le_index_det` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_max_sub_le_index_det.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_max_sub_le_index_det/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5119,12 +5151,14 @@ Completed `Roth.mul_sq_div_three_le_sum_max_aux` action: Keep unchanged; complet
 
 Completed `Roth.min_le_sum_max` action: BORDERLINE-needs-human: decide general positive-part sum demand and /2 ordered-field endpoint grain. Keep local numerical theorem pending that decision; actual caller may specialize new general proof or inline verified project case split. No production edits.
 
+Completed `Roth.sum_max_sub_le_index_det` action: Retain locally in Theta pending upstream interface choice. If extracted, prefer a generic determinant-order API then keep Hasse specialization local; per-row weight weakening is already mechanically validated. No production edits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.sum_max_sub_le_index_det` next. Supporting identities receive their own applicable checks.
+   `Roth.index_separated_mul_le_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

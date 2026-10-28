@@ -1,0 +1,54 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+
+#check_failure Roth.sum_max_sub_le_index_det
+#check @Matrix.det_apply'
+#check @Equiv.sum_comp
+#check @MvPowerSeries.min_weightedOrder_le_add
+#check @MvPowerSeries.le_weightedOrder_prod
+#check @MvPowerSeries.weightedOrder_mul
+namespace Det207
+variable {A : Type*} [CommRing A] [IsDomain A]
+
+theorem lowerDet (v : A → ℝ)
+    (hsum : ∀ {ι : Type*} [Fintype ι] (f : ι → A) (c : ℝ),
+      ∑ i, f i ≠ 0 → (∀ i, f i ≠ 0 → c ≤ v (f i)) → c ≤ v (∑ i, f i))
+    (hprod : ∀ {ι : Type*} [Fintype ι] (f : ι → A),
+      (∀ i, f i ≠ 0) → v (∏ i, f i) = ∑ i, v (f i))
+    (hunit : ∀ (u : ℤˣ) (x : A), v ((u : ℤ) * x) = v x)
+    {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n A) (row col : n → ℝ)
+    (hdet : M.det ≠ 0) (hentry : ∀ i j, M i j ≠ 0 → col j - row i ≤ v (M i j)) :
+    ∑ j, col j - ∑ i, row i ≤ v M.det := by
+  classical
+  fail_if_success solve | simp
+  rw [Matrix.det_apply'] at hdet ⊢
+  apply hsum _ _ hdet
+  intro s hs
+  have hp : ∏ i, M (s i) i ≠ 0 := (mul_ne_zero_iff.mp hs).2
+  have he (i : n) : M (s i) i ≠ 0 :=
+    (Finset.prod_ne_zero_iff.1 hp) i (Finset.mem_univ _)
+  rw [hunit, hprod _ he]
+  calc
+    ∑ j, col j - ∑ i, row i = ∑ j, (col j - row (s j)) := by
+      rw [Finset.sum_sub_distrib, Equiv.sum_comp s]
+    _ ≤ ∑ i, v (M (s i) i) := Finset.sum_le_sum fun i _ ↦ hentry (s i) i (he i)
+
+#print axioms lowerDet
+end Det207

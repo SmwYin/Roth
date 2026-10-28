@@ -1,0 +1,216 @@
+{
+  "declaration": "Roth.sum_max_sub_le_index_det",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "det207-original-executed.lean.txt",
+      "source_sha256": "0a8e502d55b67dc7d877aeb383b5651fd4f1bcc939c97e3c94e1cc635077659c",
+      "receipt": "det207-original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "'Roth.sum_max_sub_le_index_det' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "DET207_FULL_TYPE: ∀ {τ : Type u_2} [inst : Fintype τ] {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D : Fin l → τ →₀ ℕ),\n  (∀ (μ : Fin l), Finsupp.degree (D μ) ≤ ↑μ) →\n    (Matrix.of fun (μ ν : Fin l) ↦ (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det ≠ 0 →\n      ∀ (α : Option τ → ℝ) {r : Option τ → ℕ},\n        (∀ (j : Option τ), 0 < r j) →\n          ∀ {δ : ℝ},\n            (∀ (d : τ →₀ ℕ), Finsupp.degree d ≤ l - 1 → Roth.weight (r ∘ some) d ≤ δ) →\n              ∑ ν ∈ Finset.range l, max 0 (Roth.index R α r - ↑ν / ↑(r none)) - ↑l * δ ≤\n                Roth.index\n                  (Matrix.of fun (μ ν : Fin l) ↦\n                      (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det\n                  α r",
+        "DET207_DIRECT_CONSUMER: Roth.index_le_lem6",
+        "DET207_AUDIT: requested=293; unique=293",
+        "DET207_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "raw",
+      "source": "det207-isolated-executed.lean.txt",
+      "source_sha256": "38725c6de0ea1d42ffec676f1d6485a03ae28efd059ea79e01ba8ef319c38b34",
+      "receipt": "det207-isolated-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n\n#check_failure Roth.sum_max_sub_le_index_det\n#check @Matrix.det_apply'\n#check @Equiv.sum_comp\n#check @MvPowerSeries.min_weightedOrder_le_add\n#check @MvPowerSeries.le_weightedOrder_prod\n#check @MvPowerSeries.weightedOrder_mul\nnamespace Det207\nuniverse u\nvariable {A : Type*} [CommRing A] [IsDomain A]\n\ntheorem lowerDet (v : A → ℝ)\n    (hsum : ∀ {ι : Type u} [Fintype ι] (f : ι → A) (c : ℝ),\n      ∑ i, f i ≠ 0 → (∀ i, f i ≠ 0 → c ≤ v (f i)) → c ≤ v (∑ i, f i))\n    (hprod : ∀ {ι : Type u} [Fintype ι] (f : ι → A),\n      (∀ i, f i ≠ 0) → v (∏ i, f i) = ∑ i, v (f i))\n    (hunit : ∀ (u : ℤˣ) (x : A), v ((u : ℤ) * x) = v x)\n    {n : Type u} [Fintype n] [DecidableEq n] (M : Matrix n n A) (row col : n → ℝ)\n    (hdet : M.det ≠ 0) (hentry : ∀ i j, M i j ≠ 0 → col j - row i ≤ v (M i j)) :\n    ∑ j, col j - ∑ i, row i ≤ v M.det := by\n  classical\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  rw [Matrix.det_apply'] at hdet ⊢\n  apply hsum _ _ hdet\n  intro s hs\n  have hp : ∏ i, M (s i) i ≠ 0 := (mul_ne_zero_iff.mp hs).2\n  have he (i : n) : M (s i) i ≠ 0 :=\n    (Finset.prod_ne_zero_iff.1 hp) i (Finset.mem_univ _)\n  rw [hunit, hprod _ he]\n  calc\n    ∑ j, col j - ∑ i, row i = ∑ j, (col j - row (s j)) := by\n      rw [Finset.sum_sub_distrib, Equiv.sum_comp s]\n    _ ≤ ∑ i, v (M (s i) i) := Finset.sum_le_sum fun i _ ↦ hentry (s i) i (he i)\n\n#print axioms lowerDet\nend Det207\n"
+      },
+      "native_region_start_line": 21,
+      "required_info": [
+        "@Matrix.det_apply' : ∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_1} [inst_2 : CommRing R]\n  (M : Matrix n n R), M.det = ∑ σ, ↑↑(Equiv.Perm.sign σ) * ∏ i, M (σ i) i",
+        "@Equiv.sum_comp : ∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : Fintype ι] [inst_1 : Fintype κ]\n  [inst_2 : AddCommMonoid M] (e : ι ≃ κ) (g : κ → M), ∑ i, g (e i) = ∑ i, g i",
+        "@MvPowerSeries.min_weightedOrder_le_add : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\n  {f g : MvPowerSeries σ R},\n  min (MvPowerSeries.weightedOrder w f) (MvPowerSeries.weightedOrder w g) ≤ MvPowerSeries.weightedOrder w (f + g)",
+        "@MvPowerSeries.le_weightedOrder_prod : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] {ι : Type u_3}\n  (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι),\n  ∑ i ∈ s, MvPowerSeries.weightedOrder w (f i) ≤ MvPowerSeries.weightedOrder w (∏ i ∈ s, f i)",
+        "@MvPowerSeries.weightedOrder_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ)\n  (f g : MvPowerSeries σ R),\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g",
+        "'Det207.lowerDet' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "positive",
+      "format": "raw",
+      "source": "det207-positive-executed.lean.txt",
+      "source_sha256": "6daf38b7b562ac64f3f83279e3ec73099fe8cb18ab116f9e7b393988ed65c62f",
+      "receipt": "det207-positive-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sum_max_sub_le_index_det\n#check @AddMonoidAlgebra.infDegree\n#check @AddMonoidAlgebra.le_infDegree_add\n#check @AddMonoidAlgebra.le_infDegree_mul\n#check @AddMonoidAlgebra.le_inf_support_coeff_finsetProd\n#check @MvPowerSeries.weightedOrder_neg\n"
+      },
+      "native_region_start_line": 20,
+      "required_info": [
+        "@AddMonoidAlgebra.infDegree : {R : Type u_1} →\n  {A : Type u_2} →\n    {T : Type u_3} →\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T",
+        "@AddMonoidAlgebra.le_infDegree_add : ∀ {R : Type u_1} {A : Type u_2} {T : Type u_3} [inst : Semiring R]\n  [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T] (D : A → T) (f g : AddMonoidAlgebra R A),\n  AddMonoidAlgebra.infDegree D f ⊓ AddMonoidAlgebra.infDegree D g ≤ AddMonoidAlgebra.infDegree D (f + g)",
+        "@AddMonoidAlgebra.le_infDegree_mul : ∀ {R : Type u_1} {A : Type u_2} {T : Type u_3} [inst : Semiring R]\n  [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T] [inst_3 : AddZeroClass A] [inst_4 : Add T] [AddLeftMono T]\n  [AddRightMono T] (D : A →ₙ+ T) (f g : AddMonoidAlgebra R A),\n  AddMonoidAlgebra.infDegree (⇑D) f + AddMonoidAlgebra.infDegree (⇑D) g ≤ AddMonoidAlgebra.infDegree (⇑D) (f * g)",
+        "@AddMonoidAlgebra.le_inf_support_coeff_finsetProd : ∀ {R : Type u_1} {A : Type u_2} {T : Type u_3} {ι : Type u_4}\n  [inst : SemilatticeInf T] [inst_1 : OrderTop T] [inst_2 : CommSemiring R] [inst_3 : AddCommMonoid A]\n  [inst_4 : AddCommMonoid T] [AddLeftMono T] [AddRightMono T] {degt : A → T},\n  0 ≤ degt 0 →\n    (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\n      ∀ (s : Finset ι) (f : ι → AddMonoidAlgebra R A),\n        ∑ i ∈ s, (f i).coeff.support.inf degt ≤ (∏ i ∈ s, f i).coeff.support.inf degt",
+        "@MvPowerSeries.weightedOrder_neg : ∀ {σ : Type u_1} (w : σ → ℕ) {R : Type u_2} [inst : Ring R] (f : MvPowerSeries σ R),\n  MvPowerSeries.weightedOrder w (-f) = MvPowerSeries.weightedOrder w f"
+      ]
+    },
+    {
+      "label": "group",
+      "format": "raw",
+      "source": "det207-group-executed.lean.txt",
+      "source_sha256": "0d3761df5a1a0f9a1e3d59f56c8c06967429c8b5730aa14a14cde33549b961d3",
+      "receipt": "det207-group-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n\n#check_failure Roth.sum_max_sub_le_index_det\n#check @Matrix.det_apply'\n#check @Equiv.sum_comp\n#check @MvPowerSeries.min_weightedOrder_le_add\n#check @MvPowerSeries.le_weightedOrder_prod\n#check @MvPowerSeries.weightedOrder_mul\nnamespace Det207Group\nuniverse u\nvariable {A : Type*} [CommRing A] [IsDomain A]\nvariable {Γ : Type*} [AddCommGroup Γ] [PartialOrder Γ] [IsOrderedAddMonoid Γ]\n\ntheorem lowerDet (v : A → Γ)\n    (hsum : ∀ {ι : Type u} [Fintype ι] (f : ι → A) (c : Γ),\n      ∑ i, f i ≠ 0 → (∀ i, f i ≠ 0 → c ≤ v (f i)) → c ≤ v (∑ i, f i))\n    (hprod : ∀ {ι : Type u} [Fintype ι] (f : ι → A),\n      (∀ i, f i ≠ 0) → v (∏ i, f i) = ∑ i, v (f i))\n    (hunit : ∀ (u : ℤˣ) (x : A), v ((u : ℤ) * x) = v x)\n    {n : Type u} [Fintype n] [DecidableEq n] (M : Matrix n n A) (row col : n → Γ)\n    (hdet : M.det ≠ 0) (hentry : ∀ i j, M i j ≠ 0 → col j - row i ≤ v (M i j)) :\n    ∑ j, col j - ∑ i, row i ≤ v M.det := by\n  classical\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  rw [Matrix.det_apply'] at hdet ⊢\n  apply hsum _ _ hdet\n  intro s hs\n  have hp : ∏ i, M (s i) i ≠ 0 := (mul_ne_zero_iff.mp hs).2\n  have he (i : n) : M (s i) i ≠ 0 :=\n    (Finset.prod_ne_zero_iff.1 hp) i (Finset.mem_univ _)\n  rw [hunit, hprod _ he]\n  calc\n    ∑ j, col j - ∑ i, row i = ∑ j, (col j - row (s j)) := by\n      rw [Finset.sum_sub_distrib, Equiv.sum_comp s]\n    _ ≤ ∑ i, v (M (s i) i) := Finset.sum_le_sum fun i _ ↦ hentry (s i) i (he i)\n\n#print axioms lowerDet\nend Det207Group\n"
+      },
+      "native_region_start_line": 21,
+      "required_info": [
+        "@Matrix.det_apply' : ∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_1} [inst_2 : CommRing R]\n  (M : Matrix n n R), M.det = ∑ σ, ↑↑(Equiv.Perm.sign σ) * ∏ i, M (σ i) i",
+        "@Equiv.sum_comp : ∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : Fintype ι] [inst_1 : Fintype κ]\n  [inst_2 : AddCommMonoid M] (e : ι ≃ κ) (g : κ → M), ∑ i, g (e i) = ∑ i, g i",
+        "@MvPowerSeries.min_weightedOrder_le_add : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\n  {f g : MvPowerSeries σ R},\n  min (MvPowerSeries.weightedOrder w f) (MvPowerSeries.weightedOrder w g) ≤ MvPowerSeries.weightedOrder w (f + g)",
+        "@MvPowerSeries.le_weightedOrder_prod : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] {ι : Type u_3}\n  (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι),\n  ∑ i ∈ s, MvPowerSeries.weightedOrder w (f i) ≤ MvPowerSeries.weightedOrder w (∏ i ∈ s, f i)",
+        "@MvPowerSeries.weightedOrder_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ)\n  (f g : MvPowerSeries σ R),\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g",
+        "'Det207Group.lowerDet' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "fullmodule",
+      "format": "disk",
+      "source": "det207-fullmodule-executed.lean.txt",
+      "source_sha256": "808821c528e0f5e2213fddc2ff624f6e7ea497a00837aa985f5d46f6c2b18590",
+      "receipt": "det207-fullmodule-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "'Det207.lowerDet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Det207Project.indexDet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Det207Project.weak' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Det207Replay.index_le_lem6' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Det207Replay.directWeakCaller' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Det207Guards.actualNonzeroGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Det207Guards.indexX' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Det207Guards.indexZero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Det207Guards.zeroDetGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Det207Replay.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "DET207_DIRECT_CONSUMER: Roth.index_le_lem6",
+        "DET207_AUDIT: requested=293; unique=293",
+        "DET207_AUDIT_PRESENT: present=293; values=293"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "label": "isolated-rejected",
+      "format": "raw",
+      "accepted": false,
+      "source": "det207-isolated-rejected-executed.lean.txt",
+      "source_sha256": "a37c0a087024783999bfeae21d605f6ffe7adab7b79440f7fd5b1860c596edf7",
+      "receipt": "det207-isolated-rejected-receipt.json",
+      "reason": "Independent universes on quantified finite-index laws could not unify with matrix index universe; fixed by common universe u."
+    },
+    {
+      "label": "fullmodule-rejected",
+      "format": "disk",
+      "accepted": false,
+      "source": "det207-fullmodule-rejected-executed.lean.txt",
+      "source_sha256": "d7274d3607e9c0ce4db2fcb39c6bcc435b5c615f1a38d742214e16b52dc4e78d",
+      "receipt": "det207-fullmodule-rejected-receipt.json",
+      "reason": "Finite sum normalization needed explicit Fin.sum_univ_eq_sum_range; appended caller needed section Fintype context."
+    },
+    {
+      "label": "fullmodule-warning",
+      "format": "disk",
+      "accepted": false,
+      "source": "det207-fullmodule-warning-executed.lean.txt",
+      "source_sha256": "60803c944c81b61362f97fef0b923a73622ca79ab000057de7e2ff3ab7679f42",
+      "receipt": "det207-fullmodule-warning-receipt.json",
+      "reason": "Caller replay lacked omit DecidableEq; warnings only, not accepted."
+    },
+    {
+      "label": "fullmodule-guard-warning",
+      "format": "disk",
+      "accepted": false,
+      "source": "det207-fullmodule-guard-warning-executed.lean.txt",
+      "source_sha256": "4cb9971ed79aef0d8dfe46cbe7ac547eb5549b38ffb3bffdf1eb1039957a3af5",
+      "receipt": "det207-fullmodule-guard-warning-receipt.json",
+      "reason": "Guard had unused taylor_zero simp argument; removed."
+    },
+    {
+      "label": "positive-warning",
+      "format": "raw",
+      "accepted": false,
+      "source": "det207-positive-warning-executed.lean.txt",
+      "source_sha256": "9a8a092cb10d432572d881e9fc5f9e267a05a172c090a9d453ad07be56294569",
+      "receipt": "det207-positive-warning-receipt.json",
+      "reason": "Remote hit used deprecated le_inf_support_finset_prod; replaced with pinned le_inf_support_coeff_finsetProd."
+    },
+    {
+      "label": "fullmodule-actual-rejected",
+      "format": "disk",
+      "accepted": false,
+      "source": "det207-fullmodule-actual-rejected-executed.lean.txt",
+      "source_sha256": "cc96c883ad21ac22bd432850a6b52d0f7c98408025db8e4cbc9842dca3d6a303",
+      "receipt": "det207-fullmodule-actual-rejected-receipt.json",
+      "reason": "Option Empty default normalization and commutative determinant cancellation required explicit steps."
+    }
+  ],
+  "historical": [
+    {
+      "label": "isolated-initial",
+      "format": "raw",
+      "source": "det207-isolated-initial-executed.lean.txt",
+      "source_sha256": "857d3421f292f98b432b52fc87481878876ff49d82bc5189054524f2df66c661",
+      "receipt": "det207-isolated-initial-receipt.json",
+      "accepted": false,
+      "reason": "Clean prior execution retained; final accepted sources supersede it."
+    },
+    {
+      "label": "fullmodule-intermediate",
+      "format": "disk",
+      "source": "det207-fullmodule-intermediate-executed.lean.txt",
+      "source_sha256": "409e4ecdfde2c53aba1684e34ff4b51cf5c9690f2bacdf8202fa9bde6e3c5d46",
+      "receipt": "det207-fullmodule-intermediate-receipt.json",
+      "accepted": false,
+      "reason": "Clean prior execution retained; final accepted sources supersede it."
+    },
+    {
+      "label": "fullmodule-prior",
+      "format": "disk",
+      "source": "det207-fullmodule-prior-executed.lean.txt",
+      "source_sha256": "b6787b335466104800616e0fe2854096a61338aaaa6c6d0044e511a5d6f12f9f",
+      "receipt": "det207-fullmodule-prior-receipt.json",
+      "accepted": false,
+      "reason": "Clean prior execution retained; final accepted sources supersede it."
+    }
+  ],
+  "canonical_direct_consumers": [
+    "Roth.index_le_lem6"
+  ],
+  "canonical_direct_type_consumers": [],
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "parent_project_helpers_counted_as_mathlib_blocks": false,
+    "new_helpers_counted_as_existing": false,
+    "actual_caller_replays": 1,
+    "actual_call_occurrences": 1,
+    "direct_weakened_caller_replays": 1,
+    "full_module_replay": true,
+    "no_global_absence_claim": true,
+    "probes": [
+      "exact?",
+      "simp",
+      "positivity"
+    ],
+    "probe_location": "Det207.lowerDet before any determinant helper is available"
+  }
+}

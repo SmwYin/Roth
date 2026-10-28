@@ -1,0 +1,28 @@
+{
+  "type": "∀ {τ : Type u_2} [inst : Fintype τ] {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D : Fin l → τ →₀ ℕ),\n  (∀ (μ : Fin l), Finsupp.degree (D μ) ≤ ↑μ) →\n    (Matrix.of fun (μ ν : Fin l) ↦ (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det ≠ 0 →\n      ∀ (α : Option τ → ℝ) {r : Option τ → ℕ},\n        (∀ (j : Option τ), 0 < r j) →\n          ∀ {δ : ℝ},\n            (∀ (d : τ →₀ ℕ), Finsupp.degree d ≤ l - 1 → Roth.weight (r ∘ some) d ≤ δ) →\n              ∑ ν ∈ Finset.range l, max 0 (Roth.index R α r - ↑ν / ↑(r none)) - ↑l * δ ≤\n                Roth.index\n                  (Matrix.of fun (μ ν : Fin l) ↦\n                      (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det\n                  α r",
+  "kind": "theorem",
+  "what": "Bounds the index of a nonzero mixed Hasse derivative determinant below by the positive-part column sum minus lδ.",
+  "how": "Use index_sub_weight_le_index_hasseDeriv and index_nonneg to bound each nonzero entry by its positive-part column contribution minus δ. Expand with Matrix.det_apply'; index_C_mul removes each permutation sign, index_prod adds the indices of its nonzero entries, and le_index_sum transports their common lower bound to the nonzero determinant.",
+  "hypotheses": "Fintype τ; real coefficient/point/index interface; degree(Dμ)≤μ; nonzero determinant; positive natural denominator weights; uniform weight≤δ for every degree≤l−1 multi-index. No l>0 or separate δ≥0 premise.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.index",
+    "Roth.weight",
+    "Roth.index_sub_weight_le_index_hasseDeriv",
+    "Roth.weight_add",
+    "Roth.weight_mapDomain",
+    "Roth.weight_single",
+    "Roth.weight_nonneg",
+    "Roth.index_nonneg",
+    "Roth.le_index_sum",
+    "Roth.index_C_mul",
+    "Roth.index_prod"
+  ],
+  "caller_summary": "One explicit use in Roth.index_le_lem6 at Theta:576; zero external-file calls; exact293 audit finds one direct kernel-value consumer and zero direct type consumers. Complete caller and full Theta replay pass, including a direct weakened-signature caller.",
+  "mathlib_api_audit": "Existing det_apply′, finite sums/products, infDegree additive/product inequalities and weightedOrder laws supply primitives; no exact determinant lower estimate located. All15current/standard/abstract search cells plus5infDegree re-aim cells executed. External indexes are not pinned absence proofs.",
+  "moral_duplications": "Abstract determinant-order argument parallels valuation/tropical determinant lower bound; Matrix.det_le is an absolute-value upper bound and is not a replacement. Project index helpers do not count as existing mathlib.",
+  "generalization": "Compiled new generic row/column schema for any commutative domain with supplied finite-sum, product and integer-unit invariance laws, with values in an ordered additive commutative group. Compiled project weakening replaces hD plus globalhδ by only ∀μ weight(Dμ)≤δ; original follows and actual caller compiles. No bundled valuation or arbitrary-coefficient Hasse replacement is claimed.",
+  "missing_api": "Upstream design choice: generic determinant lower bound against valuation/infDegree with top, and separation of entry Hasse bound from matrix transport. Current real index maps zero to0, requiring nonvanishing guards.",
+  "junk": "Live, not simp-tagged; one explicit caller and one canonical value consumer. Its source formula is specialized proof plumbing, while its matrix layer is reusable.",
+  "action": "Retain locally in Theta pending upstream interface choice. If extracted, prefer a generic determinant-order API then keep Hasse specialization local; per-row weight weakening is already mechanically validated. No production edits."
+}

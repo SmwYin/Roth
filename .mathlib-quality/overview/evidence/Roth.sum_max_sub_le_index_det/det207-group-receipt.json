@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n\n#check_failure Roth.sum_max_sub_le_index_det\n#check @Matrix.det_apply'\n#check @Equiv.sum_comp\n#check @MvPowerSeries.min_weightedOrder_le_add\n#check @MvPowerSeries.le_weightedOrder_prod\n#check @MvPowerSeries.weightedOrder_mul\nnamespace Det207Group\nuniverse u\nvariable {A : Type*} [CommRing A] [IsDomain A]\nvariable {Γ : Type*} [AddCommGroup Γ] [PartialOrder Γ] [IsOrderedAddMonoid Γ]\n\ntheorem lowerDet (v : A → Γ)\n    (hsum : ∀ {ι : Type u} [Fintype ι] (f : ι → A) (c : Γ),\n      ∑ i, f i ≠ 0 → (∀ i, f i ≠ 0 → c ≤ v (f i)) → c ≤ v (∑ i, f i))\n    (hprod : ∀ {ι : Type u} [Fintype ι] (f : ι → A),\n      (∀ i, f i ≠ 0) → v (∏ i, f i) = ∑ i, v (f i))\n    (hunit : ∀ (u : ℤˣ) (x : A), v ((u : ℤ) * x) = v x)\n    {n : Type u} [Fintype n] [DecidableEq n] (M : Matrix n n A) (row col : n → Γ)\n    (hdet : M.det ≠ 0) (hentry : ∀ i j, M i j ≠ 0 → col j - row i ≤ v (M i j)) :\n    ∑ j, col j - ∑ i, row i ≤ v M.det := by\n  classical\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  rw [Matrix.det_apply'] at hdet ⊢\n  apply hsum _ _ hdet\n  intro s hs\n  have hp : ∏ i, M (s i) i ≠ 0 := (mul_ne_zero_iff.mp hs).2\n  have he (i : n) : M (s i) i ≠ 0 :=\n    (Finset.prod_ne_zero_iff.1 hp) i (Finset.mem_univ _)\n  rw [hunit, hprod _ he]\n  calc\n    ∑ j, col j - ∑ i, row i = ∑ j, (col j - row (s j)) := by\n      rw [Finset.sum_sub_distrib, Equiv.sum_comp s]\n    _ ≤ ∑ i, v (M (s i) i) := Finset.sum_le_sum fun i _ ↦ hentry (s i) i (he i)\n\n#print axioms lowerDet\nend Det207Group\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sum_max_sub_le_index_det`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Matrix.det_apply' : ∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_1} [inst_2 : CommRing R]\\n  (M : Matrix n n R), M.det = ∑ σ, ↑↑(Equiv.Perm.sign σ) * ∏ i, M (σ i) i\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Equiv.sum_comp : ∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : Fintype ι] [inst_1 : Fintype κ]\\n  [inst_2 : AddCommMonoid M] (e : ι ≃ κ) (g : κ → M), ∑ i, g (e i) = ∑ i, g i\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.min_weightedOrder_le_add : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\\n  {f g : MvPowerSeries σ R},\\n  min (MvPowerSeries.weightedOrder w f) (MvPowerSeries.weightedOrder w g) ≤ MvPowerSeries.weightedOrder w (f + g)\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.le_weightedOrder_prod : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] {ι : Type u_3}\\n  (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι),\\n  ∑ i ∈ s, MvPowerSeries.weightedOrder w (f i) ≤ MvPowerSeries.weightedOrder w (∏ i ∈ s, f i)\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.weightedOrder_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ)\\n  (f g : MvPowerSeries σ R),\\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Det207Group.lowerDet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 57,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sum_max_sub_le_index_det`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Matrix.det_apply' : ∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_1} [inst_2 : CommRing R]\n  (M : Matrix n n R), M.det = ∑ σ, ↑↑(Equiv.Perm.sign σ) * ∏ i, M (σ i) i",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Equiv.sum_comp : ∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : Fintype ι] [inst_1 : Fintype κ]\n  [inst_2 : AddCommMonoid M] (e : ι ≃ κ) (g : κ → M), ∑ i, g (e i) = ∑ i, g i",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.min_weightedOrder_le_add : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\n  {f g : MvPowerSeries σ R},\n  min (MvPowerSeries.weightedOrder w f) (MvPowerSeries.weightedOrder w g) ≤ MvPowerSeries.weightedOrder w (f + g)",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.le_weightedOrder_prod : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] {ι : Type u_3}\n  (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι),\n  ∑ i ∈ s, MvPowerSeries.weightedOrder w (f i) ≤ MvPowerSeries.weightedOrder w (∏ i ∈ s, f i)",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.weightedOrder_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ)\n  (f g : MvPowerSeries σ R),\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Det207Group.lowerDet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 57,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 4015
+}
