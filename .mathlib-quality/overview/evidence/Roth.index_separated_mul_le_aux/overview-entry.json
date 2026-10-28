@@ -1,0 +1,26 @@
+{
+  "declaration": "Roth.index_separated_mul_le_aux",
+  "kind": "lemma",
+  "type": "∀ {τ : Type u_2} [inst : Fintype τ] {r : Option τ → ℕ},\n  (∀ (j : Option τ), 0 < r j) →\n    ∀ {q : Option τ → ℕ} {h : Option τ → ℤ},\n      (∀ (j : Option τ), IsCoprime (h j) ↑(q j)) →\n        ∀ {M : ℝ} {l : ℕ},\n          0 < l →\n            ∀ {U : MvPolynomial τ ℤ},\n              (U ∈ Roth.RSet M fun j ↦ l * r (some j)) →\n                ∀ {V : Polynomial ℤ},\n                  V ≠ 0 →\n                    V.natDegree ≤ l * r none →\n                      (∀ (b : ℕ), |↑(V.coeff b)| ≤ M) →\n                        Roth.index ((map (Int.castRingHom ℝ)) ((rename some) U * (Polynomial.aeval (X none)) V))\n                            (fun j ↦ ↑(h j) / ↑(q j)) r ≤\n                          ↑l * Roth.lem6Φ q r M l",
+  "what": "A separated integer polynomial product with bounded scaled degrees and coefficients has point index at most l times the sum of its distinguished-variable and complementary extremal indices.",
+  "how": "Convert the univariate factor through uniqueAlgEquiv, use index_mul and index_rename, then index_le_Θ and index_mul_left_weights for both factors.",
+  "hypotheses": "Positive degree weights and scale; coprime point; nonzero separated factors with scaled degree and coefficient bounds. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.RSet",
+    "Roth.aeval_X_eq_rename",
+    "Roth.degreeOf_uniqueAlgEquiv_symm",
+    "Roth.index",
+    "Roth.index_le_Θ",
+    "Roth.index_mul",
+    "Roth.index_mul_left_weights",
+    "Roth.index_rename",
+    "Roth.lem6Φ"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Represent the univariate factor as a Unit-variable multivariate polynomial via uniqueAlgEquiv and prove membership in its scaled RSet from the degree and coefficient bounds. Injective coefficient maps and disjoint renamings preserve nonzero factors. Use index_mul and index_rename to split the product index, apply index_le_Θ to both admissible factors, then index_mul_left_weights and positivity of l clear the two divisions. This is the private separated-factor-to-extremal-index bridge used by index_det_le; it is distinct from determinant coefficient bounds and from the Hasse determinant lower estimate.",
+  "moral_duplications": "The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

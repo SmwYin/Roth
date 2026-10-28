@@ -1,0 +1,77 @@
+[
+  {
+    "file": "Roth/Theta.lean",
+    "line": 457,
+    "name": "Roth.index_det_le",
+    "short": "index_det_le",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 491,
+    "source": "theorem index_det_le {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁)\n    {q : Option τ → ℕ} {B : ℝ} {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r)\n    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {l : ℕ} (hl : 1 ≤ l)\n    {D : Fin l → (τ →₀ ℕ)} {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)\n    (hUd : ∀ j, degreeOf j U ≤ l * r (some j)) (hVd : V.natDegree ≤ l * r none)\n    (hF : (Matrix.of fun μ ν : Fin l ↦\n        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =\n      rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :\n    index (map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦\n        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det)\n      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l := by\n  classical\n  -- Step 1: the coefficients of `F` are bounded by `M`.\n  have hFcoef (d) : |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv\n      ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det.coeff d : ℤ) : ℝ)| ≤\n      lem6M (Fintype.card τ + 1) r₁ B l := by\n    simpa only [lem6M, Finset.prod_const, Finset.sum_const, Finset.card_univ,\n      Fintype.card_option, nsmul_eq_mul, Nat.cast_id, pow_mul, mul_right_comm] using\n      abs_coeff_det_hasseDeriv_le _ R (r := fun _ ↦ r₁) (fun j ↦ (hR.2.1 j).trans (hr₁ j))\n        ((abs_nonneg ((R.coeff 0 : ℤ) : ℝ)).trans (hR.2.2 0)) hR.2.2 d\n  -- Step 2: the coefficients of `U` and `V` are bounded by `M`.\n  have hUc : ∀ a, |((U.coeff a : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun a ↦ by\n    have h1 := hFcoef (a.mapDomain some + Finsupp.single none V.natDegree)\n    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1\n    exact (le_mul_of_one_le_right (abs_nonneg _) (by\n      exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hV))).trans h1\n  have hVc : ∀ b, |((V.coeff b : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun b ↦ by\n    obtain ⟨a₀, ha₀⟩ := MvPolynomial.ne_zero_iff.1 hU\n    have h1 := hFcoef (a₀.mapDomain some + Finsupp.single none b)\n    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1\n    exact (le_mul_of_one_le_left (abs_nonneg _) (by\n      exact_mod_cast Int.one_le_abs ha₀)).trans h1\n  -- Step 3: Lemma 4-2, the index of the product of polynomials in separate variables.\n  rw [hF]\n  exact index_separated_mul_le_aux hr0 hh hl ⟨hU, hUd, hUc⟩ hV hVd hVc",
+    "signature": "theorem index_det_le {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁)\n    {q : Option τ → ℕ} {B : ℝ} {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r)\n    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {l : ℕ} (hl : 1 ≤ l)\n    {D : Fin l → (τ →₀ ℕ)} {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)\n    (hUd : ∀ j, degreeOf j U ≤ l * r (some j)) (hVd : V.natDegree ≤ l * r none)\n    (hF : (Matrix.of fun μ ν : Fin l ↦\n        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =\n      rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :\n    index (map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦\n        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det)\n      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l",
+    "body": "by\n  classical\n  -- Step 1: the coefficients of `F` are bounded by `M`.\n  have hFcoef (d) : |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv\n      ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det.coeff d : ℤ) : ℝ)| ≤\n      lem6M (Fintype.card τ + 1) r₁ B l := by\n    simpa only [lem6M, Finset.prod_const, Finset.sum_const, Finset.card_univ,\n      Fintype.card_option, nsmul_eq_mul, Nat.cast_id, pow_mul, mul_right_comm] using\n      abs_coeff_det_hasseDeriv_le _ R (r := fun _ ↦ r₁) (fun j ↦ (hR.2.1 j).trans (hr₁ j))\n        ((abs_nonneg ((R.coeff 0 : ℤ) : ℝ)).trans (hR.2.2 0)) hR.2.2 d\n  -- Step 2: the coefficients of `U` and `V` are bounded by `M`.\n  have hUc : ∀ a, |((U.coeff a : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun a ↦ by\n    have h1 := hFcoef (a.mapDomain some + Finsupp.single none V.natDegree)\n    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1\n    exact (le_mul_of_one_le_right (abs_nonneg _) (by\n      exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hV))).trans h1\n  have hVc : ∀ b, |((V.coeff b : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun b ↦ by\n    obtain ⟨a₀, ha₀⟩ := MvPolynomial.ne_zero_iff.1 hU\n    have h1 := hFcoef (a₀.mapDomain some + Finsupp.single none b)\n    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1\n    exact (le_mul_of_one_le_left (abs_nonneg _) (by\n      exact_mod_cast Int.one_le_abs ha₀)).trans h1\n  -- Step 3: Lemma 4-2, the index of the product of polynomials in separate variables.\n  rw [hF]\n  exact index_separated_mul_le_aux hr0 hh hl ⟨hU, hUd, hUc⟩ hV hVd hVc",
+    "proof_lines": 25,
+    "sha256": "3309f794fae938d37c1d3c4b42bb79d2ade1c3eae2f456206db7d474f137a98a",
+    "what": "The separated determinant index has the upper bound needed in Lemma6.",
+    "how": "Apply abs_coeff_det_hasseDeriv_le, extract separate factor coefficient bounds with coeff_rename_mul_aeval and integral nonzero coefficients, then invoke index_separated_mul_le_aux.",
+    "hypotheses": "Admissible integer polynomial, bounded positive weights, nonzero integral separated factorization and coprime point.",
+    "source_body_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.abs_coeff_det_hasseDeriv_le",
+      "Roth.coeff_rename_mul_aeval",
+      "Roth.index_separated_mul_le_aux",
+      "Roth.lem6M"
+    ],
+    "source_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.RSet",
+      "Roth.index",
+      "Roth.lem6M",
+      "Roth.lem6Φ"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.index_le_lem6",
+        "file": "Roth/Theta.lean",
+        "line": 556
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+    "uses_from_project": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.abs_coeff_det_hasseDeriv_le",
+      "Roth.coeff_rename_mul_aeval",
+      "Roth.index_separated_mul_le_aux",
+      "Roth.lem6M"
+    ],
+    "used_by_in_file": [
+      "Roth.index_le_lem6"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 865,
+    "project_body_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.abs_coeff_det_hasseDeriv_le",
+      "Roth.coeff_rename_mul_aeval",
+      "Roth.index_separated_mul_le_aux",
+      "Roth.lem6M"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.RSet",
+      "Roth.index",
+      "Roth.lem6M",
+      "Roth.lem6Φ"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.index_le_lem6",
+        "file": "Roth/Theta.lean",
+        "line": 556
+      }
+    ]
+  }
+]

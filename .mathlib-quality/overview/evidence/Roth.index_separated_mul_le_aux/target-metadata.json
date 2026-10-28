@@ -1,0 +1,82 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 414,
+  "name": "Roth.index_separated_mul_le_aux",
+  "short": "index_separated_mul_le_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 450,
+  "source": "private lemma index_separated_mul_le_aux {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {q : Option τ → ℕ}\n    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {M : ℝ} {l : ℕ} (hl : 0 < l)\n    {U : MvPolynomial τ ℤ} (hU : U ∈ RSet M (fun j ↦ l * r (some j))) {V : Polynomial ℤ}\n    (hV : V ≠ 0) (hVd : V.natDegree ≤ l * r none) (hVc : ∀ b, |(V.coeff b : ℝ)| ≤ M) :\n    index (map (Int.castRingHom ℝ)\n        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V))\n      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r M l := by\n  classical\n  set V' : MvPolynomial Unit ℤ := (uniqueAlgEquiv ℤ Unit).symm V with hV'\n  have hV'0 : V' ≠ 0 := by\n    rwa [hV', ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]\n  have hVmem : V' ∈ RSet M (fun _ : Unit ↦ l * r none) := by\n    refine ⟨hV'0, fun j ↦ ?_, fun d ↦ ?_⟩\n    · rw [Subsingleton.elim j default, hV', degreeOf_uniqueAlgEquiv_symm]\n      exact hVd\n    · rw [hV', MvPolynomial.coeff_uniqueAlgEquiv_symm]\n      exact hVc _\n  have hinjV : Function.Injective (fun _ : Unit ↦ (none : Option τ)) :=\n    fun a b _ ↦ Subsingleton.elim a b\n  have hmU : map (Int.castRingHom ℝ) U ≠ 0 := fun h0 ↦\n    hU.1 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))\n  have hmV : map (Int.castRingHom ℝ) V' ≠ 0 := fun h0 ↦\n    hV'0 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))\n  rw [aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename,\n    index_mul ((map_ne_zero_iff (rename (R := ℝ) some)\n      (rename_injective _ (Option.some_injective _))).2 hmU)\n      ((map_ne_zero_iff (rename (R := ℝ) (fun _ : Unit ↦ (none : Option τ)))\n        (rename_injective _ hinjV)).2 hmV) _ hr0,\n    index_rename (Option.some_injective _), index_rename hinjV]\n  have hUΘ := index_le_Θ hU (h := h ∘ some)\n    fun j ↦ hh (some j)\n  have hVΘ := index_le_Θ hVmem\n    (q := fun _ : Unit ↦ q none) (h := fun _ ↦ h none) fun _ ↦ hh none\n  rw [index_mul_left_weights] at hUΘ hVΘ\n  have hlR : (0 : ℝ) < l := by exact_mod_cast hl\n  rw [lem6Φ, mul_add, add_comm]\n  exact add_le_add ((div_le_iff₀' hlR).1 hVΘ) ((div_le_iff₀' hlR).1 hUΘ)",
+  "signature": "private lemma index_separated_mul_le_aux {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {q : Option τ → ℕ}\n    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {M : ℝ} {l : ℕ} (hl : 0 < l)\n    {U : MvPolynomial τ ℤ} (hU : U ∈ RSet M (fun j ↦ l * r (some j))) {V : Polynomial ℤ}\n    (hV : V ≠ 0) (hVd : V.natDegree ≤ l * r none) (hVc : ∀ b, |(V.coeff b : ℝ)| ≤ M) :\n    index (map (Int.castRingHom ℝ)\n        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V))\n      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r M l",
+  "body": "by\n  classical\n  set V' : MvPolynomial Unit ℤ := (uniqueAlgEquiv ℤ Unit).symm V with hV'\n  have hV'0 : V' ≠ 0 := by\n    rwa [hV', ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]\n  have hVmem : V' ∈ RSet M (fun _ : Unit ↦ l * r none) := by\n    refine ⟨hV'0, fun j ↦ ?_, fun d ↦ ?_⟩\n    · rw [Subsingleton.elim j default, hV', degreeOf_uniqueAlgEquiv_symm]\n      exact hVd\n    · rw [hV', MvPolynomial.coeff_uniqueAlgEquiv_symm]\n      exact hVc _\n  have hinjV : Function.Injective (fun _ : Unit ↦ (none : Option τ)) :=\n    fun a b _ ↦ Subsingleton.elim a b\n  have hmU : map (Int.castRingHom ℝ) U ≠ 0 := fun h0 ↦\n    hU.1 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))\n  have hmV : map (Int.castRingHom ℝ) V' ≠ 0 := fun h0 ↦\n    hV'0 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))\n  rw [aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename,\n    index_mul ((map_ne_zero_iff (rename (R := ℝ) some)\n      (rename_injective _ (Option.some_injective _))).2 hmU)\n      ((map_ne_zero_iff (rename (R := ℝ) (fun _ : Unit ↦ (none : Option τ)))\n        (rename_injective _ hinjV)).2 hmV) _ hr0,\n    index_rename (Option.some_injective _), index_rename hinjV]\n  have hUΘ := index_le_Θ hU (h := h ∘ some)\n    fun j ↦ hh (some j)\n  have hVΘ := index_le_Θ hVmem\n    (q := fun _ : Unit ↦ q none) (h := fun _ ↦ h none) fun _ ↦ hh none\n  rw [index_mul_left_weights] at hUΘ hVΘ\n  have hlR : (0 : ℝ) < l := by exact_mod_cast hl\n  rw [lem6Φ, mul_add, add_comm]\n  exact add_le_add ((div_le_iff₀' hlR).1 hVΘ) ((div_le_iff₀' hlR).1 hUΘ)",
+  "proof_lines": 31,
+  "sha256": "2b05caf73172eb119a554548e26ad821df66ac64fc39bf5f58ce9b4c37654304",
+  "what": "The index of an admissibly bounded separated product is at most its size times the sum of the two extremal indices.",
+  "how": "Convert the univariate factor through uniqueAlgEquiv, use index_mul and index_rename, then index_le_Θ and index_mul_left_weights for both factors.",
+  "hypotheses": "Positive degree weights and scale; coprime point; nonzero separated factors with scaled degree and coefficient bounds.",
+  "source_body_refs": [
+    "Roth.RSet",
+    "Roth.aeval_X_eq_rename",
+    "Roth.degreeOf_uniqueAlgEquiv_symm",
+    "Roth.index_le_Θ",
+    "Roth.index_mul",
+    "Roth.index_mul_left_weights",
+    "Roth.index_rename",
+    "Roth.lem6Φ"
+  ],
+  "source_type_refs": [
+    "Roth.RSet",
+    "Roth.index",
+    "Roth.lem6Φ"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.index_det_le",
+      "file": "Roth/Theta.lean",
+      "line": 457
+    }
+  ],
+  "notes": [
+    "proof/body >30 lines"
+  ],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [
+    "Roth.RSet",
+    "Roth.aeval_X_eq_rename",
+    "Roth.degreeOf_uniqueAlgEquiv_symm",
+    "Roth.index_le_Θ",
+    "Roth.index_mul",
+    "Roth.index_mul_left_weights",
+    "Roth.index_rename",
+    "Roth.lem6Φ"
+  ],
+  "used_by_in_file": [
+    "Roth.index_det_le"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 538,
+  "project_body_refs": [
+    "Roth.RSet",
+    "Roth.aeval_X_eq_rename",
+    "Roth.degreeOf_uniqueAlgEquiv_symm",
+    "Roth.index_le_Θ",
+    "Roth.index_mul",
+    "Roth.index_mul_left_weights",
+    "Roth.index_rename",
+    "Roth.lem6Φ"
+  ],
+  "project_type_refs": [
+    "Roth.RSet",
+    "Roth.index",
+    "Roth.lem6Φ"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.index_det_le",
+      "file": "Roth/Theta.lean",
+      "line": 457
+    }
+  ]
+}
