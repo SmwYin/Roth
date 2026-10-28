@@ -1,0 +1,22 @@
+{
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {τ : Type u_2} [inst_1 : Fintype τ] (e : σ ≃ τ) (B : ℝ)\n  (q r : τ → ℕ), Roth.Θ B (q ∘ ⇑e) (r ∘ ⇑e) = Roth.Θ B q r",
+  "kind": "theorem",
+  "what": "The supremum of bounded integral polynomial indices at reduced rational points is invariant under bijective variable renaming.",
+  "how": "Rename each polynomial, transport its nonzero/degree/coefficient bounds and coprime numerator vector, use index_rename, repeat with inverse equivalence, then congrArg sSup.",
+  "hypotheses": "Arbitrary universe-polymorphic finite variable types, an equivalence e, B real, q/r natural vectors; no DecidableEq or positivity premise.",
+  "project_dependencies": [
+    "Roth.Θ",
+    "Roth.indexSet",
+    "Roth.RSet",
+    "Roth.index",
+    "Roth.indexSet_comp_subset",
+    "Roth.index_rename"
+  ],
+  "caller_summary": "One explicit application in private Roth.theta_lt_succ_aux at Theta:919; zero outside-file uses; native1 direct value/0 direct type consumer.",
+  "mathlib_api_audit": "Existing congrArg and SupSet Equiv.iSup_congr cover the outer layer. renameEquiv, degreeOf_rename_of_injective, coeff_rename_mapDomain and mapDomain_surjective cover individual transport pieces; full bounded-family preservation still requires new verified glue.",
+  "moral_duplications": "No independent duplicate Theta invariance found; generic supremum congruence is already available but has an unprovided admissible-family equivalence/equality premise.",
+  "generalization": "No mechanical weakening established under fixed Theta/index signatures. Candidate reusable core is renameEquiv transport of nonzero polynomials with separate coordinate degree caps and arbitrary coefficient predicates.",
+  "missing_api": "Potential bounded-polynomial/height family transport interface; upstream design question, not an established missing generic supremum law.",
+  "junk": "Live theorem; sole caller changes Fin coordinates to Option coordinates before Lemma6.",
+  "action": "BORDERLINE: retain in Roth/Theta.lean and sole caller; settle bounded-family coefficient-predicate/height API, expose family equality if useful, then reassess its supremum corollary."
+}

@@ -1,0 +1,619 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "finder-current",
+      "request": {
+        "query": "Supremum of indices of bounded integer multivariate polynomials invariant under bijective renaming of variables",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.totalDegree_renameEquiv\",\n      \"informal_name\": \"Total Degree Invariance Under Variable Renaming in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} {τ : Type u_2} [inst : CommSemiring R] (f : σ ≃ τ) (p : MvPolynomial σ R),\\n  ((MvPolynomial.renameEquiv R f) p).totalDegree = p.totalDegree\",\n      \"informal_description\": \"For any bijection $ f : \\\\sigma \\\\simeq \\\\tau $ between variable types and any multivariate polynomial $ p $ over $ R $, the total degree of the polynomial obtained by renaming variables according to $ f $ is equal to the total degree of $ p $. This demonstrates that the total degree is invariant under variable renaming in multivariate polynomial rings.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degreeOf_eq_natDegree\",\n      \"informal_name\": \"Algebra Equivalence for Multivariate Polynomials with Option-Indexed Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (a : σ) (p : MvPolynomial σ R),\\n  MvPolynomial.degreeOf a p =\\n    ((MvPolynomial.optionEquivLeft R { b // b ≠ a })\\n        ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree\",\n      \"informal_description\": \"There exists an algebra equivalence between the ring of multivariate polynomials over a commutative semiring $ R $ with variables indexed by $ \\\\text{Option } \\\\sigma $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\\\sigma $. This equivalence maps variables corresponding to $ \\\\text{none} $ to the outer polynomial indeterminate and variables corresponding to $ \\\\text{some } s $ to coefficients in the inner multivariate polynomial ring, with the inverse given by variable substitution.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degree_finSuccEquiv\",\n      \"informal_name\": \"Degree Preservation under Fin(n+1) to Polynomial Ring Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} {f : MvPolynomial (Fin (n + 1)) R},\\n  f ≠ 0 → ((MvPolynomial.finSuccEquiv R n) f).degree = ↑(MvPolynomial.degreeOf 0 f)\",\n      \"informal_description\": \"For a nonzero multivariate polynomial $ f $ over $ \\\\text{Fin}(n+1) $, the degree of the equivalent polynomial obtained via the algebra equivalence to the polynomial ring in one variable with coefficients in multivariate polynomials over $ \\\\text{Fin}(n) $ is equal to the total degree of $ f $ in the variable indexed by $ 0 $. This equivalence is constructed by renaming variables through the bijection $ \\\\text{Fin}(n+1) \\\\simeq \\\\text{Option}(\\\\text{Fin}(n)) $, mapping the new variable to the outer polynomial's indeterminate.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degreeOf_rename_of_injective\",\n      \"informal_name\": \"Injective Renaming Preserves Variable Degree in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} {τ : Type u_2} [inst : CommSemiring R] {p : MvPolynomial σ R} {f : σ → τ},\\n  Function.Injective f → ∀ (i : σ), MvPolynomial.degreeOf (f i) ((MvPolynomial.rename f) p) = MvPolynomial.degreeOf i p\",\n      \"informal_description\": \"For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, and for any injective function $ f : \\\\sigma \\\\to \\\\tau $, the total degree of the variable $ f(i) $ in the renamed polynomial $ \\\\operatorname{rename}(f, p) $ equals the total degree of the variable $ i $ in the original polynomial $ p $. Symbolically, $ \\\\deg_{f(i)}(\\\\operatorname{rename}(f, p)) = \\\\deg_i(p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.exists_fin_rename\",\n      \"informal_name\": \"Existence of Finite Renaming for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_4} [inst : CommSemiring R] (p : MvPolynomial σ R),\\n  ∃ n f, ∃ (_ : Function.Injective f), ∃ q, p = (MvPolynomial.rename f) q\",\n      \"informal_description\": \"For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by a type $ \\\\sigma $, there exists a natural number $ n $, an injective function $ f : \\\\{1, 2, \\\\dots, n\\\\} \\\\to \\\\sigma $, and a polynomial $ q $ in $ n $ variables such that $ p $ equals the polynomial obtained by renaming the variables of $ q $ according to $ f $. This expresses that every multivariate polynomial depends on only finitely many variables.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "MvPolynomial.totalDegree_renameEquiv",
+              "informal_name": "Total Degree Invariance Under Variable Renaming in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type u_1} {τ : Type u_2} [inst : CommSemiring R] (f : σ ≃ τ) (p : MvPolynomial σ R),\n  ((MvPolynomial.renameEquiv R f) p).totalDegree = p.totalDegree",
+              "informal_description": "For any bijection $ f : \\sigma \\simeq \\tau $ between variable types and any multivariate polynomial $ p $ over $ R $, the total degree of the polynomial obtained by renaming variables according to $ f $ is equal to the total degree of $ p $. This demonstrates that the total degree is invariant under variable renaming in multivariate polynomial rings.",
+              "path": "Mathlib.Algebra.MvPolynomial.Degrees"
+            },
+            {
+              "formal_name": "MvPolynomial.degreeOf_eq_natDegree",
+              "informal_name": "Algebra Equivalence for Multivariate Polynomials with Option-Indexed Variables",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (a : σ) (p : MvPolynomial σ R),\n  MvPolynomial.degreeOf a p =\n    ((MvPolynomial.optionEquivLeft R { b // b ≠ a })\n        ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree",
+              "informal_description": "There exists an algebra equivalence between the ring of multivariate polynomials over a commutative semiring $ R $ with variables indexed by $ \\text{Option } \\sigma $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\sigma $. This equivalence maps variables corresponding to $ \\text{none} $ to the outer polynomial indeterminate and variables corresponding to $ \\text{some } s $ to coefficients in the inner multivariate polynomial ring, with the inverse given by variable substitution.",
+              "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+            },
+            {
+              "formal_name": "MvPolynomial.degree_finSuccEquiv",
+              "informal_name": "Degree Preservation under Fin(n+1) to Polynomial Ring Equivalence",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} {f : MvPolynomial (Fin (n + 1)) R},\n  f ≠ 0 → ((MvPolynomial.finSuccEquiv R n) f).degree = ↑(MvPolynomial.degreeOf 0 f)",
+              "informal_description": "For a nonzero multivariate polynomial $ f $ over $ \\text{Fin}(n+1) $, the degree of the equivalent polynomial obtained via the algebra equivalence to the polynomial ring in one variable with coefficients in multivariate polynomials over $ \\text{Fin}(n) $ is equal to the total degree of $ f $ in the variable indexed by $ 0 $. This equivalence is constructed by renaming variables through the bijection $ \\text{Fin}(n+1) \\simeq \\text{Option}(\\text{Fin}(n)) $, mapping the new variable to the outer polynomial's indeterminate.",
+              "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+            },
+            {
+              "formal_name": "MvPolynomial.degreeOf_rename_of_injective",
+              "informal_name": "Injective Renaming Preserves Variable Degree in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type u_1} {τ : Type u_2} [inst : CommSemiring R] {p : MvPolynomial σ R} {f : σ → τ},\n  Function.Injective f → ∀ (i : σ), MvPolynomial.degreeOf (f i) ((MvPolynomial.rename f) p) = MvPolynomial.degreeOf i p",
+              "informal_description": "For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, and for any injective function $ f : \\sigma \\to \\tau $, the total degree of the variable $ f(i) $ in the renamed polynomial $ \\operatorname{rename}(f, p) $ equals the total degree of the variable $ i $ in the original polynomial $ p $. Symbolically, $ \\deg_{f(i)}(\\operatorname{rename}(f, p)) = \\deg_i(p) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Degrees"
+            },
+            {
+              "formal_name": "MvPolynomial.exists_fin_rename",
+              "informal_name": "Existence of Finite Renaming for Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_4} [inst : CommSemiring R] (p : MvPolynomial σ R),\n  ∃ n f, ∃ (_ : Function.Injective f), ∃ q, p = (MvPolynomial.rename f) q",
+              "informal_description": "For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by a type $ \\sigma $, there exists a natural number $ n $, an injective function $ f : \\{1, 2, \\dots, n\\} \\to \\sigma $, and a polynomial $ q $ in $ n $ variables such that $ p $ equals the polynomial obtained by renaming the variables of $ q $ according to $ f $. This expresses that every multivariate polynomial depends on only finitely many variables.",
+              "path": "Mathlib.Algebra.MvPolynomial.Rename"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "finder-standard",
+      "request": {
+        "query": "supremum unchanged under equivalence reindexing when functions agree after transport",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Equiv.iSup_congr\",\n      \"informal_name\": \"Supremum Congruence Under Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} {ι' : Sort u_5} [inst : SupSet α] {f : ι → α} {g : ι' → α} (e : ι ≃ ι'),\\n  (∀ (x : ι), g (e x) = f x) → ⨆ x, f x = ⨆ y, g y\",\n      \"informal_description\": \"Given a bijection $ e : \\\\iota \\\\simeq \\\\iota' $ and functions $ f : \\\\iota \\\\to \\\\alpha $, $ g : \\\\iota' \\\\to \\\\alpha $ satisfying $ g(e(x)) = f(x) $ for all $ x : \\\\iota $, the supremum of $ f $ over $ \\\\iota $ equals the supremum of $ g $ over $ \\\\iota' $, i.e., $ \\\\sup_{x \\\\in \\\\iota} f(x) = \\\\sup_{y \\\\in \\\\iota'} g(y) $.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"Equiv.iSup_comp\",\n      \"informal_name\": \"Supremum Invariance Under Index Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} {ι' : Sort u_5} [inst : SupSet α] {g : ι' → α} (e : ι ≃ ι'), ⨆ x, g (e x) = ⨆ y, g y\",\n      \"informal_description\": \"For any function $ g : \\\\iota' \\\\to \\\\alpha $ and any equivalence $ e : \\\\iota \\\\simeq \\\\iota' $, the supremum of the composition $ g \\\\circ e $ over $ \\\\iota $ is equal to the supremum of $ g $ over $ \\\\iota' $. Symbolically, $ \\\\bigvee_{x \\\\in \\\\iota} g(e(x)) = \\\\bigvee_{y \\\\in \\\\iota'} g(y) $.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"Set.BijOn.iSup_congr\",\n      \"informal_name\": \"Supremum Congruence under Bijection between Subsets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : CompleteLattice α] {s : Set β} {t : Set γ} (f : β → α)\\n  (g : γ → α) {h : β → γ}, Set.BijOn h s t → (∀ (x : β), g (h x) = f x) → ⨆ x ∈ s, f x = ⨆ y ∈ t, g y\",\n      \"informal_description\": \"If $ f : \\\\beta \\\\to \\\\alpha $ and $ g : \\\\gamma \\\\to \\\\alpha $ satisfy $ g(h(x)) = f(x) $ for all $ x $ in subset $ s \\\\subseteq \\\\beta $, and there exists a bijection $ h : \\\\beta \\\\to \\\\gamma $ between $ s $ and $ t = h(s) $, then the supremum of $ f $ over $ s $ equals the supremum of $ g $ over $ t $, i.e., $ \\\\sup_{x \\\\in s} f(x) = \\\\sup_{y \\\\in t} g(y) $.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"Equiv.biSup_comp\",\n      \"informal_name\": \"Supremum Invariance Under Equivalence Composition\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : CompleteLattice α] {ι : Type u_8} {ι' : Type u_9} {g : ι' → α} (e : ι ≃ ι') (s : Set ι'),\\n  ⨆ i ∈ ⇑e.symm '' s, g (e i) = ⨆ i ∈ s, g i\",\n      \"informal_description\": \"For any bijection $ e : \\\\iota \\\\simeq \\\\iota' $, function $ g : \\\\iota' \\\\to \\\\alpha $ where $ \\\\alpha $ is a complete lattice, and subset $ s \\\\subseteq \\\\iota' $, the supremum of $ g(e(i)) $ over $ i \\\\in e^{-1}(s) $ equals the supremum of $ g(i) $ over $ i \\\\in s $. Formally, $ \\\\sup_{i \\\\in e^{-1}(s)} g(e(i)) = \\\\sup_{i \\\\in s} g(i) $.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"iSup_congr_Prop\",\n      \"informal_name\": \"Supremum Congruence Under Propositional Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : SupSet α] {p q : Prop} {f₁ : p → α} {f₂ : q → α} (pq : p ↔ q),\\n  (∀ (x : q), f₁ ⋯ = f₂ x) → iSup f₁ = iSup f₂\",\n      \"informal_description\": \"If propositions $p$ and $q$ are logically equivalent and functions $f_1 : p \\\\to \\\\alpha$ and $f_2 : q \\\\to \\\\alpha$ agree under this equivalence, then their suprema are equal, i.e., $\\\\sup f_1 = \\\\sup f_2$.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Basic\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Equiv.iSup_congr",
+              "informal_name": "Supremum Congruence Under Equivalence",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {ι : Sort u_4} {ι' : Sort u_5} [inst : SupSet α] {f : ι → α} {g : ι' → α} (e : ι ≃ ι'),\n  (∀ (x : ι), g (e x) = f x) → ⨆ x, f x = ⨆ y, g y",
+              "informal_description": "Given a bijection $ e : \\iota \\simeq \\iota' $ and functions $ f : \\iota \\to \\alpha $, $ g : \\iota' \\to \\alpha $ satisfying $ g(e(x)) = f(x) $ for all $ x : \\iota $, the supremum of $ f $ over $ \\iota $ equals the supremum of $ g $ over $ \\iota' $, i.e., $ \\sup_{x \\in \\iota} f(x) = \\sup_{y \\in \\iota'} g(y) $.",
+              "path": "Mathlib.Order.CompleteLattice.Basic"
+            },
+            {
+              "formal_name": "Equiv.iSup_comp",
+              "informal_name": "Supremum Invariance Under Index Equivalence",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {ι : Sort u_4} {ι' : Sort u_5} [inst : SupSet α] {g : ι' → α} (e : ι ≃ ι'), ⨆ x, g (e x) = ⨆ y, g y",
+              "informal_description": "For any function $ g : \\iota' \\to \\alpha $ and any equivalence $ e : \\iota \\simeq \\iota' $, the supremum of the composition $ g \\circ e $ over $ \\iota $ is equal to the supremum of $ g $ over $ \\iota' $. Symbolically, $ \\bigvee_{x \\in \\iota} g(e(x)) = \\bigvee_{y \\in \\iota'} g(y) $.",
+              "path": "Mathlib.Order.CompleteLattice.Basic"
+            },
+            {
+              "formal_name": "Set.BijOn.iSup_congr",
+              "informal_name": "Supremum Congruence under Bijection between Subsets",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : CompleteLattice α] {s : Set β} {t : Set γ} (f : β → α)\n  (g : γ → α) {h : β → γ}, Set.BijOn h s t → (∀ (x : β), g (h x) = f x) → ⨆ x ∈ s, f x = ⨆ y ∈ t, g y",
+              "informal_description": "If $ f : \\beta \\to \\alpha $ and $ g : \\gamma \\to \\alpha $ satisfy $ g(h(x)) = f(x) $ for all $ x $ in subset $ s \\subseteq \\beta $, and there exists a bijection $ h : \\beta \\to \\gamma $ between $ s $ and $ t = h(s) $, then the supremum of $ f $ over $ s $ equals the supremum of $ g $ over $ t $, i.e., $ \\sup_{x \\in s} f(x) = \\sup_{y \\in t} g(y) $.",
+              "path": "Mathlib.Order.CompleteLattice.Basic"
+            },
+            {
+              "formal_name": "Equiv.biSup_comp",
+              "informal_name": "Supremum Invariance Under Equivalence Composition",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} [inst : CompleteLattice α] {ι : Type u_8} {ι' : Type u_9} {g : ι' → α} (e : ι ≃ ι') (s : Set ι'),\n  ⨆ i ∈ ⇑e.symm '' s, g (e i) = ⨆ i ∈ s, g i",
+              "informal_description": "For any bijection $ e : \\iota \\simeq \\iota' $, function $ g : \\iota' \\to \\alpha $ where $ \\alpha $ is a complete lattice, and subset $ s \\subseteq \\iota' $, the supremum of $ g(e(i)) $ over $ i \\in e^{-1}(s) $ equals the supremum of $ g(i) $ over $ i \\in s $. Formally, $ \\sup_{i \\in e^{-1}(s)} g(e(i)) = \\sup_{i \\in s} g(i) $.",
+              "path": "Mathlib.Order.CompleteLattice.Basic"
+            },
+            {
+              "formal_name": "iSup_congr_Prop",
+              "informal_name": "Supremum Congruence Under Propositional Equivalence",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} [inst : SupSet α] {p q : Prop} {f₁ : p → α} {f₂ : q → α} (pq : p ↔ q),\n  (∀ (x : q), f₁ ⋯ = f₂ x) → iSup f₁ = iSup f₂",
+              "informal_description": "If propositions $p$ and $q$ are logically equivalent and functions $f_1 : p \\to \\alpha$ and $f_2 : q \\to \\alpha$ agree under this equivalence, then their suprema are equal, i.e., $\\sup f_1 = \\sup f_2$.",
+              "path": "Mathlib.Order.CompleteLattice.Basic"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "finder-abstract",
+      "request": {
+        "query": "sSup s = sSup t when s = t congrArg",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"iSup_congr\",\n      \"informal_name\": \"Supremum Congruence for Indexed Families\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} [inst : SupSet α] {f g : ι → α}, (∀ (i : ι), f i = g i) → ⨆ i, f i = ⨆ i, g i\",\n      \"informal_description\": \"If $ f(i) = g(i) $ for all indices $ i $, then the supremum of $ f(i) $ over $ i $ is equal to the supremum of $ g(i) $ over $ i $, i.e., $ \\\\sup_{i} f(i) = \\\\sup_{i} g(i) $.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"Finset.sup'_congr\",\n      \"informal_name\": \"Supremum Congruence for Non-Empty Finite Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] {s : Finset β} (H : s.Nonempty) {t : Finset β} {f g : β → α}\\n  (h₁ : s = t), (∀ x ∈ s, f x = g x) → s.sup' H f = t.sup' ⋯ g\",\n      \"informal_description\": \"If two non-empty finite sets $ s $ and $ t $ are equal, and functions $ f $ and $ g $ agree on all elements of $ s $, then the supremum of $ f(x) $ over $ s $ equals the supremum of $ g(x) $ over $ t $ in a sup-semilattice with bottom element. Formally, $ \\\\sup'_{x \\\\in s} f(x) = \\\\sup'_{x \\\\in t} g(x) $.\",\n      \"path\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"formal_name\": \"Finset.sup_congr\",\n      \"informal_name\": \"Supremum Congruence for Finite Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] [inst_1 : OrderBot α] {s₁ s₂ : Finset β} {f g : β → α},\\n  s₁ = s₂ → (∀ a ∈ s₂, f a = g a) → s₁.sup f = s₂.sup g\",\n      \"informal_description\": \"If two finite sets $ s_1 $ and $ s_2 $ are equal, and two functions $ f, g : \\\\beta \\\\to \\\\alpha $ agree on all elements of $ s_2 $, then the supremum of $ f $ over $ s_1 $ is equal to the supremum of $ g $ over $ s_2 $. Formally, for any $ f,g : \\\\beta \\\\to \\\\alpha $, if $ s_1 = s_2 $ and $ f(a) = g(a) $ for all $ a \\\\in s_2 $, then $ \\\\bigsqcup_{x \\\\in s_1} f(x) = \\\\bigsqcup_{x \\\\in s_2} g(x) $.\",\n      \"path\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"formal_name\": \"biSup_congr\",\n      \"informal_name\": \"Bounded Supremum Congruence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} [inst : SupSet α] {f g : ι → α} {p : ι → Prop},\\n  (∀ (i : ι), p i → f i = g i) → ⨆ i, ⨆ (_ : p i), f i = ⨆ i, ⨆ (_ : p i), g i\",\n      \"informal_description\": \"If for all indices $i$ satisfying a predicate $p(i)$, the values $f(i)$ and $g(i)$ are equal, then the supremum of $f(i)$ over all such $i$ is equal to the supremum of $g(i)$ over the same $i$, i.e., $\\\\bigsqcup_{\\\\substack{i \\\\\\\\ p(i)}} f(i) = \\\\bigsqcup_{\\\\substack{i \\\\\\\\ p(i)}} g(i)$.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"csSup_eq_csSup_of_forall_exists_le\",\n      \"informal_name\": \"Equality of Suprema under Mutual Boundedness\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrder α] {s t : Set α},\\n  (∀ x ∈ s, ∃ y ∈ t, x ≤ y) → (∀ y ∈ t, ∃ x ∈ s, y ≤ x) → sSup s = sSup t\",\n      \"informal_description\": \"In a conditionally complete lattice, if every element of set $S$ is bounded above by some element of set $T$ and vice versa, then the supremum of $S$ equals the supremum of $T$. Formally, if $\\\\forall x \\\\in S, \\\\exists y \\\\in T, x \\\\leq y$ and $\\\\forall y \\\\in T, \\\\exists x \\\\in S, y \\\\leq x$, then $\\\\sup S = \\\\sup T$.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "iSup_congr",
+              "informal_name": "Supremum Congruence for Indexed Families",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {ι : Sort u_4} [inst : SupSet α] {f g : ι → α}, (∀ (i : ι), f i = g i) → ⨆ i, f i = ⨆ i, g i",
+              "informal_description": "If $ f(i) = g(i) $ for all indices $ i $, then the supremum of $ f(i) $ over $ i $ is equal to the supremum of $ g(i) $ over $ i $, i.e., $ \\sup_{i} f(i) = \\sup_{i} g(i) $.",
+              "path": "Mathlib.Order.CompleteLattice.Basic"
+            },
+            {
+              "formal_name": "Finset.sup'_congr",
+              "informal_name": "Supremum Congruence for Non-Empty Finite Sets",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] {s : Finset β} (H : s.Nonempty) {t : Finset β} {f g : β → α}\n  (h₁ : s = t), (∀ x ∈ s, f x = g x) → s.sup' H f = t.sup' ⋯ g",
+              "informal_description": "If two non-empty finite sets $ s $ and $ t $ are equal, and functions $ f $ and $ g $ agree on all elements of $ s $, then the supremum of $ f(x) $ over $ s $ equals the supremum of $ g(x) $ over $ t $ in a sup-semilattice with bottom element. Formally, $ \\sup'_{x \\in s} f(x) = \\sup'_{x \\in t} g(x) $.",
+              "path": "Mathlib.Data.Finset.Lattice.Fold"
+            },
+            {
+              "formal_name": "Finset.sup_congr",
+              "informal_name": "Supremum Congruence for Finite Sets",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] [inst_1 : OrderBot α] {s₁ s₂ : Finset β} {f g : β → α},\n  s₁ = s₂ → (∀ a ∈ s₂, f a = g a) → s₁.sup f = s₂.sup g",
+              "informal_description": "If two finite sets $ s_1 $ and $ s_2 $ are equal, and two functions $ f, g : \\beta \\to \\alpha $ agree on all elements of $ s_2 $, then the supremum of $ f $ over $ s_1 $ is equal to the supremum of $ g $ over $ s_2 $. Formally, for any $ f,g : \\beta \\to \\alpha $, if $ s_1 = s_2 $ and $ f(a) = g(a) $ for all $ a \\in s_2 $, then $ \\bigsqcup_{x \\in s_1} f(x) = \\bigsqcup_{x \\in s_2} g(x) $.",
+              "path": "Mathlib.Data.Finset.Lattice.Fold"
+            },
+            {
+              "formal_name": "biSup_congr",
+              "informal_name": "Bounded Supremum Congruence",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {ι : Sort u_4} [inst : SupSet α] {f g : ι → α} {p : ι → Prop},\n  (∀ (i : ι), p i → f i = g i) → ⨆ i, ⨆ (_ : p i), f i = ⨆ i, ⨆ (_ : p i), g i",
+              "informal_description": "If for all indices $i$ satisfying a predicate $p(i)$, the values $f(i)$ and $g(i)$ are equal, then the supremum of $f(i)$ over all such $i$ is equal to the supremum of $g(i)$ over the same $i$, i.e., $\\bigsqcup_{\\substack{i \\\\ p(i)}} f(i) = \\bigsqcup_{\\substack{i \\\\ p(i)}} g(i)$.",
+              "path": "Mathlib.Order.CompleteLattice.Basic"
+            },
+            {
+              "formal_name": "csSup_eq_csSup_of_forall_exists_le",
+              "informal_name": "Equality of Suprema under Mutual Boundedness",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrder α] {s t : Set α},\n  (∀ x ∈ s, ∃ y ∈ t, x ≤ y) → (∀ y ∈ t, ∃ x ∈ s, y ≤ x) → sSup s = sSup t",
+              "informal_description": "In a conditionally complete lattice, if every element of set $S$ is bounded above by some element of set $T$ and vice versa, then the supremum of $S$ equals the supremum of $T$. Formally, if $\\forall x \\in S, \\exists y \\in T, x \\leq y$ and $\\forall y \\in T, \\exists x \\in S, y \\leq x$, then $\\sup S = \\sup T$.",
+              "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "loogle-current",
+      "request": {
+        "query": "MvPolynomial.rename, MvPolynomial.degreeOf",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.degreeOf_rename_of_injective\",\n      \"type\": \" {R : Type u} {σ : Type u_1} {τ : Type u_2} [CommSemiring R] {p : MvPolynomial σ R} {f : σ → τ} (h : Function.Injective f) (i : σ) : MvPolynomial.degreeOf (f i) ((MvPolynomial.rename f) p) = MvPolynomial.degreeOf i p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_eq_natDegree\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] [DecidableEq σ] (a : σ) (p : MvPolynomial σ R) : MvPolynomial.degreeOf a p = ((MvPolynomial.optionEquivLeft R { b // b ≠ a }) ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.degreeOf_rename_of_injective",
+              "type": " {R : Type u} {σ : Type u_1} {τ : Type u_2} [CommSemiring R] {p : MvPolynomial σ R} {f : σ → τ} (h : Function.Injective f) (i : σ) : MvPolynomial.degreeOf (f i) ((MvPolynomial.rename f) p) = MvPolynomial.degreeOf i p",
+              "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+            },
+            {
+              "name": "MvPolynomial.degreeOf_eq_natDegree",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] [DecidableEq σ] (a : σ) (p : MvPolynomial σ R) : MvPolynomial.degreeOf a p = ((MvPolynomial.optionEquivLeft R { b // b ≠ a }) ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree",
+              "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "loogle-standard",
+      "request": {
+        "query": "sSup, Equiv",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'sSup' Suggestions: \"sSup\", Equiv, SupSet.sSup, Equiv, Antitone.sSup, Equiv, Monotone.sSup, Equiv, CompleteLattice.ωScottContinuous.sSup, Equiv"
+          }
+        ],
+        "isError": true
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "loogle-abstract",
+      "request": {
+        "query": "sSup ?s = sSup ?t",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"sSup_diff_singleton_bot\",\n      \"type\": \" {α : Type u_1} [CompleteLattice α] (s : Set α) : sSup (s \\\\ {⊥}) = sSup s\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"sSup_sdiff_singleton_bot\",\n      \"type\": \" {α : Type u_1} [CompleteLattice α] (s : Set α) : sSup (s \\\\ {⊥}) = sSup s\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"PUnit.sSup_eq\",\n      \"type\": \" (s : Set PUnit.{u + 1}) : sSup s = PUnit.unit\",\n      \"module\": \"Mathlib.Order.CompleteBooleanAlgebra\"\n    },\n    {\n      \"name\": \"ConditionallyCompleteLinearOrder.csSup_of_not_bddAbove\",\n      \"type\": \" {α : Type u_2} [self : ConditionallyCompleteLinearOrder α] (s : Set α) : ¬BddAbove s → sSup s = sSup ∅\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Defs\"\n    },\n    {\n      \"name\": \"ConditionallyCompleteLinearOrder.mk\",\n      \"type\": \" {α : Type u_2} [toConditionallyCompleteLattice : ConditionallyCompleteLattice α] [toOrd : Ord α] (le_total : ∀ (a b : α), a ≤ b ∨ b ≤ a) (toDecidableLE : DecidableLE α) (toDecidableEq : DecidableEq α) (toDecidableLT : DecidableLT α) (csSup_of_not_bddAbove : ∀ (s : Set α), ¬BddAbove s → sSup s = sSup ∅) (csInf_of_not_bddBelow : ∀ (s : Set α), ¬BddBelow s → sInf s = sInf ∅) (compare_eq_compareOfLessAndEq : ∀ (a b : α), compare a b = compareOfLessAndEq a b := by compareOfLessAndEq_rfl) : ConditionallyCompleteLinearOrder α\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Defs\"\n    },\n    {\n      \"name\": \"csSup_eq_univ_of_not_bddAbove\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompleteLinearOrder α] {s : Set α} (hs : ¬BddAbove s) : sSup s = sSup Set.univ\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"csSup_of_not_bddAbove\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompleteLinearOrder α] {s : Set α} (hs : ¬BddAbove s) : sSup s = sSup ∅\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"csSup_eq_csSup_of_forall_exists_le\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompleteLinearOrder α] {s t : Set α} (hs : ∀ x ∈ s, ∃ y ∈ t, x ≤ y) (ht : ∀ y ∈ t, ∃ x ∈ s, y ≤ x) : sSup s = sSup t\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "sSup_diff_singleton_bot",
+              "type": " {α : Type u_1} [CompleteLattice α] (s : Set α) : sSup (s \\ {⊥}) = sSup s",
+              "module": "Mathlib.Order.CompleteLattice.Basic"
+            },
+            {
+              "name": "sSup_sdiff_singleton_bot",
+              "type": " {α : Type u_1} [CompleteLattice α] (s : Set α) : sSup (s \\ {⊥}) = sSup s",
+              "module": "Mathlib.Order.CompleteLattice.Basic"
+            },
+            {
+              "name": "PUnit.sSup_eq",
+              "type": " (s : Set PUnit.{u + 1}) : sSup s = PUnit.unit",
+              "module": "Mathlib.Order.CompleteBooleanAlgebra"
+            },
+            {
+              "name": "ConditionallyCompleteLinearOrder.csSup_of_not_bddAbove",
+              "type": " {α : Type u_2} [self : ConditionallyCompleteLinearOrder α] (s : Set α) : ¬BddAbove s → sSup s = sSup ∅",
+              "module": "Mathlib.Order.ConditionallyCompleteLattice.Defs"
+            },
+            {
+              "name": "ConditionallyCompleteLinearOrder.mk",
+              "type": " {α : Type u_2} [toConditionallyCompleteLattice : ConditionallyCompleteLattice α] [toOrd : Ord α] (le_total : ∀ (a b : α), a ≤ b ∨ b ≤ a) (toDecidableLE : DecidableLE α) (toDecidableEq : DecidableEq α) (toDecidableLT : DecidableLT α) (csSup_of_not_bddAbove : ∀ (s : Set α), ¬BddAbove s → sSup s = sSup ∅) (csInf_of_not_bddBelow : ∀ (s : Set α), ¬BddBelow s → sInf s = sInf ∅) (compare_eq_compareOfLessAndEq : ∀ (a b : α), compare a b = compareOfLessAndEq a b := by compareOfLessAndEq_rfl) : ConditionallyCompleteLinearOrder α",
+              "module": "Mathlib.Order.ConditionallyCompleteLattice.Defs"
+            },
+            {
+              "name": "csSup_eq_univ_of_not_bddAbove",
+              "type": " {α : Type u_1} [ConditionallyCompleteLinearOrder α] {s : Set α} (hs : ¬BddAbove s) : sSup s = sSup Set.univ",
+              "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+            },
+            {
+              "name": "csSup_of_not_bddAbove",
+              "type": " {α : Type u_1} [ConditionallyCompleteLinearOrder α] {s : Set α} (hs : ¬BddAbove s) : sSup s = sSup ∅",
+              "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+            },
+            {
+              "name": "csSup_eq_csSup_of_forall_exists_le",
+              "type": " {α : Type u_1} [ConditionallyCompleteLinearOrder α] {s t : Set α} (hs : ∀ x ∈ s, ∃ y ∈ t, x ≤ y) (ht : ∀ y ∈ t, ∃ x ∈ s, y ≤ x) : sSup s = sSup t",
+              "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "search-current",
+      "request": {
+        "query": "Roth polynomial index supremum invariant under equivalence renaming variables",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.rename_hsymm\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Symmetric.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {τ : Type u_2} (σ : Type u_5) (R : Type u_6) [inst : CommSemiring R] [inst_1 : Fintype σ] [inst_2 : Fintype τ]\\n  [inst_3 : DecidableEq σ] [inst_4 : DecidableEq τ] (n : ℕ) (e : σ ≃ τ),\\n  (MvPolynomial.rename ⇑e) (MvPolynomial.hsymm σ R n) = MvPolynomial.hsymm τ R n\"\n    },\n    {\n      \"name\": \"MvPolynomial.rename_polynomial_aeval_X\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] {σ : Type u_2} {τ : Type u_3} (f : σ → τ) (i : σ) (p : Polynomial R),\\n  (MvPolynomial.rename f) ((Polynomial.aeval (MvPolynomial.X i)) p) = (Polynomial.aeval (MvPolynomial.X (f i))) p\"\n    },\n    {\n      \"name\": \"MvPolynomial.rename_psum\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Symmetric.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {τ : Type u_2} (σ : Type u_5) (R : Type u_6) [inst : CommSemiring R] [inst_1 : Fintype σ] [inst_2 : Fintype τ] (n : ℕ)\\n  (e : σ ≃ τ), (MvPolynomial.rename ⇑e) (MvPolynomial.psum σ R n) = MvPolynomial.psum τ R n\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsSymmetric\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Symmetric.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_3} → [inst : CommSemiring R] → MvPolynomial σ R → Prop\"\n    },\n    {\n      \"name\": \"MvPolynomial.isSymmetric_rename\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Symmetric.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] {φ : MvPolynomial σ R} {e : σ ≃ τ},\\n  ((MvPolynomial.rename ⇑e) φ).IsSymmetric ↔ φ.IsSymmetric\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.rename_hsymm",
+              "module_name": "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs",
+              "kind": "theorem",
+              "type": "∀ {τ : Type u_2} (σ : Type u_5) (R : Type u_6) [inst : CommSemiring R] [inst_1 : Fintype σ] [inst_2 : Fintype τ]\n  [inst_3 : DecidableEq σ] [inst_4 : DecidableEq τ] (n : ℕ) (e : σ ≃ τ),\n  (MvPolynomial.rename ⇑e) (MvPolynomial.hsymm σ R n) = MvPolynomial.hsymm τ R n"
+            },
+            {
+              "name": "MvPolynomial.rename_polynomial_aeval_X",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+              "kind": "theorem",
+              "type": "∀ (R : Type u) [inst : CommSemiring R] {σ : Type u_2} {τ : Type u_3} (f : σ → τ) (i : σ) (p : Polynomial R),\n  (MvPolynomial.rename f) ((Polynomial.aeval (MvPolynomial.X i)) p) = (Polynomial.aeval (MvPolynomial.X (f i))) p"
+            },
+            {
+              "name": "MvPolynomial.rename_psum",
+              "module_name": "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs",
+              "kind": "theorem",
+              "type": "∀ {τ : Type u_2} (σ : Type u_5) (R : Type u_6) [inst : CommSemiring R] [inst_1 : Fintype σ] [inst_2 : Fintype τ] (n : ℕ)\n  (e : σ ≃ τ), (MvPolynomial.rename ⇑e) (MvPolynomial.psum σ R n) = MvPolynomial.psum τ R n"
+            },
+            {
+              "name": "MvPolynomial.IsSymmetric",
+              "module_name": "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs",
+              "kind": "definition",
+              "type": "{σ : Type u_1} → {R : Type u_3} → [inst : CommSemiring R] → MvPolynomial σ R → Prop"
+            },
+            {
+              "name": "MvPolynomial.isSymmetric_rename",
+              "module_name": "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] {φ : MvPolynomial σ R} {e : σ ≃ τ},\n  ((MvPolynomial.rename ⇑e) φ).IsSymmetric ↔ φ.IsSymmetric"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "search-standard",
+      "request": {
+        "query": "supremum invariant under bijective reindexing",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.BijOn.iSup_comp\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : CompleteLattice α] {s : Set β} {t : Set γ} {f : β → γ}\\n  (g : γ → α), Set.BijOn f s t → ⨆ x ∈ s, g (f x) = ⨆ y ∈ t, g y\"\n    },\n    {\n      \"name\": \"Equiv.biSup_comp\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : CompleteLattice α] {ι : Type u_8} {ι' : Type u_9} {g : ι' → α} (e : ι ≃ ι') (s : Set ι'),\\n  ⨆ i ∈ ⇑e.symm '' s, g (e i) = ⨆ i ∈ s, g i\"\n    },\n    {\n      \"name\": \"OrderIso.map_ciSup\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Indexed\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {ι : Sort u_4} [inst : ConditionallyCompleteLattice α]\\n  [inst_1 : ConditionallyCompleteLattice β] [Nonempty ι] (e : α ≃o β) {f : ι → α},\\n  BddAbove (Set.range f) → e (⨆ i, f i) = ⨆ i, e (f i)\"\n    },\n    {\n      \"name\": \"OrderIso.map_sSup_eq_sSup_symm_preimage\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β] (f : α ≃o β) (s : Set α),\\n  f (sSup s) = sSup (⇑f.symm ⁻¹' s)\"\n    },\n    {\n      \"name\": \"Equiv.iSup_congr\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} {ι' : Sort u_5} [inst : SupSet α] {f : ι → α} {g : ι' → α} (e : ι ≃ ι'),\\n  (∀ (x : ι), g (e x) = f x) → ⨆ x, f x = ⨆ y, g y\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Set.BijOn.iSup_comp",
+              "module_name": "Mathlib.Order.CompleteLattice.Basic",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : CompleteLattice α] {s : Set β} {t : Set γ} {f : β → γ}\n  (g : γ → α), Set.BijOn f s t → ⨆ x ∈ s, g (f x) = ⨆ y ∈ t, g y"
+            },
+            {
+              "name": "Equiv.biSup_comp",
+              "module_name": "Mathlib.Order.CompleteLattice.Basic",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} [inst : CompleteLattice α] {ι : Type u_8} {ι' : Type u_9} {g : ι' → α} (e : ι ≃ ι') (s : Set ι'),\n  ⨆ i ∈ ⇑e.symm '' s, g (e i) = ⨆ i ∈ s, g i"
+            },
+            {
+              "name": "OrderIso.map_ciSup",
+              "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Indexed",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {ι : Sort u_4} [inst : ConditionallyCompleteLattice α]\n  [inst_1 : ConditionallyCompleteLattice β] [Nonempty ι] (e : α ≃o β) {f : ι → α},\n  BddAbove (Set.range f) → e (⨆ i, f i) = ⨆ i, e (f i)"
+            },
+            {
+              "name": "OrderIso.map_sSup_eq_sSup_symm_preimage",
+              "module_name": "Mathlib.Order.CompleteLattice.Basic",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β] (f : α ≃o β) (s : Set α),\n  f (sSup s) = sSup (⇑f.symm ⁻¹' s)"
+            },
+            {
+              "name": "Equiv.iSup_congr",
+              "module_name": "Mathlib.Order.CompleteLattice.Basic",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {ι : Sort u_4} {ι' : Sort u_5} [inst : SupSet α] {f : ι → α} {g : ι' → α} (e : ι ≃ ι'),\n  (∀ (x : ι), g (e x) = f x) → ⨆ x, f x = ⨆ y, g y"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "search-abstract",
+      "request": {
+        "query": "equal sets have equal suprema",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"iSup_eq_iSup_of_partialSups_eq_partialSups\",\n      \"module_name\": \"Mathlib.Order.PartialSups\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Type u_3} [inst : Preorder ι] [inst_1 : LocallyFiniteOrderBot ι] [inst_2 : CompleteLattice α]\\n  {f g : ι → α}, partialSups f = partialSups g → ⨆ i, f i = ⨆ i, g i\"\n    },\n    {\n      \"name\": \"Finset.sup'_congr\",\n      \"module_name\": \"Mathlib.Data.Finset.Lattice.Fold\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] {s : Finset β} (H : s.Nonempty) {t : Finset β} {f g : β → α}\\n  (h₁ : s = t), (∀ x ∈ s, f x = g x) → s.sup' H f = t.sup' ⋯ g\"\n    },\n    {\n      \"name\": \"biSup_congr'\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} [inst : SupSet α] {p : ι → Prop} {f g : (i : ι) → p i → α},\\n  (∀ (i : ι) (hi : p i), f i hi = g i hi) → ⨆ i, ⨆ (hi : p i), f i hi = ⨆ i, ⨆ (hi : p i), g i hi\"\n    },\n    {\n      \"name\": \"sSup_eq_iSup'\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : SupSet α] (s : Set α), sSup s = ⨆ a, ↑a\"\n    },\n    {\n      \"name\": \"biSup_congr\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} [inst : SupSet α] {f g : ι → α} {p : ι → Prop},\\n  (∀ (i : ι), p i → f i = g i) → ⨆ i, ⨆ (_ : p i), f i = ⨆ i, ⨆ (_ : p i), g i\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "iSup_eq_iSup_of_partialSups_eq_partialSups",
+              "module_name": "Mathlib.Order.PartialSups",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {ι : Type u_3} [inst : Preorder ι] [inst_1 : LocallyFiniteOrderBot ι] [inst_2 : CompleteLattice α]\n  {f g : ι → α}, partialSups f = partialSups g → ⨆ i, f i = ⨆ i, g i"
+            },
+            {
+              "name": "Finset.sup'_congr",
+              "module_name": "Mathlib.Data.Finset.Lattice.Fold",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] {s : Finset β} (H : s.Nonempty) {t : Finset β} {f g : β → α}\n  (h₁ : s = t), (∀ x ∈ s, f x = g x) → s.sup' H f = t.sup' ⋯ g"
+            },
+            {
+              "name": "biSup_congr'",
+              "module_name": "Mathlib.Order.CompleteLattice.Basic",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {ι : Sort u_4} [inst : SupSet α] {p : ι → Prop} {f g : (i : ι) → p i → α},\n  (∀ (i : ι) (hi : p i), f i hi = g i hi) → ⨆ i, ⨆ (hi : p i), f i hi = ⨆ i, ⨆ (hi : p i), g i hi"
+            },
+            {
+              "name": "sSup_eq_iSup'",
+              "module_name": "Mathlib.Order.CompleteLattice.Basic",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} [inst : SupSet α] (s : Set α), sSup s = ⨆ a, ↑a"
+            },
+            {
+              "name": "biSup_congr",
+              "module_name": "Mathlib.Order.CompleteLattice.Basic",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {ι : Sort u_4} [inst : SupSet α] {f g : ι → α} {p : ι → Prop},\n  (∀ (i : ι), p i → f i = g i) → ⨆ i, ⨆ (_ : p i), f i = ⨆ i, ⨆ (_ : p i), g i"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "local-current",
+      "request": {
+        "query": "Θ_equiv",
+        "project_root": "/Users/ramin/LEAN/Roth",
+        "limit": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "local-standard",
+      "request": {
+        "query": "sSup_image",
+        "project_root": "/Users/ramin/LEAN/Roth",
+        "limit": 10
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"sSup_image\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"sSup_image'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"sSup_image2\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"sSup_image2_eq_sInf_sInf\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/GaloisConnection/Basic.lean\"\n    },\n    {\n      \"name\": \"sSup_image2_eq_sInf_sSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/GaloisConnection/Basic.lean\"\n    },\n    {\n      \"name\": \"sSup_image2_eq_sSup_sInf\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/GaloisConnection/Basic.lean\"\n    },\n    {\n      \"name\": \"sSup_image2_eq_sSup_sSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/GaloisConnection/Basic.lean\"\n    },\n    {\n      \"name\": \"LieSubmodule.sSup_image_lieSpan_singleton\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Lie/Submodule.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "sSup_image",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Basic.lean"
+            },
+            {
+              "name": "sSup_image'",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Basic.lean"
+            },
+            {
+              "name": "sSup_image2",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Basic.lean"
+            },
+            {
+              "name": "sSup_image2_eq_sInf_sInf",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/GaloisConnection/Basic.lean"
+            },
+            {
+              "name": "sSup_image2_eq_sInf_sSup",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/GaloisConnection/Basic.lean"
+            },
+            {
+              "name": "sSup_image2_eq_sSup_sInf",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/GaloisConnection/Basic.lean"
+            },
+            {
+              "name": "sSup_image2_eq_sSup_sSup",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/GaloisConnection/Basic.lean"
+            },
+            {
+              "name": "LieSubmodule.sSup_image_lieSpan_singleton",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Lie/Submodule.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "local-abstract",
+      "request": {
+        "query": "congrArg",
+        "project_root": "/Users/ramin/LEAN/Roth",
+        "limit": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"congrArg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lean-stdlib/lean/Init/Prelude.lean\"\n    },\n    {\n      \"name\": \"Lean.Elab.Tactic.Conv.congrArgN\",\n      \"kind\": \"def\",\n      \"file\": \".lean-stdlib/lean/Lean/Elab/Tactic/Conv/Congr.lean\"\n    },\n    {\n      \"name\": \"Lean.Meta.Simp.congrArgs\",\n      \"kind\": \"def\",\n      \"file\": \".lean-stdlib/lean/Lean/Meta/Tactic/Simp/Types.lean\"\n    },\n    {\n      \"name\": \"Lean.Elab.Tactic.Conv.congrArgForall\",\n      \"kind\": \"def\",\n      \"file\": \".lean-stdlib/lean/Lean/Elab/Tactic/Conv/Congr.lean\"\n    },\n    {\n      \"name\": \"CategoryTheory.congrArg_mpr_hom_left\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/CategoryTheory/EqToHom.lean\"\n    },\n    {\n      \"name\": \"CategoryTheory.congrArg_cast_hom_left\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/CategoryTheory/EqToHom.lean\"\n    },\n    {\n      \"name\": \"CategoryTheory.congrArg_mpr_hom_right\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/CategoryTheory/EqToHom.lean\"\n    },\n    {\n      \"name\": \"CategoryTheory.congrArg_cast_hom_right\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/CategoryTheory/EqToHom.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "congrArg",
+              "kind": "theorem",
+              "file": ".lean-stdlib/lean/Init/Prelude.lean"
+            },
+            {
+              "name": "Lean.Elab.Tactic.Conv.congrArgN",
+              "kind": "def",
+              "file": ".lean-stdlib/lean/Lean/Elab/Tactic/Conv/Congr.lean"
+            },
+            {
+              "name": "Lean.Meta.Simp.congrArgs",
+              "kind": "def",
+              "file": ".lean-stdlib/lean/Lean/Meta/Tactic/Simp/Types.lean"
+            },
+            {
+              "name": "Lean.Elab.Tactic.Conv.congrArgForall",
+              "kind": "def",
+              "file": ".lean-stdlib/lean/Lean/Elab/Tactic/Conv/Congr.lean"
+            },
+            {
+              "name": "CategoryTheory.congrArg_mpr_hom_left",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/CategoryTheory/EqToHom.lean"
+            },
+            {
+              "name": "CategoryTheory.congrArg_cast_hom_left",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/CategoryTheory/EqToHom.lean"
+            },
+            {
+              "name": "CategoryTheory.congrArg_mpr_hom_right",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/CategoryTheory/EqToHom.lean"
+            },
+            {
+              "name": "CategoryTheory.congrArg_cast_hom_right",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/CategoryTheory/EqToHom.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]

@@ -1,0 +1,38 @@
+namespace ThetaEquiv193
+open Roth MvPolynomial
+elab "helper193" : term => do
+  return ← Lean.Meta.mkConstWithFreshMVarLevels (Lean.mkPrivateNameCore `Roth.Theta
+    `Roth.indexSet_comp_subset)
+lemma familyEq {σ τ : Type*} [Fintype σ] [Fintype τ] (e : σ ≃ τ) (B : ℝ)
+    (q r : τ → ℕ) : Roth.indexSet B (q ∘ e) (r ∘ e) = Roth.indexSet B q r := by
+  refine subset_antisymm (helper193 e B q r) ?_
+  simpa only [Function.comp_def, Equiv.apply_symm_apply] using
+    helper193 e.symm B (q ∘ e) (r ∘ e)
+lemma replay {σ τ : Type*} [Fintype σ] [Fintype τ] (e : σ ≃ τ) (B : ℝ)
+    (q r : τ → ℕ) : Roth.Θ B (q ∘ e) (r ∘ e) = Roth.Θ B q r :=
+  congrArg sSup (familyEq e B q r)
+lemma inclusion193 {ι κ : Type*} [Fintype ι] [Fintype κ] (e : ι ≃ κ) (B : ℝ)
+    (q r : κ → ℕ) : Roth.indexSet B (q ∘ e) (r ∘ e) ⊆ Roth.indexSet B q r := by
+  rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
+  refine ⟨rename e R, ⟨?_, ?_, ?_⟩, h ∘ e.symm, ?_, ?_⟩
+  · simpa [rename_eq_zero_iff_of_injective R e.injective] using hR0
+  · intro j
+    obtain ⟨i, rfl⟩ := e.surjective j
+    simpa only [degreeOf_rename_of_injective e.injective, Function.comp_apply] using hRd i
+  · intro d
+    obtain ⟨d, rfl⟩ := Finsupp.mapDomain_surjective e.surjective d
+    simpa only [coeff_rename_mapDomain _ e.injective] using hRc d
+  · intro j
+    simpa only [Function.comp_apply, Equiv.apply_symm_apply] using hh (e.symm j)
+  · simp only [map_rename, Roth.index_rename e.injective, Function.comp_def,
+      Equiv.symm_apply_apply]
+lemma fullBridge {σ τ : Type*} [Fintype σ] [Fintype τ] (e : σ ≃ τ) (B : ℝ)
+    (q r : τ → ℕ) : Roth.Θ B (q ∘ e) (r ∘ e) = Roth.Θ B q r := by
+  apply congrArg sSup
+  refine subset_antisymm (inclusion193 e B q r) ?_
+  simpa only [Function.comp_def, Equiv.apply_symm_apply] using
+    inclusion193 e.symm B (q ∘ e) (r ∘ e)
+#print axioms ThetaEquiv193.familyEq
+#print axioms ThetaEquiv193.replay
+#print axioms ThetaEquiv193.fullBridge
+end ThetaEquiv193

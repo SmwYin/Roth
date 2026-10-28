@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 192/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 193/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 192; remaining: 101.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 44 NO-mathlib-has-it, 57 BORDERLINE-needs-human, 34 SKIP.
+- Completed applicable assessments: 193; remaining: 100.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 44 NO-mathlib-has-it, 58 BORDERLINE-needs-human, 34 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2219,6 +2219,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One source caller, Θ_equiv, applies the helper twice (e and e.symm); one direct original value consumer and no claim about transitive closure. Entire Theta module replay succeeds with a fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.indexSet_comp_subset.md).
 
+### Completed: `Roth.Θ_equiv`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] {τ : Type u_2} [inst_1 : Fintype τ] (e : σ ≃ τ) (B : ℝ)
+  (q r : τ → ℕ), Roth.Θ B (q ∘ ⇑e) (r ∘ ⇑e) = Roth.Θ B q r`
+- What: The supremum of bounded integral polynomial indices at reduced rational points is invariant under bijective variable renaming.
+- How: Rename each polynomial, transport its nonzero/degree/coefficient bounds and coprime numerator vector, use index_rename, repeat with inverse equivalence, then congrArg sSup.
+- Hypotheses: Arbitrary universe-polymorphic finite variable types, an equivalence e, B real, q/r natural vectors; no DecidableEq or positivity premise.
+- Project dependencies: Roth.Θ, Roth.indexSet, Roth.RSet, Roth.index, Roth.indexSet_comp_subset, Roth.index_rename
+- Caller summary: One explicit application in private Roth.theta_lt_succ_aux at Theta:919; zero outside-file uses; native1 direct value/0 direct type consumer.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.Θ_equiv.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2629,6 +2640,8 @@ Completed `Roth.Θ_mono`: existing: csSup_le_csSup; path: Mathlib/Order/Conditio
 
 Completed `Roth.indexSet_comp_subset`: Rename the polynomial, transport nonvanishing through injective renaming, degree bounds through the variable equivalence, and coefficient bounds through surjectivity of exponent mapDomain. Compose the numerator vector with the inverse equivalence, preserve its coprimality, then use index_rename and map_rename to identify index values. This is a live private transport component of Θ_equiv, distinct from the final two-sided equality of suprema.
 
+Completed `Roth.Θ_equiv`: Existing congrArg and SupSet Equiv.iSup_congr cover the outer layer. renameEquiv, degreeOf_rename_of_injective, coeff_rename_mapDomain and mapDomain_surjective cover individual transport pieces; full bounded-family preservation still requires new verified glue.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3014,6 +3027,8 @@ Completed `Roth.Θ_le_of_forall_index_le`: Structural supremum law shared with R
 Completed `Roth.Θ_mono`: The analogous monotonicity law for sSup already exists in csSup_le_csSup; apply the parent re-aim rule rather than proposing a Roth-specific upstream law.
 
 Completed `Roth.indexSet_comp_subset`: The inclusion transport is used in both directions by Θ_equiv; it is distinct from the final equality of suprema and from height monotonicity. Retain this private transport boundary.
+
+Completed `Roth.Θ_equiv`: No independent duplicate Theta invariance found; generic supremum congruence is already available but has an unprovided admissible-family equivalence/equality premise.
 
 ## Part 5: Generalization opportunities
 
@@ -3411,6 +3426,8 @@ Completed `Roth.Θ_mono`: verified hypothesis deletion: hB can be dropped for th
 
 Completed `Roth.indexSet_comp_subset`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.Θ_equiv`: No mechanical weakening established under fixed Theta/index signatures. Candidate reusable core is renameEquiv transport of nonzero polynomials with separate coordinate degree caps and arbitrary coefficient predicates.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3797,6 +3814,8 @@ Completed `Roth.Θ_le_of_forall_index_le`: No missing supremum-upper-bound API. 
 Completed `Roth.Θ_mono`: No missing generic supremum monotonicity law. A local indexSet-height inclusion helper may improve organization; it is not an existing mathlib replacement. This does not resolve the substantive boundedness API assessment.
 
 Completed `Roth.indexSet_comp_subset`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.Θ_equiv`: Potential bounded-polynomial/height family transport interface; upstream design question, not an established missing generic supremum law.
 
 ## Part 7: Junk / removable
 
@@ -4187,6 +4206,8 @@ Completed `Roth.Θ_mono`: Used twice in private Lemma7 helpers; not dead code. N
 
 Completed `Roth.indexSet_comp_subset`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.Θ_equiv`: Live theorem; sole caller changes Fin coordinates to Option coordinates before Lemma6.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4383,6 +4404,7 @@ Completed `Roth.indexSet_comp_subset`: Retain a live private proof interface. No
 | 190 | `Roth.Θ_le_of_forall_index_le` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_le_of_forall_index_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_le_of_forall_index_le/root-acceptance.json) |
 | 191 | `Roth.Θ_mono` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_mono.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_mono/root-acceptance.json) |
 | 192 | `Roth.indexSet_comp_subset` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.indexSet_comp_subset.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.indexSet_comp_subset/root-acceptance.json) |
+| 193 | `Roth.Θ_equiv` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_equiv.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_equiv/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4766,12 +4788,14 @@ Completed `Roth.Θ_mono` action: Do not upstream Θ_mono separately. In Roth/The
 
 Completed `Roth.indexSet_comp_subset` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.Θ_equiv` action: BORDERLINE: retain in Roth/Theta.lean and sole caller; settle bounded-family coefficient-predicate/height API, expose family equality if useful, then reassess its supremum corollary.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.Θ_equiv` next. Supporting identities receive their own applicable checks.
+   `Roth.isPrimitive_linear` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

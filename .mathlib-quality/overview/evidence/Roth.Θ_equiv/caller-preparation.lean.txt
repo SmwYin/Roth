@@ -1,0 +1,51 @@
+namespace ThetaEquiv193Caller
+open Roth MvPolynomial
+elab "callerHelper1930" : term => do
+  return ← Lean.Meta.mkConstWithFreshMVarLevels (Lean.mkPrivateNameCore `Roth.Theta
+    `Roth.theta_denominators_one_lt_aux)
+elab "callerHelper1931" : term => do
+  return ← Lean.Meta.mkConstWithFreshMVarLevels (Lean.mkPrivateNameCore `Roth.Theta
+    `Roth.theta_phi_lt_aux)
+lemma caller193 {n : ℕ} {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1))
+    {r q : Fin (n + 2) → ℕ} (hrlast : 3 ≤ (r (Fin.last (n + 1)) : ℝ))
+    (hratio : ∀ i : Fin (n + 1), (r i.succ : ℝ) ≤ δ * r i.castSucc)
+    (hq1 : ((n : ℝ) + 1 + 1) * (2 * ((n : ℝ) + 1 + 1) + 1) / δ ≤ Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))
+    (ih : ∀ {δ : ℝ}, 0 < δ → δ ≤ 1 / ((n : ℝ) + 1) →
+      ∀ {r q : Fin (n + 1) → ℕ}, 3 ≤ (r (Fin.last n) : ℝ) →
+      (∀ i : Fin n, (r i.succ : ℝ) ≤ δ * r i.castSucc) →
+      ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ ≤ Real.log (q 0) →
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) →
+      Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ (n + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1))) :
+    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ (n + 2) * δ ^ ((1 / 2 : ℝ) ^ (n + 2)) := by
+  have hδ1 : δ < 1 := hδ.trans_lt ((div_lt_one (by positivity)).2
+    (by linarith only [Nat.cast_nonneg (α := ℝ) n]))
+  have hanti : Antitone r := Fin.antitone_iff_succ_le.2 fun i ↦ by
+    exact_mod_cast (hratio i).trans (mul_le_of_le_one_left (Nat.cast_nonneg _) hδ1.le)
+  have hq := callerHelper1930
+    (by exact_mod_cast (lt_of_lt_of_le (by norm_num : (0 : ℝ) < 3)
+      (hrlast.trans (by exact_mod_cast hanti (Fin.zero_le _)) : (3 : ℝ) ≤ r 0)))
+    (lt_of_lt_of_le (by positivity) hq1) hqr
+  have hratio' : ∀ j : Fin (n + 1),
+      (r (Fin.last (n + 1)) : ℝ) ≤ δ * r j.castSucc := fun j ↦ by
+    have h := hratio (Fin.last n)
+    rw [Fin.succ_last] at h
+    exact h.trans (mul_le_mul_of_nonneg_left
+      (by exact_mod_cast hanti (Fin.castSucc_le_castSucc_iff.2 (Fin.le_last j))) hδ0.le)
+  -- transport to `Option (Fin (n + 1))`
+  let e : Fin (n + 2) ≃ Option (Fin (n + 1)) := finSuccEquivLast
+  rw [← ThetaEquiv193.replay e.symm ((q 0 : ℝ) ^ (δ * r 0)) q r]
+  refine (Θ_option_le (τ := Fin (n + 1)) hδ0.le hδ1.le (r := r ∘ e.symm)
+    (by simpa only [Function.comp_apply, e, finSuccEquivLast_symm_none] using hrlast)
+    (fun j ↦ by simpa only [Function.comp_apply, e, finSuccEquivLast_symm_none,
+      finSuccEquivLast_symm_some] using hratio' j)
+    (r₁ := r 0) (fun j ↦ hanti (Fin.zero_le _)) (q := q ∘ e.symm)
+    (fun j ↦ Nat.zero_lt_of_lt (hq _))
+    (Real.one_le_rpow (by exact_mod_cast (hq 0).le) (by positivity))).trans_lt ?_
+  simp only [lem6Φ, e, Function.comp_def, finSuccEquivLast_symm_none,
+    finSuccEquivLast_symm_some, Fintype.card_fin]
+  rw [← lt_div_iff₀' (by norm_num : (0 : ℝ) < 2), Finset.sup'_lt_iff]
+  exact fun l hl ↦ callerHelper1931 hδ0 hδ hδ1 hanti hrlast hratio hq1 hqr ih hl
+
+#print axioms ThetaEquiv193Caller.caller193
+end ThetaEquiv193Caller
