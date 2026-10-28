@@ -1,0 +1,55 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 776,
+  "name": "Roth.theta_prefix_lt_aux",
+  "short": "theta_prefix_lt_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 816,
+  "source": "private lemma theta_prefix_lt_aux {n : ℕ} {δ ε M : ℝ} (hδ0 : 0 < δ) (hδε : δ ≤ ε)\n    {r q : Fin (n + 2) → ℕ} (hanti : ∀ j, r (Fin.last (n + 1)) ≤ r j)\n    (hrlast : 3 ≤ (r (Fin.last (n + 1)) : ℝ))\n    (hratio : ∀ i : Fin (n + 1), (r i.succ : ℝ) ≤ δ * r i.castSucc)\n    (hq1 : ((n : ℝ) + 1 + 1) * (2 * ((n : ℝ) + 1 + 1) + 1) / δ ≤ Real.log (q 0))\n    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) {l : ℕ} (hl : 1 ≤ l)\n    (hM1 : 1 ≤ M) (hM : M ≤ (q 0 : ℝ) ^ (ε * (l * r 0)))\n    (ih : ∀ {r q : Fin (n + 1) → ℕ}, 3 ≤ (r (Fin.last n) : ℝ) →\n      (∀ i : Fin n, (r i.succ : ℝ) ≤ ε * r i.castSucc) →\n      ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / ε ≤ Real.log (q 0) →\n      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) →\n      Θ ((q 0 : ℝ) ^ (ε * r 0)) q r < 10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1))) :\n    Θ M (fun j : Fin (n + 1) ↦ q j.castSucc) (fun j ↦ l * r j.castSucc) <\n      10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1)) := by\n  refine (Θ_mono hM1 hM _).trans_lt ?_\n  have hCeq : (q 0 : ℝ) ^ (ε * (l * r 0)) =\n      (q (Fin.castSucc 0) : ℝ) ^ (ε * ((l * r (Fin.castSucc 0) : ℕ) : ℝ)) := by\n    simp [Nat.cast_mul]\n  rw [hCeq]\n  have hn : (0 : ℝ) ≤ n + 1 + 1 :=\n    add_nonneg (add_nonneg (Nat.cast_nonneg _) zero_le_one) zero_le_one\n  refine ih (r := fun j ↦ l * r j.castSucc) (q := fun j ↦ q j.castSucc) ?_ ?_\n    ((div_le_div₀ (mul_nonneg hn (add_nonneg (mul_nonneg (by norm_num) hn) zero_le_one)) (by\n      linarith only [Nat.cast_nonneg (α := ℝ) n]) hδ0 hδε).trans hq1) ?_\n  · have h2 : (r (Fin.last (n + 1)) : ℝ) ≤ r (Fin.castSucc (Fin.last n)) := by\n      exact_mod_cast hanti _\n    push_cast\n    exact hrlast.trans (h2.trans\n      (le_mul_of_one_le_left (Nat.cast_nonneg _) (by exact_mod_cast hl)))\n  · intro i\n    push_cast\n    calc\n      (l : ℝ) * r (Fin.castSucc i.succ) ≤ l * (δ * r (Fin.castSucc (Fin.castSucc i))) :=\n        mul_le_mul_of_nonneg_left (hratio (Fin.castSucc i)) (Nat.cast_nonneg l)\n      _ = δ * (l * r (Fin.castSucc (Fin.castSucc i))) := mul_left_comm _ _ _\n      _ ≤ ε * (l * r (Fin.castSucc (Fin.castSucc i))) :=\n        mul_le_mul_of_nonneg_right hδε (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))\n  · intro j\n    push_cast\n    simpa only [mul_assoc, Fin.castSucc_zero] using\n      mul_le_mul_of_nonneg_left (hqr j.castSucc) (Nat.cast_nonneg l)",
+  "signature": "private lemma theta_prefix_lt_aux {n : ℕ} {δ ε M : ℝ} (hδ0 : 0 < δ) (hδε : δ ≤ ε)\n    {r q : Fin (n + 2) → ℕ} (hanti : ∀ j, r (Fin.last (n + 1)) ≤ r j)\n    (hrlast : 3 ≤ (r (Fin.last (n + 1)) : ℝ))\n    (hratio : ∀ i : Fin (n + 1), (r i.succ : ℝ) ≤ δ * r i.castSucc)\n    (hq1 : ((n : ℝ) + 1 + 1) * (2 * ((n : ℝ) + 1 + 1) + 1) / δ ≤ Real.log (q 0))\n    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) {l : ℕ} (hl : 1 ≤ l)\n    (hM1 : 1 ≤ M) (hM : M ≤ (q 0 : ℝ) ^ (ε * (l * r 0)))\n    (ih : ∀ {r q : Fin (n + 1) → ℕ}, 3 ≤ (r (Fin.last n) : ℝ) →\n      (∀ i : Fin n, (r i.succ : ℝ) ≤ ε * r i.castSucc) →\n      ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / ε ≤ Real.log (q 0) →\n      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) →\n      Θ ((q 0 : ℝ) ^ (ε * r 0)) q r < 10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1))) :\n    Θ M (fun j : Fin (n + 1) ↦ q j.castSucc) (fun j ↦ l * r j.castSucc) <\n      10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1))",
+  "body": "by\n  refine (Θ_mono hM1 hM _).trans_lt ?_\n  have hCeq : (q 0 : ℝ) ^ (ε * (l * r 0)) =\n      (q (Fin.castSucc 0) : ℝ) ^ (ε * ((l * r (Fin.castSucc 0) : ℕ) : ℝ)) := by\n    simp [Nat.cast_mul]\n  rw [hCeq]\n  have hn : (0 : ℝ) ≤ n + 1 + 1 :=\n    add_nonneg (add_nonneg (Nat.cast_nonneg _) zero_le_one) zero_le_one\n  refine ih (r := fun j ↦ l * r j.castSucc) (q := fun j ↦ q j.castSucc) ?_ ?_\n    ((div_le_div₀ (mul_nonneg hn (add_nonneg (mul_nonneg (by norm_num) hn) zero_le_one)) (by\n      linarith only [Nat.cast_nonneg (α := ℝ) n]) hδ0 hδε).trans hq1) ?_\n  · have h2 : (r (Fin.last (n + 1)) : ℝ) ≤ r (Fin.castSucc (Fin.last n)) := by\n      exact_mod_cast hanti _\n    push_cast\n    exact hrlast.trans (h2.trans\n      (le_mul_of_one_le_left (Nat.cast_nonneg _) (by exact_mod_cast hl)))\n  · intro i\n    push_cast\n    calc\n      (l : ℝ) * r (Fin.castSucc i.succ) ≤ l * (δ * r (Fin.castSucc (Fin.castSucc i))) :=\n        mul_le_mul_of_nonneg_left (hratio (Fin.castSucc i)) (Nat.cast_nonneg l)\n      _ = δ * (l * r (Fin.castSucc (Fin.castSucc i))) := mul_left_comm _ _ _\n      _ ≤ ε * (l * r (Fin.castSucc (Fin.castSucc i))) :=\n        mul_le_mul_of_nonneg_right hδε (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))\n  · intro j\n    push_cast\n    simpa only [mul_assoc, Fin.castSucc_zero] using\n      mul_le_mul_of_nonneg_left (hqr j.castSucc) (Nat.cast_nonneg l)",
+  "proof_lines": 28,
+  "sha256": "c69289524070c80e05253bf5b22833009a62b15dcc0b8be98eca0a850df31bcd",
+  "what": "The induction hypothesis controls the scaled ordinary-variable prefix of the extremal index.",
+  "how": "Use Θ_mono to increase the coefficient bound, apply the supplied induction hypothesis to scaled degrees, and transfer degree ratios and balanced logarithms through Fin.castSucc.",
+  "hypotheses": "Positive delta, larger epsilon, prefix induction hypothesis, lower last degree, degree ratios/logarithm bounds, positive scale and bounded coefficient parameter.",
+  "source_body_refs": [
+    "Roth.Θ_mono"
+  ],
+  "source_type_refs": [
+    "Roth.Θ"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [
+    "Roth.Θ_mono"
+  ],
+  "used_by_in_file": [
+    "Roth.theta_phi_lt_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 954,
+  "project_body_refs": [
+    "Roth.Θ_mono"
+  ],
+  "project_type_refs": [
+    "Roth.Θ"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ]
+}

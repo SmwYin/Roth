@@ -1,0 +1,41 @@
+private lemma theta_prefix_lt_aux {n : ℕ} {δ ε M : ℝ} (hδ0 : 0 < δ) (hδε : δ ≤ ε)
+    {r q : Fin (n + 2) → ℕ} (hanti : ∀ j, r (Fin.last (n + 1)) ≤ r j)
+    (hrlast : 3 ≤ (r (Fin.last (n + 1)) : ℝ))
+    (hratio : ∀ i : Fin (n + 1), (r i.succ : ℝ) ≤ δ * r i.castSucc)
+    (hq1 : ((n : ℝ) + 1 + 1) * (2 * ((n : ℝ) + 1 + 1) + 1) / δ ≤ Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) {l : ℕ} (hl : 1 ≤ l)
+    (hM1 : 1 ≤ M) (hM : M ≤ (q 0 : ℝ) ^ (ε * (l * r 0)))
+    (ih : ∀ {r q : Fin (n + 1) → ℕ}, 3 ≤ (r (Fin.last n) : ℝ) →
+      (∀ i : Fin n, (r i.succ : ℝ) ≤ ε * r i.castSucc) →
+      ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / ε ≤ Real.log (q 0) →
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) →
+      Θ ((q 0 : ℝ) ^ (ε * r 0)) q r < 10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1))) :
+    Θ M (fun j : Fin (n + 1) ↦ q j.castSucc) (fun j ↦ l * r j.castSucc) <
+      10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1)) := by
+  refine (Θ_mono hM1 hM _).trans_lt ?_
+  have hCeq : (q 0 : ℝ) ^ (ε * (l * r 0)) =
+      (q (Fin.castSucc 0) : ℝ) ^ (ε * ((l * r (Fin.castSucc 0) : ℕ) : ℝ)) := by
+    simp [Nat.cast_mul]
+  rw [hCeq]
+  have hn : (0 : ℝ) ≤ n + 1 + 1 :=
+    add_nonneg (add_nonneg (Nat.cast_nonneg _) zero_le_one) zero_le_one
+  refine ih (r := fun j ↦ l * r j.castSucc) (q := fun j ↦ q j.castSucc) ?_ ?_
+    ((div_le_div₀ (mul_nonneg hn (add_nonneg (mul_nonneg (by norm_num) hn) zero_le_one)) (by
+      linarith only [Nat.cast_nonneg (α := ℝ) n]) hδ0 hδε).trans hq1) ?_
+  · have h2 : (r (Fin.last (n + 1)) : ℝ) ≤ r (Fin.castSucc (Fin.last n)) := by
+      exact_mod_cast hanti _
+    push_cast
+    exact hrlast.trans (h2.trans
+      (le_mul_of_one_le_left (Nat.cast_nonneg _) (by exact_mod_cast hl)))
+  · intro i
+    push_cast
+    calc
+      (l : ℝ) * r (Fin.castSucc i.succ) ≤ l * (δ * r (Fin.castSucc (Fin.castSucc i))) :=
+        mul_le_mul_of_nonneg_left (hratio (Fin.castSucc i)) (Nat.cast_nonneg l)
+      _ = δ * (l * r (Fin.castSucc (Fin.castSucc i))) := mul_left_comm _ _ _
+      _ ≤ ε * (l * r (Fin.castSucc (Fin.castSucc i))) :=
+        mul_le_mul_of_nonneg_right hδε (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
+  · intro j
+    push_cast
+    simpa only [mul_assoc, Fin.castSucc_zero] using
+      mul_le_mul_of_nonneg_left (hqr j.castSucc) (Nat.cast_nonneg l)
