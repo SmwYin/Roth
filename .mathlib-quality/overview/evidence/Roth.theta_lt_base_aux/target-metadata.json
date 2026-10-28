@@ -1,0 +1,58 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 818,
+  "name": "Roth.theta_lt_base_aux",
+  "short": "theta_lt_base_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 831,
+  "source": "private lemma theta_lt_base_aux {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ ≤ 1) {r q : Fin 1 → ℕ}\n    (hrlast : 0 < r 0) (hq1 : 1 < q 0) :\n    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ 1 * δ ^ ((1 / 2 : ℝ) ^ 1) := by\n  have h : Θ ((q 0 : ℝ) ^ (δ * r 0)) q r ≤ δ := by\n    refine (Θ_unique_le (q := q) (r := r)\n      (Real.one_le_rpow (by exact_mod_cast hq1.le) (by positivity)) hq1).trans_eq ?_\n    rw [Subsingleton.elim (default : Fin 1) 0, Real.log_rpow (by positivity)]\n    field_simp [ne_of_gt (by exact_mod_cast hrlast : (0 : ℝ) < r 0),\n      ne_of_gt (Real.log_pos (by exact_mod_cast hq1 : (1 : ℝ) < q 0))]\n  have h1 : δ ≤ δ ^ ((1 / 2 : ℝ) ^ 1) := by\n    simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ (by norm_num : (1 / 2 : ℝ) ^ 1 ≤ 1)\n  norm_num only [pow_one] at h1 ⊢\n  exact h.trans_lt (h1.trans_lt\n    (lt_mul_of_one_lt_left (Real.rpow_pos_of_pos hδ0 _) (by norm_num : (1 : ℝ) < 10)))",
+  "signature": "private lemma theta_lt_base_aux {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ ≤ 1) {r q : Fin 1 → ℕ}\n    (hrlast : 0 < r 0) (hq1 : 1 < q 0) :\n    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ 1 * δ ^ ((1 / 2 : ℝ) ^ 1)",
+  "body": "by\n  have h : Θ ((q 0 : ℝ) ^ (δ * r 0)) q r ≤ δ := by\n    refine (Θ_unique_le (q := q) (r := r)\n      (Real.one_le_rpow (by exact_mod_cast hq1.le) (by positivity)) hq1).trans_eq ?_\n    rw [Subsingleton.elim (default : Fin 1) 0, Real.log_rpow (by positivity)]\n    field_simp [ne_of_gt (by exact_mod_cast hrlast : (0 : ℝ) < r 0),\n      ne_of_gt (Real.log_pos (by exact_mod_cast hq1 : (1 : ℝ) < q 0))]\n  have h1 : δ ≤ δ ^ ((1 / 2 : ℝ) ^ 1) := by\n    simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ (by norm_num : (1 / 2 : ℝ) ^ 1 ≤ 1)\n  norm_num only [pow_one] at h1 ⊢\n  exact h.trans_lt (h1.trans_lt\n    (lt_mul_of_one_lt_left (Real.rpow_pos_of_pos hδ0 _) (by norm_num : (1 : ℝ) < 10)))",
+  "proof_lines": 12,
+  "sha256": "883c18145266f70701f2ad6da1ae7d70dd05869a12779c8e90166f66f794bb33",
+  "what": "The one-variable extremal index obeys the strict power-of-ten square-root estimate.",
+  "how": "Apply Θ_unique_le, cancel the positive degree-log denominator, compare delta to its square root and multiply by ten.",
+  "hypotheses": "Positive delta at most one, positive degree and denominator greater than one.",
+  "source_body_refs": [
+    "Roth.Θ",
+    "Roth.Θ_unique_le"
+  ],
+  "source_type_refs": [
+    "Roth.Θ"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.Θ_lt",
+      "file": "Roth/Theta.lean",
+      "line": 962
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [
+    "Roth.Θ",
+    "Roth.Θ_unique_le"
+  ],
+  "used_by_in_file": [
+    "Roth.Θ_lt"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 193,
+  "project_body_refs": [
+    "Roth.Θ",
+    "Roth.Θ_unique_le"
+  ],
+  "project_type_refs": [
+    "Roth.Θ"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.Θ_lt",
+      "file": "Roth/Theta.lean",
+      "line": 962
+    }
+  ]
+}
