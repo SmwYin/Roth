@@ -1,0 +1,38 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+#check_failure Roth.lem6Φ
+namespace Lem6Phi183Isolated
+noncomputable def formula (A : Type*) [SupSet A] [Add A] (s t : Set A) : A :=
+  Add.add (sSup s) (sSup t)
+theorem real_specialization (s t : Set ℝ) : formula ℝ s t = sSup s + sSup t := rfl
+theorem generic_specialization {A : Type*} [SupSet A] [Add A] (s t : Set A) :
+    formula A s t = sSup s + sSup t := rfl
+theorem empty : formula ℝ ∅ ∅ = 0 := by
+  simp only [formula, Real.sSup_empty, add_zero]
+theorem unbounded {s t : Set ℝ} (hs : ¬ BddAbove s) (ht : ¬ BddAbove t) :
+    formula ℝ s t = 0 := by
+  simp only [formula, Real.sSup_of_not_bddAbove hs, Real.sSup_of_not_bddAbove ht, add_zero]
+#check @SupSet.sSup
+#check @Add.add
+#check @Set.image2
+#check @Real.sSup_empty
+#check @Real.sSup_of_not_bddAbove
+#print axioms formula
+#print axioms real_specialization
+#print axioms generic_specialization
+#print axioms empty
+#print axioms unbounded
+end Lem6Phi183Isolated

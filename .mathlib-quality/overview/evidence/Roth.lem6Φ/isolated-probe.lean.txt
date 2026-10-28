@@ -1,0 +1,19 @@
+#check_failure Roth.lem6Φ
+namespace Lem6Phi183Isolated
+noncomputable def formula (A : Type*) [SupSet A] [Add A] (s t : Set A) : A :=
+  Add.add (sSup s) (sSup t)
+example (s t : Set ℝ) : formula ℝ s t = sSup s + sSup t := rfl
+example {A : Type*} [SupSet A] [Add A] (s t : Set A) :
+    formula A s t = sSup s + sSup t := rfl
+example : formula ℝ ∅ ∅ = 0 := by
+  simp only [formula, Real.sSup_empty, add_zero]
+example {s t : Set ℝ} (hs : ¬ BddAbove s) (ht : ¬ BddAbove t) :
+    formula ℝ s t = 0 := by
+  simp only [formula, Real.sSup_of_not_bddAbove hs, Real.sSup_of_not_bddAbove ht, add_zero]
+#check @SupSet.sSup
+#check @Add.add
+#check @Set.image2
+#check @Real.sSup_empty
+#check @Real.sSup_of_not_bddAbove
+#print axioms formula
+end Lem6Phi183Isolated

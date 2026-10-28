@@ -1,0 +1,39 @@
+namespace Lem6Phi183Callers
+open MvPolynomial Roth
+universe u
+variable {τ : Type u} [Fintype τ]
+-- The separated product consumer uses exactly this distribution step.
+theorem separated (q r : Option τ → ℕ) (M : ℝ) (l : ℕ) :
+    (l : ℝ) * lem6Φ q r M l =
+      l * Θ M (fun _ : Unit => q none) (fun _ => l * r none) +
+      l * Θ M (q ∘ some) (fun j => l * r (some j)) :=
+  mul_add _ _ _
+-- The two numeric consumers and supremum bound use exactly this repeated substitution.
+theorem numeric (q r : Option τ → ℕ) (M δ : ℝ) (l : ℕ) :
+    2 * (lem6Φ q r M l + √(lem6Φ q r M l) + √δ) =
+      2 * ((Θ M (fun _ : Unit => q none) (fun _ => l * r none) +
+        Θ M (q ∘ some) (fun j => l * r (some j))) +
+      √(Θ M (fun _ : Unit => q none) (fun _ => l * r none) +
+        Θ M (q ∘ some) (fun j => l * r (some j))) + √δ) := rfl
+-- The final successor-induction caller transports Option variables via finSuccEquivLast.
+theorem transport {n : ℕ} (q r : Fin (n + 2) → ℕ) (M : ℝ) (l : ℕ) :
+    lem6Φ (q ∘ (finSuccEquivLast : Fin (n + 2) ≃ Option (Fin (n + 1))).symm)
+      (r ∘ (finSuccEquivLast : Fin (n + 2) ≃ Option (Fin (n + 1))).symm) M l =
+    Θ M (fun _ : Unit => q (Fin.last (n + 1)))
+      (fun _ => l * r (Fin.last (n + 1))) +
+    Θ M (fun j : Fin (n + 1) => q j.castSucc) (fun j => l * r j.castSucc) := rfl
+-- Risk probes: no new instance or coercion is introduced by a real-valued definition.
+#synth SupSet ℝ
+#synth Add ℝ
+#check_failure (inferInstance : CoeFun ℝ (fun _ => ℝ → ℝ))
+theorem no_automatic_unfold (q r : Option τ → ℕ) (M : ℝ) (l : ℕ) :
+    lem6Φ q r M l = Θ M (fun _ : Unit => q none) (fun _ => l * r none) +
+      Θ M (q ∘ some) (fun j => l * r (some j)) := by
+  fail_if_success
+    simp only
+  rfl
+#print axioms separated
+#print axioms numeric
+#print axioms transport
+#print axioms no_automatic_unfold
+end Lem6Phi183Callers
