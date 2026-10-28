@@ -1,0 +1,139 @@
+{
+  "declaration": "Roth.eta",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "66068a00899be4b26e5070ba3b799092f514ed9d98254dbb2cafcdab19960244",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 50
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "ETA231_FULL_TYPE: ℝ → ℕ → ℝ",
+        "ETA231_AUDIT: requested=293; unique=293",
+        "ETA231_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "a953801a7f57d521340b93e3a318ce4f4bdaccbc9921e7074522024547113a38",
+      "format": "raw",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.eta\n#check_failure Roth.lam\n#check @Real.rpow\n#check @Real.rpow_mul\n#check @Real.sqrt_eq_rpow\n#check_failure Real.continuousAt_rpow_const\n#check @NNReal.coe_rpow\n#check @Real.rpow_def_of_neg\nnamespace Eta231Isolated\nnoncomputable def formula (C b δ : ℝ) (m : ℕ) : ℝ := C ^ m * δ ^ (b ^ m)\nnoncomputable def rootIter (δ : ℝ) : ℕ → ℝ\n  | 0 => δ\n  | n + 1 => √(rootIter δ n)\ntheorem direct (δ : ℝ) (m : ℕ) :\n    formula 10 (1 / 2) δ m = (10 : ℝ) ^ m * Real.rpow δ ((1 / 2 : ℝ) ^ m) := rfl\ntheorem rootIter_eq (δ : ℝ) (hδ : 0 ≤ δ) (m : ℕ) :\n    rootIter δ m = δ ^ ((1 / 2 : ℝ) ^ m) := by\n  induction m with\n  | zero => simp [rootIter]\n  | succ n ih =>\n    rw [rootIter, ih, Real.sqrt_eq_rpow, ← Real.rpow_mul hδ, pow_succ]\ntheorem rootForm (δ : ℝ) (hδ : 0 ≤ δ) (m : ℕ) :\n    formula 10 (1 / 2) δ m = 10 ^ m * rootIter δ m :=\n  congrArg (fun x : ℝ ↦ 10 ^ m * x) (rootIter_eq δ hδ m).symm\ntheorem atZero (C b : ℝ) (hb : 0 < b) (m : ℕ) : formula C b 0 m = 0 := by\n  simp only [formula, Real.zero_rpow (pow_pos hb m).ne', mul_zero]\ntheorem dimensionZero (C b δ : ℝ) : formula C b δ 0 = δ := by simp [formula]\ntheorem negativeGuard : formula 10 (1 / 2) (-1) 0 = -1 := dimensionZero _ _ _\ntheorem positive (C b δ : ℝ) (hC : 0 < C) (hδ : 0 < δ) (m : ℕ) :\n    0 < formula C b δ m := mul_pos (pow_pos hC m) (Real.rpow_pos_of_pos hδ _)\nnoncomputable def typed (δ : NNReal) (m : ℕ) : NNReal := 10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m)\ntheorem typedBridge (δ : NNReal) (m : ℕ) :\n    (typed δ m : ℝ) = formula 10 (1 / 2) δ m := by\n  simp only [typed, formula, NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_ofNat,\n    NNReal.coe_rpow]\n#check_failure (inferInstance : CoeFun ℝ (fun _ : ℝ ↦ ℝ → ℝ))\n#print axioms formula\n#print axioms rootIter\n#print axioms direct\n#print axioms rootIter_eq\n#print axioms rootForm\n#print axioms atZero\n#print axioms dimensionZero\n#print axioms negativeGuard\n#print axioms positive\n#print axioms typedBridge\nend Eta231Isolated\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Eta231Isolated.rootIter_eq' depends on axioms:",
+        "'Eta231Isolated.typedBridge' depends on axioms:",
+        "'Eta231Isolated.negativeGuard' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "source_sha256": "458db94dc074b1b59f1b6dcc73206137d4b56159bc83bbdd3921a3debcc22ce8",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 50
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "ETA231_INLINE_ALL8_ORIGINAL_SIGNATURES: PASS",
+        "'Eta231MainInline.roth_of_isIntegral' depends on axioms:"
+      ]
+    },
+    {
+      "label": "project",
+      "source": "project-executed.lean.txt",
+      "receipt": "project-receipt.json",
+      "source_sha256": "a75e25a2c7e0a06ccfcc14899f11d16c0b88d413a72f65303444165174533197",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 50
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "ETA231_UNIVERSE_PARAMETERS: []",
+        "ETA231_REAL_FORMULA_BRIDGE: PASS",
+        "'Eta231Project.negativeConvention' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "isolated-rejected-executed.lean.txt",
+      "receipt": "isolated-rejected-receipt.json",
+      "reason": "Missing continuity constant under exact18, unavailable NNReal notation, unnecessary guard_msgs expectation; recovered sorryAx explicitly rejected. Corrected accepted run uses explicit NNReal and project-context continuity."
+    }
+  ],
+  "warming": [
+    {
+      "source": "original-executed.lean.txt",
+      "receipt": "original-warming-receipt.json",
+      "reason": "Partial cold loading; not accepted success."
+    }
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "Roth.exists_delta_bound",
+    "_private.Roth.MainLemma.0.Roth.theta_lt_eta_of_sq_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+    "Roth.main_lemma",
+    "Roth.exists_delta",
+    "_private.Roth.Main.0.Roth.exists_roth_parameters_aux",
+    "_private.Roth.Main.0.Roth.one_lt_roth_eval_bound_aux",
+    "Roth.roth_of_isIntegral"
+  ],
+  "canonical_direct_type_consumers": [
+    "Roth.exists_delta_bound",
+    "Roth.eta_lt_gam_iff",
+    "_private.Roth.MainLemma.0.Roth.theta_lt_eta_of_sq_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+    "Roth.main_lemma",
+    "Roth.exists_delta",
+    "_private.Roth.Main.0.Roth.exists_roth_parameters_aux",
+    "_private.Roth.Main.0.Roth.one_lt_roth_eval_bound_aux"
+  ],
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "direct_arithmetic_construction_verified": true,
+    "new_generic_profile_is_existing_mathlib": false,
+    "new_root_iteration_proof_is_existing_mathlib": false,
+    "actual_caller_occurrences": 18,
+    "actual_caller_replays": 8,
+    "additional_kernel_only_value_consumer_replayed": "Roth.roth_of_isIntegral",
+    "full_modules_replayed": [
+      "Roth/MainLemma.lean",
+      "Roth/Main.lean"
+    ],
+    "original_signatures_retained_by_defeq": true,
+    "imported_transitive_target_freedom_claimed": false,
+    "global_absence_claimed": false
+  },
+  "file_end_build": {
+    "required": false,
+    "reason": "Not file endpoint; fresh17 match baseline2467jobs. File endpoint228 successful build already root accepted, next266."
+  }
+}

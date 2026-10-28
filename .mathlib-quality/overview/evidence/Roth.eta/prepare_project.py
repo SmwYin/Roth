@@ -1,0 +1,40 @@
+from pathlib import Path
+D=Path(__file__).resolve().parent;R=Path.cwd()
+body='''
+namespace Eta231Project
+noncomputable def formula (C b δ : ℝ) (m : ℕ) : ℝ := C ^ m * δ ^ (b ^ m)
+theorem bridge (δ : ℝ) (m : ℕ) : Roth.eta δ m = formula 10 (1 / 2) δ m := rfl
+theorem unfolding (δ : ℝ) (m : ℕ) :
+    Roth.eta δ m = 10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) := rfl
+theorem dimensionZero (δ : ℝ) : Roth.eta δ 0 = δ := by simp [Roth.eta]
+theorem atZero (m : ℕ) : Roth.eta 0 m = 0 := by
+  simp only [Roth.eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0), mul_zero]
+theorem continuousDelta (C b : ℝ) (hb : 0 ≤ b) (m : ℕ) :
+    Continuous (fun δ ↦ formula C b δ m) :=
+  (Real.continuous_rpow_const (pow_nonneg hb m)).const_mul _
+theorem etaContinuous (m : ℕ) : Continuous (fun δ ↦ Roth.eta δ m) :=
+  continuousDelta 10 (1 / 2) (by norm_num) m
+theorem negativeConvention {δ : ℝ} (hδ : δ < 0) (m : ℕ) :
+    Roth.eta δ m = 10 ^ m * (Real.exp (Real.log δ * (1 / 2 : ℝ) ^ m) *
+      Real.cos ((1 / 2 : ℝ) ^ m * Real.pi)) :=
+  congrArg (fun x : ℝ ↦ 10 ^ m * x) (Real.rpow_def_of_neg hδ _)
+theorem negativeGuard : Roth.eta (-1) 0 = -1 := dimensionZero _
+#print axioms formula
+#print axioms bridge
+#print axioms unfolding
+#print axioms dimensionZero
+#print axioms atZero
+#print axioms continuousDelta
+#print axioms etaContinuous
+#print axioms negativeConvention
+#print axioms negativeGuard
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let ci ← Lean.getConstInfo `Roth.eta
+  Lean.logInfo m!"ETA231_UNIVERSE_PARAMETERS: {ci.levelParams}"
+  Lean.logInfo "ETA231_REAL_FORMULA_BRIDGE: PASS"
+end Eta231Project
+'''
+code=(D/'disk-prefix.lean.txt').read_text()+body
+assert max(map(len,code.splitlines()))<=100
+(D/'project-executed.lean.txt').write_text(code);(R/'.lake/roth-overview-session/GenWronskianChecks.lean').write_text(code)
+print(code)

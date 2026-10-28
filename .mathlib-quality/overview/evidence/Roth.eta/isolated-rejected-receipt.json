@@ -1,0 +1,338 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.eta\n#check_failure Roth.lam\n#check @Real.rpow\n#check @Real.rpow_mul\n#check @Real.sqrt_eq_rpow\n#check @Real.continuousAt_rpow_const\n#check @NNReal.coe_rpow\n#check @Real.rpow_def_of_neg\nnamespace Eta231Isolated\nnoncomputable def formula (C b δ : ℝ) (m : ℕ) : ℝ := C ^ m * δ ^ (b ^ m)\nnoncomputable def rootIter (δ : ℝ) : ℕ → ℝ\n  | 0 => δ\n  | n + 1 => √(rootIter δ n)\ntheorem direct (δ : ℝ) (m : ℕ) :\n    formula 10 (1 / 2) δ m = (10 : ℝ) ^ m * Real.rpow δ ((1 / 2 : ℝ) ^ m) := rfl\ntheorem rootIter_eq (δ : ℝ) (hδ : 0 ≤ δ) (m : ℕ) :\n    rootIter δ m = δ ^ ((1 / 2 : ℝ) ^ m) := by\n  induction m with\n  | zero => simp [rootIter]\n  | succ n ih =>\n    rw [rootIter, ih, Real.sqrt_eq_rpow, ← Real.rpow_mul hδ, pow_succ]\ntheorem rootForm (δ : ℝ) (hδ : 0 ≤ δ) (m : ℕ) :\n    formula 10 (1 / 2) δ m = 10 ^ m * rootIter δ m :=\n  congrArg (fun x : ℝ ↦ 10 ^ m * x) (rootIter_eq δ hδ m).symm\ntheorem continuousDelta (C b : ℝ) (hb : 0 ≤ b) (m : ℕ) :\n    Continuous (fun δ ↦ formula C b δ m) :=\n  (Real.continuous_rpow_const (pow_nonneg hb m)).const_mul _\ntheorem atZero (C b : ℝ) (hb : 0 < b) (m : ℕ) : formula C b 0 m = 0 := by\n  simp only [formula, Real.zero_rpow (pow_pos hb m).ne', mul_zero]\ntheorem dimensionZero (C b δ : ℝ) : formula C b δ 0 = δ := by simp [formula]\ntheorem negativeGuard : formula 10 (1 / 2) (-1) 0 = -1 := dimensionZero _ _ _\ntheorem positive (C b δ : ℝ) (hC : 0 < C) (hδ : 0 < δ) (m : ℕ) :\n    0 < formula C b δ m := mul_pos (pow_pos hC m) (Real.rpow_pos_of_pos hδ _)\nnoncomputable def typed (δ : ℝ≥0) (m : ℕ) : ℝ≥0 := 10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m)\ntheorem typedBridge (δ : ℝ≥0) (m : ℕ) :\n    (typed δ m : ℝ) = formula 10 (1 / 2) δ m := by\n  simp only [typed, formula, NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_ofNat,\n    NNReal.coe_rpow]\n#guard_msgs in\n#check_failure (inferInstance : CoeFun ℝ (fun _ : ℝ ↦ ℝ → ℝ))\n#print axioms formula\n#print axioms rootIter\n#print axioms direct\n#print axioms rootIter_eq\n#print axioms rootForm\n#print axioms continuousDelta\n#print axioms atZero\n#print axioms dimensionZero\n#print axioms negativeGuard\n#print axioms positive\n#print axioms typedBridge\nend Eta231Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.eta`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.lam`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.rpow : ℝ → ℝ → ℝ\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_mul : ∀ {x : ℝ}, 0 ≤ x → ∀ (y z : ℝ), x ^ (y * z) = (x ^ y) ^ z\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.sqrt_eq_rpow : ∀ (x : ℝ), √x = x ^ (1 / 2)\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Real.continuousAt_rpow_const`\",\n      \"line\": 25,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"NNReal.coe_rpow : ∀ (x : NNReal) (y : ℝ), ↑(x ^ y) = ↑x ^ y\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_def_of_neg : ∀ {x : ℝ}, x < 0 → ∀ (y : ℝ), x ^ y = Real.exp (Real.log x * y) * Real.cos (y * Real.pi)\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  LE Type\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 53,\n      \"column\": 30,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  LE Type\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 53,\n      \"column\": 45,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  OfNat Type 0\\nnumerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is\\n  Type\\ndue to the absence of the instance above\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 53,\n      \"column\": 32,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  OfNat Type 0\\nnumerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is\\n  Type\\ndue to the absence of the instance above\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 53,\n      \"column\": 47,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  LE Type\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 54,\n      \"column\": 26,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  OfNat Type 0\\nnumerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is\\n  Type\\ndue to the absence of the instance above\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 54,\n      \"column\": 28,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\nδ : sorry\\nm : ℕ\\n⊢ sorry = 10 ^ m * sorry ^ (1 / 2) ^ m\",\n      \"line\": 55,\n      \"column\": 49,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"failed to synthesize instance of type class\\n  CoeFun ℝ fun x ↦ ℝ → ℝ\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 59,\n      \"column\": 17,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"❌️ Docstring on `#guard_msgs` does not match generated message:\\n\\n+ info: failed to synthesize instance of type class\\n+   CoeFun ℝ fun x ↦ ℝ → ℝ\\n \\n+ Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\\n\",\n      \"line\": 58,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Real.continuous_rpow_const`\",\n      \"line\": 46,\n      \"column\": 4,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"declaration uses `sorry`\",\n      \"line\": 56,\n      \"column\": 14,\n      \"lean_tags\": null,\n      \"category\": \"sorry\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.formula' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 60,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.rootIter' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 61,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.direct' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 62,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.rootIter_eq' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 63,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.rootForm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 64,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.continuousDelta' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 65,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.atZero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 66,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.dimensionZero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 67,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.negativeGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 68,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.positive' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 69,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Eta231Isolated.typedBridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 70,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  typed\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp only [formula, NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_ofNat, NNReal.coe_rpow]\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 56,\n      \"column\": 14,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  NNReal.coe_mul\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp only [typed, formula, NNReal.coe_pow, NNReal.coe_ofNat, NNReal.coe_rpow]\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 56,\n      \"column\": 30,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  NNReal.coe_pow\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp only [typed, formula, NNReal.coe_mul, NNReal.coe_ofNat, NNReal.coe_rpow]\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 56,\n      \"column\": 46,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  NNReal.coe_ofNat\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp only [typed, formula, NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_rpow]\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 56,\n      \"column\": 62,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  NNReal.coe_rpow\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp only [typed, formula, NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_ofNat]\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 57,\n      \"column\": 5,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.eta`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.lam`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.rpow : ℝ → ℝ → ℝ",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_mul : ∀ {x : ℝ}, 0 ≤ x → ∀ (y z : ℝ), x ^ (y * z) = (x ^ y) ^ z",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.sqrt_eq_rpow : ∀ (x : ℝ), √x = x ^ (1 / 2)",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Real.continuousAt_rpow_const`",
+          "line": 25,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "NNReal.coe_rpow : ∀ (x : NNReal) (y : ℝ), ↑(x ^ y) = ↑x ^ y",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_def_of_neg : ∀ {x : ℝ}, x < 0 → ∀ (y : ℝ), x ^ y = Real.exp (Real.log x * y) * Real.cos (y * Real.pi)",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  LE Type\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 53,
+          "column": 30,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  LE Type\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 53,
+          "column": 45,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  OfNat Type 0\nnumerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is\n  Type\ndue to the absence of the instance above\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 53,
+          "column": 32,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  OfNat Type 0\nnumerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is\n  Type\ndue to the absence of the instance above\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 53,
+          "column": 47,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  LE Type\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 54,
+          "column": 26,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  OfNat Type 0\nnumerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is\n  Type\ndue to the absence of the instance above\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 54,
+          "column": 28,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\nδ : sorry\nm : ℕ\n⊢ sorry = 10 ^ m * sorry ^ (1 / 2) ^ m",
+          "line": 55,
+          "column": 49,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "failed to synthesize instance of type class\n  CoeFun ℝ fun x ↦ ℝ → ℝ\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 59,
+          "column": 17,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "❌️ Docstring on `#guard_msgs` does not match generated message:\n\n+ info: failed to synthesize instance of type class\n+   CoeFun ℝ fun x ↦ ℝ → ℝ\n \n+ Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\n",
+          "line": 58,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Real.continuous_rpow_const`",
+          "line": 46,
+          "column": 4,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "declaration uses `sorry`",
+          "line": 56,
+          "column": 14,
+          "lean_tags": null,
+          "category": "sorry",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.formula' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 60,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.rootIter' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 61,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.direct' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 62,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.rootIter_eq' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 63,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.rootForm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 64,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.continuousDelta' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 65,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.atZero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 66,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.dimensionZero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 67,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.negativeGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 68,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.positive' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 69,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Eta231Isolated.typedBridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 70,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  typed\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [formula, NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_ofNat, NNReal.coe_rpow]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 56,
+          "column": 14,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  NNReal.coe_mul\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [typed, formula, NNReal.coe_pow, NNReal.coe_ofNat, NNReal.coe_rpow]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 56,
+          "column": 30,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  NNReal.coe_pow\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [typed, formula, NNReal.coe_mul, NNReal.coe_ofNat, NNReal.coe_rpow]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 56,
+          "column": 46,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  NNReal.coe_ofNat\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [typed, formula, NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_rpow]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 56,
+          "column": 62,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  NNReal.coe_rpow\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [typed, formula, NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_ofNat]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 57,
+          "column": 5,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 129370
+}

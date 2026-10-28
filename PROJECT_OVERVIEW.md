@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 230/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 231/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 230; remaining: 63.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 73 BORDERLINE-needs-human, 54 SKIP.
+- Completed applicable assessments: 231; remaining: 62.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 74 BORDERLINE-needs-human, 54 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2836,6 +2836,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 15 executable lexical occurrences in eight declarations (five in MainLemma, three in Main); 8 direct kernel type and 8 direct value consumers. Full caller proof inlining retains eight original signatures.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.gam.md).
 
+### Completed: `Roth.eta`
+
+- Type: `ℝ → ℕ → ℝ`
+- What: Defines the chosen dyadic small-index error eta(δ,m)=10^m δ^((1/2)^m) used in the main lemma index gap.
+- How: Multiplies ten to the natural dimension by a real power whose exponent is the dimension-th power of one half.
+- Hypotheses: Arbitrary real δ and natural m; no sign, positivity, or nonzero assumptions. The iterated nonnegative-root interpretation requires δ≥0.
+- Project dependencies: None
+- Caller summary: 18 executable lexical occurrences in eight declarations (five MainLemma, three Main); eight direct kernel types and eight direct values with different member sets. Full written proofs replayed with all eight original signatures; kernel-only roth_of_isIntegral also replayed.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.eta.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3322,6 +3332,8 @@ Completed `Roth.lam`: Uses existing Real.sqrt (Mathlib/Analysis/Real/Sqrt.lean),
 
 Completed `Roth.gam`: Real subtraction, division, Nat.cast and Real.sqrt already provide the arithmetic; sub_div supplies an arithmetic normalization identity. No exact semantic gamma hit established by the 15 search cells; local index error/warming does not establish absence.
 
+Completed `Roth.eta`: Uses existing natural power, multiplication, division and Real.rpow. Real.rpow_mul/sqrt_eq_rpow support a new nonnegative iterated-root bridge; NNReal.coe_rpow gives a typed representation bridge. Neither representation is an existing named eta counterpart. All15 formal cells completed; external index revisions differ and local index reported error.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3783,6 +3795,8 @@ Completed `Roth.Θ_lt`: Θ is a sSup and index has weighted-support representati
 Completed `Roth.lam`: The literal cutoff reappears as 4*c*f.natDegree*sqrt m in the more general project auxiliary-polynomial helper; the new scaled a formula unifies the arithmetic after reassociation, not the substantive theorem. gam is an affine cutoff derived from lam, eta a different error term, and Lattice lam a free real variable; these are not duplicate declarations.
 
 Completed `Roth.gam`: Expanded cutoff occurs in private rpow-bound/counting helpers with c replacing 1+3δ. This is a specialization link, not a duplicate declaration to delete.
+
+Completed `Roth.eta`: The same dyadic profile occurs in Roth.lem7_Φ_bound with factor3; the exact eta expression occurs in Roth.lem7_numeric and Θ_lt endpoints/helpers. A future shared name must precede Theta to avoid MainLemma→Theta import cycle. lam is a square-root dimension loss; gam is the large-index threshold; neither equals this nonlinear small-index error.
 
 ## Part 5: Generalization opportunities
 
@@ -4256,6 +4270,8 @@ Completed `Roth.lam`: No hypotheses/typeclasses to weaken. A real n/m extension 
 
 Completed `Roth.gam`: Compiled real-parameter formula and polymorphic Field halfGap/algebraic representations. These expand arithmetic representation; natural n,m remain degree/dimension in Roth. A reusable arbitrary admissible cutoff is an API proposal, not an existing mathlib definition.
 
+Completed `Roth.eta`: Compiled new profile (C b δ : ℝ) (m : ℕ) ↦ C^m*δ^(b^m), its dimension0/zero/positive laws, nonnegative root interpretation and NNReal bridge. These are expanded representations, not a verified literature-standard weakening of a hypothesis. Real.rpow negative-base cosine convention prevents blanket replacement by iterated principal roots or NNReal.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4718,6 +4734,8 @@ Completed `Roth.Θ_lt`: Potential reusable generalized-Wronskian separation, det
 Completed `Roth.lam`: No missing basic sqrt/arithmetic/continuity API shown. Potential reusable cutoff/count theorem boundary must be designed together with the auxiliary-polynomial and lattice estimates; scratch scaleCount is a new generic proof, not an existing mathlib lemma.
 
 Completed `Roth.gam`: No arithmetic infrastructure gap. A gamma continuity lemma can shorten exists_delta locally; proof compiled by fun_prop after unfolding. The substantive reusable index/counting API should be assessed separately.
+
+Completed `Roth.eta`: No arithmetic infrastructure gap. A local eta continuity/zero API could shorten exists_delta_bound and exists_delta; project-context proofs compile with existing Real.continuous_rpow_const/zero_rpow. Upstream reusable index-estimate semantics remain an API design question.
 
 ## Part 7: Junk / removable
 
@@ -5184,6 +5202,8 @@ Completed `Roth.lam`: Not dead code: four executable consumers and a local seman
 
 Completed `Roth.gam`: Used semantic parameter; not dead code. One-line public versus local status remains an upstream API decision after complete inlining verification.
 
+Completed `Roth.eta`: Used semantic parameter, not dead code. Full inlining is mechanically possible, but one-line construction alone does not settle public versus local status.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5418,6 +5438,7 @@ Completed `Roth.gam`: Used semantic parameter; not dead code. One-line public ve
 | 228 | `Roth.Θ_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_lt/root-acceptance.json) |
 | 229 | `Roth.lam` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lam.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lam/root-acceptance.json) |
 | 230 | `Roth.gam` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.gam.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.gam/root-acceptance.json) |
+| 231 | `Roth.eta` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eta.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eta/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5877,12 +5898,14 @@ Completed `Roth.lam` action: BORDERLINE-needs-human. Keep the documented project
 
 Completed `Roth.gam` action: BORDERLINE-needs-human: retain project definition during read-only overview; settle the two concrete future upstream API questions before publication. No production edits.
 
+Completed `Roth.eta` action: BORDERLINE-needs-human: retain during read-only overview; settle two future upstream API questions about shared dyadic-error naming and dependency placement. No production change or import-cycle introduced.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.eta` next. Supporting identities receive their own applicable checks.
+   `Roth.mainCoeffBound` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
