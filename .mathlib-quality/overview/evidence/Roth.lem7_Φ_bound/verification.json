@@ -1,0 +1,116 @@
+{
+  "declaration": "Roth.lem7_Φ_bound",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "9777ccd89236c0e22f304e7c14c10509f097bee58710fdaf483fad03cd608ace",
+      "receipt": "original-receipt.json",
+      "native_region_start_line": 15,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "required_info": [
+        "'Roth.lem7_Φ_bound' depends on axioms:",
+        "'Phi218.replay' depends on axioms:",
+        "'Phi218.Θ_lt' depends on axioms:",
+        "PHI218_AUDIT: requested=293; unique=293",
+        "PHI218_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "raw",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "0a111797d494613165ae5dd51ad31eadcb295f0f5277f6550971c0e2a68cd274",
+      "receipt": "isolated-receipt.json",
+      "native_region_start_line": 20,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nnamespace Phi218Independent\n#check_failure Roth.lem7_Φ_bound\n#check @Real.mul_rpow\n#check @Real.rpow_le_rpow_of_exponent_ge\n#check @Real.rpow_le_rpow_of_exponent_le\n#check @Real.rpow_pos_of_pos\n#check @le_self_pow₀\n\ntheorem envelope {x c A e : ℝ} (hx : 0 < x) (hx1 : x ≤ 1) (hc : 1 ≤ c)\n    (hA : 1 < A) (he : e ≤ 1) :\n    x * c + A * (x * c) ^ e < 2 * c * A * x ^ e := by\n  have hc0 : 0 < c := zero_lt_one.trans_le hc\n  have hD : 0 < x ^ e := Real.rpow_pos_of_pos hx e\n  have hxD : x ≤ x ^ e := by\n    simpa using Real.rpow_le_rpow_of_exponent_ge hx hx1 he\n  have hcD : c ^ e ≤ c := by\n    simpa using Real.rpow_le_rpow_of_exponent_le hc he\n  rw [Real.mul_rpow hx.le hc0.le]\n  have h1 := mul_le_mul_of_nonneg_right hxD hc0.le\n  have h2 := mul_le_mul_of_nonneg_left hcD hD.le\n  have h3 := mul_le_mul_of_nonneg_left h2 (zero_lt_one.trans hA).le\n  have h4 := mul_pos (sub_pos.mpr hA) (mul_pos hc0 hD)\n  nlinarith only [h1, h3, h4]\n\ntheorem directProbe {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :\n    δ * (1 + 1 / p) + 10 ^ (p - 1) * (δ * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\n      3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1)) := by\n  fail_if_success exact?\n  fail_if_success\n    solve\n    | simp only [Real.mul_rpow hδ0.le (by positivity : 0 ≤ 1 + 1 / (p : ℝ))]\n  have hc1 : 1 ≤ 1 + 1 / (p : ℝ) := le_add_of_nonneg_right (by positivity)\n  have hc2 : 1 + 1 / (p : ℝ) ≤ 3 / 2 := by\n    have hpR : (2 : ℝ) ≤ p := by exact_mod_cast hp\n    linarith [one_div_le_one_div_of_le (by norm_num : (0 : ℝ) < 2) hpR]\n  have hA : (1 : ℝ) < 10 ^ (p - 1) := by\n    exact lt_of_lt_of_le (by norm_num : (1 : ℝ) < 10)\n      (le_self_pow₀ (by norm_num) (by omega : p - 1 ≠ 0))\n  have h := envelope (e := (1 / 2 : ℝ) ^ (p - 1)) hδ0 hδ1 hc1 hA\n    (pow_le_one₀ (by norm_num) (by norm_num))\n  exact h.trans_le (mul_le_mul_of_nonneg_right\n    (mul_le_mul_of_nonneg_right (by linarith only [hc2]) (by positivity)) (by positivity))\n\ntheorem zeroDelta (p : ℕ) (_hp : 2 ≤ p) :\n    ¬ ((0 : ℝ) * (1 + 1 / p) + 10 ^ (p - 1) *\n      (0 * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\n        3 * 10 ^ (p - 1) * 0 ^ ((1 / 2 : ℝ) ^ (p - 1))) := by\n  simp\n\ntheorem dimensionOne (δ : ℝ) (hδ : 0 < δ) :\n    ¬ (δ * (1 + 1 / (1 : ℝ)) + 10 ^ (1 - 1 : ℕ) *\n      (δ * (1 + 1 / (1 : ℝ))) ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ)) <\n        3 * 10 ^ (1 - 1 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ))) := by\n  norm_num\n  linarith\n\ntheorem largeDelta :\n    ¬ ((400 : ℝ) * (1 + 1 / (2 : ℝ)) + 10 ^ (2 - 1 : ℕ) *\n      (400 * (1 + 1 / (2 : ℝ))) ^ ((1 / 2 : ℝ) ^ (2 - 1 : ℕ)) <\n        3 * 10 ^ (2 - 1 : ℕ) * 400 ^ ((1 / 2 : ℝ) ^ (2 - 1 : ℕ))) := by\n  norm_num only [Nat.reduceSub, pow_one]\n  have hpos : 0 ≤ (600 : ℝ) ^ (1 / 2 : ℝ) := by positivity\n  linarith\n\n#print axioms envelope\n#print axioms directProbe\n#print axioms zeroDelta\n#print axioms dimensionOne\n#print axioms largeDelta\nend Phi218Independent\n"
+      },
+      "required_info": [
+        "'Phi218Independent.envelope' depends on axioms:",
+        "'Phi218Independent.directProbe' depends on axioms:",
+        "'Phi218Independent.zeroDelta' depends on axioms:",
+        "'Phi218Independent.dimensionOne' depends on axioms:",
+        "'Phi218Independent.largeDelta' depends on axioms:"
+      ]
+    },
+    {
+      "label": "broader",
+      "format": "disk",
+      "source": "broader-executed.lean.txt",
+      "source_sha256": "92b8c3861c17a30ed0db71fe46f8c88094fdc8c943f38df3509382a4c444b2bc",
+      "receipt": "broader-receipt.json",
+      "native_region_start_line": 15,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "required_info": [
+        "'Phi218Broader.wider' depends on axioms:",
+        "'Phi218Broader.replay' depends on axioms:",
+        "'Phi218Broader.Θ_lt' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "format": "disk",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "a16224267ddc888c80fde65eddaba6c4fa4c0b59db68293a8e704cf9a945108d",
+      "receipt": "inline-receipt.json",
+      "native_region_start_line": 15,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "required_info": [
+        "'Phi218Inline.Θ_lt' depends on axioms:"
+      ]
+    },
+    {
+      "label": "shape",
+      "format": "disk",
+      "source": "shape-executed.lean.txt",
+      "source_sha256": "be74dc4ba485c594e11e933ca3288059b2c4c3cacdde4bc6b0452d933bc63fd9",
+      "receipt": "shape-receipt.json",
+      "native_region_start_line": 13,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "required_info": [
+        "'Phi218Shape.weightedTransport' depends on axioms:",
+        "'Phi218Shape.successor' depends on axioms:",
+        "'Phi218Shape.dimensionZero' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "isolated-failed-executed.lean.txt",
+      "receipt": "isolated-failed-receipt.json",
+      "reason": "Initial implicit exponent, witness rewrite and whitespace/unused-simp failures; recovered sorryAx excluded."
+    },
+    {
+      "source": "isolated-preparation-failed-executed.lean.txt",
+      "receipt": "isolated-preparation-failed-receipt.json",
+      "reason": "Width preparation failed; erroneous missing-file cat output was inadvertently sent as code. Exact error-text request retained, excluded from all mathematical evidence."
+    },
+    {
+      "source": "broader-failed-executed.lean.txt",
+      "receipt": "broader-failed-receipt.json",
+      "reason": "Initial wider proof had scalar metavariable and multiplication side-condition type errors; recovered sorryAx excluded."
+    },
+    {
+      "source": "shape-header-warning-executed.lean.txt",
+      "receipt": "shape-header-warning-receipt.json",
+      "reason": "Header-only warning; clean final shape run supersedes."
+    }
+  ],
+  "supplementary": []
+}

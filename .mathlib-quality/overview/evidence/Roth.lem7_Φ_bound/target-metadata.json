@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 678,
+  "name": "Roth.lem7_Φ_bound",
+  "short": "lem7_Φ_bound",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 702,
+  "source": "theorem lem7_Φ_bound {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :\n    δ * (1 + 1 / p) + 10 ^ (p - 1) * (δ * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\n      3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1)) := by\n  set e : ℝ := (1 / 2 : ℝ) ^ (p - 1)\n  have he1 : e ≤ 1 := pow_le_one₀ (by norm_num) (by norm_num)\n  have hp : (2 : ℝ) ≤ p := by exact_mod_cast hp\n  have hc1 : 1 ≤ 1 + 1 / (p : ℝ) := le_add_of_nonneg_right (by positivity)\n  have hc2 : 1 + 1 / (p : ℝ) ≤ 3 / 2 := by\n    calc 1 + 1 / (p : ℝ) ≤ 1 + 1 / 2 :=\n          add_le_add_right (one_div_le_one_div_of_le (by norm_num) hp) 1\n      _ = 3 / 2 := by norm_num\n  have hδe : δ ≤ δ ^ e := by\n    simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1 he1\n  have hde0 : 0 < δ ^ e := Real.rpow_pos_of_pos hδ0 e\n  have hmul : (δ * (1 + 1 / p)) ^ e ≤ δ ^ e * (3 / 2) := by\n    rw [Real.mul_rpow hδ0.le (zero_le_one.trans hc1)]\n    refine mul_le_mul_of_nonneg_left ?_ hde0.le\n    calc (1 + 1 / (p : ℝ)) ^ e ≤ (1 + 1 / (p : ℝ)) ^ (1 : ℝ) :=\n          Real.rpow_le_rpow_of_exponent_le hc1 he1\n      _ ≤ 3 / 2 := by simpa using hc2\n  linear_combination mul_le_mul hδe hc2 (zero_le_one.trans hc1) hde0.le +\n    mul_le_mul_of_nonneg_left hmul (by positivity : (0 : ℝ) ≤ 10 ^ (p - 1)) +\n    (3 / 2) * mul_le_mul_of_nonneg_right\n      (le_self_pow₀ (by norm_num : (1 : ℝ) ≤ 10) (by lia : p - 1 ≠ 0)) hde0.le +\n    (27 / 2) * hde0",
+  "signature": "theorem lem7_Φ_bound {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :\n    δ * (1 + 1 / p) + 10 ^ (p - 1) * (δ * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\n      3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1))",
+  "body": "by\n  set e : ℝ := (1 / 2 : ℝ) ^ (p - 1)\n  have he1 : e ≤ 1 := pow_le_one₀ (by norm_num) (by norm_num)\n  have hp : (2 : ℝ) ≤ p := by exact_mod_cast hp\n  have hc1 : 1 ≤ 1 + 1 / (p : ℝ) := le_add_of_nonneg_right (by positivity)\n  have hc2 : 1 + 1 / (p : ℝ) ≤ 3 / 2 := by\n    calc 1 + 1 / (p : ℝ) ≤ 1 + 1 / 2 :=\n          add_le_add_right (one_div_le_one_div_of_le (by norm_num) hp) 1\n      _ = 3 / 2 := by norm_num\n  have hδe : δ ≤ δ ^ e := by\n    simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1 he1\n  have hde0 : 0 < δ ^ e := Real.rpow_pos_of_pos hδ0 e\n  have hmul : (δ * (1 + 1 / p)) ^ e ≤ δ ^ e * (3 / 2) := by\n    rw [Real.mul_rpow hδ0.le (zero_le_one.trans hc1)]\n    refine mul_le_mul_of_nonneg_left ?_ hde0.le\n    calc (1 + 1 / (p : ℝ)) ^ e ≤ (1 + 1 / (p : ℝ)) ^ (1 : ℝ) :=\n          Real.rpow_le_rpow_of_exponent_le hc1 he1\n      _ ≤ 3 / 2 := by simpa using hc2\n  linear_combination mul_le_mul hδe hc2 (zero_le_one.trans hc1) hde0.le +\n    mul_le_mul_of_nonneg_left hmul (by positivity : (0 : ℝ) ≤ 10 ^ (p - 1)) +\n    (3 / 2) * mul_le_mul_of_nonneg_right\n      (le_self_pow₀ (by norm_num : (1 : ℝ) ≤ 10) (by lia : p - 1 ≠ 0)) hde0.le +\n    (27 / 2) * hde0",
+  "proof_lines": 23,
+  "sha256": "1e6b4443340e6b8ef099a4be2e3d52d6f2e23084182254d9145c2e2727ec8373",
+  "what": "A slightly inflated delta yields the strict Phi comparison in the inductive bound.",
+  "how": "Bound the inflation factor by three halves, compare real powers using Real.rpow_le_rpow_of_exponent_ge, and combine estimates with positive powers of ten.",
+  "hypotheses": "Dimension at least two and delta positive at most one.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.theta_phi_lt_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 216,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ]
+}

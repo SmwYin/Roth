@@ -1,0 +1,36 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Read-only statement-shape and transport probes. -/
+
+namespace Phi218Shape
+
+theorem weightedTransport {u v x y A z : ℝ} (hu : u ≤ v) (hx : x ≤ y)
+    (hA : 0 ≤ A) (hgap : v + A * y < z) : u + A * x < z :=
+  (add_le_add hu (mul_le_mul_of_nonneg_left hx hA)).trans_lt hgap
+
+theorem successor (k : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :
+    δ * (1 + 1 / (k + 2 : ℕ)) + 10 ^ (k + 1) *
+      (δ * (1 + 1 / (k + 2 : ℕ))) ^ ((1 / 2 : ℝ) ^ (k + 1)) <
+        3 * 10 ^ (k + 1) * δ ^ ((1 / 2 : ℝ) ^ (k + 1)) := by
+  simpa only [show k + 2 - 1 = k + 1 by omega] using
+    Roth.lem7_Φ_bound (p := k + 2) (by omega) hδ0 hδ1
+
+theorem dimensionZero {δ : ℝ} (hδ : 0 < δ) :
+    δ * (1 + 1 / (0 : ℝ)) + 10 ^ (0 - 1 : ℕ) *
+      (δ * (1 + 1 / (0 : ℝ))) ^ ((1 / 2 : ℝ) ^ (0 - 1 : ℕ)) <
+        3 * 10 ^ (0 - 1 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (0 - 1 : ℕ)) := by
+  norm_num
+  linarith
+
+#print axioms weightedTransport
+#print axioms successor
+#print axioms dimensionZero
+end Phi218Shape

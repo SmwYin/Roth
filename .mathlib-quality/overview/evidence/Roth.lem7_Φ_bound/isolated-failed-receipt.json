@@ -1,0 +1,207 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nnamespace Phi218Independent\n#check_failure Roth.lem7_Φ_bound\n#check @Real.mul_rpow\n#check @Real.rpow_le_rpow_of_exponent_ge\n#check @Real.rpow_le_rpow_of_exponent_le\n#check @Real.rpow_pos_of_pos\n#check @le_self_pow₀\n\n theorem envelope {x c A e : ℝ} (hx : 0 < x) (hx1 : x ≤ 1) (hc : 1 ≤ c)\n    (hA : 1 < A) (he : e ≤ 1) :\n    x * c + A * (x * c) ^ e < 2 * c * A * x ^ e := by\n  have hc0 : 0 < c := zero_lt_one.trans_le hc\n  have hD : 0 < x ^ e := Real.rpow_pos_of_pos hx e\n  have hxD : x ≤ x ^ e := by\n    simpa using Real.rpow_le_rpow_of_exponent_ge hx hx1 he\n  have hcD : c ^ e ≤ c := by\n    simpa using Real.rpow_le_rpow_of_exponent_le hc he\n  rw [Real.mul_rpow hx.le hc0.le]\n  have h1 := mul_le_mul_of_nonneg_right hxD hc0.le\n  have h2 := mul_le_mul_of_nonneg_left hcD hD.le\n  have h3 := mul_le_mul_of_nonneg_left h2 (zero_lt_one.trans hA).le\n  have h4 := mul_pos (sub_pos.mpr hA) (mul_pos hc0 hD)\n  nlinarith only [h1, h3, h4]\n\n theorem directProbe {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :\n    δ * (1 + 1 / p) + 10 ^ (p - 1) * (δ * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\n      3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1)) := by\n  fail_if_success exact?\n  fail_if_success\n    solve\n    | simp only [Real.mul_rpow hδ0.le (by positivity : 0 ≤ 1 + 1 / (p : ℝ))]\n  have hc1 : 1 ≤ 1 + 1 / (p : ℝ) := by positivity\n  have hc2 : 1 + 1 / (p : ℝ) ≤ 3 / 2 := by\n    have hpR : (2 : ℝ) ≤ p := by exact_mod_cast hp\n    linarith [one_div_le_one_div_of_le (by norm_num : (0 : ℝ) < 2) hpR]\n  have hA : (1 : ℝ) < 10 ^ (p - 1) := by\n    exact lt_of_lt_of_le (by norm_num : (1 : ℝ) < 10)\n      (le_self_pow₀ (by norm_num) (by omega : p - 1 ≠ 0))\n  have h := envelope hδ0 hδ1 hc1 hA (pow_le_one₀ (by norm_num) (by norm_num))\n  exact h.trans_le (mul_le_mul_of_nonneg_right\n    (mul_le_mul_of_nonneg_right (by linarith only [hc2]) (by positivity)) (by positivity))\n\n theorem zeroDelta (p : ℕ) (_hp : 2 ≤ p) :\n    ¬ ((0 : ℝ) * (1 + 1 / p) + 10 ^ (p - 1) *\n      (0 * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\n        3 * 10 ^ (p - 1) * 0 ^ ((1 / 2 : ℝ) ^ (p - 1))) := by\n  have he : (1 / 2 : ℝ) ^ (p - 1) ≠ 0 := ne_of_gt (by positivity)\n  simp [Real.zero_rpow he]\n\n theorem dimensionOne (δ : ℝ) (hδ : 0 < δ) :\n    ¬ (δ * (1 + 1 / (1 : ℝ)) + 10 ^ (1 - 1 : ℕ) *\n      (δ * (1 + 1 / (1 : ℝ))) ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ)) <\n        3 * 10 ^ (1 - 1 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ))) := by\n  norm_num\n  linarith\n\n theorem largeDelta :\n    ¬ ((400 : ℝ) * (1 + 1 / (2 : ℝ)) + 10 ^ (2 - 1 : ℕ) *\n      (400 * (1 + 1 / (2 : ℝ))) ^ ((1 / 2 : ℝ) ^ (2 - 1 : ℕ)) <\n        3 * 10 ^ (2 - 1 : ℕ) * 400 ^ ((1 / 2 : ℝ) ^ (2 - 1 : ℕ))) := by\n  norm_num only [Nat.reduceSub, pow_one]\n  have h : (400 : ℝ) ^ (1 / 2 : ℝ) = 20 := by\n    rw [← Real.sqrt_eq_rpow]\n    norm_num\n  rw [h]\n  have hpos : 0 ≤ (400 * (1 + 1 / (2 : ℝ))) ^ (1 / 2 : ℝ) := by positivity\n  nlinarith\n\n#print axioms envelope\n#print axioms directProbe\n#print axioms zeroDelta\n#print axioms dimensionOne\n#print axioms largeDelta\nend Phi218Independent\n"
+  },
+  "elapsed_ms": 77352,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.lem7_Φ_bound`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.mul_rpow : ∀ {x y z : ℝ}, 0 ≤ x → 0 ≤ y → (x * y) ^ z = x ^ z * y ^ z\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_le_rpow_of_exponent_ge : ∀ {x y z : ℝ}, 0 < x → x ≤ 1 → z ≤ y → x ^ y ≤ x ^ z\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_le_rpow_of_exponent_le : ∀ {x y z : ℝ}, 1 ≤ x → y ≤ z → x ^ y ≤ x ^ z\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_pos_of_pos : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), 0 < x ^ y\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@le_self_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a : M₀} {n : ℕ} [ZeroLEOneClass M₀]\\n  [PosMulMono M₀], 1 ≤ a → n ≠ 0 → a ≤ a ^ n\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Tactic `rewrite` failed: Did not find an occurrence of the pattern\\n  400 ^ (1 / 2)\\nin the target expression\\n  ¬600 + 10 * 600 ^ (1 / 2) < 600\\n\\nh : 400 ^ (1 / 2) = 20\\n⊢ ¬600 + 10 * 600 ^ (1 / 2) < 600\",\n      \"line\": 84,\n      \"column\": 7,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"'theorem envelope {x c A e : ℝ} (hx : 0 < x) (hx1 : x ≤ 1) (hc : 1 ≤ c) (hA : 1 < A) (he : e ≤ 1) :\\n    x * c + A * (x * c) ^ e < 2 * c * A * x ^ e :=\\n  by\\n  have hc0 : 0 < c := zero_lt_one.trans_le hc\\n  have hD : 0 < x ^ e := Real.rpow_pos_of_pos hx e\\n  have hxD : x ≤ x ^ e := by simpa using Real.rpow_le_rpow_of_exponent_ge hx hx1 he\\n  have hcD : c ^ e ≤ c := by simpa using Real.rpow_le_rpow_of_exponent_le hc he\\n  rw [Real.mul_rpow hx.le hc0.le]\\n  have h1 := mul_le_mul_of_nonneg_right hxD hc0.le\\n  have h2 := mul_le_mul_of_nonneg_left hcD hD.le\\n  have h3 := mul_le_mul_of_nonneg_left h2 (zero_lt_one.trans hA).le\\n  have h4 := mul_pos (sub_pos.mpr hA) (mul_pos hc0 hD)\\n  nlinarith only [h1, h3, h4]' starts on column 1, but all commands should start at the beginning of the line.\\n\\nNote: This linter can be disabled with `set_option linter.style.whitespace false`\",\n      \"line\": 28,\n      \"column\": 2,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"not a positivity goal\",\n      \"line\": 51,\n      \"column\": 40,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\np : ℕ\\nhp : 2 ≤ p\\nδ : ℝ\\nhδ0 : 0 < δ\\nhδ1 : δ ≤ 1\\nhc1 : 1 ≤ 1 + 1 / ↑p\\nhc2 : 1 + 1 / ↑p ≤ 3 / 2\\nhA : 1 < 10 ^ (p - 1)\\n⊢ 0 ≤ ?m.279\",\n      \"line\": 58,\n      \"column\": 51,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\np : ℕ\\nhp : 2 ≤ p\\nδ : ℝ\\nhδ0 : 0 < δ\\nhδ1 : δ ≤ 1\\nhc1 : 1 ≤ 1 + 1 / ↑p\\nhc2 : 1 + 1 / ↑p ≤ 3 / 2\\nhA : 1 < 10 ^ (p - 1)\\n⊢ ?m.279 ≤ 1\",\n      \"line\": 58,\n      \"column\": 65,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\np : ℕ\\nhp : 2 ≤ p\\nδ : ℝ\\nhδ0 : 0 < δ\\nhδ1 : δ ≤ 1\\nhc1 : 1 ≤ 1 + 1 / ↑p\\nhc2 : 1 + 1 / ↑p ≤ 3 / 2\\nhA : 1 < 10 ^ (p - 1)\\n⊢ δ * (1 + 1 / ↑p) + 10 ^ (p - 1) * (δ * (1 + 1 / ↑p)) ^ (1 / 2) ^ (p - 1) < 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1)\",\n      \"line\": 46,\n      \"column\": 57,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.envelope' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 88,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.directProbe' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 89,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.zeroDelta' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 90,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.dimensionOne' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 91,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.largeDelta' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 92,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"'theorem dimensionOne (δ : ℝ) (hδ : 0 < δ) :\\n    ¬(δ * (1 + 1 / (1 : ℝ)) + 10 ^ (1 - 1 : ℕ) * (δ * (1 + 1 / (1 : ℝ))) ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ)) <\\n        3 * 10 ^ (1 - 1 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ))) :=\\n  by\\n  norm_num\\n  linarith' starts on column 1, but all commands should start at the beginning of the line.\\n\\nNote: This linter can be disabled with `set_option linter.style.whitespace false`\",\n      \"line\": 69,\n      \"column\": 2,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  Real.zero_rpow he\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 67,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"'theorem zeroDelta (p : ℕ) (_hp : 2 ≤ p) :\\n    ¬((0 : ℝ) * (1 + 1 / p) + 10 ^ (p - 1) * (0 * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\\n        3 * 10 ^ (p - 1) * 0 ^ ((1 / 2 : ℝ) ^ (p - 1))) :=\\n  by\\n  have he : (1 / 2 : ℝ) ^ (p - 1) ≠ 0 := ne_of_gt (by positivity)\\n  simp [Real.zero_rpow he]' starts on column 1, but all commands should start at the beginning of the line.\\n\\nNote: This linter can be disabled with `set_option linter.style.whitespace false`\",\n      \"line\": 62,\n      \"column\": 2,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.lem7_Φ_bound`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.mul_rpow : ∀ {x y z : ℝ}, 0 ≤ x → 0 ≤ y → (x * y) ^ z = x ^ z * y ^ z",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_le_rpow_of_exponent_ge : ∀ {x y z : ℝ}, 0 < x → x ≤ 1 → z ≤ y → x ^ y ≤ x ^ z",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_le_rpow_of_exponent_le : ∀ {x y z : ℝ}, 1 ≤ x → y ≤ z → x ^ y ≤ x ^ z",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_pos_of_pos : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), 0 < x ^ y",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@le_self_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a : M₀} {n : ℕ} [ZeroLEOneClass M₀]\n  [PosMulMono M₀], 1 ≤ a → n ≠ 0 → a ≤ a ^ n",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Tactic `rewrite` failed: Did not find an occurrence of the pattern\n  400 ^ (1 / 2)\nin the target expression\n  ¬600 + 10 * 600 ^ (1 / 2) < 600\n\nh : 400 ^ (1 / 2) = 20\n⊢ ¬600 + 10 * 600 ^ (1 / 2) < 600",
+          "line": 84,
+          "column": 7,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "'theorem envelope {x c A e : ℝ} (hx : 0 < x) (hx1 : x ≤ 1) (hc : 1 ≤ c) (hA : 1 < A) (he : e ≤ 1) :\n    x * c + A * (x * c) ^ e < 2 * c * A * x ^ e :=\n  by\n  have hc0 : 0 < c := zero_lt_one.trans_le hc\n  have hD : 0 < x ^ e := Real.rpow_pos_of_pos hx e\n  have hxD : x ≤ x ^ e := by simpa using Real.rpow_le_rpow_of_exponent_ge hx hx1 he\n  have hcD : c ^ e ≤ c := by simpa using Real.rpow_le_rpow_of_exponent_le hc he\n  rw [Real.mul_rpow hx.le hc0.le]\n  have h1 := mul_le_mul_of_nonneg_right hxD hc0.le\n  have h2 := mul_le_mul_of_nonneg_left hcD hD.le\n  have h3 := mul_le_mul_of_nonneg_left h2 (zero_lt_one.trans hA).le\n  have h4 := mul_pos (sub_pos.mpr hA) (mul_pos hc0 hD)\n  nlinarith only [h1, h3, h4]' starts on column 1, but all commands should start at the beginning of the line.\n\nNote: This linter can be disabled with `set_option linter.style.whitespace false`",
+          "line": 28,
+          "column": 2,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "not a positivity goal",
+          "line": 51,
+          "column": 40,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\np : ℕ\nhp : 2 ≤ p\nδ : ℝ\nhδ0 : 0 < δ\nhδ1 : δ ≤ 1\nhc1 : 1 ≤ 1 + 1 / ↑p\nhc2 : 1 + 1 / ↑p ≤ 3 / 2\nhA : 1 < 10 ^ (p - 1)\n⊢ 0 ≤ ?m.279",
+          "line": 58,
+          "column": 51,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\np : ℕ\nhp : 2 ≤ p\nδ : ℝ\nhδ0 : 0 < δ\nhδ1 : δ ≤ 1\nhc1 : 1 ≤ 1 + 1 / ↑p\nhc2 : 1 + 1 / ↑p ≤ 3 / 2\nhA : 1 < 10 ^ (p - 1)\n⊢ ?m.279 ≤ 1",
+          "line": 58,
+          "column": 65,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\np : ℕ\nhp : 2 ≤ p\nδ : ℝ\nhδ0 : 0 < δ\nhδ1 : δ ≤ 1\nhc1 : 1 ≤ 1 + 1 / ↑p\nhc2 : 1 + 1 / ↑p ≤ 3 / 2\nhA : 1 < 10 ^ (p - 1)\n⊢ δ * (1 + 1 / ↑p) + 10 ^ (p - 1) * (δ * (1 + 1 / ↑p)) ^ (1 / 2) ^ (p - 1) < 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1)",
+          "line": 46,
+          "column": 57,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.envelope' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 88,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.directProbe' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 89,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.zeroDelta' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 90,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.dimensionOne' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 91,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.largeDelta' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 92,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "'theorem dimensionOne (δ : ℝ) (hδ : 0 < δ) :\n    ¬(δ * (1 + 1 / (1 : ℝ)) + 10 ^ (1 - 1 : ℕ) * (δ * (1 + 1 / (1 : ℝ))) ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ)) <\n        3 * 10 ^ (1 - 1 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ))) :=\n  by\n  norm_num\n  linarith' starts on column 1, but all commands should start at the beginning of the line.\n\nNote: This linter can be disabled with `set_option linter.style.whitespace false`",
+          "line": 69,
+          "column": 2,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  Real.zero_rpow he\n\nHint: Omit it from the simp argument list.\n  [apply] simp\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 67,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "'theorem zeroDelta (p : ℕ) (_hp : 2 ≤ p) :\n    ¬((0 : ℝ) * (1 + 1 / p) + 10 ^ (p - 1) * (0 * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\n        3 * 10 ^ (p - 1) * 0 ^ ((1 / 2 : ℝ) ^ (p - 1))) :=\n  by\n  have he : (1 / 2 : ℝ) ^ (p - 1) ≠ 0 := ne_of_gt (by positivity)\n  simp [Real.zero_rpow he]' starts on column 1, but all commands should start at the beginning of the line.\n\nNote: This linter can be disabled with `set_option linter.style.whitespace false`",
+          "line": 62,
+          "column": 2,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

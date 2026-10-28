@@ -1,0 +1,93 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+namespace Phi218Independent
+#check_failure Roth.lem7_Φ_bound
+#check @Real.mul_rpow
+#check @Real.rpow_le_rpow_of_exponent_ge
+#check @Real.rpow_le_rpow_of_exponent_le
+#check @Real.rpow_pos_of_pos
+#check @le_self_pow₀
+
+ theorem envelope {x c A e : ℝ} (hx : 0 < x) (hx1 : x ≤ 1) (hc : 1 ≤ c)
+    (hA : 1 < A) (he : e ≤ 1) :
+    x * c + A * (x * c) ^ e < 2 * c * A * x ^ e := by
+  have hc0 : 0 < c := zero_lt_one.trans_le hc
+  have hD : 0 < x ^ e := Real.rpow_pos_of_pos hx e
+  have hxD : x ≤ x ^ e := by
+    simpa using Real.rpow_le_rpow_of_exponent_ge hx hx1 he
+  have hcD : c ^ e ≤ c := by
+    simpa using Real.rpow_le_rpow_of_exponent_le hc he
+  rw [Real.mul_rpow hx.le hc0.le]
+  have h1 := mul_le_mul_of_nonneg_right hxD hc0.le
+  have h2 := mul_le_mul_of_nonneg_left hcD hD.le
+  have h3 := mul_le_mul_of_nonneg_left h2 (zero_lt_one.trans hA).le
+  have h4 := mul_pos (sub_pos.mpr hA) (mul_pos hc0 hD)
+  nlinarith only [h1, h3, h4]
+
+ theorem directProbe {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :
+    δ * (1 + 1 / p) + 10 ^ (p - 1) * (δ * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <
+      3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1)) := by
+  fail_if_success exact?
+  fail_if_success
+    solve
+    | simp only [Real.mul_rpow hδ0.le (by positivity : 0 ≤ 1 + 1 / (p : ℝ))]
+  have hc1 : 1 ≤ 1 + 1 / (p : ℝ) := by positivity
+  have hc2 : 1 + 1 / (p : ℝ) ≤ 3 / 2 := by
+    have hpR : (2 : ℝ) ≤ p := by exact_mod_cast hp
+    linarith [one_div_le_one_div_of_le (by norm_num : (0 : ℝ) < 2) hpR]
+  have hA : (1 : ℝ) < 10 ^ (p - 1) := by
+    exact lt_of_lt_of_le (by norm_num : (1 : ℝ) < 10)
+      (le_self_pow₀ (by norm_num) (by omega : p - 1 ≠ 0))
+  have h := envelope hδ0 hδ1 hc1 hA (pow_le_one₀ (by norm_num) (by norm_num))
+  exact h.trans_le (mul_le_mul_of_nonneg_right
+    (mul_le_mul_of_nonneg_right (by linarith only [hc2]) (by positivity)) (by positivity))
+
+ theorem zeroDelta (p : ℕ) (_hp : 2 ≤ p) :
+    ¬ ((0 : ℝ) * (1 + 1 / p) + 10 ^ (p - 1) *
+      (0 * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <
+        3 * 10 ^ (p - 1) * 0 ^ ((1 / 2 : ℝ) ^ (p - 1))) := by
+  have he : (1 / 2 : ℝ) ^ (p - 1) ≠ 0 := ne_of_gt (by positivity)
+  simp [Real.zero_rpow he]
+
+ theorem dimensionOne (δ : ℝ) (hδ : 0 < δ) :
+    ¬ (δ * (1 + 1 / (1 : ℝ)) + 10 ^ (1 - 1 : ℕ) *
+      (δ * (1 + 1 / (1 : ℝ))) ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ)) <
+        3 * 10 ^ (1 - 1 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ))) := by
+  norm_num
+  linarith
+
+ theorem largeDelta :
+    ¬ ((400 : ℝ) * (1 + 1 / (2 : ℝ)) + 10 ^ (2 - 1 : ℕ) *
+      (400 * (1 + 1 / (2 : ℝ))) ^ ((1 / 2 : ℝ) ^ (2 - 1 : ℕ)) <
+        3 * 10 ^ (2 - 1 : ℕ) * 400 ^ ((1 / 2 : ℝ) ^ (2 - 1 : ℕ))) := by
+  norm_num only [Nat.reduceSub, pow_one]
+  have h : (400 : ℝ) ^ (1 / 2 : ℝ) = 20 := by
+    rw [← Real.sqrt_eq_rpow]
+    norm_num
+  rw [h]
+  have hpos : 0 ≤ (400 * (1 + 1 / (2 : ℝ))) ^ (1 / 2 : ℝ) := by positivity
+  nlinarith
+
+#print axioms envelope
+#print axioms directProbe
+#print axioms zeroDelta
+#print axioms dimensionOne
+#print axioms largeDelta
+end Phi218Independent

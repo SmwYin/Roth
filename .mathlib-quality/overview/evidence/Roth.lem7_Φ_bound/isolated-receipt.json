@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nnamespace Phi218Independent\n#check_failure Roth.lem7_Φ_bound\n#check @Real.mul_rpow\n#check @Real.rpow_le_rpow_of_exponent_ge\n#check @Real.rpow_le_rpow_of_exponent_le\n#check @Real.rpow_pos_of_pos\n#check @le_self_pow₀\n\ntheorem envelope {x c A e : ℝ} (hx : 0 < x) (hx1 : x ≤ 1) (hc : 1 ≤ c)\n    (hA : 1 < A) (he : e ≤ 1) :\n    x * c + A * (x * c) ^ e < 2 * c * A * x ^ e := by\n  have hc0 : 0 < c := zero_lt_one.trans_le hc\n  have hD : 0 < x ^ e := Real.rpow_pos_of_pos hx e\n  have hxD : x ≤ x ^ e := by\n    simpa using Real.rpow_le_rpow_of_exponent_ge hx hx1 he\n  have hcD : c ^ e ≤ c := by\n    simpa using Real.rpow_le_rpow_of_exponent_le hc he\n  rw [Real.mul_rpow hx.le hc0.le]\n  have h1 := mul_le_mul_of_nonneg_right hxD hc0.le\n  have h2 := mul_le_mul_of_nonneg_left hcD hD.le\n  have h3 := mul_le_mul_of_nonneg_left h2 (zero_lt_one.trans hA).le\n  have h4 := mul_pos (sub_pos.mpr hA) (mul_pos hc0 hD)\n  nlinarith only [h1, h3, h4]\n\ntheorem directProbe {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :\n    δ * (1 + 1 / p) + 10 ^ (p - 1) * (δ * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\n      3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1)) := by\n  fail_if_success exact?\n  fail_if_success\n    solve\n    | simp only [Real.mul_rpow hδ0.le (by positivity : 0 ≤ 1 + 1 / (p : ℝ))]\n  have hc1 : 1 ≤ 1 + 1 / (p : ℝ) := le_add_of_nonneg_right (by positivity)\n  have hc2 : 1 + 1 / (p : ℝ) ≤ 3 / 2 := by\n    have hpR : (2 : ℝ) ≤ p := by exact_mod_cast hp\n    linarith [one_div_le_one_div_of_le (by norm_num : (0 : ℝ) < 2) hpR]\n  have hA : (1 : ℝ) < 10 ^ (p - 1) := by\n    exact lt_of_lt_of_le (by norm_num : (1 : ℝ) < 10)\n      (le_self_pow₀ (by norm_num) (by omega : p - 1 ≠ 0))\n  have h := envelope (e := (1 / 2 : ℝ) ^ (p - 1)) hδ0 hδ1 hc1 hA\n    (pow_le_one₀ (by norm_num) (by norm_num))\n  exact h.trans_le (mul_le_mul_of_nonneg_right\n    (mul_le_mul_of_nonneg_right (by linarith only [hc2]) (by positivity)) (by positivity))\n\ntheorem zeroDelta (p : ℕ) (_hp : 2 ≤ p) :\n    ¬ ((0 : ℝ) * (1 + 1 / p) + 10 ^ (p - 1) *\n      (0 * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <\n        3 * 10 ^ (p - 1) * 0 ^ ((1 / 2 : ℝ) ^ (p - 1))) := by\n  simp\n\ntheorem dimensionOne (δ : ℝ) (hδ : 0 < δ) :\n    ¬ (δ * (1 + 1 / (1 : ℝ)) + 10 ^ (1 - 1 : ℕ) *\n      (δ * (1 + 1 / (1 : ℝ))) ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ)) <\n        3 * 10 ^ (1 - 1 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ))) := by\n  norm_num\n  linarith\n\ntheorem largeDelta :\n    ¬ ((400 : ℝ) * (1 + 1 / (2 : ℝ)) + 10 ^ (2 - 1 : ℕ) *\n      (400 * (1 + 1 / (2 : ℝ))) ^ ((1 / 2 : ℝ) ^ (2 - 1 : ℕ)) <\n        3 * 10 ^ (2 - 1 : ℕ) * 400 ^ ((1 / 2 : ℝ) ^ (2 - 1 : ℕ))) := by\n  norm_num only [Nat.reduceSub, pow_one]\n  have hpos : 0 ≤ (600 : ℝ) ^ (1 / 2 : ℝ) := by positivity\n  linarith\n\n#print axioms envelope\n#print axioms directProbe\n#print axioms zeroDelta\n#print axioms dimensionOne\n#print axioms largeDelta\nend Phi218Independent\n"
+  },
+  "elapsed_ms": 68253,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.lem7_Φ_bound`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.mul_rpow : ∀ {x y z : ℝ}, 0 ≤ x → 0 ≤ y → (x * y) ^ z = x ^ z * y ^ z\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_le_rpow_of_exponent_ge : ∀ {x y z : ℝ}, 0 < x → x ≤ 1 → z ≤ y → x ^ y ≤ x ^ z\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_le_rpow_of_exponent_le : ∀ {x y z : ℝ}, 1 ≤ x → y ≤ z → x ^ y ≤ x ^ z\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_pos_of_pos : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), 0 < x ^ y\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@le_self_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a : M₀} {n : ℕ} [ZeroLEOneClass M₀]\\n  [PosMulMono M₀], 1 ≤ a → n ≠ 0 → a ≤ a ^ n\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.envelope' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 84,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.directProbe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 85,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.zeroDelta' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 86,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.dimensionOne' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 87,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Phi218Independent.largeDelta' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 88,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.lem7_Φ_bound`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.mul_rpow : ∀ {x y z : ℝ}, 0 ≤ x → 0 ≤ y → (x * y) ^ z = x ^ z * y ^ z",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_le_rpow_of_exponent_ge : ∀ {x y z : ℝ}, 0 < x → x ≤ 1 → z ≤ y → x ^ y ≤ x ^ z",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_le_rpow_of_exponent_le : ∀ {x y z : ℝ}, 1 ≤ x → y ≤ z → x ^ y ≤ x ^ z",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_pos_of_pos : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), 0 < x ^ y",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@le_self_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a : M₀} {n : ℕ} [ZeroLEOneClass M₀]\n  [PosMulMono M₀], 1 ≤ a → n ≠ 0 → a ≤ a ^ n",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.envelope' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 84,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.directProbe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 85,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.zeroDelta' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 86,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.dimensionOne' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 87,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Phi218Independent.largeDelta' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 88,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

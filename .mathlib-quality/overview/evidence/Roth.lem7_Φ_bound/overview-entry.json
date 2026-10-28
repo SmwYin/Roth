@@ -1,0 +1,26 @@
+{
+  "type": "∀ {p : ℕ},\n  2 ≤ p →\n    ∀ {δ : ℝ},\n      0 < δ →\n        δ ≤ 1 →\n          δ * (1 + 1 / ↑p) + 10 ^ (p - 1) * (δ * (1 + 1 / ↑p)) ^ (1 / 2) ^ (p - 1) <\n            3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1)",
+  "kind": "theorem",
+  "what": "Absorb the perturbed delta and its dyadic power into 3 times the dimension-dependent power envelope.",
+  "how": "Use Real.mul_rpow and Real.rpow_le_rpow_of_exponent_ge/le to bound delta by delta^e and the perturbation by 3/2; use le_self_pow₀ to get 10<=10^(p-1), then linear_combination closes the strict gap.",
+  "hypotheses": "p:Nat at least2, delta:Real positive and at most1. No inherited typeclasses. Successfully compiled delta<=2 broadening; delta0 and dimension1 fail, and p2/delta400 refutes removing all upper control.",
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_in_file": 1,
+    "external_to_file": 0,
+    "source_callers": [
+      "Roth.theta_phi_lt_aux"
+    ],
+    "source_call_location": "Roth/Theta.lean:876",
+    "direct_kernel_value_consumers": [
+      "_private.Roth.Theta.0.Roth.theta_phi_lt_aux"
+    ],
+    "note": "Full caller840–889 and all downstream module proofs compile with the numerical proof locally inlined; lexical references and direct kernel consumers are separate."
+  },
+  "mathlib_api_audit": "Fifteen actual current/standard/abstract method cells. Pinned Real.mul_rpow, exponent monotonicity, positivity and le_self_pow₀ compile. No exact replacement established; current semantic Roth hits include unrelated additive-combinatorial results. Local index warming and remote revision differences limit absence conclusions.",
+  "moral_duplications": "The real-power ingredients and generic ordered weighted transport are existing API. The concrete constants and simultaneous absorption still require numerical reasoning; new generic envelope is a proved helper, not an existing mathlib replacement.",
+  "generalization": "Verified delta<=2 with original wrapper and unchanged downstream statements; independently proved x*c+A*(x*c)^e<2*c*A*x^e for 0<x<=1,1<=c,1<A,e<=1. This removes the coupling of dyadic exponent, reciprocal dimension and base10. Dimension0 works only as a totalized arithmetic formula and is not a useful index-induction generalization.",
+  "missing_api": "Potential generic weighted real-power absorption interface; no universal absence claim. Public usefulness and choice between primitive product/exponent bounds and a packaged envelope remain upstream API-design questions.",
+  "junk": "Not dead code: sole explicit caller theta_phi_lt_aux uses the strict estimate in the induction. Its single use permits local inlining but does not prove a <=3-existing-call composition.",
+  "action": "BORDERLINE-needs-human. Keep at Roth/Theta.lean pending future upstream decisions about generic numeric-envelope scope, delta range, and local helper visibility. Completed read-only assessment; no user input required."
+}
