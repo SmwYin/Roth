@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-28. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 240 / 293 written declarations.**
+**Completed: 241 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -248,8 +248,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 238 | `Roth.four_lt_rpow` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.four_lt_rpow.md) |
 | 239 | `Roth.mul_log_div_two_lt_log_mainCoeffBound` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.mul_log_div_two_lt_log_mainCoeffBound.md) |
 | 240 | `Roth.two_lt_rpow_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.two_lt_rpow_aux.md) |
+| 241 | `Roth.three_small_factors` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.three_small_factors.md) |
 
-**Next declaration: `Roth.three_small_factors`**, `Roth/MainLemma.lean:180`.
+**Next declaration: `Roth.exists_norm_coeff_reduction_aux`**, `Roth/MainLemma.lean:212`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

@@ -1,0 +1,182 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.three_small_factors
+namespace Fact241Isolated
+theorem rootFloor {X : ℝ} (hX : 2 ≤ X) : Real.sqrt X < (⌊X⌋₊ : ℝ) := by
+  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX
+  exact (Real.sqrt_lt' (by positivity)).2
+    (by nlinarith only [Nat.lt_floor_add_one X, hfloor])
+
+theorem logFloor {X : ℝ} (hX : 2 ≤ X) : Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by
+  have hpos : 0 < X := lt_of_lt_of_le (by norm_num) hX
+  simpa only [Real.log_sqrt hpos.le] using
+    Real.log_lt_log (Real.sqrt_pos.mpr hpos) (rootFloor hX)
+
+theorem realPower {q z : ℝ} (hq : 0 ≤ q) (hX : 2 ≤ q ^ z) :
+    z * Real.log q / 2 < Real.log (⌊q ^ z⌋₊ : ℝ) := by
+  have hpos : 0 < q :=
+    ((Real.one_lt_rpow_iff hq).1
+      (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left
+  simpa only [Real.log_rpow hpos] using logFloor hX
+
+theorem twoPower {δ : ℝ} (hδ0 : 0 ≤ δ) {q₁ r₁ : ℕ} (hr₁ : 0 < r₁)
+    (h1 : Real.log 2 < δ ^ 2 * Real.log q₁) : 2 < (q₁ : ℝ) ^ (δ * r₁) := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hL : 0 < Real.log q₁ := pos_of_mul_pos_right (hlog2.trans h1) (sq_nonneg δ)
+  have hq : 2 ≤ q₁ := by exact_mod_cast (Real.log_pos_iff (by positivity)).1 hL
+  have hr : (1 : ℝ) ≤ r₁ := by exact_mod_cast hr₁
+  have hprod : Real.log 2 < δ * Real.log q₁ := by
+    by_contra! h
+    nlinarith only [mul_self_le_mul_self (mul_nonneg hδ0 hL.le) h,
+      mul_lt_mul_of_pos_right h1 hL,
+      mul_le_mul_of_nonneg_left
+        (Real.log_le_log (by norm_num : (0 : ℝ) < 2) (by exact_mod_cast hq : (2 : ℝ) ≤ q₁))
+        hlog2.le]
+  apply Real.lt_rpow_of_log_lt (by positivity)
+  nlinarith only [hprod, le_mul_of_one_le_right (mul_nonneg hδ0 hL.le) hr]
+
+theorem logDomain {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr₁ : 0 < r₁) {A α : ℝ}
+    (hlogA : 0 ≤ Real.log (1 + A))
+    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log q₁) : (2 : ℝ) ^ (m * r₁) < (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) ^ δ ∧
+    (1 + A) ^ (m * r₁) < (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) ^ δ ∧
+    (1 + |α|) ^ (m * r₁) < (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) ^ δ := by
+  have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m
+  have hlogα : 0 ≤ Real.log (1 + |α|) :=
+    Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))
+  have h1 : 1 ≤ δ ^ 2 * Real.log q₁ := by
+    nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα]
+  have hlog2 : Real.log 2 < 1 := by
+    linarith only [Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)]
+  have hX := (twoPower hδ0 hr₁ (hlog2.trans_le h1)).le
+  have hδ : 0 < δ := lt_of_le_of_ne hδ0 (by
+    rintro rfl
+    norm_num at h1)
+  -- `t^{m r₁} < mainCoeffBound^δ` as soon as `2 m log t < δ² log q₁`
+  have key (t : ℝ) (h : 2 * m * Real.log t ≤ δ ^ 2 * Real.log q₁) :
+      t ^ (m * r₁) < (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) ^ δ := by
+    apply Real.lt_rpow_of_log_lt (y := (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ)) <|
+      (Real.sqrt_nonneg _).trans_lt (rootFloor hX)
+    rw [Real.log_pow]
+    push_cast
+    nlinarith only [mul_le_mul_of_nonneg_left h (Nat.cast_nonneg r₁),
+      mul_lt_mul_of_pos_left (realPower (Nat.cast_nonneg _) hX) hδ]
+  refine ⟨key 2 ?_, key _ ?_, key _ ?_⟩
+  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα,
+      mul_nonneg hm0 (sub_nonneg.mpr hlog2.le)]
+  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogα]
+  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA]
+
+
+theorem floorPower {X t δ : ℝ} {s : ℕ} (hX : 2 ≤ X) (hδ : 0 < δ)
+    (h : (s : ℝ) * Real.log t ≤ δ * Real.log X / 2) :
+    t ^ s < (⌊X⌋₊ : ℝ) ^ δ := by
+  apply Real.lt_rpow_of_log_lt ((Real.sqrt_nonneg X).trans_lt (rootFloor hX))
+  rw [Real.log_pow]
+  exact h.trans_lt (by nlinarith only [mul_lt_mul_of_pos_left (logFloor hX) hδ])
+
+theorem existingTransport {t B δ : ℝ} {s : ℕ} (hB : 0 < B)
+    (h : (s : ℝ) * Real.log t < δ * Real.log B) : t ^ s < B ^ δ :=
+  Real.lt_rpow_of_log_lt hB ((Real.log_pow t s).symm ▸ h)
+
+theorem original {δ : ℝ} (hδ : 0 ≤ δ) {m q r : ℕ} (hr : 0 < r) {A α : ℝ}
+    (hA : 0 ≤ A) (h : 2 * m + 1 + 2 * m * Real.log (1 + A) +
+      2 * m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log q) :
+    (2 : ℝ) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧
+      (1 + A) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧
+      (1 + |α|) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ :=
+  logDomain hδ hr (Real.log_nonneg (le_add_of_nonneg_right hA)) h
+
+theorem zeroVariables {δ A α : ℝ} {q r : ℕ} (hδ : 0 ≤ δ) (hr : 0 < r)
+    (h : 1 ≤ δ ^ 2 * Real.log q) :
+    (2 : ℝ) ^ (0 * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧
+      (1 + A) ^ (0 * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧
+      (1 + |α|) ^ (0 * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ := by
+  simpa only [zero_mul, pow_zero] using
+    (original (m := 0) (A := 0) (α := 0) hδ hr le_rfl (by simpa using h))
+
+theorem negativeAAllowed {δ : ℝ} {m q r : ℕ} (hδ : 0 ≤ δ) (hr : 0 < r) {α : ℝ}
+    (h : 2 * m + 1 + 2 * m * Real.log (1 + (-2 : ℝ)) +
+      2 * m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log q) :
+    (2 : ℝ) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧
+      (1 + (-2 : ℝ)) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧
+      (1 + |α|) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ :=
+  logDomain hδ hr (by norm_num) h
+
+theorem noASignGuard :
+    0 < 1 + (Real.exp (-2) - 1) ∧
+    (2 * (1 : ℕ) + 1 + 2 * (1 : ℕ) * Real.log (1 + (Real.exp (-2) - 1)) +
+      2 * (1 : ℕ) * Real.log (1 + |(0 : ℝ)|) ≤ (0 : ℝ) ^ 2 * Real.log (2 : ℕ)) ∧
+    ¬ (2 : ℝ) ^ ((1 : ℕ) * 1) < (⌊(2 : ℝ) ^ ((0 : ℝ) * (1 : ℕ))⌋₊ : ℝ) ^ (0 : ℝ) := by
+  simpa using (show 0 < Real.exp (-2) ∧ (-1 : ℝ) ≤ 0 ∧ ¬ (2 : ℝ) < 1 from
+    ⟨Real.exp_pos _, by norm_num, by norm_num⟩)
+
+theorem noRPositiveGuard :
+    1 ≤ (1 : ℝ) ^ 2 * Real.log (3 : ℕ) ∧
+    ¬ (2 : ℝ) ^ ((0 : ℕ) * 0) < (⌊(3 : ℝ) ^ ((1 : ℝ) * (0 : ℕ))⌋₊ : ℝ) ^ (1 : ℝ) := by
+  constructor
+  · simpa using Real.one_le_log_iff (by norm_num : (0 : ℝ) < 3) |>.2 Real.exp_one_lt_d9.le
+  · norm_num
+
+theorem noDeltaSignGuard :
+    ¬ (2 : ℝ) ^ ((1 : ℕ) * 1) < (⌊(2 : ℝ) ^ ((-3 : ℝ) * (1 : ℕ))⌋₊ : ℝ) ^ (-3 : ℝ) := by
+  norm_num
+
+theorem boundaryStillStrict {δ : ℝ} {m q r : ℕ} {A α : ℝ}
+    (hδ : 0 ≤ δ) (hr : 0 < r) (hA : 0 ≤ A)
+    (h : 2 * m + 1 + 2 * m * Real.log (1 + A) +
+      2 * m * Real.log (1 + |α|) = δ ^ 2 * Real.log q) :
+    (2 : ℝ) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧
+      (1 + A) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧
+      (1 + |α|) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ := original hδ hr hA h.le
+
+theorem primitiveProbe {X t δ : ℝ} {s : ℕ} (hX : 2 ≤ X) (hδ : 0 < δ)
+    (h : (s : ℝ) * Real.log t ≤ δ * Real.log X / 2) :
+    t ^ s < (⌊X⌋₊ : ℝ) ^ δ := by
+  fail_if_success
+    exact Real.lt_rpow_of_log_lt (by positivity : (0 : ℝ) < X) h
+  fail_if_success
+    exact Real.pow_lt_iff_lt_log (by positivity : (0 : ℝ) < X) (by positivity) |>.2 h
+  exact floorPower hX hδ h
+
+#check @Real.lt_rpow_of_log_lt
+#check @Real.log_pow
+#check @Real.log_rpow
+#check @Nat.floor_le
+#check @Nat.lt_floor_add_one
+#check @Real.pow_lt_iff_lt_log
+#check @Real.log_nonneg
+#check @Real.log_lt_sub_one_of_pos
+#print axioms rootFloor
+#print axioms logFloor
+#print axioms realPower
+#print axioms twoPower
+#print axioms logDomain
+#print axioms floorPower
+#print axioms existingTransport
+#print axioms original
+#print axioms zeroVariables
+#print axioms negativeAAllowed
+#print axioms noASignGuard
+#print axioms noRPositiveGuard
+#print axioms noDeltaSignGuard
+#print axioms boundaryStillStrict
+#print axioms primitiveProbe
+end Fact241Isolated

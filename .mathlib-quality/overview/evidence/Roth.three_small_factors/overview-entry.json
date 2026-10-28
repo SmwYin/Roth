@@ -1,0 +1,23 @@
+{
+  "type": "∀ {δ : ℝ},\n  0 ≤ δ →\n    ∀ {m q₁ r₁ : ℕ},\n      0 < r₁ →\n        ∀ {A α : ℝ},\n          0 ≤ A →\n            2 * ↑m + 1 + 2 * ↑m * Real.log (1 + A) + 2 * ↑m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log ↑q₁ →\n              2 ^ (m * r₁) < ↑(Roth.mainCoeffBound δ q₁ r₁) ^ δ ∧\n                (1 + A) ^ (m * r₁) < ↑(Roth.mainCoeffBound δ q₁ r₁) ^ δ ∧\n                  (1 + |α|) ^ (m * r₁) < ↑(Roth.mainCoeffBound δ q₁ r₁) ^ δ",
+  "kind": "theorem",
+  "what": "A non-strict logarithmic budget gives three strict small-factor bounds against the delta power of the natural coefficient floor, including zero variables.",
+  "how": "Use Roth.two_lt_rpow_aux and Roth.sqrt_lt_floor to secure the floor bound; multiply Roth.mul_log_div_two_lt_log_mainCoeffBound by positive delta, then apply Real.lt_rpow_of_log_lt and allocate the logarithmic budget to each factor.",
+  "hypotheses": [
+    "δ≥0; m,q₁,r₁ natural; r₁>0; A≥0; α arbitrary real.",
+    "2m+1+2m log(1+A)+2m log(1+|α|)≤δ² log q₁; strict budget is unnecessary; m=0 is permitted."
+  ],
+  "project_dependencies": [
+    "Roth.mainCoeffBound",
+    "Roth.two_lt_rpow_aux",
+    "Roth.sqrt_lt_floor",
+    "Roth.mul_log_div_two_lt_log_mainCoeffBound"
+  ],
+  "caller_summary": "3 explicit body callers across MainLemma and Main; canonical kernel audit confirms same3 private consumers, zero direct type consumers. All3 components used across these sites. Full2module inline replay compares all3 original signatures and checks2 endpoint axioms.",
+  "mathlib_api_audit": "Real.lt_rpow_of_log_lt, Real.log_pow, Real.log_rpow, Real.log_nonneg and natural floor lemmas provide constituents. All15 actual formal cells completed; local index error is a limitation. Independent full arithmetic reconstruction is a new proof, not existing mathlib API.",
+  "moral_duplications": "The local key repeats one power/log transport for three bases. sqrt_lt_floor and mul_log_div_two_lt_log_mainCoeffBound are prerequisite floor and logarithm estimates, not the same proposition; no independent inline rederivation found.",
+  "generalization": "Compiled replacement of hA by 0≤Real.log(1+A) preserves all3 strict conclusions; A=-2 is an explicit admitted instance. m0 permits arbitrary A. Compiled generic floorPower: 2≤X,0<δ, (s:ℝ)*log t≤δ*log X/2 imply t^s<(floor X)^δ. These are verified candidates, not a claim of maximal domain or existing API.",
+  "missing_api": "Possible generic strict floor-power absorption from a non-strict half-log budget; its API boundary relative to floor/log primitives and exact Roth triple remains a future upstream design choice.",
+  "junk": "Used by3 distinct private callers with all factors consumed. Keep locally; no demonstrated≤3-existing-call replacement. If inlining is chosen later, verified full caller experiments provide a mechanical recipe.",
+  "action": "BORDERLINE-needs-human: retain production unchanged; resolve3 concrete future upstream interface questions. Assessing the declaration is complete; upstream questions are not execution blockers."
+}

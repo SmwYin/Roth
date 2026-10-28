@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 240/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 241/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 240; remaining: 53.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 80 BORDERLINE-needs-human, 56 SKIP.
+- Completed applicable assessments: 241; remaining: 52.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 81 BORDERLINE-needs-human, 56 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2941,6 +2941,25 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit source caller declaration in MainLemma.lean and one direct original value consumer; complete MainLemma proof replay passes with the fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.two_lt_rpow_aux.md).
 
+### Completed: `Roth.three_small_factors`
+
+- Type: `∀ {δ : ℝ},
+  0 ≤ δ →
+    ∀ {m q₁ r₁ : ℕ},
+      0 < r₁ →
+        ∀ {A α : ℝ},
+          0 ≤ A →
+            2 * ↑m + 1 + 2 * ↑m * Real.log (1 + A) + 2 * ↑m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log ↑q₁ →
+              2 ^ (m * r₁) < ↑(Roth.mainCoeffBound δ q₁ r₁) ^ δ ∧
+                (1 + A) ^ (m * r₁) < ↑(Roth.mainCoeffBound δ q₁ r₁) ^ δ ∧
+                  (1 + |α|) ^ (m * r₁) < ↑(Roth.mainCoeffBound δ q₁ r₁) ^ δ`
+- What: A non-strict logarithmic budget gives three strict small-factor bounds against the delta power of the natural coefficient floor, including zero variables.
+- How: Use Roth.two_lt_rpow_aux and Roth.sqrt_lt_floor to secure the floor bound; multiply Roth.mul_log_div_two_lt_log_mainCoeffBound by positive delta, then apply Real.lt_rpow_of_log_lt and allocate the logarithmic budget to each factor.
+- Hypotheses: δ≥0; m,q₁,r₁ natural; r₁>0; A≥0; α arbitrary real., 2m+1+2m log(1+A)+2m log(1+|α|)≤δ² log q₁; strict budget is unnecessary; m=0 is permitted.
+- Project dependencies: Roth.mainCoeffBound, Roth.two_lt_rpow_aux, Roth.sqrt_lt_floor, Roth.mul_log_div_two_lt_log_mainCoeffBound
+- Caller summary: 3 explicit body callers across MainLemma and Main; canonical kernel audit confirms same3 private consumers, zero direct type consumers. All3 components used across these sites. Full2module inline replay compares all3 original signatures and checks2 endpoint axioms.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.three_small_factors.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3447,6 +3466,8 @@ Completed `Roth.mul_log_div_two_lt_log_mainCoeffBound`: Real.log_lt_log, Real.lo
 
 Completed `Roth.two_lt_rpow_aux`: The threshold forces logq>0 and the natural denominator q>=2. If delta*logq<=log2, squaring this nonnegative inequality and combining logq>=log2 contradicts the delta-squared threshold. Then multiply by the degree>=1 and apply Real.lt_rpow_of_log_lt. This establishes the positive floor-power threshold used in three_small_factors; it differs from the public four-power estimate and from comparing all three small factors.
 
+Completed `Roth.three_small_factors`: Real.lt_rpow_of_log_lt, Real.log_pow, Real.log_rpow, Real.log_nonneg and natural floor lemmas provide constituents. All15 actual formal cells completed; local index error is a limitation. Independent full arithmetic reconstruction is a new proof, not existing mathlib API.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3928,6 +3949,8 @@ Completed `Roth.four_lt_rpow`: Private two_lt_rpow_aux shares the square-compari
 Completed `Roth.mul_log_div_two_lt_log_mainCoeffBound`: A log corollary of sqrt_lt_floor rather than the same statement; realPower and logFloor remove project coefficient representation. No independently rederived inline counterpart found.
 
 Completed `Roth.two_lt_rpow_aux`: Shares the square-comparison method with public four_lt_rpow, but strictlog2 premise/target2 differs from sufficient3 premise/target4. Keep the distinct local interface; no inherited upstream verdict.
+
+Completed `Roth.three_small_factors`: The local key repeats one power/log transport for three bases. sqrt_lt_floor and mul_log_div_two_lt_log_mainCoeffBound are prerequisite floor and logarithm estimates, not the same proposition; no independent inline rederivation found.
 
 ## Part 5: Generalization opportunities
 
@@ -4421,6 +4444,8 @@ Completed `Roth.mul_log_div_two_lt_log_mainCoeffBound`: Compiled mathlib-only lo
 
 Completed `Roth.two_lt_rpow_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.three_small_factors`: Compiled replacement of hA by 0≤Real.log(1+A) preserves all3 strict conclusions; A=-2 is an explicit admitted instance. m0 permits arbitrary A. Compiled generic floorPower: 2≤X,0<δ, (s:ℝ)*log t≤δ*log X/2 imply t^s<(floor X)^δ. These are verified candidates, not a claim of maximal domain or existing API.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4903,6 +4928,8 @@ Completed `Roth.four_lt_rpow`: Upstream design candidate: numerical square-gap-t
 Completed `Roth.mul_log_div_two_lt_log_mainCoeffBound`: Potential generic logarithm-of-natural-floor lower-bound API; primary square-root-floor interface versus logarithmic corollary packaging remains a future upstream design choice.
 
 Completed `Roth.two_lt_rpow_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.three_small_factors`: Possible generic strict floor-power absorption from a non-strict half-log budget; its API boundary relative to floor/log primitives and exact Roth triple remains a future upstream design choice.
 
 ## Part 7: Junk / removable
 
@@ -5389,6 +5416,8 @@ Completed `Roth.mul_log_div_two_lt_log_mainCoeffBound`: Used and mathematically 
 
 Completed `Roth.two_lt_rpow_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.three_small_factors`: Used by3 distinct private callers with all factors consumed. Keep locally; no demonstrated≤3-existing-call replacement. If inlining is chosen later, verified full caller experiments provide a mechanical recipe.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5633,6 +5662,7 @@ Completed `Roth.two_lt_rpow_aux`: Retain a live private proof interface. No plac
 | 238 | `Roth.four_lt_rpow` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.four_lt_rpow.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.four_lt_rpow/root-acceptance.json) |
 | 239 | `Roth.mul_log_div_two_lt_log_mainCoeffBound` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_log_div_two_lt_log_mainCoeffBound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_log_div_two_lt_log_mainCoeffBound/root-acceptance.json) |
 | 240 | `Roth.two_lt_rpow_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.two_lt_rpow_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.two_lt_rpow_aux/root-acceptance.json) |
+| 241 | `Roth.three_small_factors` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.three_small_factors.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.three_small_factors/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6112,12 +6142,14 @@ Completed `Roth.mul_log_div_two_lt_log_mainCoeffBound` action: BORDERLINE-needs-
 
 Completed `Roth.two_lt_rpow_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.three_small_factors` action: BORDERLINE-needs-human: retain production unchanged; resolve3 concrete future upstream interface questions. Assessing the declaration is complete; upstream questions are not execution blockers.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.three_small_factors` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_norm_coeff_reduction_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

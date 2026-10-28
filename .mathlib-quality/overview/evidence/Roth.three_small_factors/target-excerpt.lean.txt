@@ -1,0 +1,32 @@
+theorem three_small_factors {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr₁ : 0 < r₁) {A α : ℝ}
+    (hA : 0 ≤ A) (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log q₁) : (2 : ℝ) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧
+    (1 + A) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧
+    (1 + |α|) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ := by
+  have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m
+  have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (le_add_of_nonneg_right hA)
+  have hlogα : 0 ≤ Real.log (1 + |α|) :=
+    Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))
+  have h1 : 1 ≤ δ ^ 2 * Real.log q₁ := by
+    nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα]
+  have hlog2 : Real.log 2 < 1 := by
+    linarith only [Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)]
+  have hX := (two_lt_rpow_aux hδ0 hr₁ (hlog2.trans_le h1)).le
+  have hδ : 0 < δ := lt_of_le_of_ne hδ0 (by
+    rintro rfl
+    norm_num at h1)
+  -- `t^{m r₁} < mainCoeffBound^δ` as soon as `2 m log t < δ² log q₁`
+  have key (t : ℝ) (h : 2 * m * Real.log t ≤ δ ^ 2 * Real.log q₁) :
+      t ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ := by
+    apply Real.lt_rpow_of_log_lt (y := mainCoeffBound δ q₁ r₁) <|
+      (Real.sqrt_nonneg _).trans_lt (sqrt_lt_floor hX).1
+    rw [Real.log_pow]
+    push_cast
+    nlinarith only [mul_le_mul_of_nonneg_left h (Nat.cast_nonneg r₁),
+      mul_lt_mul_of_pos_left (mul_log_div_two_lt_log_mainCoeffBound hX) hδ]
+  refine ⟨key 2 ?_, key _ ?_, key _ ?_⟩
+  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα,
+      mul_nonneg hm0 (sub_nonneg.mpr hlog2.le)]
+  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogα]
+  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA]
+

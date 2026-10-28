@@ -1,0 +1,255 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.three_small_factors\nnamespace Fact241Isolated\ntheorem rootFloor {X : ℝ} (hX : 2 ≤ X) : Real.sqrt X < (⌊X⌋₊ : ℝ) := by\n  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  exact (Real.sqrt_lt' (by positivity)).2\n    (by nlinarith only [Nat.lt_floor_add_one X, hfloor])\n\ntheorem logFloor {X : ℝ} (hX : 2 ≤ X) : Real.log X / 2 < Real.log (⌊X⌋₊ : ℝ) := by\n  have hpos : 0 < X := lt_of_lt_of_le (by norm_num) hX\n  simpa only [Real.log_sqrt hpos.le] using\n    Real.log_lt_log (Real.sqrt_pos.mpr hpos) (rootFloor hX)\n\ntheorem realPower {q z : ℝ} (hq : 0 ≤ q) (hX : 2 ≤ q ^ z) :\n    z * Real.log q / 2 < Real.log (⌊q ^ z⌋₊ : ℝ) := by\n  have hpos : 0 < q :=\n    ((Real.one_lt_rpow_iff hq).1\n      (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left\n  simpa only [Real.log_rpow hpos] using logFloor hX\n\ntheorem twoPower {δ : ℝ} (hδ0 : 0 ≤ δ) {q₁ r₁ : ℕ} (hr₁ : 0 < r₁)\n    (h1 : Real.log 2 < δ ^ 2 * Real.log q₁) : 2 < (q₁ : ℝ) ^ (δ * r₁) := by\n  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)\n  have hL : 0 < Real.log q₁ := pos_of_mul_pos_right (hlog2.trans h1) (sq_nonneg δ)\n  have hq : 2 ≤ q₁ := by exact_mod_cast (Real.log_pos_iff (by positivity)).1 hL\n  have hr : (1 : ℝ) ≤ r₁ := by exact_mod_cast hr₁\n  have hprod : Real.log 2 < δ * Real.log q₁ := by\n    by_contra! h\n    nlinarith only [mul_self_le_mul_self (mul_nonneg hδ0 hL.le) h,\n      mul_lt_mul_of_pos_right h1 hL,\n      mul_le_mul_of_nonneg_left\n        (Real.log_le_log (by norm_num : (0 : ℝ) < 2) (by exact_mod_cast hq : (2 : ℝ) ≤ q₁))\n        hlog2.le]\n  apply Real.lt_rpow_of_log_lt (by positivity)\n  nlinarith only [hprod, le_mul_of_one_le_right (mul_nonneg hδ0 hL.le) hr]\n\ntheorem logDomain {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr₁ : 0 < r₁) {A α : ℝ}\n    (hlogA : 0 ≤ Real.log (1 + A))\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log q₁) : (2 : ℝ) ^ (m * r₁) < (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) ^ δ ∧\n    (1 + A) ^ (m * r₁) < (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) ^ δ ∧\n    (1 + |α|) ^ (m * r₁) < (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) ^ δ := by\n  have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m\n  have hlogα : 0 ≤ Real.log (1 + |α|) :=\n    Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))\n  have h1 : 1 ≤ δ ^ 2 * Real.log q₁ := by\n    nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα]\n  have hlog2 : Real.log 2 < 1 := by\n    linarith only [Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)]\n  have hX := (twoPower hδ0 hr₁ (hlog2.trans_le h1)).le\n  have hδ : 0 < δ := lt_of_le_of_ne hδ0 (by\n    rintro rfl\n    norm_num at h1)\n  -- `t^{m r₁} < mainCoeffBound^δ` as soon as `2 m log t < δ² log q₁`\n  have key (t : ℝ) (h : 2 * m * Real.log t ≤ δ ^ 2 * Real.log q₁) :\n      t ^ (m * r₁) < (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ) ^ δ := by\n    apply Real.lt_rpow_of_log_lt (y := (⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊ : ℝ)) <|\n      (Real.sqrt_nonneg _).trans_lt (rootFloor hX)\n    rw [Real.log_pow]\n    push_cast\n    nlinarith only [mul_le_mul_of_nonneg_left h (Nat.cast_nonneg r₁),\n      mul_lt_mul_of_pos_left (realPower (Nat.cast_nonneg _) hX) hδ]\n  refine ⟨key 2 ?_, key _ ?_, key _ ?_⟩\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα,\n      mul_nonneg hm0 (sub_nonneg.mpr hlog2.le)]\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogα]\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA]\n\n\ntheorem floorPower {X t δ : ℝ} {s : ℕ} (hX : 2 ≤ X) (hδ : 0 < δ)\n    (h : (s : ℝ) * Real.log t ≤ δ * Real.log X / 2) :\n    t ^ s < (⌊X⌋₊ : ℝ) ^ δ := by\n  apply Real.lt_rpow_of_log_lt ((Real.sqrt_nonneg X).trans_lt (rootFloor hX))\n  rw [Real.log_pow]\n  exact h.trans_lt (by nlinarith only [mul_lt_mul_of_pos_left (logFloor hX) hδ])\n\ntheorem existingTransport {t B δ : ℝ} {s : ℕ} (hB : 0 < B)\n    (h : (s : ℝ) * Real.log t < δ * Real.log B) : t ^ s < B ^ δ :=\n  Real.lt_rpow_of_log_lt hB ((Real.log_pow t s).symm ▸ h)\n\ntheorem original {δ : ℝ} (hδ : 0 ≤ δ) {m q r : ℕ} (hr : 0 < r) {A α : ℝ}\n    (hA : 0 ≤ A) (h : 2 * m + 1 + 2 * m * Real.log (1 + A) +\n      2 * m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log q) :\n    (2 : ℝ) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧\n      (1 + A) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧\n      (1 + |α|) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ :=\n  logDomain hδ hr (Real.log_nonneg (le_add_of_nonneg_right hA)) h\n\ntheorem zeroVariables {δ A α : ℝ} {q r : ℕ} (hδ : 0 ≤ δ) (hr : 0 < r)\n    (h : 1 ≤ δ ^ 2 * Real.log q) :\n    (2 : ℝ) ^ (0 * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧\n      (1 + A) ^ (0 * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧\n      (1 + |α|) ^ (0 * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ := by\n  simpa only [zero_mul, pow_zero] using\n    (original (m := 0) (A := 0) (α := 0) hδ hr le_rfl (by simpa using h))\n\ntheorem negativeAAllowed {δ : ℝ} {m q r : ℕ} (hδ : 0 ≤ δ) (hr : 0 < r) {α : ℝ}\n    (h : 2 * m + 1 + 2 * m * Real.log (1 + (-2 : ℝ)) +\n      2 * m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log q) :\n    (2 : ℝ) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧\n      (1 + (-2 : ℝ)) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧\n      (1 + |α|) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ :=\n  logDomain hδ hr (by norm_num) h\n\ntheorem noASignGuard :\n    0 < 1 + (Real.exp (-2) - 1) ∧\n    (2 * (1 : ℕ) + 1 + 2 * (1 : ℕ) * Real.log (1 + (Real.exp (-2) - 1)) +\n      2 * (1 : ℕ) * Real.log (1 + |(0 : ℝ)|) ≤ (0 : ℝ) ^ 2 * Real.log (2 : ℕ)) ∧\n    ¬ (2 : ℝ) ^ ((1 : ℕ) * 1) < (⌊(2 : ℝ) ^ ((0 : ℝ) * (1 : ℕ))⌋₊ : ℝ) ^ (0 : ℝ) := by\n  norm_num\n  positivity\n\ntheorem noRPositiveGuard :\n    1 ≤ (1 : ℝ) ^ 2 * Real.log (⌈Real.exp 1⌉₊ : ℕ) ∧\n    ¬ (2 : ℝ) ^ ((0 : ℕ) * 0) <\n      (⌊((⌈Real.exp 1⌉₊ : ℕ) : ℝ) ^ ((1 : ℝ) * (0 : ℕ))⌋₊ : ℝ) ^ (1 : ℝ) := by\n  constructor\n  · simpa using Real.log_le_log (Real.exp_pos 1) (Nat.le_ceil (Real.exp 1))\n  · norm_num\n\ntheorem noDeltaSignGuard :\n    (3 : ℝ) ≤ (-3 : ℝ) ^ 2 * Real.log (2 : ℕ) ∧\n    ¬ (2 : ℝ) ^ ((1 : ℕ) * 1) < (⌊(2 : ℝ) ^ ((-3 : ℝ) * (1 : ℕ))⌋₊ : ℝ) ^ (-3 : ℝ) := by\n  constructor\n  · have h := Real.one_sub_inv_le_log_of_pos (by norm_num : (0 : ℝ) < 2)\n    norm_num at h ⊢\n    linarith only [h]\n  · norm_num [Nat.floor_eq_zero.mpr (by norm_num : (1 / 8 : ℝ) < 1)]\n\ntheorem budgetEqualityWitness :\n    0 ≤ Real.sqrt (1 / Real.log 2) ∧\n      (1 : ℝ) = Real.sqrt (1 / Real.log 2) ^ 2 * Real.log (2 : ℕ) := by\n  have hlog : 0 < Real.log 2 := Real.log_pos (by norm_num)\n  constructor\n  · positivity\n  · rw [Real.sq_sqrt (by positivity)]\n    norm_num\n\ntheorem noSlackGuard :\n    (2 * (0 : ℕ) + 2 * (0 : ℕ) * Real.log (1 + (0 : ℝ)) +\n      2 * (0 : ℕ) * Real.log (1 + |(0 : ℝ)|) ≤ (0 : ℝ) ^ 2 * Real.log (2 : ℕ)) ∧\n      ¬ (2 : ℝ) ^ ((0 : ℕ) * 1) <\n        (⌊(2 : ℝ) ^ ((0 : ℝ) * (1 : ℕ))⌋₊ : ℝ) ^ (0 : ℝ) := by norm_num\n\ntheorem boundaryStillStrict {δ : ℝ} {m q r : ℕ} {A α : ℝ}\n    (hδ : 0 ≤ δ) (hr : 0 < r) (hA : 0 ≤ A)\n    (h : 2 * m + 1 + 2 * m * Real.log (1 + A) +\n      2 * m * Real.log (1 + |α|) = δ ^ 2 * Real.log q) :\n    (2 : ℝ) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧\n      (1 + A) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ ∧\n      (1 + |α|) ^ (m * r) < (⌊(q : ℝ) ^ (δ * r)⌋₊ : ℝ) ^ δ := original hδ hr hA h.le\n\ntheorem primitiveProbe {X t δ : ℝ} {s : ℕ} (hX : 2 ≤ X) (hδ : 0 < δ)\n    (h : (s : ℝ) * Real.log t ≤ δ * Real.log X / 2) :\n    t ^ s < (⌊X⌋₊ : ℝ) ^ δ := by\n  fail_if_success\n    exact Real.lt_rpow_of_log_lt zero_lt_one h\n  fail_if_success\n    exact Real.pow_lt_iff_lt_log zero_lt_one zero_lt_one |>.2 h\n  exact floorPower hX hδ h\n\n#check @Real.lt_rpow_of_log_lt\n#check @Real.log_pow\n#check @Real.log_rpow\n#check @Nat.floor_le\n#check @Nat.lt_floor_add_one\n#check @Real.pow_lt_iff_lt_log\n#check @Real.log_nonneg\n#check @Real.log_lt_sub_one_of_pos\n#print axioms rootFloor\n#print axioms logFloor\n#print axioms realPower\n#print axioms twoPower\n#print axioms logDomain\n#print axioms floorPower\n#print axioms existingTransport\n#print axioms original\n#print axioms zeroVariables\n#print axioms negativeAAllowed\n#print axioms noASignGuard\n#print axioms noRPositiveGuard\n#print axioms noDeltaSignGuard\n#print axioms budgetEqualityWitness\n#print axioms noSlackGuard\n#print axioms boundaryStillStrict\n#print axioms primitiveProbe\nend Fact241Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.three_small_factors`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.lt_rpow_of_log_lt : ∀ {x y z : ℝ}, 0 < y → Real.log x < z * Real.log y → x < y ^ z\",\n      \"line\": 180,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.log_pow : ∀ (x : ℝ) (n : ℕ), Real.log (x ^ n) = ↑n * Real.log x\",\n      \"line\": 181,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_rpow : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), Real.log (x ^ y) = y * Real.log x\",\n      \"line\": 182,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.floor_le : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R},\\n  0 ≤ a → ↑⌊a⌋₊ ≤ a\",\n      \"line\": 183,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\\n  (a : R), a < ↑⌊a⌋₊ + 1\",\n      \"line\": 184,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.pow_lt_iff_lt_log : ∀ {x y : ℝ} {n : ℕ}, 0 < x → 0 < y → (x ^ n < y ↔ ↑n * Real.log x < Real.log y)\",\n      \"line\": 185,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_nonneg : ∀ {x : ℝ}, 1 ≤ x → 0 ≤ Real.log x\",\n      \"line\": 186,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_lt_sub_one_of_pos : ∀ {x : ℝ}, 0 < x → x ≠ 1 → Real.log x < x - 1\",\n      \"line\": 187,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.rootFloor' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 188,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.logFloor' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 189,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.realPower' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 190,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.twoPower' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 191,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.logDomain' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 192,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.floorPower' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 193,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.existingTransport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 194,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 195,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.zeroVariables' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 196,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.negativeAAllowed' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 197,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.noASignGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 198,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.noRPositiveGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 199,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.noDeltaSignGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 200,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.budgetEqualityWitness' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 201,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.noSlackGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 202,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.boundaryStillStrict' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 203,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Fact241Isolated.primitiveProbe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 204,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.three_small_factors`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.lt_rpow_of_log_lt : ∀ {x y z : ℝ}, 0 < y → Real.log x < z * Real.log y → x < y ^ z",
+          "line": 180,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.log_pow : ∀ (x : ℝ) (n : ℕ), Real.log (x ^ n) = ↑n * Real.log x",
+          "line": 181,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_rpow : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), Real.log (x ^ y) = y * Real.log x",
+          "line": 182,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.floor_le : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R},\n  0 ≤ a → ↑⌊a⌋₊ ≤ a",
+          "line": 183,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\n  (a : R), a < ↑⌊a⌋₊ + 1",
+          "line": 184,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.pow_lt_iff_lt_log : ∀ {x y : ℝ} {n : ℕ}, 0 < x → 0 < y → (x ^ n < y ↔ ↑n * Real.log x < Real.log y)",
+          "line": 185,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_nonneg : ∀ {x : ℝ}, 1 ≤ x → 0 ≤ Real.log x",
+          "line": 186,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_lt_sub_one_of_pos : ∀ {x : ℝ}, 0 < x → x ≠ 1 → Real.log x < x - 1",
+          "line": 187,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.rootFloor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 188,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.logFloor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 189,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.realPower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 190,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.twoPower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 191,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.logDomain' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 192,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.floorPower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 193,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.existingTransport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 194,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 195,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.zeroVariables' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 196,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.negativeAAllowed' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 197,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.noASignGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 198,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.noRPositiveGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 199,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.noDeltaSignGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 200,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.budgetEqualityWitness' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 201,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.noSlackGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 202,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.boundaryStillStrict' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 203,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Fact241Isolated.primitiveProbe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 204,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 709
+}
