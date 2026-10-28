@@ -1,0 +1,605 @@
+[
+  {
+    "method": "finder",
+    "form": "current",
+    "request": {
+      "query": "Roth polynomial index supremum bounded by common bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"rothNumberNat_le\",\n      \"informal_name\": \"Roth Number Upper Bound: $ \\\\text{rothNumberNat}(N) \\\\leq N $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (N : ℕ), rothNumberNat N ≤ N\",\n      \"informal_description\": \"For any natural number $ N $, the Roth number $ \\\\text{rothNumberNat}(N) $, which denotes the maximum size of a subset of $ \\\\{0, 1, \\\\ldots, N-1\\\\} $ containing no three distinct elements forming an arithmetic progression, satisfies $ \\\\text{rothNumberNat}(N) \\\\leq N $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_le_degBound\",\n      \"informal_name\": \"Monotonicity of Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k₁ k₂ : ℕ} {D₁ D₂ : ℕ → ℕ},\\n  k₁ ≤ k₂ →\\n    ∀ (n : ℕ),\\n      (∀ i < n, D₁ i ≤ D₂ i) → ChevalleyThm.MvPolynomialC.degBound k₁ D₁ n ≤ ChevalleyThm.MvPolynomialC.degBound k₂ D₂ n\",\n      \"informal_description\": \"For natural numbers $k_1 \\\\leq k_2$, functions $D_1, D_2 : \\\\mathbb{N} \\\\to \\\\mathbb{N}$ satisfying $D_1(i) \\\\leq D_2(i)$ for all $i < n$, and any $n \\\\in \\\\mathbb{N}$, the degree bound computed with parameters $k_1$ and $D_1$ at $n$ is less than or equal to the degree bound computed with parameters $k_2$ and $D_2$ at $n$, i.e., $\\\\text{degBound}(k_1, D_1, n) \\\\leq \\\\text{degBound}(k_2, D_2, n)$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_mono\",\n      \"informal_name\": \"Monotonicity of Chevalley's Numerical Bound for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k₁ k₂ : ℕ} {D₁ D₂ : ℕ → ℕ},\\n  k₁ ≤ k₂ →\\n    ∀ (n : ℕ),\\n      (∀ i < n, D₁ i ≤ D₂ i) → ChevalleyThm.MvPolynomialC.numBound k₁ D₁ n ≤ ChevalleyThm.MvPolynomialC.numBound k₂ D₂ n\",\n      \"informal_description\": \"For natural numbers $k₁ ≤ k₂$ and functions $D₁, D₂ : ℕ → ℕ$ satisfying $D₁(i) ≤ D₂(i)$ for all $i < n$, the numerical bound function satisfies $\\\\text{numBound}(k₁, D₁, n) ≤ \\\\text{numBound}(k₂, D₂, n)$. This establishes monotonicity of the bound in the context of multivariate polynomials and Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "rothNumberNat_le",
+            "informal_name": "Roth Number Upper Bound: $ \\text{rothNumberNat}(N) \\leq N $",
+            "kind": "theorem",
+            "type": "∀ (N : ℕ), rothNumberNat N ≤ N",
+            "informal_description": "For any natural number $ N $, the Roth number $ \\text{rothNumberNat}(N) $, which denotes the maximum size of a subset of $ \\{0, 1, \\ldots, N-1\\} $ containing no three distinct elements forming an arithmetic progression, satisfies $ \\text{rothNumberNat}(N) \\leq N $.",
+            "path": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound_le_degBound",
+            "informal_name": "Monotonicity of Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ {k₁ k₂ : ℕ} {D₁ D₂ : ℕ → ℕ},\n  k₁ ≤ k₂ →\n    ∀ (n : ℕ),\n      (∀ i < n, D₁ i ≤ D₂ i) → ChevalleyThm.MvPolynomialC.degBound k₁ D₁ n ≤ ChevalleyThm.MvPolynomialC.degBound k₂ D₂ n",
+            "informal_description": "For natural numbers $k_1 \\leq k_2$, functions $D_1, D_2 : \\mathbb{N} \\to \\mathbb{N}$ satisfying $D_1(i) \\leq D_2(i)$ for all $i < n$, and any $n \\in \\mathbb{N}$, the degree bound computed with parameters $k_1$ and $D_1$ at $n$ is less than or equal to the degree bound computed with parameters $k_2$ and $D_2$ at $n$, i.e., $\\text{degBound}(k_1, D_1, n) \\leq \\text{degBound}(k_2, D_2, n)$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound_mono",
+            "informal_name": "Monotonicity of Chevalley's Numerical Bound for Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {k₁ k₂ : ℕ} {D₁ D₂ : ℕ → ℕ},\n  k₁ ≤ k₂ →\n    ∀ (n : ℕ),\n      (∀ i < n, D₁ i ≤ D₂ i) → ChevalleyThm.MvPolynomialC.numBound k₁ D₁ n ≤ ChevalleyThm.MvPolynomialC.numBound k₂ D₂ n",
+            "informal_description": "For natural numbers $k₁ ≤ k₂$ and functions $D₁, D₂ : ℕ → ℕ$ satisfying $D₁(i) ≤ D₂(i)$ for all $i < n$, the numerical bound function satisfies $\\text{numBound}(k₁, D₁, n) ≤ \\text{numBound}(k₂, D₂, n)$. This establishes monotonicity of the bound in the context of multivariate polynomials and Chevalley's theorem.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "finder",
+    "form": "literature",
+    "request": {
+      "query": "supremum nonempty set upper bound csSup_le"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"csSup_le\",\n      \"informal_name\": \"Supremum Upper Bound in Conditionally Complete Lattices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α}, s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a\",\n      \"informal_description\": \"In a conditionally complete lattice, if a non-empty set $ s $ is bounded above by an element $ a $, then the supremum of $ s $ satisfies $ \\\\sup s \\\\leq a $.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"ConditionallyCompleteLattice.csSup_le\",\n      \"informal_name\": \"Supremum is the Least Upper Bound in Conditionally Complete Lattices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_5} [self : ConditionallyCompleteLattice α] (s : Set α) (a : α),\\n  s.Nonempty → a ∈ upperBounds s → sSup s ≤ a\",\n      \"informal_description\": \"For any non-empty set $ s $ in a conditionally complete lattice $ \\\\alpha $, if $ a $ is an upper bound of $ s $, then the supremum of $ s $ satisfies $ \\\\sup s \\\\leq a $.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Defs\"\n    },\n    {\n      \"formal_name\": \"csSup_le'\",\n      \"informal_name\": \"Supremum is Less Than or Equal to Any Upper Bound\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrderBot α] {s : Set α} {a : α}, a ∈ upperBounds s → sSup s ≤ a\",\n      \"informal_description\": \"For any set $ S $ in a conditionally complete lattice $ \\\\alpha $, if $ a $ is an upper bound of $ S $, then the supremum of $ S $ satisfies $ \\\\sup S \\\\leq a $.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"csSup_le_iff\",\n      \"informal_name\": \"Supremum Upper Bound Characterization\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\\n  BddAbove s → s.Nonempty → (sSup s ≤ a ↔ ∀ b ∈ s, b ≤ a)\",\n      \"informal_description\": \"For a non-empty and bounded above set $ S $ in a conditionally complete lattice, the supremum of $ S $ satisfies $ \\\\sup S \\\\leq a $ if and only if every element $ b \\\\in S $ satisfies $ b \\\\leq a $.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"le_csSup\",\n      \"informal_name\": \"Supremum Upper Bound Property\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α}, BddAbove s → a ∈ s → a ≤ sSup s\",\n      \"informal_description\": \"In a conditionally complete lattice $\\\\alpha$, if a set $s$ is non-empty and bounded above, then every element $a \\\\in s$ satisfies $a \\\\leq \\\\sup s$.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "csSup_le",
+            "informal_name": "Supremum Upper Bound in Conditionally Complete Lattices",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α}, s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a",
+            "informal_description": "In a conditionally complete lattice, if a non-empty set $ s $ is bounded above by an element $ a $, then the supremum of $ s $ satisfies $ \\sup s \\leq a $.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "formal_name": "ConditionallyCompleteLattice.csSup_le",
+            "informal_name": "Supremum is the Least Upper Bound in Conditionally Complete Lattices",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_5} [self : ConditionallyCompleteLattice α] (s : Set α) (a : α),\n  s.Nonempty → a ∈ upperBounds s → sSup s ≤ a",
+            "informal_description": "For any non-empty set $ s $ in a conditionally complete lattice $ \\alpha $, if $ a $ is an upper bound of $ s $, then the supremum of $ s $ satisfies $ \\sup s \\leq a $.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Defs"
+          },
+          {
+            "formal_name": "csSup_le'",
+            "informal_name": "Supremum is Less Than or Equal to Any Upper Bound",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrderBot α] {s : Set α} {a : α}, a ∈ upperBounds s → sSup s ≤ a",
+            "informal_description": "For any set $ S $ in a conditionally complete lattice $ \\alpha $, if $ a $ is an upper bound of $ S $, then the supremum of $ S $ satisfies $ \\sup S \\leq a $.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "formal_name": "csSup_le_iff",
+            "informal_name": "Supremum Upper Bound Characterization",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\n  BddAbove s → s.Nonempty → (sSup s ≤ a ↔ ∀ b ∈ s, b ≤ a)",
+            "informal_description": "For a non-empty and bounded above set $ S $ in a conditionally complete lattice, the supremum of $ S $ satisfies $ \\sup S \\leq a $ if and only if every element $ b \\in S $ satisfies $ b \\leq a $.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "formal_name": "le_csSup",
+            "informal_name": "Supremum Upper Bound Property",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α}, BddAbove s → a ∈ s → a ≤ sSup s",
+            "informal_description": "In a conditionally complete lattice $\\alpha$, if a set $s$ is non-empty and bounded above, then every element $a \\in s$ satisfies $a \\leq \\sup s$.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "finder",
+    "form": "abstract",
+    "request": {
+      "query": "supremum image2 bounded by pointwise bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.sup_image₂_le\",\n      \"informal_name\": \"Supremum of Binary Image Bounded iff Elements Bounded\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\\n  {t : Finset β} [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] {g : γ → δ} {a : δ},\\n  (Finset.image₂ f s t).sup g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a\",\n      \"informal_description\": \"For any function $ g : \\\\gamma \\\\to \\\\delta $ and any $ a \\\\in \\\\delta $, the supremum of $ g $ over the image set $ \\\\{ f(x, y) \\\\mid x \\\\in s, y \\\\in t \\\\} $ satisfies $ \\\\sup_{z \\\\in \\\\text{image}_2(f,s,t)} g(z) \\\\leq a $ if and only if $ g(f(x, y)) \\\\leq a $ for all $ x \\\\in s $ and $ y \\\\in t $.\",\n      \"path\": \"Mathlib.Data.Finset.NAry\"\n    },\n    {\n      \"formal_name\": \"Finset.sup'_image₂_le\",\n      \"informal_name\": \"Supremum of Binary Image Bounded Above iff All Elements Bounded Above\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\\n  {t : Finset β} [inst_1 : SemilatticeSup δ] {g : γ → δ} {a : δ} (h : (Finset.image₂ f s t).Nonempty),\\n  (Finset.image₂ f s t).sup' h g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a\",\n      \"informal_description\": \"The supremum of $ g $ applied to the image of a binary function $ f $ over finite sets $ s $ and $ t $ is less than or equal to $ a $ if and only if for all $ x \\\\in s $ and $ y \\\\in t $, $ g(f(x, y)) \\\\leq a $.\",\n      \"path\": \"Mathlib.Data.Finset.NAry\"\n    },\n    {\n      \"formal_name\": \"Finset.sup_image₂_right\",\n      \"informal_name\": \"Supremum over Binary Image as Nested Suprema (Right)\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} (s : Finset α)\\n  (t : Finset β) [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] (g : γ → δ),\\n  (Finset.image₂ f s t).sup g = t.sup fun y => s.sup fun x => g (f x y)\",\n      \"informal_description\": \"For a binary function $ f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma $, finite sets $ s \\\\subseteq \\\\alpha $ and $ t \\\\subseteq \\\\beta $, and a function $ g : \\\\gamma \\\\to \\\\delta $ where $ \\\\delta $ is a sup-semilattice with bottom element, the supremum of $ g $ applied to the image of $ f $ over $ s \\\\times t $ satisfies $ \\\\sup_{(x,y) \\\\in s \\\\times t} g(f(x,y)) = \\\\sup_{x \\\\in s} \\\\left( \\\\sup_{y \\\\in t} g(f(x,y)) \\\\right) $. This expresses that the supremum over the binary image can be computed by first taking suprema over $ t $ for each $ x \\\\in s $, then taking the supremum over $ s $.\",\n      \"path\": \"Mathlib.Data.Finset.NAry\"\n    },\n    {\n      \"formal_name\": \"iSup_image2\",\n      \"informal_name\": \"Supremum of Image of Binary Function Equals Double Supremum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} [inst : CompleteLattice α] {γ : Type u_8} {δ : Type u_9} (f : β → γ → δ) (s : Set β)\\n  (t : Set γ) (g : δ → α), ⨆ d ∈ Set.image2 f s t, g d = ⨆ b ∈ s, ⨆ c ∈ t, g (f b c)\",\n      \"informal_description\": \"Let $\\\\alpha$ be a complete lattice, $f : \\\\beta \\\\to \\\\gamma \\\\to \\\\delta$ a binary function, $s \\\\subseteq \\\\beta$, $t \\\\subseteq \\\\gamma$, and $g : \\\\delta \\\\to \\\\alpha$. Then the supremum of $g(d)$ over all $d$ in the image of $f$ on $s \\\\times t$ equals the double supremum of $g(f(b,c))$ over all $b \\\\in s$ and $c \\\\in t$. Formally: $\\\\sup_{d \\\\in \\\\mathrm{image}_2(f,s,t)} g(d) = \\\\sup_{b \\\\in s} \\\\sup_{c \\\\in t} g(f(b,c))$.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"Finset.sup_image₂_left\",\n      \"informal_name\": \"Supremum over Binary Image Equals Nested Suprema\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} (s : Finset α)\\n  (t : Finset β) [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] (g : γ → δ),\\n  (Finset.image₂ f s t).sup g = s.sup fun x => t.sup fun x_1 => g (f x x_1)\",\n      \"informal_description\": \"The supremum of $ g $ over the image of the binary function $ f $ applied to finite sets $ s $ and $ t $ is equal to the supremum over $ s $ of the supremum over $ t $ of $ g(f(x, y)) $.\",\n      \"path\": \"Mathlib.Data.Finset.NAry\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finset.sup_image₂_le",
+            "informal_name": "Supremum of Binary Image Bounded iff Elements Bounded",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\n  {t : Finset β} [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] {g : γ → δ} {a : δ},\n  (Finset.image₂ f s t).sup g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a",
+            "informal_description": "For any function $ g : \\gamma \\to \\delta $ and any $ a \\in \\delta $, the supremum of $ g $ over the image set $ \\{ f(x, y) \\mid x \\in s, y \\in t \\} $ satisfies $ \\sup_{z \\in \\text{image}_2(f,s,t)} g(z) \\leq a $ if and only if $ g(f(x, y)) \\leq a $ for all $ x \\in s $ and $ y \\in t $.",
+            "path": "Mathlib.Data.Finset.NAry"
+          },
+          {
+            "formal_name": "Finset.sup'_image₂_le",
+            "informal_name": "Supremum of Binary Image Bounded Above iff All Elements Bounded Above",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\n  {t : Finset β} [inst_1 : SemilatticeSup δ] {g : γ → δ} {a : δ} (h : (Finset.image₂ f s t).Nonempty),\n  (Finset.image₂ f s t).sup' h g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a",
+            "informal_description": "The supremum of $ g $ applied to the image of a binary function $ f $ over finite sets $ s $ and $ t $ is less than or equal to $ a $ if and only if for all $ x \\in s $ and $ y \\in t $, $ g(f(x, y)) \\leq a $.",
+            "path": "Mathlib.Data.Finset.NAry"
+          },
+          {
+            "formal_name": "Finset.sup_image₂_right",
+            "informal_name": "Supremum over Binary Image as Nested Suprema (Right)",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} (s : Finset α)\n  (t : Finset β) [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] (g : γ → δ),\n  (Finset.image₂ f s t).sup g = t.sup fun y => s.sup fun x => g (f x y)",
+            "informal_description": "For a binary function $ f : \\alpha \\to \\beta \\to \\gamma $, finite sets $ s \\subseteq \\alpha $ and $ t \\subseteq \\beta $, and a function $ g : \\gamma \\to \\delta $ where $ \\delta $ is a sup-semilattice with bottom element, the supremum of $ g $ applied to the image of $ f $ over $ s \\times t $ satisfies $ \\sup_{(x,y) \\in s \\times t} g(f(x,y)) = \\sup_{x \\in s} \\left( \\sup_{y \\in t} g(f(x,y)) \\right) $. This expresses that the supremum over the binary image can be computed by first taking suprema over $ t $ for each $ x \\in s $, then taking the supremum over $ s $.",
+            "path": "Mathlib.Data.Finset.NAry"
+          },
+          {
+            "formal_name": "iSup_image2",
+            "informal_name": "Supremum of Image of Binary Function Equals Double Supremum",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} [inst : CompleteLattice α] {γ : Type u_8} {δ : Type u_9} (f : β → γ → δ) (s : Set β)\n  (t : Set γ) (g : δ → α), ⨆ d ∈ Set.image2 f s t, g d = ⨆ b ∈ s, ⨆ c ∈ t, g (f b c)",
+            "informal_description": "Let $\\alpha$ be a complete lattice, $f : \\beta \\to \\gamma \\to \\delta$ a binary function, $s \\subseteq \\beta$, $t \\subseteq \\gamma$, and $g : \\delta \\to \\alpha$. Then the supremum of $g(d)$ over all $d$ in the image of $f$ on $s \\times t$ equals the double supremum of $g(f(b,c))$ over all $b \\in s$ and $c \\in t$. Formally: $\\sup_{d \\in \\mathrm{image}_2(f,s,t)} g(d) = \\sup_{b \\in s} \\sup_{c \\in t} g(f(b,c))$.",
+            "path": "Mathlib.Order.CompleteLattice.Basic"
+          },
+          {
+            "formal_name": "Finset.sup_image₂_left",
+            "informal_name": "Supremum over Binary Image Equals Nested Suprema",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} (s : Finset α)\n  (t : Finset β) [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] (g : γ → δ),\n  (Finset.image₂ f s t).sup g = s.sup fun x => t.sup fun x_1 => g (f x x_1)",
+            "informal_description": "The supremum of $ g $ over the image of the binary function $ f $ applied to finite sets $ s $ and $ t $ is equal to the supremum over $ s $ of the supremum over $ t $ of $ g(f(x, y)) $.",
+            "path": "Mathlib.Data.Finset.NAry"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "loogle",
+    "form": "current",
+    "request": {
+      "query": "sSup ?s ≤ ?c"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"sSup_le_sSup\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : s ⊆ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Defs\"\n    },\n    {\n      \"name\": \"sSup_le\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s : Set α} {a : α} (h : ∀ b ∈ s, b ≤ a) : sSup s ≤ a\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Defs\"\n    },\n    {\n      \"name\": \"sSup_le_iff\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s : Set α} {a : α} : sSup s ≤ a ↔ ∀ b ∈ s, b ≤ a\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Defs\"\n    },\n    {\n      \"name\": \"sSup_le_sSup_of_isCofinalFor\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : IsCofinalFor s t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"sSup_inter_le\",\n      \"type\": \" {α : Type u_1} [CompleteLattice α] {s t : Set α} : sSup (s ∩ t) ≤ sSup s ⊓ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"sSup_le_sSup_of_subset_insert_bot\",\n      \"type\": \" {α : Type u_1} [CompleteLattice α] {s t : Set α} (h : s ⊆ insert ⊥ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"DirectedOn.csSup_le\",\n      \"type\": \" {α : Type u_2} [ConditionallyCompletePartialOrderSup α] {s : Set α} {a : α} (hd : DirectedOn (fun x1 x2 => x1 ≤ x2) s) (h_non : s.Nonempty) (ha : ∀ b ∈ s, b ≤ a) : sSup s ≤ a\",\n      \"module\": \"Mathlib.Order.ConditionallyCompletePartialOrder.Defs\"\n    },\n    {\n      \"name\": \"DirectedOn.csSup_le_iff\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompletePartialOrderSup α] {s : Set α} {a : α} (hd : DirectedOn (fun x1 x2 => x1 ≤ x2) s) (hb : BddAbove s) (hs : s.Nonempty) : sSup s ≤ a ↔ ∀ b ∈ s, b ≤ a\",\n      \"module\": \"Mathlib.Order.ConditionallyCompletePartialOrder.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "sSup_le_sSup",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : s ⊆ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Defs"
+          },
+          {
+            "name": "sSup_le",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s : Set α} {a : α} (h : ∀ b ∈ s, b ≤ a) : sSup s ≤ a",
+            "module": "Mathlib.Order.CompleteLattice.Defs"
+          },
+          {
+            "name": "sSup_le_iff",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s : Set α} {a : α} : sSup s ≤ a ↔ ∀ b ∈ s, b ≤ a",
+            "module": "Mathlib.Order.CompleteLattice.Defs"
+          },
+          {
+            "name": "sSup_le_sSup_of_isCofinalFor",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : IsCofinalFor s t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Basic"
+          },
+          {
+            "name": "sSup_inter_le",
+            "type": " {α : Type u_1} [CompleteLattice α] {s t : Set α} : sSup (s ∩ t) ≤ sSup s ⊓ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Basic"
+          },
+          {
+            "name": "sSup_le_sSup_of_subset_insert_bot",
+            "type": " {α : Type u_1} [CompleteLattice α] {s t : Set α} (h : s ⊆ insert ⊥ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Basic"
+          },
+          {
+            "name": "DirectedOn.csSup_le",
+            "type": " {α : Type u_2} [ConditionallyCompletePartialOrderSup α] {s : Set α} {a : α} (hd : DirectedOn (fun x1 x2 => x1 ≤ x2) s) (h_non : s.Nonempty) (ha : ∀ b ∈ s, b ≤ a) : sSup s ≤ a",
+            "module": "Mathlib.Order.ConditionallyCompletePartialOrder.Defs"
+          },
+          {
+            "name": "DirectedOn.csSup_le_iff",
+            "type": " {α : Type u_1} [ConditionallyCompletePartialOrderSup α] {s : Set α} {a : α} (hd : DirectedOn (fun x1 x2 => x1 ≤ x2) s) (hb : BddAbove s) (hs : s.Nonempty) : sSup s ≤ a ↔ ∀ b ∈ s, b ≤ a",
+            "module": "Mathlib.Order.ConditionallyCompletePartialOrder.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "loogle",
+    "form": "literature",
+    "request": {
+      "query": "csSup_le"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"csSup_le\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompleteLattice α] {s : Set α} {a : α} (h₁ : s.Nonempty) (h₂ : ∀ b ∈ s, b ≤ a) : sSup s ≤ a\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "csSup_le",
+            "type": " {α : Type u_1} [ConditionallyCompleteLattice α] {s : Set α} {a : α} (h₁ : s.Nonempty) (h₂ : ∀ b ∈ s, b ≤ a) : sSup s ≤ a",
+            "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "loogle",
+    "form": "abstract",
+    "request": {
+      "query": "Set.image2, sSup"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'sSup' Suggestions: Set.image2, \"sSup\", Set.image2, SupSet.sSup, Set.image2, Antitone.sSup, Set.image2, Monotone.sSup, Set.image2, CompleteLattice.ωScottContinuous.sSup"
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "leansearch",
+    "form": "current",
+    "request": {
+      "query": "The supremum of the indices of bounded integer polynomials is bounded by a common upper bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"iSup\",\n      \"module_name\": \"Mathlib.Order.SetNotation\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u} → {ι : Sort v} → [SupSet α] → (ι → α) → α\"\n    },\n    {\n      \"name\": \"Seminorm.finset_sup_apply_le\",\n      \"module_name\": \"Mathlib.Analysis.Seminorm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_3} {E : Type u_7} {ι : Type u_11} [inst : SeminormedRing 𝕜] [inst_1 : AddCommGroup E]\\n  [inst_2 : Module 𝕜 E] {p : ι → Seminorm 𝕜 E} {s : Finset ι} {x : E} {a : ℝ},\\n  0 ≤ a → (∀ i ∈ s, (p i) x ≤ a) → (s.sup p) x ≤ a\"\n    },\n    {\n      \"name\": \"Polynomial.supDegree_eq_natDegree\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), AddMonoidAlgebra.supDegree id p.toFinsupp = p.natDegree\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.supDegree_sum_le\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {B : Type u_5} [inst : Semiring R] [inst_1 : SemilatticeSup B] [inst_2 : OrderBot B]\\n  {D : A → B} {ι : Type u_7} {s : Finset ι} {f : ι → AddMonoidAlgebra R A},\\n  AddMonoidAlgebra.supDegree D (∑ i ∈ s, f i) ≤ s.sup fun i => AddMonoidAlgebra.supDegree D (f i)\"\n    },\n    {\n      \"name\": \"Int.csSup_of_not_bddAbove\",\n      \"module_name\": \"Mathlib.Data.Int.ConditionallyCompleteOrder\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℤ}, ¬BddAbove s → sSup s = 0\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "iSup",
+            "module_name": "Mathlib.Order.SetNotation",
+            "kind": "definition",
+            "type": "{α : Type u} → {ι : Sort v} → [SupSet α] → (ι → α) → α"
+          },
+          {
+            "name": "Seminorm.finset_sup_apply_le",
+            "module_name": "Mathlib.Analysis.Seminorm",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u_3} {E : Type u_7} {ι : Type u_11} [inst : SeminormedRing 𝕜] [inst_1 : AddCommGroup E]\n  [inst_2 : Module 𝕜 E] {p : ι → Seminorm 𝕜 E} {s : Finset ι} {x : E} {a : ℝ},\n  0 ≤ a → (∀ i ∈ s, (p i) x ≤ a) → (s.sup p) x ≤ a"
+          },
+          {
+            "name": "Polynomial.supDegree_eq_natDegree",
+            "module_name": "Mathlib.Algebra.Polynomial.Degree.Support",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), AddMonoidAlgebra.supDegree id p.toFinsupp = p.natDegree"
+          },
+          {
+            "name": "AddMonoidAlgebra.supDegree_sum_le",
+            "module_name": "Mathlib.Algebra.MonoidAlgebra.Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {A : Type u_3} {B : Type u_5} [inst : Semiring R] [inst_1 : SemilatticeSup B] [inst_2 : OrderBot B]\n  {D : A → B} {ι : Type u_7} {s : Finset ι} {f : ι → AddMonoidAlgebra R A},\n  AddMonoidAlgebra.supDegree D (∑ i ∈ s, f i) ≤ s.sup fun i => AddMonoidAlgebra.supDegree D (f i)"
+          },
+          {
+            "name": "Int.csSup_of_not_bddAbove",
+            "module_name": "Mathlib.Data.Int.ConditionallyCompleteOrder",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℤ}, ¬BddAbove s → sSup s = 0"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "leansearch",
+    "form": "literature",
+    "request": {
+      "query": "The supremum of a nonempty set is less than any upper bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"ConditionallyCompleteLattice.csSup_le\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_5} [self : ConditionallyCompleteLattice α] (s : Set α) (a : α),\\n  s.Nonempty → a ∈ upperBounds s → sSup s ≤ a\"\n    },\n    {\n      \"name\": \"Real.sSup_le\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a\"\n    },\n    {\n      \"name\": \"sSup_le\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : CompleteSemilatticeSup α] {s : Set α} {a : α}, (∀ b ∈ s, b ≤ a) → sSup s ≤ a\"\n    },\n    {\n      \"name\": \"isLUB_sSup\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : CompleteSemilatticeSup α] (s : Set α), IsLUB s (sSup s)\"\n    },\n    {\n      \"name\": \"Real.isLUB_sSup\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, s.Nonempty → BddAbove s → IsLUB s (sSup s)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "ConditionallyCompleteLattice.csSup_le",
+            "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Defs",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_5} [self : ConditionallyCompleteLattice α] (s : Set α) (a : α),\n  s.Nonempty → a ∈ upperBounds s → sSup s ≤ a"
+          },
+          {
+            "name": "Real.sSup_le",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a"
+          },
+          {
+            "name": "sSup_le",
+            "module_name": "Mathlib.Order.CompleteLattice.Defs",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : CompleteSemilatticeSup α] {s : Set α} {a : α}, (∀ b ∈ s, b ≤ a) → sSup s ≤ a"
+          },
+          {
+            "name": "isLUB_sSup",
+            "module_name": "Mathlib.Order.CompleteLattice.Defs",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : CompleteSemilatticeSup α] (s : Set α), IsLUB s (sSup s)"
+          },
+          {
+            "name": "Real.isLUB_sSup",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, s.Nonempty → BddAbove s → IsLUB s (sSup s)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "A pointwise bound on a binary image bounds its supremum"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sup_image₂_le\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\\n  {t : Finset β} [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] {g : γ → δ} {a : δ},\\n  (Finset.image₂ f s t).sup g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a\"\n    },\n    {\n      \"name\": \"Finset.sup'_image₂_le\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\\n  {t : Finset β} [inst_1 : SemilatticeSup δ] {g : γ → δ} {a : δ} (h : (Finset.image₂ f s t).Nonempty),\\n  (Finset.image₂ f s t).sup' h g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a\"\n    },\n    {\n      \"name\": \"sSup_image'\",\n      \"module_name\": \"Mathlib.Order.CompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} [inst : SupSet α] {s : Set β} {f : β → α}, sSup (f '' s) = ⨆ a, f ↑a\"\n    },\n    {\n      \"name\": \"Real.iSup_le\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ} {a : ℝ}, (∀ (i : ι), f i ≤ a) → 0 ≤ a → ⨆ i, f i ≤ a\"\n    },\n    {\n      \"name\": \"mem_upperBounds_image2\",\n      \"module_name\": \"Mathlib.Order.Bounds.Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β} {a : α} {b : β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → a ∈ upperBounds s → b ∈ upperBounds t → f a b ∈ upperBounds (Set.image2 f s t)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.sup_image₂_le",
+            "module_name": "Mathlib.Data.Finset.NAry",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\n  {t : Finset β} [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] {g : γ → δ} {a : δ},\n  (Finset.image₂ f s t).sup g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a"
+          },
+          {
+            "name": "Finset.sup'_image₂_le",
+            "module_name": "Mathlib.Data.Finset.NAry",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\n  {t : Finset β} [inst_1 : SemilatticeSup δ] {g : γ → δ} {a : δ} (h : (Finset.image₂ f s t).Nonempty),\n  (Finset.image₂ f s t).sup' h g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a"
+          },
+          {
+            "name": "sSup_image'",
+            "module_name": "Mathlib.Order.CompleteLattice.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} [inst : SupSet α] {s : Set β} {f : β → α}, sSup (f '' s) = ⨆ a, f ↑a"
+          },
+          {
+            "name": "Real.iSup_le",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ} {a : ℝ}, (∀ (i : ι), f i ≤ a) → 0 ≤ a → ⨆ i, f i ≤ a"
+          },
+          {
+            "name": "mem_upperBounds_image2",
+            "module_name": "Mathlib.Order.Bounds.Image",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β} {a : α} {b : β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → a ∈ upperBounds s → b ∈ upperBounds t → f a b ∈ upperBounds (Set.image2 f s t)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "local_search",
+    "form": "current",
+    "request": {
+      "query": "Θ_le_of_forall_index_le"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "local_search",
+    "form": "literature",
+    "request": {
+      "query": "csSup_le"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"DirectedOn.csSup_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Defs.lean\"\n    },\n    {\n      \"name\": \"csSup_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"csSup_le'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"DirectedOn.csSup_le_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Basic.lean\"\n    },\n    {\n      \"name\": \"csSup_le_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"csSup_le_iff'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"DirectedOn.csSup_le_csSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Basic.lean\"\n    },\n    {\n      \"name\": \"csSup_le_csSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"csSup_le_csSup'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "DirectedOn.csSup_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Defs.lean"
+          },
+          {
+            "name": "csSup_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          },
+          {
+            "name": "csSup_le'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          },
+          {
+            "name": "DirectedOn.csSup_le_iff",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Basic.lean"
+          },
+          {
+            "name": "csSup_le_iff",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          },
+          {
+            "name": "csSup_le_iff'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          },
+          {
+            "name": "DirectedOn.csSup_le_csSup",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Basic.lean"
+          },
+          {
+            "name": "csSup_le_csSup",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          },
+          {
+            "name": "csSup_le_csSup'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "local_search",
+    "form": "abstract",
+    "request": {
+      "query": "forall_mem_image2"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.forall_mem_image2\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Set/NAry.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Set.forall_mem_image2",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Set/NAry.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "loogle",
+    "form": "abstract-retry",
+    "request": {
+      "query": "Set.image2, \"sSup\""
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"sSup_image2\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] {f : β → γ → α} {s : Set β} {t : Set γ} : sSup (Set.image2 f s t) = ⨆ a ∈ s, ⨆ b ∈ t, f a b\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"sSup_image2_eq_sSup_sSup\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b) (u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a) (u₂ a)) : sSup (Set.image2 l s t) = l (sSup s) (sSup t)\",\n      \"module\": \"Mathlib.Order.GaloisConnection.Basic\"\n    },\n    {\n      \"name\": \"sInf_image2_eq_sInf_sSup\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {u : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (u₁ b) (Function.swap u b)) (h₂ : ∀ (a : α), GaloisConnection (⇑OrderDual.toDual ∘ u₂ a) (u a ∘ ⇑OrderDual.ofDual)) : sInf (Set.image2 u s t) = u (sInf s) (sSup t)\",\n      \"module\": \"Mathlib.Order.GaloisConnection.Basic\"\n    },\n    {\n      \"name\": \"sInf_image2_eq_sSup_sInf\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {u : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (⇑OrderDual.toDual ∘ u₁ b) (Function.swap u b ∘ ⇑OrderDual.ofDual)) (h₂ : ∀ (a : α), GaloisConnection (u₂ a) (u a)) : sInf (Set.image2 u s t) = u (sSup s) (sInf t)\",\n      \"module\": \"Mathlib.Order.GaloisConnection.Basic\"\n    },\n    {\n      \"name\": \"sSup_image2_eq_sInf_sSup\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b ∘ ⇑OrderDual.ofDual) (⇑OrderDual.toDual ∘ u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a) (u₂ a)) : sSup (Set.image2 l s t) = l (sInf s) (sSup t)\",\n      \"module\": \"Mathlib.Order.GaloisConnection.Basic\"\n    },\n    {\n      \"name\": \"sSup_image2_eq_sSup_sInf\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b) (u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a ∘ ⇑OrderDual.ofDual) (⇑OrderDual.toDual ∘ u₂ a)) : sSup (Set.image2 l s t) = l (sSup s) (sInf t)\",\n      \"module\": \"Mathlib.Order.GaloisConnection.Basic\"\n    },\n    {\n      \"name\": \"sInf_image2_eq_sSup_sSup\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {u : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (⇑OrderDual.toDual ∘ u₁ b) (Function.swap u b ∘ ⇑OrderDual.ofDual)) (h₂ : ∀ (a : α), GaloisConnection (⇑OrderDual.toDual ∘ u₂ a) (u a ∘ ⇑OrderDual.ofDual)) : sInf (Set.image2 u s t) = u (sSup s) (sSup t)\",\n      \"module\": \"Mathlib.Order.GaloisConnection.Basic\"\n    },\n    {\n      \"name\": \"sSup_image2_eq_sInf_sInf\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b ∘ ⇑OrderDual.ofDual) (⇑OrderDual.toDual ∘ u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a ∘ ⇑OrderDual.ofDual) (⇑OrderDual.toDual ∘ u₂ a)) : sSup (Set.image2 l s t) = l (sInf s) (sInf t)\",\n      \"module\": \"Mathlib.Order.GaloisConnection.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "sSup_image2",
+            "type": " {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] {f : β → γ → α} {s : Set β} {t : Set γ} : sSup (Set.image2 f s t) = ⨆ a ∈ s, ⨆ b ∈ t, f a b",
+            "module": "Mathlib.Order.CompleteLattice.Basic"
+          },
+          {
+            "name": "sSup_image2_eq_sSup_sSup",
+            "type": " {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b) (u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a) (u₂ a)) : sSup (Set.image2 l s t) = l (sSup s) (sSup t)",
+            "module": "Mathlib.Order.GaloisConnection.Basic"
+          },
+          {
+            "name": "sInf_image2_eq_sInf_sSup",
+            "type": " {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {u : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (u₁ b) (Function.swap u b)) (h₂ : ∀ (a : α), GaloisConnection (⇑OrderDual.toDual ∘ u₂ a) (u a ∘ ⇑OrderDual.ofDual)) : sInf (Set.image2 u s t) = u (sInf s) (sSup t)",
+            "module": "Mathlib.Order.GaloisConnection.Basic"
+          },
+          {
+            "name": "sInf_image2_eq_sSup_sInf",
+            "type": " {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {u : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (⇑OrderDual.toDual ∘ u₁ b) (Function.swap u b ∘ ⇑OrderDual.ofDual)) (h₂ : ∀ (a : α), GaloisConnection (u₂ a) (u a)) : sInf (Set.image2 u s t) = u (sSup s) (sInf t)",
+            "module": "Mathlib.Order.GaloisConnection.Basic"
+          },
+          {
+            "name": "sSup_image2_eq_sInf_sSup",
+            "type": " {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b ∘ ⇑OrderDual.ofDual) (⇑OrderDual.toDual ∘ u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a) (u₂ a)) : sSup (Set.image2 l s t) = l (sInf s) (sSup t)",
+            "module": "Mathlib.Order.GaloisConnection.Basic"
+          },
+          {
+            "name": "sSup_image2_eq_sSup_sInf",
+            "type": " {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b) (u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a ∘ ⇑OrderDual.ofDual) (⇑OrderDual.toDual ∘ u₂ a)) : sSup (Set.image2 l s t) = l (sSup s) (sInf t)",
+            "module": "Mathlib.Order.GaloisConnection.Basic"
+          },
+          {
+            "name": "sInf_image2_eq_sSup_sSup",
+            "type": " {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {u : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (⇑OrderDual.toDual ∘ u₁ b) (Function.swap u b ∘ ⇑OrderDual.ofDual)) (h₂ : ∀ (a : α), GaloisConnection (⇑OrderDual.toDual ∘ u₂ a) (u a ∘ ⇑OrderDual.ofDual)) : sInf (Set.image2 u s t) = u (sSup s) (sSup t)",
+            "module": "Mathlib.Order.GaloisConnection.Basic"
+          },
+          {
+            "name": "sSup_image2_eq_sInf_sInf",
+            "type": " {α : Type u_1} {β : Type u_2} {γ : Type u_3} [CompleteLattice α] [CompleteLattice β] [CompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b ∘ ⇑OrderDual.ofDual) (⇑OrderDual.toDual ∘ u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a ∘ ⇑OrderDual.ofDual) (⇑OrderDual.toDual ∘ u₂ a)) : sSup (Set.image2 l s t) = l (sInf s) (sInf t)",
+            "module": "Mathlib.Order.GaloisConnection.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

@@ -1,0 +1,439 @@
+d(P;\alpha;r),
+\]
+with the second identity interpreted in the extended nonnegative reals.
+
+\section{Index across sets of polynomials}
+
+Let $m$ be a natural number $m \geq 1$. For positive integers $r_1, \dots, r_m$ and a real number $B \geq 1$ we let
+$$
+\mathcal R_m = \mathcal R_m (B; r_1, \dots, r_m)
+$$
+be the set of polynomials $R(x_1, \dots, x_m)$ in the variables $x_1, \dots, x_m$ such that:
+\begin{enumerate}
+    \item $R$ has integral coefficients and is not identically zero;
+    \item $R$ has degree at most $r_j$ in $x_j$ for $1 \leq j \leq m$;
+    \item the coefficients of $R$ have absolute values not exceeding $B$.
+\end{enumerate}
+
+Let $q_1, \dots, q_m$ denote positive integers. We define
+$$
+\Theta_m(B; q_1, \dots, q_m; r_1, \dots, r_m)
+$$
+to be the supremum of the numbers
+$$
+\ind (R; \frac{h_1}{q_1}, \dots, \frac{h_m}{q_m}; r_1, \dots, r_m)
+$$
+over all $R \in \mathcal R_m(B; r_1, \dots, r_m)$ and integers $h_i$, $1 \leq i \leq m$, with $\gcd(h_i, q_i)=1$.
+This supremum is well-defined and satisfies $0\leq\Theta_m\leq m$:
+the constant polynomial $1$ with every $h_i=1$ is allowed, and Taylor's theorem gives a nonzero
+derivative with $0\leq i_j\leq r_j$, of weight at most $m$.
+Also, $\Theta_m$ is nondecreasing in $B$, since increasing $B$ enlarges the
+set of allowed polynomials.
+
+\begin{lem}\label{roth:lem5}
+    Suppose additionally that $q_1>1$. Then we have
+    $$
+    \Theta_1(B; q_1; r_1) \leq \frac{\log B}{r_1 \log q_1}.
+    $$
+\end{lem}
+\begin{proof}
+    Let $R\in\mathcal R_1(B;r_1)$ and $\gcd(h_1,q_1)=1$.
+    Let $t\in\N$ be the multiplicity of $h_1/q_1$ as a root of $R$;
+    Taylor's theorem gives $\theta=\ind(R;h_1/q_1;r_1)=t/r_1$.
+    The polynomial $(q_1x_1-h_1)^t$ is primitive and divides $R$ over $\Q$.
+    Gauss's lemma therefore gives a nonzero $Q\in\Z[x_1]$ with
+    \[
+    R(x_1)=(q_1x_1-h_1)^tQ(x_1).
+    \]
+    Comparing nonzero leading coefficients yields
+    \[
+    B\geq|\operatorname{lc}(R)|
+       =q_1^t|\operatorname{lc}(Q)|\geq q_1^t.
+    \]
+    Since $\log q_1>0$ and $r_1>0$, taking logarithms gives
+    $\theta\leq\log B/(r_1\log q_1)$. Taking the supremum proves the claim.
+\end{proof}
+
+\lean{First identify the one-variable index with $t/r_1$, where $t$ is the
+natural-number root multiplicity. Use
+Gauss's lemma\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Polynomial/GaussLemma.html}}
+for the primitive polynomial $(q_1X-h_1)^t$, compare leading coefficients
+in $\Z$, and only then cast to $\R$ and take logarithms, using $q_1>1$.
+For $\Theta_m$, record nonemptiness and boundedness of the defining family,
+together with lemmas for bounding an individual index and monotonicity in
+$B$, before using the supremum.}
+
+\begin{lem}\label{roth:lem6}
+    Let $p \geq 2$ be a positive integer, and let $0 < \delta <1$. Let $r_1, \dots, r_p$ be positive integers satisfying
+    $$
+    r_p > 10 \delta^{-1}, \quad r_{j-1}/r_j > \delta^{-1}, \text{ for } 2 \leq j \leq p.
+    $$
+    Also, let $q_1, \dots, q_p$ be positive integers. Then
+    \begin{equation}\label{roth:eq13}
+    \Theta_p(B; q_1, \dots, q_p; r_1, \dots, r_p) \leq
+    2 \max_l (\Phi + \Phi^{1/2}+ \delta^{1/2}),
+    \end{equation}
+    where the maximum is taken over integers $l$ satisfying
+    $$
+    1 \leq l \leq r_p +1,
+    $$
+    and where
+    \begin{equation}\label{roth:eq15}
+    \Phi = \Theta_1(M; q_p; lr_p) + \Theta_{p-1}(M; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1})
+    \end{equation}
+    and
+    \begin{equation}\label{roth:eq16}
+    M= (r_1+1)^{pl} l! B^l 2^{plr_1}.
+    \end{equation}
+\end{lem}
+\begin{proof}
+    Let $R\in\mathcal R_p(B;r_1,\dots,r_p)$ and choose integers $h_1,\dots,h_p$ with $\gcd(h_i,q_i)=1$ for every $i$. We need to show that the index
+    $$
+    \ind(R; \frac{h_1}{q_1}, \dots, \frac{h_p}{q_p}; r_1, \dots, r_p)
+    $$
+    is bounded by the right hand side of \eqref{roth:eq13}.
+
+    The polynomial $R$ satisfies the conditions of Lemma \ref{roth:lem2}, and therefore there is an integer $l$ satisfying $1 \leq l \leq r_p+1$ and a polynomial $F$ as in Lemma \ref{roth:lem2}. By Lemma \ref{roth:lem3} the coefficients of $F$ have absolute value not exceeding
+    $$
+    ((r_1+1)\cdots (r_p+1))^l l! B^l 2^{(r_1+\cdots+r_p)l} < (r_1+1)^{pl}l! B^l 2^{pr_1 l} = M,
+    $$
+    as $r_1 > r_2 > \dots > r_p$. Since
+    $$
+    F = U(x_1, \dots, x_{p-1})V(x_p)
+    $$
+    and $U,V$ are nonzero integral polynomials in disjoint variables,
+each coefficient of $F$ is a unique product of one coefficient from each
+factor. Thus $abc(F)=abc(U)abc(V)$, while $abc(U),abc(V)\geq1$, and hence
+    $$
+    abc(U) < M, \quad abc(V) < M.
+    $$
+
+    By Lemma \ref{roth:lem2},
+    $$
+    U \in \mathcal{R}_{p-1}(M; lr_1, \dots, lr_{p-1}).
+    $$
+    Hence,
+    $$
+    \ind(U; \frac{h_1}{q_1}, \dots, \frac{h_{p-1}}{q_{p-1}}; l r_1, \dots, l r_{p-1}) \leq \Theta_{p-1}(M; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1}).
+    $$
+    Consequently, by scaling the weights,
+    \[
+    \ind(U;h_1/q_1,\dots,h_{p-1}/q_{p-1};r_1,\dots,r_{p-1})
+    \leq l\Theta_{p-1}(M;q_1,\dots,q_{p-1};lr_1,\dots,lr_{p-1}).
+    \]
+    Similarly, $V(x_p)\in\mathcal R_1(M;lr_p)$, and
+    $$
+    \ind (V; \frac{h_p}{q_p}; r_p) \leq l \Theta_1(M; q_p; lr_p).
+    $$
+    By Lemma \ref{roth:lem4-2}, writing $a=(h_1/q_1,\dots,h_p/q_p)$,
+    \begin{align*}
+    \ind(F;a;r)
+    &=\ind(U;a_1,\dots,a_{p-1};r_1,\dots,r_{p-1})
+        +\ind(V;a_p;r_p)\\
+    &\leq l\Theta_{p-1}(M;q_1,\dots,q_{p-1};lr_1,\dots,lr_{p-1})
+       +l\Theta_1(M;q_p;lr_p)=l\Phi.
+    \end{align*}
+    Thus we have established
+    \begin{equation}\label{roth:eq17}
+        \ind F\leq l\Phi.
+    \end{equation}
+
+\lean{Keep a polynomial's degree bounds separate from the positive
+parameters used to measure its index. Multiplying the index parameters
+by $l>0$ divides the index by $l$, but does not change which polynomials
+satisfy a degree bound. Here $U$ has degree bounds $lr_j$, so apply the
+index-scaling identity to $U$ first and retain those bounds in
+$\Theta_{p-1}(M;q_1,\ldots,q_{p-1};lr_1,\ldots,lr_{p-1})$.}
+
+    Next, we find a lower bound for the index of $F$ in terms of the index of $R$.
+
+    We start with an observation.
+    Let
+$$
+\theta = \ind(R; \frac{h_1}{q_1}, \dots, \frac{h_p}{q_p}; r_1, \dots, r_p).
+$$
+    Let $i_1, \dots, i_{p-1}$ be non-negative integers such that $w=i_1+\cdots+i_{p-1}\leq l-1$.  If
+    $$
+    \Delta_{i_1, \dots, i_{p-1}} \frac{1}{\nu !} \frac{\partial^\nu}{\partial x_p^\nu} R(x_1, \dots, x_p)
+    $$
+    is not identically zero, then
+    $$
+    \ind (\Delta_{i_1, \dots, i_{p-1}} \frac{1}{\nu !} \frac{\partial^\nu}{\partial x_p^\nu} R(x_1, \dots, x_p); \frac{h_1}{q_1}, \dots, \frac{h_p}{q_p}; r_1, \dots, r_p)
+    $$
+    $$
+    \geq \theta - \frac{i_1}{r_1}- \cdots - \frac{i_{p-1}}{r_{p-1}}- \frac{\nu}{r_p}
+    $$
+    $$
+    \geq \theta - \frac{w}{r_{p-1}}- \frac{\nu}{r_p}.
+    $$
+    We have
+    $$
+    \frac{w}{r_{p-1}} \leq \frac{l-1}{r_{p-1}} \leq \frac{r_p}{r_{p-1}} < \delta.
+    $$
+    Since the index is never negative, the index is at least
+    $$
+    \max(0, \theta - \nu/r_p - \delta) \geq \max(0, \theta - \nu/r_p) - \delta.
+    $$
+    We have
+    $$
+    F = \det \left( \Delta_\mu \frac{1}{\nu !} \frac{\partial^\nu}{\partial x_p^\nu} R \right)_{0 \leq \mu \leq l-1 \atop 0 \leq \nu \leq l-1}.
+    $$
+    $$
+    = \sum_{\sigma \in S_l} \signature(\sigma) \prod_{\nu=0}^{l-1} \Delta_{\sigma(\nu+1)-1} \frac{1}{\nu !} \frac{\partial^\nu}{\partial x_p^\nu} R.
+    $$
+    Here $S_l$ and the shifted indices have the same meaning as in the coefficient bound.
+    We now estimate the index of $F$. Zero entries and zero permutation
+    products have index $+\infty$ and cannot worsen the lower bound.
+    Multiplication by a sign does not change the index. By Lemma \ref{roth:lem4-1},
+    $$
+    \ind(F) \geq \min_{\sigma \in S_l} \ind \prod_{\nu=0}^{l-1} \Delta_{\sigma(\nu+1)-1} \frac{1}{\nu !} \frac{\partial^\nu}{\partial x_p^\nu} R
+    $$
+    $$
+    \geq \min_{\sigma \in S_l} \sum_{\nu=0}^{l-1} \ind \Delta_{\sigma(\nu+1)-1} \frac{1}{\nu !} \frac{\partial^\nu}{\partial x_p^\nu} R
+    $$
+    $$
+    \geq \min_{\sigma \in S_l} \sum_{\nu=0}^{l-1} \max(0, \theta - \nu/r_p) - l\delta
+    $$
+    $$
+    = \sum_{\nu=0}^{l-1} \max(0, \theta - \nu/r_p) - l\delta.
+    $$
+    We have proved
+    $$
+    \ind(F) \geq \sum_{\nu=0}^{l-1} \max(0, \theta - \nu/r_p) - l\delta.
+    $$
+    We can suppose $\theta r_p > 10$, for if not, then we have
+    $$
+    \theta \leq 10 r_p^{-1} < \delta < 2 \delta^{1/2},
+    $$
+    and this shows the inequality in the statement of the lemma is valid.
+
+    Let $\theta r_p <l$. Then in order for
+    $$
+    \max(0, \theta - \nu/r_p)
+    $$
+    to be positive, we need $\nu<\theta r_p$. We may include the zero endpoint and sum over $\nu\leq\theta r_p$.
+    \begin{equation}\label{roth:nonumber}
+    \sum_{\nu=0}^{l-1} \max(0, \theta - \nu/r_p) = \sum_{0 \leq \nu \leq \theta r_p}(\theta  - \nu/r_p) = r_p^{-1}\sum_{0 \leq \nu \leq \theta r_p}(\theta r_p - \nu).
+    \end{equation}
+
+FACT: For any $\alpha \geq 0$ we have
+$$
+\sum_{0 \leq \nu \leq \alpha} (\alpha - \nu) \geq \frac{1}{2}[\alpha]^2.
+$$
+   Proof of fact:
+$$
+\sum_{0 \leq \nu \leq \alpha} (\alpha - \nu) = \alpha([\alpha]+1) - \sum_{0 \leq \nu \leq [\alpha]} \nu
+$$
+$$
+= \alpha([\alpha]+1)- \frac{[\alpha]([\alpha]+1)}{2}
+$$
+$$
+= ([\alpha]+1)(\alpha - \frac{[\alpha]}{2}) = ([\alpha]+1)([\alpha] + \{\alpha \} - \frac{[\alpha]}{2}) \quad (\text{here } \alpha = [\alpha] + \{\alpha \})
+$$
+$$
+= ([\alpha]+1)( \frac{[\alpha]}{2}+ \{\alpha \} )
+$$
+$$
+\geq [\alpha] \cdot \frac{[\alpha]}{2}
+$$
+as claimed.
+
+FACT: If $\alpha >10$, then
+$$
+\frac{[\alpha]^2}{2} > \frac{1}{3}\alpha^2.
+$$
+
+Proof of fact: put $n=[\alpha]$. Since $\alpha>10$, we have $n\geq10$
+and $\alpha<n+1\leq(11/10)n$. Therefore
+\[
+\alpha^2<\frac{121}{100}n^2<\frac32n^2,
+\]
+which is equivalent to $n^2/2>\alpha^2/3$.
+
+   By applying these two facts we see that the expression  \eqref{roth:nonumber} is bounded below by
+    $$
+    \geq \frac{1}{2}r_p^{-1} [\theta r_p]^2
+    $$
+    $$
+    > \frac{1}{3}r_p \theta^2.
+    $$
+    If $\theta r_p \geq l$,
+    $$
+    \sum_{\nu=0}^{l-1} \max(0, \theta - \nu/r_p) = \sum_{\nu=0}^{l-1} (\theta - \nu/r_p) \geq \frac{1}{2}l \theta.
+    $$
+In order to see this last inequality we proceed as follows:
+$$
+\sum_{\nu=0}^{l-1} (\theta - \nu/r_p) = l \theta - \frac{1}{r_p} \sum_{\nu = 0}^{l-1} \nu = l \theta - \frac{1}{r_p} \cdot \frac{l(l-1)}{2} \geq l \theta - \frac{1}{r_p} \cdot \frac{l^2}{2} \geq l\theta - \frac{1}{2}l \theta = \frac{1}{2}l \theta.
+$$
+Here we have used $- \frac{l}{r_p} \geq - \theta$.
+
+    Combining everything, we obtain
+    $$
+    \ind F \geq \min (\frac{1}{2}l \theta, \frac{1}{3}r_p \theta^2) - l \delta.
+    $$
+
+\lean{Extract the bound for
+$\sum_{\nu<l}\max(0,\theta-\nu/r_p)$ into a numerical lemma with explicit
+positivity hypotheses. Split the argument into $\theta r_p\leq10$,
+$10<\theta r_p<l$, and $l\leq\theta r_p$: the first uses the small-index
+shortcut, while the others give the quadratic and linear lower bounds.
+Use a natural-number floor and a finite range for the truncated sum,
+and clear positive denominators before applying arithmetic tactics.}
+
+    Combining this inequality with \eqref{roth:eq17} gives
+    $$
+    \min (\frac{1}{2}l \theta, \frac{1}{3}r_p \theta^2) \leq l (\Phi + \delta).
+    $$
+    Hence either $\frac{1}{2}l \theta \leq l (\Phi + \delta)$ or $\frac{1}{3}r_p \theta^2 \leq l (\Phi + \delta)$. In the first case, $\theta \leq 2(\Phi + \delta)$ which implies the inequality asserted in the lemma. In the second case,
+        $$\frac{1}{3}r_p \theta^2 \leq l (\Phi + \delta) \leq (r_p + 1) (\Phi + \delta) < \frac{4}{3}r_p (\Phi + \delta),
+        $$
+        as $r_p > 10 \delta^{-1}$. These inequalities imply
+        $$
+        \theta < 2(\Phi + \delta)^{1/2} \leq 2(\Phi^{1/2} + \delta^{1/2}).
+        $$
+        This completes the proof of the lemma.
+\end{proof}
+
+\begin{lem}\label{roth:lem7}
+    Let $m$ be a positive integer and let $\delta$ satisfy
+    \begin{equation}
+        \label{roth:eq19}
+        0 < \delta < m^{-1}.
+    \end{equation}
+    Let $r_1, \dots, r_m$ be positive integers satisfying
+    \begin{equation}
+        \label{roth:eq20}
+r_m > 10\delta^{-1}, \quad r_{j-1}/r_j > \delta^{-1}, \quad 2 \leq j \leq m.
+        \end{equation}
+        Let $q_1, \dots, q_m$ be positive integers satisfying
+        \begin{equation}
+        \label{roth:eq21}
+\log q_1 > \delta^{-1} m (2m+1),
+        \end{equation}
+        \begin{equation}
+        \label{roth:eq22}
+r_j \log q_j \geq r_1 \log q_1, \quad \text{ for } 2 \leq j \leq m.
+        \end{equation}
+        Then
+        \begin{equation}
+        \label{roth:eq23}
+\Theta_m(q_1^{\delta r_1}; q_1, \dots, q_m; r_1, \dots, r_m) < 10^m \delta^{(1/2)^m}.
+        \end{equation}
+\end{lem}
+\begin{proof}
+    Conditions \eqref{roth:eq21}--\eqref{roth:eq22} imply $q_j>1$ for every $j$. We will prove this lemma by induction on $m$.
+
+    If $m=1$, Lemma \ref{roth:lem5} says
+    $$
+    \Theta_1(q_1^{\delta r_1}; q_1; r_1) \leq \frac{\delta r_1 \log q_1}{r_1 \log q_1}=\delta<10\delta^{1/2}
+    $$
+
+    Next, suppose $p \geq 2$ is an integer and that the lemma is true for $m= p-1$. We apply Lemma \ref{roth:lem6}. In order to do this we will need to estimate $M$ and $\Phi$ of Lemma \ref{roth:lem6}.
+
+    We have
+    $$
+    M = (r_1 + 1)^{pl} l! 2^{plr_1} q_1^{\delta l r_1} \leq \left((r_1 + 1)^{p} l 2^{pr_1} q_1^{\delta r_1}\right)^l.
+    $$
+    Next, $l \leq r_p+1 < r_1 + 1 \leq 2^{r_1}$. Consequently,
+    $$
+    M < \left(2^{(2p+1)r_1}q_1^{\delta r_1} \right)^l < \left(e^{(2p+1)r_1}q_1^{\delta r_1} \right)^l.
+    $$
+    From Equation \ref{roth:eq21} for $m = p$, we have $2p+1 < \delta p^{-1} \log q_1$, and this gives
+    $$
+    M < \left(e^{(\delta p^{-1} \log q_1)r_1}q_1^{\delta r_1} \right)^l= \left(q_1^{(\delta p^{-1} )r_1}q_1^{\delta r_1} \right)^l= q_1^{\delta_1 l r_1}
+    $$
+    with $\delta_1 = \delta(1+p^{-1})$. Hence,
+    $$
+    \Theta_1(M; q_p; lr_p) \leq \Theta_1(q_1^{\delta_1 l r_1}; q_p; l r_p) \leq \frac{\log (q_1^{\delta_1 l r_1})}{l r_p \log q_p} \leq \frac{\delta_1 l r_1 \log q_1}{l r_1 \log q_1} = \delta_1,
+    $$
+    by Lemma \ref{roth:lem5}. Next,
+    $$
+    \Theta_{p-1}(M; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1}) \leq \Theta_{p-1}(q_1^{\delta_1 l r_1}; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1}).
+    $$
+    We verify the induction hypotheses for dimension $p-1$, parameter
+    $\delta_1=\delta(1+1/p)$, and degrees $lr_1,\dots,lr_{p-1}$.
+    First,
+    \[
+    0<(p-1)\delta_1<\frac{(p-1)(p+1)}{p^2}<1.
+    \]
+    Since $\delta_1>\delta$ and $l\geq1$, the degree-ratio and final-degree
+    bounds follow from \eqref{roth:eq20}. Moreover,
+    \[
+    \log q_1>\delta^{-1}p(2p+1)
+       >\delta_1^{-1}(p-1)(2p-1).
+    \]
+    The balanced-logarithm inequalities are unchanged when every degree is
+    multiplied by $l$. Hence all four hypotheses hold. By the induction hypothesis,
+    $$
+    \Theta_{p-1}(q_1^{\delta_1 l r_1}; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1}) < 10^{p-1} \delta_1^{(1/2)^{p-1}}.
+    $$
+    Then
+    $$
+    \Phi < \delta_1 +  10^{p-1} \delta_1^{(1/2)^{p-1}} = \delta (1+p^{-1}) + 10^{p-1} \delta^{(1/2)^{p-1}} (1+p^{-1})^{(1/2)^{p-1}}
+    $$
+    $$
+    < 2 \delta + 2 \cdot 10^{p-1} \delta^{(1/2)^{p-1}} < 3\cdot 10^{p-1} \delta^{(1/2)^{p-1}}.
+    $$
+    Here we have used the fact that $\delta_1 < 2 \delta$ and
+    $$
+    (1+p^{-1})^{(1/2)^{p-1}} < 2,
+    $$
+    which are both easily verified. Also $0<\delta<1$, so
+    $\delta\leq\delta^{2^{-(p-1)}}$, justifying the last absorption above.
+    For every allowed $l$, Lemma \ref{roth:lem6} therefore gives the same
+    strict upper bound, and the maximum is over a nonempty finite set.
+    Set $a=\delta^{2^{-p}}$. Then
+    $\delta^{2^{-(p-1)}}=a^2\leq a$ and $\delta^{1/2}\leq a$. Consequently,
+    \begin{align*}
+    \Theta_p(q_1^{\delta r_1};q_1,\dots,q_p;r_1,\dots,r_p)
+    &<2\left(3\cdot10^{p-1}a^2+
+       \sqrt3\,10^{(p-1)/2}a+\delta^{1/2}\right)\\
+    &\leq2\left(\frac3{10}+\frac{\sqrt3}{10^{(p+1)/2}}
+                         +\frac1{10^p}\right)10^pa\\
+    &\leq2\left(\frac3{10}+\frac{\sqrt3}{10^{3/2}}
+                         +\frac1{10^2}\right)10^pa
+      <10^pa.
+    \end{align*}
+    Here $p\geq2$ and the numerical coefficient in the last line is less
+    than $1$ (for example, $\sqrt3/10^{3/2}<1/10$).
+    This establishes the induction step, and we are done.
+\end{proof}
+
+\lean{For fixed $0<\delta<1$, define $a_0=\delta$ and
+$a_{j+1}=\sqrt{a_j}$, and prove once that $a_j=\delta^{2^{-j}}$.
+This lets the numerical induction use positivity and
+$a_{j+1}^2=a_j$ instead of repeated real-exponent calculations.
+Keep the maximum over $l$ explicitly finite: strict bounds on each
+member imply a strict bound on a finite maximum, but not on an
+arbitrary supremum.}
+
+\section{Lattice count estimate}
+
+\begin{lem}\label{roth:lem8}
+    If $m\geq1$, $r_1, \dots, r_m$ are positive integers and $\lambda>0$, then the number of $m$-tuples of integers $(j_1, \dots, j_m)$ that satisfy
+    $$
+    0 \leq j_1 \leq r_1, \dots, 0 \leq j_m \leq r_m, \quad \frac{j_1}{r_1}+ \cdots + \frac{j_m}{r_m} \leq
+\frac{m-\lambda}{2}
+    $$
+    does not exceed
+    $$
+    2 m^{1/2} \lambda^{-1} (r_1 + 1) \cdots (r_m+1).
+    $$
+\end{lem}
+\begin{proof}
+We will prove the result by induction on $m$. If $m=1$, we need to estimate the number of integers $j_1$ satisfying
+$$
+0 \leq j_1 \leq r_1, \quad j_1 \leq \frac{1}{2}(1-\lambda)r_1.
+$$
+If $\lambda > 1$ then we have no such $j_1$. If $0<\lambda\leq1$, then the number of $j_1$ from the first inequality is at most $r_1 + 1$, and this number is less than $2 \lambda^{-1}(r_1+1)$, establishing the case of $m=1$.
+
+Now suppose $m >1$ and assume that the result is true for $m-1$. If $\lambda \leq 2m^{1/2}$ then the result is trivial, for in this case
+$$
+2m^{1/2}\lambda^{-1} (r_1 +1)\cdots (r_m+1) \geq (r_1 +1)\cdots (r_m+1)
+$$
+and the latter is equal to the number of solutions of $(j_1, \dots, j_m)$ satisfying
+$$
+    0 \leq j_1 \leq r_1, \dots, 0 \leq j_m \leq r_m.
+    $$
+
+So we assume $\lambda > 2 m^{1/2}$. For a fixed value of $j_m$, the

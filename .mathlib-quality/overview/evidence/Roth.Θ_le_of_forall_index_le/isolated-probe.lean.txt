@@ -1,0 +1,17 @@
+namespace Assessment190Isolated
+#check_failure Roth.Θ_le_of_forall_index_le
+#check @csSup_le
+#check @Real.sSup_le
+#check @Set.forall_mem_image2
+theorem proof1 {α : Type*} [ConditionallyCompleteLattice α] {s : Set α} {c : α}
+    (hs : s.Nonempty) (hc : ∀ x ∈ s, x ≤ c) : sSup s ≤ c := csSup_le hs hc
+theorem proof2 {s : Set ℝ} {c : ℝ} (hc : ∀ x ∈ s, x ≤ c) (hc0 : 0 ≤ c) :
+    sSup s ≤ c := Real.sSup_le hc hc0
+theorem proof3 {α β γ : Type*} [ConditionallyCompleteLattice γ] (f : α → β → γ)
+    {s : Set α} {t : Set β} {c : γ} (hst : (Set.image2 f s t).Nonempty)
+    (hc : ∀ a ∈ s, ∀ b ∈ t, f a b ≤ c) : sSup (Set.image2 f s t) ≤ c :=
+  csSup_le hst (Set.forall_mem_image2.mpr hc)
+#print axioms proof1
+#print axioms proof2
+#print axioms proof3
+end Assessment190Isolated

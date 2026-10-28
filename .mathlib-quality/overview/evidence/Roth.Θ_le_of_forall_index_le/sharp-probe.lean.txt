@@ -1,0 +1,11 @@
+namespace Assessment190Sharp
+open MvPolynomial
+theorem sharp {σ : Type*} [Fintype σ] {B : ℝ} {q r : σ → ℕ} {c : ℝ}
+    (hc : ∀ R ∈ Roth.RSet B r, ∀ h : σ → ℤ, (∀ j, IsCoprime (h j) (q j : ℤ)) →
+      Roth.index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ c) :
+    Roth.Θ B q r ≤ c ↔ 0 ≤ c := by
+  constructor
+  · exact (Roth.Θ_nonneg q).trans
+  · exact Real.sSup_le (fun _ ⟨R, hR, h, hh, he⟩ ↦ he ▸ hc R hR h hh)
+#print axioms sharp
+end Assessment190Sharp

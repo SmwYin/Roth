@@ -1,0 +1,32 @@
+namespace Assessment190Callers
+open MvPolynomial Roth
+open Lean Elab Term in
+elab "privateIndexUnique" : term => do
+  return ← Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Theta `Roth.index_unique_le_log_div)
+variable {σ : Type*} [Fintype σ]
+theorem caller_unique [Unique σ] {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq : 1 < q default) {r : σ → ℕ} :
+    Θ B q r ≤ Real.log B / (r default * Real.log (q default)) :=
+  csSup_le (Roth.indexSet_nonempty hB q r)
+    (fun _ ⟨R, hR, h, hh, he⟩ ↦ he ▸
+      privateIndexUnique hq hR.1
+        (by simpa only [Polynomial.leadingCoeff, coeff_uniqueAlgEquiv] using hR.2.2 _) (hh default))
+
+variable {τ : Type*} [Fintype τ]
+theorem caller_option {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option τ → ℕ}
+    (hrp : 3 ≤ (r none : ℝ))
+    (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ}
+    (hq : ∀ j, 0 < q j) {B : ℝ} (hB : 1 ≤ B) :
+    Θ B q r ≤ 2 * (Finset.Icc 1 (r none + 1)).sup' (Finset.nonempty_Icc.2 (by lia))
+      (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
+        √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by
+  refine csSup_le (Roth.indexSet_nonempty hB q r) ?_
+  rintro _ ⟨R, hR, h, hh, rfl⟩
+  obtain ⟨l, hl, hl', hle⟩ := index_le_lem6 hδ0 hδ1 hrp hratio hr₁ hq hR hh
+  refine hle.trans (mul_le_mul_of_nonneg_left ?_ (by norm_num))
+  exact Finset.le_sup' (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
+    √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) (Finset.mem_Icc.2 ⟨hl, hl'⟩)
+
+#print axioms caller_unique
+#print axioms caller_option
+end Assessment190Callers
