@@ -1,0 +1,33 @@
+from pathlib import Path
+import json,hashlib,re
+D=Path(__file__).resolve().parent;R=Path('/Users/ramin/LEAN/Roth');N='Roth.lem7_numeric'
+def save(n,x):(D/n).write_text(json.dumps(x,indent=2,ensure_ascii=False)+'\n')
+def load(n):return json.loads((D/n).read_text())
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+items=load('original-receipt.json')['result']['structuredContent']['result']['items'];msg='\n'.join(x['message']for x in items);printed=next(x['message']for x in items if x['message'].startswith('theorem '+N+' :'));typ=printed.split(' : ',1)[1].split(' :=\n',1)[0];save('native-type.json',dict(declaration=N,type=typ,provenance='Fresh native #print; full type intact,72222 kernel body characters explicitly elided.'))
+save('canonical-consumers.json',re.findall(r'NUMERIC219_DIRECT_CONSUMER: ([^\n]+)',msg))
+accepted=[]
+for label,fmt,ns,names in [
+ ('original','disk','Numeric219',['replay','Θ_lt']),
+ ('isolated','raw','Numeric219Independent',['envelope','wider','directProbe','zeroDelta','dimensionOne','largeDelta']),
+ ('broader','disk','Numeric219Broader',['envelope','wider','lem7_numeric','Θ_lt']),
+ ('inline','disk','Numeric219Inline',['Θ_lt']),
+ ('shape','disk','Numeric219Shape',['divided','successor','negativePhi','equalityUpper','noPhiCap'])]:
+ source=label+'-executed.lean.txt';s=(D/source).read_text();receipt=label+'-receipt.json';infos=["'"+ns+'.'+n+"' depends on axioms:"for n in names]
+ if label=='original':infos += ["'Roth.lem7_numeric' depends on axioms:",'NUMERIC219_AUDIT: requested=293; unique=293','NUMERIC219_AUDIT_PRESENT: present=293; values=293']
+ accepted.append(dict(label=label,format=fmt,source=source,source_sha256=sha(D/source),receipt=receipt,native_region_start_line=next(i for i,l in enumerate(s.splitlines(),1)if l.startswith('namespace '+ns)),original_execution_request=load(receipt)['request'],required_info=infos))
+rejected=[dict(source=label+'-executed.lean.txt',receipt=label+'-receipt.json',reason=reason)for label,reason in [('isolated-failed','Missing hT10 in restricted nlinarith premise list; incorrect rpow API use in a counterexample. Recovered sorryAx excluded.'),('inline-warning','Removed target docstring was left attached to next declaration, producing emptyLine warning. Clean final source removes orphaned docstring.')]]
+save('verification.json',dict(declaration=N,unresolved=[],standard_axioms=['propext','Classical.choice','Quot.sound'],accepted=accepted,rejected=rejected,supplementary=[dict(source='initial-context-executed.lean.txt',receipt='initial-context-receipt.json',reason='Clean original contextual replay used original target spelling and renamed adjacent helper. Superseded by correctly target-renamed original audit; no claim relies on initial naming.')]))
+phases={k:'PASS'for k in ['0','1','2','3','4a','4b','4c','4.6','5','5.5','6.0','6','7','8']};phases.update({'4.5':'n/a: theorem; no new definition or instance','parent_reaim':'n/a: target type/proof have no project parent definition','chatgpt_math':'n/a: ask_chatgpt_math unavailable'})
+save('assessment.json',dict(declaration=N,canonical_index=219,verdict='BORDERLINE-needs-human',completed=True,phases=phases,unresolved=[],root_acceptance='pending',production_edits=False,mode='overview-full-mathlibable'))
+save('phase-ledger.json',dict(declaration=N,phases=phases,search_cells=15,native_accepted=5,literature=['three distinct general queries','local clean.tex960–1036','nLab','distinct nCatLab namespace','Stacks','MathOverflow','five-year arXiv and refinement','supplementary primary openings'],caller_count=1,limitations=['Kernel pretty-printer body elided72222 characters; type intact','Local formal index warming','External formal index may differ from pin','No optimal constant or global absence claim','Rejected native attempts excluded']))
+row=load('target-metadata.json')
+save('overview-entry.json',dict(type=typ,what='A cap on Φ yields the next dyadic square-root estimate in Roth induction, even for negative Φ.',how='Set a to the next dyadic real power and T to10^(p-1); control a², sqrtδ and sqrtΦ, then combine ordered inequalities.',hypotheses='p≥2,0<δ≤1 and Φ≤3·10^(p-1)δ^(2^(-(p-1))); no Φ nonnegativity, equality allowed in both upper bounds.',project_dependencies=[],caller_summary=load('callers.json'),mathlib_api_audit='15 fresh method/form cells; pinned sqrt/rpow/order ingredients verified. No exact hit or≤3-existing-call proof established; local index warming.',moral_duplications='Classical square-root upper bounds and dyadic power normalization are ingredients, not an identified duplicate of the combined absorption.',generalization='Compiled coefficient4 cap with δ≤1 and arbitrary negative Φ; generic real scalar envelope with free a,c,b,d,L,x,s also compiled. No δ-range or optimality claim.',missing_api='Potential public weighted square-root absorption API, subject to demonstrated audience; scratch envelope is new proof, not existing mathlib.',junk='Used once by theta_phi_lt_aux; verified actual caller and downstreamΘ_lt replay. Not dead code.',action='BORDERLINE: retain in Roth/Theta.lean while future upstream audience/constant/envelope design is decided. Full caller-local inline and broader wrapper alternatives compile.'))
+paths=['.lake/packages/mathlib/Mathlib/Analysis/Real/Sqrt.lean','.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Pow/Real.lean','.lake/packages/mathlib/Mathlib/Algebra/Order/GroupWithZero/Basic.lean'];save('mathlib-inputs.json',[dict(path=p,sha256=sha(R/p),bytes=(R/p).stat().st_size)for p in paths])
+save('preparation-notes.json',dict(rules='Each mathematical source preparation exited0 and was read before execution. Canonical source independent gate passed before execution. No stale/error-text code fed to Lean.',initial_context='Initial prep renamed adjacent lemma rather than target. Clean contextual execution retained supplementary; corrected original fresh audit accepted.',rejected_native=['isolated-failed','inline-warning'],serialization='An early formal-receipt write encountered non-UTF8 shell encoding; exact same formal query rerun and archived successfully with ASCII-safe serialization. No native code was run from that failed save.',meaning='Coefficient4 tested only with δ≤1. Negative Φ and equality upper premises preserved.'))
+# Preserve returned blank headings explicitly, without inventing a source URL.
+for n in ['primary','primary-locators']:
+ x=load(n+'.json');url='https://web.math.princeton.edu/mathlab/jr02/diophantine.pdf'
+ if not any(y['url']==url for y in x['locators']):x['locators'].append(dict(title='PDF (blank returned heading)',url=url))
+ save(n+'.json',x)
+print('PASS package metadata:219,type,5native,15search,allphase,exactkeys')

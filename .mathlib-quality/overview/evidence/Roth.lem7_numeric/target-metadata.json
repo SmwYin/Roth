@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 709,
+  "name": "Roth.lem7_numeric",
+  "short": "lem7_numeric",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 740,
+  "source": "theorem lem7_numeric {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) {Φ : ℝ}\n    (hΦ : Φ ≤ 3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1))) :\n    2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ ((1 / 2 : ℝ) ^ p) := by\n  obtain ⟨k, rfl⟩ : ∃ k, p = k + 1 := ⟨p - 1, by lia⟩\n  rw [Nat.add_sub_cancel] at hΦ\n  set a := δ ^ ((1 / 2 : ℝ) ^ (k + 1)) with ha\n  set T : ℝ := 10 ^ k with hT\n  have ha0 : 0 < a := Real.rpow_pos_of_pos hδ0 _\n  have ha2 : a ^ 2 = δ ^ ((1 / 2 : ℝ) ^ k) := by\n    rw [ha, ← Real.rpow_mul_natCast hδ0.le, pow_succ]\n    congr 1\n    push_cast\n    ring\n  have hsqrt : √δ ≤ a := by\n    rw [Real.sqrt_eq_rpow, ha]\n    refine Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1 ?_\n    rw [pow_succ]\n    exact mul_le_of_le_one_left (by norm_num) (pow_le_one₀ (by norm_num) (by norm_num))\n  have hT10 : (10 : ℝ) ≤ T := le_self_pow₀ (by norm_num) (by lia)\n  rw [← ha2] at hΦ\n  have hsΦ : √Φ < T * a := by\n    refine (Real.sqrt_lt' (by positivity)).2 (hΦ.trans_lt ?_)\n    rw [mul_pow, pow_two T]\n    exact mul_lt_mul_of_pos_right (mul_lt_mul_of_pos_right\n      ((by norm_num : (3 : ℝ) < 10).trans_le hT10) (by positivity)) (sq_pos_of_pos ha0)\n  have haa : a ^ 2 ≤ a := by\n    simpa only [pow_two, mul_one] using mul_le_mul_of_nonneg_left\n      (Real.rpow_le_one hδ0.le hδ1 (pow_nonneg (by norm_num) _)) ha0.le\n  rw [pow_succ, ← hT, mul_comm T]\n  linear_combination 2 * hΦ.trans\n    (mul_le_mul_of_nonneg_left haa (by positivity : 0 ≤ 3 * T)) + 2 * hsΦ +\n    2 * hsqrt.trans (le_mul_of_one_le_left ha0.le ((by norm_num : (1 : ℝ) ≤ 10).trans hT10))",
+  "signature": "theorem lem7_numeric {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) {Φ : ℝ}\n    (hΦ : Φ ≤ 3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1))) :\n    2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ ((1 / 2 : ℝ) ^ p)",
+  "body": "by\n  obtain ⟨k, rfl⟩ : ∃ k, p = k + 1 := ⟨p - 1, by lia⟩\n  rw [Nat.add_sub_cancel] at hΦ\n  set a := δ ^ ((1 / 2 : ℝ) ^ (k + 1)) with ha\n  set T : ℝ := 10 ^ k with hT\n  have ha0 : 0 < a := Real.rpow_pos_of_pos hδ0 _\n  have ha2 : a ^ 2 = δ ^ ((1 / 2 : ℝ) ^ k) := by\n    rw [ha, ← Real.rpow_mul_natCast hδ0.le, pow_succ]\n    congr 1\n    push_cast\n    ring\n  have hsqrt : √δ ≤ a := by\n    rw [Real.sqrt_eq_rpow, ha]\n    refine Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1 ?_\n    rw [pow_succ]\n    exact mul_le_of_le_one_left (by norm_num) (pow_le_one₀ (by norm_num) (by norm_num))\n  have hT10 : (10 : ℝ) ≤ T := le_self_pow₀ (by norm_num) (by lia)\n  rw [← ha2] at hΦ\n  have hsΦ : √Φ < T * a := by\n    refine (Real.sqrt_lt' (by positivity)).2 (hΦ.trans_lt ?_)\n    rw [mul_pow, pow_two T]\n    exact mul_lt_mul_of_pos_right (mul_lt_mul_of_pos_right\n      ((by norm_num : (3 : ℝ) < 10).trans_le hT10) (by positivity)) (sq_pos_of_pos ha0)\n  have haa : a ^ 2 ≤ a := by\n    simpa only [pow_two, mul_one] using mul_le_mul_of_nonneg_left\n      (Real.rpow_le_one hδ0.le hδ1 (pow_nonneg (by norm_num) _)) ha0.le\n  rw [pow_succ, ← hT, mul_comm T]\n  linear_combination 2 * hΦ.trans\n    (mul_le_mul_of_nonneg_left haa (by positivity : 0 ≤ 3 * T)) + 2 * hsΦ +\n    2 * hsqrt.trans (le_mul_of_one_le_left ha0.le ((by norm_num : (1 : ℝ) ≤ 10).trans hT10))",
+  "proof_lines": 30,
+  "sha256": "36993c1d171955c6898c048cb7062d629a3015a32f0c252a9df8a7d24b385329",
+  "what": "The Phi bound implies the next-dimensional strict square-root estimate.",
+  "how": "Set the next real power to a, use Real.rpow_mul_natCast to identify its square, bound sqrt Phi by a times the power-of-ten scale, and combine inequalities.",
+  "hypotheses": "Dimension at least two, delta positive at most one, Phi below the stated bound; Phi may be negative.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.theta_phi_lt_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 205,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ]
+}

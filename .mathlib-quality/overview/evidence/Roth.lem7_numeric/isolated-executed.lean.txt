@@ -1,0 +1,119 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+namespace Numeric219Independent
+#check_failure Roth.lem7_numeric
+#check @Real.sqrt_lt'
+#check @Real.sqrt_le_iff
+#check @Real.sqrt_eq_rpow
+#check @Real.rpow_le_one
+#check @Real.rpow_le_rpow_of_exponent_ge
+#check @Real.rpow_mul_natCast
+#check @le_self_pow₀
+
+theorem envelope {a c b d L x s : ℝ} (ha : 0 < a) (ha1 : a ≤ 1) (hc : 0 ≤ c)
+    (hb : 0 < b) (hcb : c < b ^ 2) (hx : x ≤ c * a ^ 2) (hs : s ≤ d * a)
+    (hbudget : 2 * (c + b + d) ≤ L) : 2 * (x + √x + s) < L * a := by
+  have hsq : a ^ 2 ≤ a := by nlinarith only [mul_nonneg ha.le (sub_nonneg.mpr ha1)]
+  have hx' : x ≤ c * a := hx.trans (mul_le_mul_of_nonneg_left hsq hc)
+  have hroot : √x < b * a := by
+    apply (Real.sqrt_lt' (mul_pos hb ha)).2
+    calc
+      x ≤ c * a ^ 2 := hx
+      _ < b ^ 2 * a ^ 2 := mul_lt_mul_of_pos_right hcb (sq_pos_of_pos ha)
+      _ = (b * a) ^ 2 := (mul_pow b a 2).symm
+  have hB := mul_le_mul_of_nonneg_right hbudget ha.le
+  linarith only [hx', hroot, hs, hB]
+
+theorem wider {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) {Φ : ℝ}
+    (hΦ : Φ ≤ 4 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1))) :
+    2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ ((1 / 2 : ℝ) ^ p) := by
+  obtain ⟨k, rfl⟩ : ∃ k, p = k + 1 := ⟨p - 1, by omega⟩
+  rw [Nat.add_sub_cancel] at hΦ
+  set a := δ ^ ((1 / 2 : ℝ) ^ (k + 1)) with ha
+  set T : ℝ := 10 ^ k with hT
+  have ha0 : 0 < a := Real.rpow_pos_of_pos hδ0 _
+  have ha1 : a ≤ 1 := Real.rpow_le_one hδ0.le hδ1 (by positivity)
+  have ha2 : a ^ 2 = δ ^ ((1 / 2 : ℝ) ^ k) := by
+    rw [ha, ← Real.rpow_mul_natCast hδ0.le, pow_succ]
+    congr 1
+    push_cast
+    ring
+  have hsqrt : √δ ≤ a := by
+    rw [Real.sqrt_eq_rpow, ha]
+    refine Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1 ?_
+    rw [pow_succ]
+    exact mul_le_of_le_one_left (by norm_num) (pow_le_one₀ (by norm_num) (by norm_num))
+  have hT10 : (10 : ℝ) ≤ T := le_self_pow₀ (by norm_num) (by omega)
+  rw [← ha2] at hΦ
+  rw [pow_succ, ← hT, mul_comm T]
+  apply envelope (c := 4 * T) (b := 3 * T / 4) (d := 1) ha0 ha1 (by positivity)
+    (by positivity) ?_ hΦ (by simpa using hsqrt) ?_
+  · nlinarith only [hT10, mul_nonneg (sub_nonneg.mpr hT10) (by positivity : 0 ≤ T)]
+  · linarith only [hT10]
+
+theorem directProbe {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) {Φ : ℝ}
+    (hΦ : Φ ≤ 3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1))) :
+    2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ ((1 / 2 : ℝ) ^ p) := by
+  fail_if_success exact?
+  fail_if_success
+    solve
+    | simp only [Real.sqrt_eq_rpow]
+  apply wider hp hδ0 hδ1
+  exact hΦ.trans (mul_le_mul_of_nonneg_right
+    (mul_le_mul_of_nonneg_right (by norm_num : (3 : ℝ) ≤ 4) (by positivity)) (by positivity))
+
+theorem zeroDelta (p : ℕ) :
+    ¬ (2 * ((0 : ℝ) + √0 + √0) < 10 ^ p * 0 ^ ((1 / 2 : ℝ) ^ p)) := by
+  simp
+
+theorem dimensionOne :
+    (3 : ℝ) ≤ 3 * 10 ^ (1 - 1 : ℕ) * 1 ^ ((1 / 2 : ℝ) ^ (1 - 1 : ℕ)) ∧
+      ¬ (2 * ((3 : ℝ) + √3 + √1) < 10 ^ 1 * 1 ^ ((1 / 2 : ℝ) ^ 1)) := by
+  norm_num
+  have h : (1 : ℝ) ≤ √3 := (Real.le_sqrt (by norm_num) (by norm_num)).2 (by norm_num)
+  linarith
+
+theorem largeDelta :
+    (300 : ℝ) ≤ 3 * 10 ^ (2 - 1 : ℕ) * 100 ^ ((1 / 2 : ℝ) ^ (2 - 1 : ℕ)) ∧
+      ¬ (2 * ((300 : ℝ) + √300 + √100) <
+        10 ^ 2 * 100 ^ ((1 / 2 : ℝ) ^ 2)) := by
+  have h100 : (100 : ℝ) ^ (1 / 2 : ℝ) = 10 := by
+    rw [← Real.sqrt_eq_rpow]
+    norm_num
+  have hr2 : ((100 : ℝ) ^ ((1 / 2 : ℝ) ^ 2)) ^ 2 = 10 := by
+    calc
+      ((100 : ℝ) ^ ((1 / 2 : ℝ) ^ 2)) ^ 2 = 100 ^ (1 / 2 : ℝ) := by
+        rw [← Real.rpow_mul_natCast (by norm_num : (0 : ℝ) ≤ 100)]
+        norm_num
+      _ = 10 := h100
+  have hr : (100 : ℝ) ^ ((1 / 2 : ℝ) ^ 2) ≤ 4 := by nlinarith only [hr2]
+  constructor
+  · norm_num [h100]
+  · have h := Real.sqrt_nonneg (300 : ℝ)
+    norm_num only [Nat.reduceSub, Nat.reducePow, Real.sqrt_eq_rpow] at *
+    linarith
+
+#print axioms envelope
+#print axioms wider
+#print axioms directProbe
+#print axioms zeroDelta
+#print axioms dimensionOne
+#print axioms largeDelta
+end Numeric219Independent

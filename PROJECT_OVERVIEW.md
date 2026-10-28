@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 218/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 219/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 218; remaining: 75.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 69 BORDERLINE-needs-human, 46 SKIP.
+- Completed applicable assessments: 219; remaining: 74.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 70 BORDERLINE-needs-human, 46 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2628,6 +2628,21 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit in file: 1; external to file: 0; source callers: Roth.theta_phi_lt_aux; source call location: Roth/Theta.lean:876; direct kernel value consumers: _private.Roth.Theta.0.Roth.theta_phi_lt_aux; note: Full caller840–889 and all downstream module proofs compile with the numerical proof locally inlined; lexical references and direct kernel consumers are separate.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.lem7_Φ_bound.md).
 
+### Completed: `Roth.lem7_numeric`
+
+- Type: `∀ {p : ℕ},
+  2 ≤ p →
+    ∀ {δ : ℝ},
+      0 < δ →
+        δ ≤ 1 →
+          ∀ {Φ : ℝ}, Φ ≤ 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1) → 2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ (1 / 2) ^ p`
+- What: A cap on Φ yields the next dyadic square-root estimate in Roth induction, even for negative Φ.
+- How: Use Real.rpow_mul_natCast to identify the square of the next dyadic scale, Real.rpow_le_rpow_of_exponent_ge and Real.rpow_le_one to bound sqrt(delta) and the scale, then Real.sqrt_lt' bounds sqrt(Phi) before combining ordered inequalities.
+- Hypotheses: p≥2,0<δ≤1 and Φ≤3·10^(p-1)δ^(2^(-(p-1))); no Φ nonnegativity, equality allowed in both upper bounds.
+- Project dependencies: None
+- Caller summary: explicit in file: 1; external to file: 0; source callers: Roth.theta_phi_lt_aux; source call location: Roth/Theta.lean:879; direct kernel value consumers: _private.Roth.Theta.0.Roth.theta_phi_lt_aux; note: Entire actual caller840–889 and all downstream module proofs compile with the full numeric proof locally inlined; lexical use and direct kernel use are separately measured. Complete source metadata remains in callers.json.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.lem7_numeric.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3090,6 +3105,8 @@ Completed `Roth.lem6M_lt`: Fifteen actual current/standard/abstract search cells
 
 Completed `Roth.lem7_Φ_bound`: Fifteen actual current/standard/abstract method cells. Pinned Real.mul_rpow, exponent monotonicity, positivity and le_self_pow₀ compile. No exact replacement established; current semantic Roth hits include unrelated additive-combinatorial results. Local index warming and remote revision differences limit absence conclusions.
 
+Completed `Roth.lem7_numeric`: 15 fresh method/form cells; pinned sqrt/rpow/order ingredients verified. No exact hit or≤3-existing-call proof established; local index warming.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3527,6 +3544,8 @@ Completed `Roth.two_pow_lt_rpow_aux`: The preceding factorial_coefficient_le_two
 Completed `Roth.lem6M_lt`: A source-specific application of factorial majorization and exponential absorption. Generic positive multiplication/rpow transport is already available, but supplying its numerical premises needs new/project proofs.
 
 Completed `Roth.lem7_Φ_bound`: The real-power ingredients and generic ordered weighted transport are existing API. The concrete constants and simultaneous absorption still require numerical reasoning; new generic envelope is a proved helper, not an existing mathlib replacement.
+
+Completed `Roth.lem7_numeric`: Classical square-root upper bounds and dyadic power normalization are ingredients, not an identified duplicate of the combined absorption.
 
 ## Part 5: Generalization opportunities
 
@@ -3976,6 +3995,8 @@ Completed `Roth.lem6M_lt`: Successfully compiled real q>=0 with threshold derivi
 
 Completed `Roth.lem7_Φ_bound`: Verified delta<=2 with original wrapper and unchanged downstream statements; independently proved x*c+A*(x*c)^e<2*c*A*x^e for 0<x<=1,1<=c,1<A,e<=1. This removes the coupling of dyadic exponent, reciprocal dimension and base10. Dimension0 works only as a totalized arithmetic formula and is not a useful index-induction generalization.
 
+Completed `Roth.lem7_numeric`: Compiled coefficient4 cap with δ≤1 and arbitrary negative Φ; generic real scalar envelope with free a,c,b,d,L,x,s also compiled. No δ-range or optimality claim.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4414,6 +4435,8 @@ Completed `Roth.two_pow_lt_rpow_aux`: No new primitive is needed for this intern
 Completed `Roth.lem6M_lt`: Potential public package: determinant coefficient-height envelope with factorial overhead and explicit large-denominator absorption. Whether this particular envelope should be public remains an audience/design question, not a proven universal missing API.
 
 Completed `Roth.lem7_Φ_bound`: Potential generic weighted real-power absorption interface; no universal absence claim. Public usefulness and choice between primitive product/exponent bounds and a packaged envelope remain upstream API-design questions.
+
+Completed `Roth.lem7_numeric`: Potential public weighted square-root absorption API, subject to demonstrated audience; scratch envelope is new proof, not existing mathlib.
 
 ## Part 7: Junk / removable
 
@@ -4856,6 +4879,8 @@ Completed `Roth.lem6M_lt`: Not dead code: one explicit source caller and one dir
 
 Completed `Roth.lem7_Φ_bound`: Not dead code: sole explicit caller theta_phi_lt_aux uses the strict estimate in the induction. Its single use permits local inlining but does not prove a <=3-existing-call composition.
 
+Completed `Roth.lem7_numeric`: Used once by theta_phi_lt_aux; verified actual caller and downstreamΘ_lt replay. Not dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5078,6 +5103,7 @@ Completed `Roth.lem7_Φ_bound`: Not dead code: sole explicit caller theta_phi_lt
 | 216 | `Roth.two_pow_lt_rpow_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.two_pow_lt_rpow_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.two_pow_lt_rpow_aux/root-acceptance.json) |
 | 217 | `Roth.lem6M_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lem6M_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem6M_lt/root-acceptance.json) |
 | 218 | `Roth.lem7_Φ_bound` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lem7_Φ_bound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem7_Φ_bound/root-acceptance.json) |
+| 219 | `Roth.lem7_numeric` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lem7_numeric.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem7_numeric/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5513,12 +5539,14 @@ Completed `Roth.lem6M_lt` action: BORDERLINE-needs-human. Keep at Roth/Theta.lea
 
 Completed `Roth.lem7_Φ_bound` action: BORDERLINE-needs-human. Keep at Roth/Theta.lean pending future upstream decisions about generic numeric-envelope scope, delta range, and local helper visibility. Completed read-only assessment; no user input required.
 
+Completed `Roth.lem7_numeric` action: BORDERLINE: retain in Roth/Theta.lean while future upstream audience/constant/envelope design is decided. Full caller-local inline and broader wrapper alternatives compile.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.lem7_numeric` next. Supporting identities receive their own applicable checks.
+   `Roth.theta_scaled_unique_le_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

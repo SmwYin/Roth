@@ -1,0 +1,341 @@
+{
+  "request": {
+    "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"partial\": false,\n  \"still_elaborating_lines\": null,\n  \"success\": true,\n  \"timed_out\": false,\n  \"items\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Roth.lem7_numeric : ∀ {p : ℕ},\\n  2 ≤ p →\\n    ∀ {δ : ℝ},\\n      0 < δ →\\n        δ ≤ 1 → ∀ {Φ : ℝ}, Φ ≤ 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1) → 2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ (1 / 2) ^ p\",\n      \"line\": 956,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem Roth.lem7_numeric : ∀ {p : ℕ},\\n  2 ≤ p →\\n    ∀ {δ : ℝ},\\n      0 < δ →\\n        δ ≤ 1 →\\n          ∀ {Φ : ℝ}, Φ ≤ 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1) → 2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ (1 / 2) ^ p :=\\nfun {p} hp {δ} hδ0 hδ1 {Φ} hΦ ↦\\n  Exists.casesOn (Exists.intro (p - 1) (Roth.lem7_numeric._proof_1_2 hp)) fun k h ↦\\n    Eq.ndrec (motive := fun {p} ↦\\n      2 ≤ p → Φ ≤ 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1) → 2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ (1 / 2) ^ p)\\n      (fun hp hΦ ↦\\n        let a := δ ^ (1 / 2) ^ (k + 1);\\n        Eq.mpr\\n          (id\\n            (congrArg (fun _a ↦ 2 * (Φ + √Φ + √δ) < 10 ^ (k + 1) * _a)\\n              (have this := rfl;\\n              this)))\\n          (have ha := rfl;\\n          let T := 10 ^ k;\\n          have hT := rfl;\\n          have ha0 := Real.rpow_pos_of_pos hδ0 ((1 / 2) ^ (k + 1));\\n          have ha2 :=\\n            Eq.mpr (id (congrArg (fun _a ↦ _a ^ 2 = δ ^ (1 / 2) ^ k) ha))\\n              (Eq.mpr\\n                (id\\n                  (congrArg (fun _a ↦ _a = δ ^ (1 / 2) ^ k)\\n                    (Eq.symm (Real.rpow_mul_natCast (LT.lt.le hδ0) ((1 / 2) ^ (k + 1)) 2))))\\n                (Eq.mpr (id (congrArg (fun _a ↦ δ ^ (_a * ↑2) = δ ^ (1 / 2) ^ k) (pow_succ (1 / 2) k)))\\n                  ((fun {α β γ} [HPow α β γ] a a_1 e_a ↦\\n                      Eq.rec (motive := fun a_2 e_a ↦ ∀ (a_3 a_4 : β), a_3 = a_4 → a ^ a_3 = a_2 ^ a_4)\\n                        (fun a_2 a_3 e_a ↦ e_a ▸ Eq.refl (a ^ a_2)) e_a)\\n                    δ δ (Eq.refl δ) ((1 / 2) ^ k * (1 / 2) * ↑2) ((1 / 2) ^ k)\\n                    (id\\n                      (Mathlib.Tactic.Ring.of_eq\\n                        (Mathlib.Tactic.Ring.Common.mul_congr\\n                          (Mathlib.Tactic.Ring.Common.mul_congr\\n                            (Mathlib.Tactic.Ring.Common.pow_congr\\n                              (Mathlib.Tactic.Ring.Common.div_congr\\n                                (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one))\\n                                (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat ℝ (Eq.refl 2)))\\n                                (Mathlib.Tactic.Ring.Common.div_pf\\n                                  (Mathlib.Tactic.Ring.Common.inv_single\\n                                    (Mathlib.Meta.NormNum.IsNNRat.to_raw_eq\\n                                      (Mathlib.Meta.NormNum.isNNRat_inv_pos\\n                                        (Mathlib.Meta.NormNum.IsNat.to_isNNRat\\n                                          (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 2)))))\\n                                  (Mathlib.Tactic.Ring.Common.add_mul\\n                                    (Mathlib.Tactic.Ring.Common.mul_add\\n                                      (Mathlib.Meta.NormNum.IsNNRat.to_raw_eq\\n                                        (Mathlib.Meta.NormNum.isNNRat_mul (Eq.refl HMul.hMul)\\n                                          (Mathlib.Meta.NormNum.IsNat.to_isNNRat\\n                                            (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1))\\n                                          (Mathlib.Meta.NormNum.IsNNRat.of_raw ℝ 1 2\\n                                            (Mathlib.Meta.NormNum.IsNNRat.den_nz\\n                                              (Mathlib.Meta.NormNum.isNNRat_inv_pos\\n                                                (Mathlib.Meta.NormNum.IsNat.to_isNNRat\\n                                                  (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 2)))))\\n                                          (Eq.refl (Nat.mul 1 1)) (Eq.refl 2)))\\n                                      (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 1))\\n                                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero (NNRat.rawCast 1 2 + 0)))\\n                                    (Mathlib.Tactic.Ring.Common.zero_mul (NNRat.rawCast 1 2 + 0))\\n                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero (NNRat.rawCast 1 2 + 0)))))\\n                              (Mathlib.Tactic.Ring.\\n\\n[... 72222 characters elided; set LEAN_MCP_MAX_OUTPUT_CHARS=0 for the full text ...]\\n\\n.Meta.NormNum.IsInt.to_isNat\\n                                  (Mathlib.Meta.NormNum.isInt_add (Eq.refl HAdd.hAdd)\\n                                    (Mathlib.Meta.NormNum.IsNat.to_isInt (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 2))\\n                                    (Mathlib.Meta.NormNum.IsInt.of_raw ℝ (Int.negOfNat 2)) (Eq.refl (Int.ofNat 0)))))\\n                              (Mathlib.Tactic.Ring.Common.add_pf_add_overlap_zero\\n                                (Mathlib.Tactic.Ring.Common.add_overlap_pf_zero (√δ) (Nat.rawCast 1)\\n                                  (Mathlib.Meta.NormNum.IsInt.to_isNat\\n                                    (Mathlib.Meta.NormNum.isInt_add (Eq.refl HAdd.hAdd)\\n                                      (Mathlib.Meta.NormNum.IsNat.to_isInt (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 2))\\n                                      (Mathlib.Meta.NormNum.IsInt.of_raw ℝ (Int.negOfNat 2)) (Eq.refl (Int.ofNat 0)))))\\n                                (Mathlib.Tactic.Ring.Common.add_pf_add_overlap_zero\\n                                  (Mathlib.Tactic.Ring.Common.add_overlap_pf_zero a (Nat.rawCast 1)\\n                                    (Mathlib.Tactic.Ring.Common.add_overlap_pf_zero (Nat.rawCast 10 + 0)\\n                                      (k ^ Nat.rawCast 1 * Nat.rawCast 1)\\n                                      (Mathlib.Meta.NormNum.IsInt.to_isNat\\n                                        (Mathlib.Meta.NormNum.isInt_add (Eq.refl HAdd.hAdd)\\n                                          (Mathlib.Meta.NormNum.IsNat.to_isInt (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 10))\\n                                          (Mathlib.Meta.NormNum.IsInt.of_raw ℝ (Int.negOfNat 10))\\n                                          (Eq.refl (Int.ofNat 0))))))\\n                                  (Mathlib.Tactic.Ring.Common.add_pf_zero_add 0)))))))\\n                      (le_refl 0)\\n                      (Mathlib.Tactic.Ring.cast_zero (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero)))))))))\\n      (Eq.symm h) hp hΦ\",\n      \"line\": 957,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth.lem7_numeric' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 958,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.RSet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 959,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.indexSet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 960,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.Θ' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 961,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.one_mem_RSet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 962,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.indexSet_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 963,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.indexSet_bddAbove' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 964,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.index_le_Θ' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 965,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.Θ_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 966,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.Θ_le_card' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 967,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.Θ_le_of_forall_index_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 968,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.Θ_mono' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 969,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.Θ_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 970,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.exists_eq_pow_mul_of_rootMultiplicity' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 971,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 972,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.Θ_unique_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 973,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 974,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.lem6Φ' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 975,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.one_le_lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 976,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.floor_sq_div_two_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 977,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.sq_div_three_lt_floor_sq_div_two' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 978,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.min_le_sum_max' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 979,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.sum_max_sub_le_index_det' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 980,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.index_det_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 981,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.index_le_lem6' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 982,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.Θ_option_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 983,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.lem6M_lt' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 984,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.lem7_Φ_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 985,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.replay' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 986,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Numeric219.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 987,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"NUMERIC219_DIRECT_CONSUMER: _private.Roth.Theta.0.Roth.theta_phi_lt_aux\",\n      \"line\": 990,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"NUMERIC219_AUDIT: requested=293; unique=293\",\n      \"line\": 990,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"NUMERIC219_AUDIT_PRESENT: present=293; values=293\",\n      \"line\": 990,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ],\n  \"failed_dependencies\": []\n}"
+      }
+    ],
+    "structuredContent": {
+      "result": {
+        "partial": false,
+        "still_elaborating_lines": null,
+        "success": true,
+        "timed_out": false,
+        "items": [
+          {
+            "severity": "info",
+            "message": "@Roth.lem7_numeric : ∀ {p : ℕ},\n  2 ≤ p →\n    ∀ {δ : ℝ},\n      0 < δ →\n        δ ≤ 1 → ∀ {Φ : ℝ}, Φ ≤ 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1) → 2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ (1 / 2) ^ p",
+            "line": 956,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "theorem Roth.lem7_numeric : ∀ {p : ℕ},\n  2 ≤ p →\n    ∀ {δ : ℝ},\n      0 < δ →\n        δ ≤ 1 →\n          ∀ {Φ : ℝ}, Φ ≤ 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1) → 2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ (1 / 2) ^ p :=\nfun {p} hp {δ} hδ0 hδ1 {Φ} hΦ ↦\n  Exists.casesOn (Exists.intro (p - 1) (Roth.lem7_numeric._proof_1_2 hp)) fun k h ↦\n    Eq.ndrec (motive := fun {p} ↦\n      2 ≤ p → Φ ≤ 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1) → 2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ (1 / 2) ^ p)\n      (fun hp hΦ ↦\n        let a := δ ^ (1 / 2) ^ (k + 1);\n        Eq.mpr\n          (id\n            (congrArg (fun _a ↦ 2 * (Φ + √Φ + √δ) < 10 ^ (k + 1) * _a)\n              (have this := rfl;\n              this)))\n          (have ha := rfl;\n          let T := 10 ^ k;\n          have hT := rfl;\n          have ha0 := Real.rpow_pos_of_pos hδ0 ((1 / 2) ^ (k + 1));\n          have ha2 :=\n            Eq.mpr (id (congrArg (fun _a ↦ _a ^ 2 = δ ^ (1 / 2) ^ k) ha))\n              (Eq.mpr\n                (id\n                  (congrArg (fun _a ↦ _a = δ ^ (1 / 2) ^ k)\n                    (Eq.symm (Real.rpow_mul_natCast (LT.lt.le hδ0) ((1 / 2) ^ (k + 1)) 2))))\n                (Eq.mpr (id (congrArg (fun _a ↦ δ ^ (_a * ↑2) = δ ^ (1 / 2) ^ k) (pow_succ (1 / 2) k)))\n                  ((fun {α β γ} [HPow α β γ] a a_1 e_a ↦\n                      Eq.rec (motive := fun a_2 e_a ↦ ∀ (a_3 a_4 : β), a_3 = a_4 → a ^ a_3 = a_2 ^ a_4)\n                        (fun a_2 a_3 e_a ↦ e_a ▸ Eq.refl (a ^ a_2)) e_a)\n                    δ δ (Eq.refl δ) ((1 / 2) ^ k * (1 / 2) * ↑2) ((1 / 2) ^ k)\n                    (id\n                      (Mathlib.Tactic.Ring.of_eq\n                        (Mathlib.Tactic.Ring.Common.mul_congr\n                          (Mathlib.Tactic.Ring.Common.mul_congr\n                            (Mathlib.Tactic.Ring.Common.pow_congr\n                              (Mathlib.Tactic.Ring.Common.div_congr\n                                (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one))\n                                (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat ℝ (Eq.refl 2)))\n                                (Mathlib.Tactic.Ring.Common.div_pf\n                                  (Mathlib.Tactic.Ring.Common.inv_single\n                                    (Mathlib.Meta.NormNum.IsNNRat.to_raw_eq\n                                      (Mathlib.Meta.NormNum.isNNRat_inv_pos\n                                        (Mathlib.Meta.NormNum.IsNat.to_isNNRat\n                                          (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 2)))))\n                                  (Mathlib.Tactic.Ring.Common.add_mul\n                                    (Mathlib.Tactic.Ring.Common.mul_add\n                                      (Mathlib.Meta.NormNum.IsNNRat.to_raw_eq\n                                        (Mathlib.Meta.NormNum.isNNRat_mul (Eq.refl HMul.hMul)\n                                          (Mathlib.Meta.NormNum.IsNat.to_isNNRat\n                                            (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1))\n                                          (Mathlib.Meta.NormNum.IsNNRat.of_raw ℝ 1 2\n                                            (Mathlib.Meta.NormNum.IsNNRat.den_nz\n                                              (Mathlib.Meta.NormNum.isNNRat_inv_pos\n                                                (Mathlib.Meta.NormNum.IsNat.to_isNNRat\n                                                  (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 2)))))\n                                          (Eq.refl (Nat.mul 1 1)) (Eq.refl 2)))\n                                      (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 1))\n                                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero (NNRat.rawCast 1 2 + 0)))\n                                    (Mathlib.Tactic.Ring.Common.zero_mul (NNRat.rawCast 1 2 + 0))\n                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero (NNRat.rawCast 1 2 + 0)))))\n                              (Mathlib.Tactic.Ring.\n\n[... 72222 characters elided; set LEAN_MCP_MAX_OUTPUT_CHARS=0 for the full text ...]\n\n.Meta.NormNum.IsInt.to_isNat\n                                  (Mathlib.Meta.NormNum.isInt_add (Eq.refl HAdd.hAdd)\n                                    (Mathlib.Meta.NormNum.IsNat.to_isInt (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 2))\n                                    (Mathlib.Meta.NormNum.IsInt.of_raw ℝ (Int.negOfNat 2)) (Eq.refl (Int.ofNat 0)))))\n                              (Mathlib.Tactic.Ring.Common.add_pf_add_overlap_zero\n                                (Mathlib.Tactic.Ring.Common.add_overlap_pf_zero (√δ) (Nat.rawCast 1)\n                                  (Mathlib.Meta.NormNum.IsInt.to_isNat\n                                    (Mathlib.Meta.NormNum.isInt_add (Eq.refl HAdd.hAdd)\n                                      (Mathlib.Meta.NormNum.IsNat.to_isInt (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 2))\n                                      (Mathlib.Meta.NormNum.IsInt.of_raw ℝ (Int.negOfNat 2)) (Eq.refl (Int.ofNat 0)))))\n                                (Mathlib.Tactic.Ring.Common.add_pf_add_overlap_zero\n                                  (Mathlib.Tactic.Ring.Common.add_overlap_pf_zero a (Nat.rawCast 1)\n                                    (Mathlib.Tactic.Ring.Common.add_overlap_pf_zero (Nat.rawCast 10 + 0)\n                                      (k ^ Nat.rawCast 1 * Nat.rawCast 1)\n                                      (Mathlib.Meta.NormNum.IsInt.to_isNat\n                                        (Mathlib.Meta.NormNum.isInt_add (Eq.refl HAdd.hAdd)\n                                          (Mathlib.Meta.NormNum.IsNat.to_isInt (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 10))\n                                          (Mathlib.Meta.NormNum.IsInt.of_raw ℝ (Int.negOfNat 10))\n                                          (Eq.refl (Int.ofNat 0))))))\n                                  (Mathlib.Tactic.Ring.Common.add_pf_zero_add 0)))))))\n                      (le_refl 0)\n                      (Mathlib.Tactic.Ring.cast_zero (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero)))))))))\n      (Eq.symm h) hp hΦ",
+            "line": 957,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Roth.lem7_numeric' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 958,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.RSet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 959,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.indexSet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 960,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.Θ' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 961,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.one_mem_RSet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 962,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.indexSet_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 963,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.indexSet_bddAbove' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 964,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.index_le_Θ' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 965,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.Θ_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 966,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.Θ_le_card' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 967,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.Θ_le_of_forall_index_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 968,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.Θ_mono' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 969,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.Θ_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 970,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.exists_eq_pow_mul_of_rootMultiplicity' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 971,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 972,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.Θ_unique_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 973,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 974,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.lem6Φ' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 975,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.one_le_lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 976,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.floor_sq_div_two_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 977,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.sq_div_three_lt_floor_sq_div_two' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 978,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.min_le_sum_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 979,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.sum_max_sub_le_index_det' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 980,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.index_det_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 981,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.index_le_lem6' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 982,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.Θ_option_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 983,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.lem6M_lt' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 984,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.lem7_Φ_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 985,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.replay' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 986,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Numeric219.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 987,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "NUMERIC219_DIRECT_CONSUMER: _private.Roth.Theta.0.Roth.theta_phi_lt_aux",
+            "line": 990,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "NUMERIC219_AUDIT: requested=293; unique=293",
+            "line": 990,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "NUMERIC219_AUDIT_PRESENT: present=293; values=293",
+            "line": 990,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          }
+        ],
+        "failed_dependencies": []
+      }
+    },
+    "isError": false
+  },
+  "elapsed_ms": 2071
+}

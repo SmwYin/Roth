@@ -1,0 +1,25 @@
+{
+  "type": "∀ {p : ℕ},\n  2 ≤ p →\n    ∀ {δ : ℝ},\n      0 < δ →\n        δ ≤ 1 →\n          ∀ {Φ : ℝ}, Φ ≤ 3 * 10 ^ (p - 1) * δ ^ (1 / 2) ^ (p - 1) → 2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ (1 / 2) ^ p",
+  "what": "A cap on Φ yields the next dyadic square-root estimate in Roth induction, even for negative Φ.",
+  "how": "Use Real.rpow_mul_natCast to identify the square of the next dyadic scale, Real.rpow_le_rpow_of_exponent_ge and Real.rpow_le_one to bound sqrt(delta) and the scale, then Real.sqrt_lt' bounds sqrt(Phi) before combining ordered inequalities.",
+  "hypotheses": "p≥2,0<δ≤1 and Φ≤3·10^(p-1)δ^(2^(-(p-1))); no Φ nonnegativity, equality allowed in both upper bounds.",
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_in_file": 1,
+    "external_to_file": 0,
+    "source_callers": [
+      "Roth.theta_phi_lt_aux"
+    ],
+    "source_call_location": "Roth/Theta.lean:879",
+    "direct_kernel_value_consumers": [
+      "_private.Roth.Theta.0.Roth.theta_phi_lt_aux"
+    ],
+    "note": "Entire actual caller840–889 and all downstream module proofs compile with the full numeric proof locally inlined; lexical use and direct kernel use are separately measured. Complete source metadata remains in callers.json."
+  },
+  "mathlib_api_audit": "15 fresh method/form cells; pinned sqrt/rpow/order ingredients verified. No exact hit or≤3-existing-call proof established; local index warming.",
+  "moral_duplications": "Classical square-root upper bounds and dyadic power normalization are ingredients, not an identified duplicate of the combined absorption.",
+  "generalization": "Compiled coefficient4 cap with δ≤1 and arbitrary negative Φ; generic real scalar envelope with free a,c,b,d,L,x,s also compiled. No δ-range or optimality claim.",
+  "missing_api": "Potential public weighted square-root absorption API, subject to demonstrated audience; scratch envelope is new proof, not existing mathlib.",
+  "junk": "Used once by theta_phi_lt_aux; verified actual caller and downstreamΘ_lt replay. Not dead code.",
+  "action": "BORDERLINE: retain in Roth/Theta.lean while future upstream audience/constant/envelope design is decided. Full caller-local inline and broader wrapper alternatives compile."
+}
