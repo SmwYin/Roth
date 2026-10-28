@@ -1,0 +1,23 @@
+namespace ThetaLeCard189Generality
+open MvPolynomial
+universe u
+variable {σ : Type u} [Fintype σ]
+theorem noNonzero (P : MvPolynomial σ ℝ) {r : σ → ℕ}
+    (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) :
+    Roth.index P α r ≤ Fintype.card σ := by
+  by_cases hP : P = 0
+  · subst P
+    simpa only [Roth.index, map_zero, support_zero, Finset.coe_empty, Set.image_empty,
+      Real.sInf_empty] using (Nat.cast_nonneg (α := ℝ) (Fintype.card σ))
+  · exact Roth.index_le_card hP hd α
+theorem expanded_family (S : Set (MvPolynomial σ ℝ)) (T : Set (σ → ℝ)) {r : σ → ℕ}
+    (hd : ∀ P ∈ S, ∀ j, degreeOf j P ≤ r j) :
+    sSup (Set.image2 (fun P α ↦ Roth.index P α r) S T) ≤ Fintype.card σ :=
+  Real.sSup_le (Set.forall_mem_image2.mpr (fun P hP α _ ↦ noNonzero P (hd P hP) α))
+    (Nat.cast_nonneg _)
+theorem exact_sup {B : ℝ} (q r : σ → ℕ) :
+    Roth.Θ B q r = SupSet.sSup (Roth.indexSet B q r) := rfl
+#print axioms noNonzero
+#print axioms expanded_family
+#print axioms exact_sup
+end ThetaLeCard189Generality

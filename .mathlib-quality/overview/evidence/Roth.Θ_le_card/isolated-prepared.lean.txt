@@ -1,0 +1,30 @@
+#check_failure Roth.Θ_le_card
+#check @Real.sSup_le
+#check @csSup_le
+#check @Set.forall_mem_image2
+namespace ThetaLeCard189Isolated
+universe u v
+theorem law {s : Set ℝ} {c : ℝ} (hs : ∀ x ∈ s, x ≤ c) (hc : 0 ≤ c) : sSup s ≤ c :=
+  Real.sSup_le hs hc
+theorem family {A : Type u} {H : Type v} (f : A → H → ℝ) (s : Set A) (t : Set H)
+    {c : ℝ} (hf : ∀ a ∈ s, ∀ h ∈ t, f a h ≤ c) (hc : 0 ≤ c) :
+    sSup (Set.image2 f s t) ≤ c :=
+  Real.sSup_le (Set.forall_mem_image2.mpr hf) hc
+theorem nonempty_law {s : Set ℝ} {c : ℝ} (hs : s.Nonempty) (hb : ∀ x ∈ s, x ≤ c) :
+    sSup s ≤ c := csSup_le hs hb
+theorem empty_guard : ¬ (∀ (s : Set ℝ) (c : ℝ), (∀ x ∈ s, x ≤ c) → sSup s ≤ c) := by
+  intro h
+  have h' := h ∅ (-1) (by simp)
+  rw [Real.sSup_empty] at h'
+  norm_num at h'
+theorem bdd_guard : ¬ (∀ s : Set ℝ, BddAbove s → sSup s ≤ 1) := by
+  intro h
+  have h' := h {2} (bddAbove_singleton (a := (2 : ℝ)))
+  rw [csSup_singleton] at h'
+  norm_num at h'
+#print axioms law
+#print axioms family
+#print axioms nonempty_law
+#print axioms empty_guard
+#print axioms bdd_guard
+end ThetaLeCard189Isolated

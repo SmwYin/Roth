@@ -1,0 +1,23 @@
+namespace ThetaLeCard189
+open MvPolynomial
+universe u
+variable {σ : Type u} [Fintype σ]
+theorem pointwise {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} :
+    ∀ x ∈ Roth.indexSet B q r, x ≤ (Fintype.card σ : ℝ) := by
+  classical
+  rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
+  exact Roth.index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)
+    (by simpa [degreeOf, degrees_map_of_injective R (f := Int.castRingHom ℝ)
+          Int.cast_injective] using hRd) _
+theorem replacement {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} :
+    Roth.Θ B q r ≤ Fintype.card σ :=
+  Real.sSup_le (pointwise q) (Nat.cast_nonneg _)
+theorem from_boundedness {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} :
+    Roth.Θ B q r ≤ Fintype.card σ := by
+  fail_if_success
+    exact Real.sSup_le (Roth.indexSet_bddAbove B q) (Nat.cast_nonneg _)
+  exact replacement q
+#print axioms pointwise
+#print axioms replacement
+#print axioms from_boundedness
+end ThetaLeCard189

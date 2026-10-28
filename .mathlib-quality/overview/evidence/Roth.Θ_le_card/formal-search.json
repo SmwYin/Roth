@@ -1,0 +1,576 @@
+[
+  {
+    "form": "current",
+    "method": "Finder",
+    "query": "Roth multivariate polynomial normalized index supremum bounded number of variables",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.numBound\",\n      \"informal_name\": \"Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\\\text{Fin}\\\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\\\mathbb{N}$, then adding 1.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_zero\",\n      \"informal_name\": \"Base Case for Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ), ChevalleyThm.MvPolynomialC.numBound k D 0 = k\",\n      \"informal_description\": \"For any natural numbers $k$ and $D$, the numerical bound function evaluated at $k$, $D$, and $0$ returns $k$, establishing the base case for recursion in the context of multivariate polynomials and Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.degBound\",\n      \"informal_name\": \"Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\\\text{Fin.val}$ over the multiset $d$ of type $\\\\text{Fin} \\\\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.numBound",
+            "informal_name": "Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\text{Fin}\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\mathbb{N}$, then adding 1.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound_zero",
+            "informal_name": "Base Case for Numerical Bound in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ (k : ℕ) (D : ℕ → ℕ), ChevalleyThm.MvPolynomialC.numBound k D 0 = k",
+            "informal_description": "For any natural numbers $k$ and $D$, the numerical bound function evaluated at $k$, $D$, and $0$ returns $k$, establishing the base case for recursion in the context of multivariate polynomials and Chevalley's theorem.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.degBound",
+            "informal_name": "Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\text{Fin.val}$ over the multiset $d$ of type $\\text{Fin} \\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "Loogle",
+    "query": "\"index_le_card\"",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"AddSubgroup.exists_index_le_card_of_leftCoset_cover\",\n      \"type\": \" {G : Type u_1} [AddGroup G] {ι : Type u_2} {H : ι → AddSubgroup G} {g : ι → G} {s : Finset ι} (hcovers : ⋃ i ∈ s, g i +ᵥ ↑(H i) = Set.univ) : ∃ i ∈ s, (H i).FiniteIndex ∧ (H i).index ≤ s.card\",\n      \"module\": \"Mathlib.GroupTheory.CosetCover\"\n    },\n    {\n      \"name\": \"Subgroup.exists_index_le_card_of_leftCoset_cover\",\n      \"type\": \" {G : Type u_1} [Group G] {ι : Type u_2} {H : ι → Subgroup G} {g : ι → G} {s : Finset ι} (hcovers : ⋃ i ∈ s, g i • ↑(H i) = Set.univ) : ∃ i ∈ s, (H i).FiniteIndex ∧ (H i).index ≤ s.card\",\n      \"module\": \"Mathlib.GroupTheory.CosetCover\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "AddSubgroup.exists_index_le_card_of_leftCoset_cover",
+            "type": " {G : Type u_1} [AddGroup G] {ι : Type u_2} {H : ι → AddSubgroup G} {g : ι → G} {s : Finset ι} (hcovers : ⋃ i ∈ s, g i +ᵥ ↑(H i) = Set.univ) : ∃ i ∈ s, (H i).FiniteIndex ∧ (H i).index ≤ s.card",
+            "module": "Mathlib.GroupTheory.CosetCover"
+          },
+          {
+            "name": "Subgroup.exists_index_le_card_of_leftCoset_cover",
+            "type": " {G : Type u_1} [Group G] {ι : Type u_2} {H : ι → Subgroup G} {g : ι → G} {s : Finset ι} (hcovers : ⋃ i ∈ s, g i • ↑(H i) = Set.univ) : ∃ i ∈ s, (H i).FiniteIndex ∧ (H i).index ≤ s.card",
+            "module": "Mathlib.GroupTheory.CosetCover"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "LeanSearch",
+    "query": "The supremum of normalized orders of nonzero polynomials of degree at most r_i is at most the number of variables",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.totalDegree_le_degrees_card\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R), p.totalDegree ≤ p.degrees.card\"\n    },\n    {\n      \"name\": \"MvPowerSeries.order\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → MvPowerSeries σ R → ℕ∞\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_sup_sum\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\\n  p ≠ 0 →\\n    ∀ (S : Fin n → Finset R),\\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card\"\n    },\n    {\n      \"name\": \"MvPolynomial.totalDegree_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\\n  p.totalDegree = p.support.sup fun m => (Finsupp.toMultiset m).card\"\n    },\n    {\n      \"name\": \"MvPolynomial.totalDegree\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → ℕ\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.totalDegree_le_degrees_card",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R), p.totalDegree ≤ p.degrees.card"
+          },
+          {
+            "name": "MvPowerSeries.order",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+            "kind": "definition",
+            "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → MvPowerSeries σ R → ℕ∞"
+          },
+          {
+            "name": "MvPolynomial.schwartz_zippel_sup_sum",
+            "module_name": "Mathlib.Algebra.MvPolynomial.SchwartzZippel",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\n  p ≠ 0 →\n    ∀ (S : Fin n → Finset R),\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card"
+          },
+          {
+            "name": "MvPolynomial.totalDegree_eq",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\n  p.totalDegree = p.support.sup fun m => (Finsupp.toMultiset m).card"
+          },
+          {
+            "name": "MvPolynomial.totalDegree",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → ℕ"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "query": "index_le_card",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.index_le_card\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Index.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.index_le_card",
+            "kind": "theorem",
+            "file": "Roth/Index.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "Finder",
+    "query": "Taylor polynomial multiplicity index sum derivative order divided degrees at most number variables",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"HasFTaylorSeriesUpTo.of_le\",\n      \"informal_name\": \"Formal Taylor Series Up to Order n Implies Up to Order m for m ≤ n\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {f : E → F}\\n  {m n : WithTop ℕ∞} {p : E → FormalMultilinearSeries 𝕜 E F},\\n  HasFTaylorSeriesUpTo n f p → m ≤ n → HasFTaylorSeriesUpTo m f p\",\n      \"informal_description\": \"If a function $ f : E \\\\to F $ has a formal Taylor series expansion up to order $ n $, then for any $ m \\\\leq n $, it also has a formal Taylor series expansion up to order $ m $. This follows from truncating the higher-order series to the lower order $ m $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries\"\n    },\n    {\n      \"formal_name\": \"HasFTaylorSeriesUpToOn.of_le\",\n      \"informal_name\": \"Formal Taylor Series Inheritance for Lower Orders\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {s : Set E}\\n  {f : E → F} {m n : WithTop ℕ∞} {p : E → FormalMultilinearSeries 𝕜 E F},\\n  HasFTaylorSeriesUpToOn n f p s → m ≤ n → HasFTaylorSeriesUpToOn m f p s\",\n      \"informal_description\": \"If a function $ f $ has a formal Taylor series up to order $ n $ on a set $ s $ with respect to $ p $, then for every $ m \\\\leq n $, $ f $ also has a formal Taylor series up to order $ m $ on $ s $ with respect to $ p $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries\"\n    },\n    {\n      \"formal_name\": \"taylorCoeffWithin\",\n      \"informal_name\": \"Taylor Coefficient Within a Set\",\n      \"kind\": \"definition\",\n      \"type\": \"{E : Type u_2} → [inst : NormedAddCommGroup E] → [NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → E\",\n      \"informal_description\": \"For a function $ f : \\\\mathbb{R} \\\\to E $, a natural number $ k $, a set $ s \\\\subseteq \\\\mathbb{R} $, and a point $ x_0 \\\\in \\\\mathbb{R} $, the Taylor coefficient of order $ k $ within $ s $ at $ x_0 $ is defined as $ \\\\frac{1}{k!} $ multiplied by the $ k $-th iterated derivative of $ f $ (restricted to $ s $) evaluated at $ x_0 $. This represents the scaled $ k $-th derivative contribution to the Taylor expansion of $ f $ at $ x_0 $ within the domain $ s $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_mem_degreeLT\",\n      \"informal_name\": \"Taylor Map Preserves Membership in DegreeLT Submodule\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {r : R} {n : ℕ} {f : Polynomial R},\\n  (Polynomial.taylor r) f ∈ Polynomial.degreeLT R n ↔ f ∈ Polynomial.degreeLT R n\",\n      \"informal_description\": \"For a semiring $ R $ and natural number $ n $, the Taylor series expansion of a polynomial $ f $ at $ r $ lies in the submodule $ R[X]_n $ (consisting of polynomials with degree less than $ n $) if and only if $ f $ itself is in $ R[X]_n $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.DegreeLT\"\n    },\n    {\n      \"formal_name\": \"Polynomial.eval_sumIDeriv_of_pos\",\n      \"informal_name\": \"Evaluation of Sum of Iterated Derivatives with Factorial Coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [Nontrivial R] [NoZeroDivisors R] (p : Polynomial R) {q : ℕ},\\n  0 < q →\\n    ∃ gp,\\n      gp.natDegree ≤ p.natDegree - q ∧\\n        ∀ (r : R) {p' : Polynomial R},\\n          p = (Polynomial.X - Polynomial.C r) ^ (q - 1) * p' →\\n            Polynomial.eval r (Polynomial.sumIDeriv p) =\\n              (q - 1).factorial • Polynomial.eval r p' + q.factorial • Polynomial.eval r gp\",\n      \"informal_description\": \"For any polynomial $ p $ over a commutative ring $ R $ with no zero divisors and non-trivial, and for any positive integer $ q $, there exists a polynomial $ g_p $ with $\\\\deg(g_p) \\\\leq \\\\deg(p) - q$ such that for any $ r \\\\in R $ and any polynomial $ p' $ satisfying $ p = (X - r)^{q-1} p' $, the evaluation of the sum of iterated derivatives of $ p $ at $ r $ satisfies: $\\\\operatorname{eval}_r(\\\\sum_{i=0}^\\\\infty \\\\frac{d^i p}{dX^i}) = (q-1)! \\\\cdot \\\\operatorname{eval}_r(p') + q! \\\\cdot \\\\operatorname{eval}_r(g_p)$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.SumIteratedDerivative\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "HasFTaylorSeriesUpTo.of_le",
+            "informal_name": "Formal Taylor Series Up to Order n Implies Up to Order m for m ≤ n",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {f : E → F}\n  {m n : WithTop ℕ∞} {p : E → FormalMultilinearSeries 𝕜 E F},\n  HasFTaylorSeriesUpTo n f p → m ≤ n → HasFTaylorSeriesUpTo m f p",
+            "informal_description": "If a function $ f : E \\to F $ has a formal Taylor series expansion up to order $ n $, then for any $ m \\leq n $, it also has a formal Taylor series expansion up to order $ m $. This follows from truncating the higher-order series to the lower order $ m $.",
+            "path": "Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries"
+          },
+          {
+            "formal_name": "HasFTaylorSeriesUpToOn.of_le",
+            "informal_name": "Formal Taylor Series Inheritance for Lower Orders",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {s : Set E}\n  {f : E → F} {m n : WithTop ℕ∞} {p : E → FormalMultilinearSeries 𝕜 E F},\n  HasFTaylorSeriesUpToOn n f p s → m ≤ n → HasFTaylorSeriesUpToOn m f p s",
+            "informal_description": "If a function $ f $ has a formal Taylor series up to order $ n $ on a set $ s $ with respect to $ p $, then for every $ m \\leq n $, $ f $ also has a formal Taylor series up to order $ m $ on $ s $ with respect to $ p $.",
+            "path": "Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries"
+          },
+          {
+            "formal_name": "taylorCoeffWithin",
+            "informal_name": "Taylor Coefficient Within a Set",
+            "kind": "definition",
+            "type": "{E : Type u_2} → [inst : NormedAddCommGroup E] → [NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → E",
+            "informal_description": "For a function $ f : \\mathbb{R} \\to E $, a natural number $ k $, a set $ s \\subseteq \\mathbb{R} $, and a point $ x_0 \\in \\mathbb{R} $, the Taylor coefficient of order $ k $ within $ s $ at $ x_0 $ is defined as $ \\frac{1}{k!} $ multiplied by the $ k $-th iterated derivative of $ f $ (restricted to $ s $) evaluated at $ x_0 $. This represents the scaled $ k $-th derivative contribution to the Taylor expansion of $ f $ at $ x_0 $ within the domain $ s $.",
+            "path": "Mathlib.Analysis.Calculus.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.taylor_mem_degreeLT",
+            "informal_name": "Taylor Map Preserves Membership in DegreeLT Submodule",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {r : R} {n : ℕ} {f : Polynomial R},\n  (Polynomial.taylor r) f ∈ Polynomial.degreeLT R n ↔ f ∈ Polynomial.degreeLT R n",
+            "informal_description": "For a semiring $ R $ and natural number $ n $, the Taylor series expansion of a polynomial $ f $ at $ r $ lies in the submodule $ R[X]_n $ (consisting of polynomials with degree less than $ n $) if and only if $ f $ itself is in $ R[X]_n $.",
+            "path": "Mathlib.RingTheory.Polynomial.DegreeLT"
+          },
+          {
+            "formal_name": "Polynomial.eval_sumIDeriv_of_pos",
+            "informal_name": "Evaluation of Sum of Iterated Derivatives with Factorial Coefficients",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [Nontrivial R] [NoZeroDivisors R] (p : Polynomial R) {q : ℕ},\n  0 < q →\n    ∃ gp,\n      gp.natDegree ≤ p.natDegree - q ∧\n        ∀ (r : R) {p' : Polynomial R},\n          p = (Polynomial.X - Polynomial.C r) ^ (q - 1) * p' →\n            Polynomial.eval r (Polynomial.sumIDeriv p) =\n              (q - 1).factorial • Polynomial.eval r p' + q.factorial • Polynomial.eval r gp",
+            "informal_description": "For any polynomial $ p $ over a commutative ring $ R $ with no zero divisors and non-trivial, and for any positive integer $ q $, there exists a polynomial $ g_p $ with $\\deg(g_p) \\leq \\deg(p) - q$ such that for any $ r \\in R $ and any polynomial $ p' $ satisfying $ p = (X - r)^{q-1} p' $, the evaluation of the sum of iterated derivatives of $ p $ at $ r $ satisfies: $\\operatorname{eval}_r(\\sum_{i=0}^\\infty \\frac{d^i p}{dX^i}) = (q-1)! \\cdot \\operatorname{eval}_r(p') + q! \\cdot \\operatorname{eval}_r(g_p)$.",
+            "path": "Mathlib.Algebra.Polynomial.SumIteratedDerivative"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "Loogle",
+    "query": "\"weightedOrder\"",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.weightedOrder\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) (f : MvPowerSeries σ R) : ℕ∞\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_zero\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) : MvPowerSeries.weightedOrder w 0 = ⊤\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_one\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) [Nontrivial R] : MvPowerSeries.weightedOrder w 1 = 0\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_eq_top_iff\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} : MvPowerSeries.weightedOrder w f = ⊤ ↔ f = 0\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"name\": \"MvPowerSeries.ne_zero_iff_weightedOrder_finite\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} : f ≠ 0 ↔ ↑(MvPowerSeries.weightedOrder w f).toNat = MvPowerSeries.weightedOrder w f\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPowerSeries.weightedOrder",
+            "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) (f : MvPowerSeries σ R) : ℕ∞",
+            "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_zero",
+            "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) : MvPowerSeries.weightedOrder w 0 = ⊤",
+            "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_one",
+            "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) [Nontrivial R] : MvPowerSeries.weightedOrder w 1 = 0",
+            "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_eq_top_iff",
+            "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} : MvPowerSeries.weightedOrder w f = ⊤ ↔ f = 0",
+            "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+          },
+          {
+            "name": "MvPowerSeries.ne_zero_iff_weightedOrder_finite",
+            "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} : f ≠ 0 ↔ ↑(MvPowerSeries.weightedOrder w f).toNat = MvPowerSeries.weightedOrder w f",
+            "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "LeanSearch",
+    "query": "Weighted order of a polynomial at a point is bounded by its coordinate degrees",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_le\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)\"\n    },\n    {\n      \"name\": \"PowerSeries.le_weightedOrder_subst\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} [inst : CommRing R] {τ : Type u_3} {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S]\\n  {a : MvPowerSeries τ S} (w : τ → ℕ),\\n  PowerSeries.HasSubst a →\\n    ∀ (f : PowerSeries R),\\n      f.order * MvPowerSeries.weightedOrder w a ≤ MvPowerSeries.weightedOrder w (PowerSeries.subst a f)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.nat_le_weightedOrder\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\\n  (∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0) → ↑n ≤ MvPowerSeries.weightedOrder w f\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPowerSeries.weightedOrder_le",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+            "kind": "definition",
+            "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)"
+          },
+          {
+            "name": "PowerSeries.le_weightedOrder_subst",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_2} [inst : CommRing R] {τ : Type u_3} {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S]\n  {a : MvPowerSeries τ S} (w : τ → ℕ),\n  PowerSeries.HasSubst a →\n    ∀ (f : PowerSeries R),\n      f.order * MvPowerSeries.weightedOrder w a ≤ MvPowerSeries.weightedOrder w (PowerSeries.subst a f)"
+          },
+          {
+            "name": "MvPowerSeries.nat_le_weightedOrder",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\n  (∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0) → ↑n ≤ MvPowerSeries.weightedOrder w f"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "local",
+    "query": "weightedOrder",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.weightedOrder\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/NoZeroDivisors.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_prod\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/NoZeroDivisors.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_eq_nat\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPowerSeries.weightedOrder",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_mul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/NoZeroDivisors.lean"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_neg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_one",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_prod",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/NoZeroDivisors.lean"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean"
+          },
+          {
+            "name": "MvPowerSeries.weightedOrder_eq_nat",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Finder",
+    "query": "supremum of real set bounded above by a nonnegative number",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Real.sSup_le\",\n      \"informal_name\": \"Supremum is Less Than or Equal to Upper Bound in Real Numbers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a\",\n      \"informal_description\": \"If every element of a set $ s $ of real numbers is less than or equal to a non-negative real number $ a $, then the supremum of $ s $ satisfies $ \\\\sup s \\\\leq a $.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.iSup_le\",\n      \"informal_name\": \"Supremum Upper Bound Inequality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ} {a : ℝ}, (∀ (i : ι), f i ≤ a) → 0 ≤ a → ⨆ i, f i ≤ a\",\n      \"informal_description\": \"For a real-valued function $f$ and a non-negative real number $a$, if $f(i) \\\\leq a$ for all indices $i$, then the supremum of the set $\\\\{f(i) \\\\mid i\\\\}$ satisfies $\\\\bigvee_{i} f(i) \\\\leq a$.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.sSup_nonneg'\",\n      \"informal_name\": \"Supremum Non-Negativity for Sets Containing Non-Negative Elements\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\",\n      \"informal_description\": \"If a set of real numbers contains at least one element $x$ satisfying $0 \\\\leq x$, then the supremum of the set satisfies $0 \\\\leq \\\\sup s$.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.sSup_nonneg\",\n      \"informal_name\": \"Supremum of Non-Negative Set is Non-Negative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\",\n      \"informal_description\": \"If every element of a set $ S $ of real numbers is non-negative, then the supremum of $ S $ is also non-negative. Formally, if $ \\\\forall x \\\\in S, 0 \\\\leq x $, then $ 0 \\\\leq \\\\sup S $.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    },\n    {\n      \"formal_name\": \"Real.sSup_nonpos\",\n      \"informal_name\": \"Supremum of Non-Positive Set is Non-Positive\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∀ x ∈ s, x ≤ 0) → sSup s ≤ 0\",\n      \"informal_description\": \"If every element of a set $ S $ of real numbers satisfies $ x \\\\leq 0 $, then the supremum of $ S $ satisfies $ \\\\sup S \\\\leq 0 $.\",\n      \"path\": \"Mathlib.Data.Real.Archimedean\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Real.sSup_le",
+            "informal_name": "Supremum is Less Than or Equal to Upper Bound in Real Numbers",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a",
+            "informal_description": "If every element of a set $ s $ of real numbers is less than or equal to a non-negative real number $ a $, then the supremum of $ s $ satisfies $ \\sup s \\leq a $.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.iSup_le",
+            "informal_name": "Supremum Upper Bound Inequality",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ} {a : ℝ}, (∀ (i : ι), f i ≤ a) → 0 ≤ a → ⨆ i, f i ≤ a",
+            "informal_description": "For a real-valued function $f$ and a non-negative real number $a$, if $f(i) \\leq a$ for all indices $i$, then the supremum of the set $\\{f(i) \\mid i\\}$ satisfies $\\bigvee_{i} f(i) \\leq a$.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.sSup_nonneg'",
+            "informal_name": "Supremum Non-Negativity for Sets Containing Non-Negative Elements",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∃ x ∈ s, 0 ≤ x) → 0 ≤ sSup s",
+            "informal_description": "If a set of real numbers contains at least one element $x$ satisfying $0 \\leq x$, then the supremum of the set satisfies $0 \\leq \\sup s$.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.sSup_nonneg",
+            "informal_name": "Supremum of Non-Negative Set is Non-Negative",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s",
+            "informal_description": "If every element of a set $ S $ of real numbers is non-negative, then the supremum of $ S $ is also non-negative. Formally, if $ \\forall x \\in S, 0 \\leq x $, then $ 0 \\leq \\sup S $.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          },
+          {
+            "formal_name": "Real.sSup_nonpos",
+            "informal_name": "Supremum of Non-Positive Set is Non-Positive",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∀ x ∈ s, x ≤ 0) → sSup s ≤ 0",
+            "informal_description": "If every element of a set $ S $ of real numbers satisfies $ x \\leq 0 $, then the supremum of $ S $ satisfies $ \\sup S \\leq 0 $.",
+            "path": "Mathlib.Data.Real.Archimedean"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Loogle",
+    "query": "\"sSup_le\"",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"sSup_le_sSup\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : s ⊆ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Defs\"\n    },\n    {\n      \"name\": \"sSup_le\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s : Set α} {a : α} (h : ∀ b ∈ s, b ≤ a) : sSup s ≤ a\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Defs\"\n    },\n    {\n      \"name\": \"sSup_le_iff\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s : Set α} {a : α} : sSup s ≤ a ↔ ∀ b ∈ s, b ≤ a\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Defs\"\n    },\n    {\n      \"name\": \"sSup_le_sSup_of_isCofinalFor\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : IsCofinalFor s t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"sSup_le_sSup_of_subset_insert_bot\",\n      \"type\": \" {α : Type u_1} [CompleteLattice α] {s t : Set α} (h : s ⊆ insert ⊥ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "sSup_le_sSup",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : s ⊆ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Defs"
+          },
+          {
+            "name": "sSup_le",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s : Set α} {a : α} (h : ∀ b ∈ s, b ≤ a) : sSup s ≤ a",
+            "module": "Mathlib.Order.CompleteLattice.Defs"
+          },
+          {
+            "name": "sSup_le_iff",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s : Set α} {a : α} : sSup s ≤ a ↔ ∀ b ∈ s, b ≤ a",
+            "module": "Mathlib.Order.CompleteLattice.Defs"
+          },
+          {
+            "name": "sSup_le_sSup_of_isCofinalFor",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : IsCofinalFor s t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Basic"
+          },
+          {
+            "name": "sSup_le_sSup_of_subset_insert_bot",
+            "type": " {α : Type u_1} [CompleteLattice α] {s t : Set α} (h : s ⊆ insert ⊥ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "LeanSearch",
+    "query": "If every member of a set of real numbers is at most c and c is nonnegative then the supremum is at most c",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sSup_le\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a\"\n    },\n    {\n      \"name\": \"Real.iSup_le\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Sort u_1} {f : ι → ℝ} {a : ℝ}, (∀ (i : ι), f i ≤ a) → 0 ≤ a → ⨆ i, f i ≤ a\"\n    },\n    {\n      \"name\": \"sup_le\",\n      \"module_name\": \"Mathlib.Order.Lattice\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} [inst : SemilatticeSup α] {a b c : α}, a ≤ c → b ≤ c → a ⊔ b ≤ c\"\n    },\n    {\n      \"name\": \"ciSup_le\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Indexed\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} [inst : ConditionallyCompleteLattice α] [Nonempty ι] {f : ι → α} {c : α},\\n  (∀ (x : ι), f x ≤ c) → iSup f ≤ c\"\n    },\n    {\n      \"name\": \"Real.sSup_nonpos\",\n      \"module_name\": \"Mathlib.Data.Real.Archimedean\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Set ℝ}, (∀ x ∈ s, x ≤ 0) → sSup s ≤ 0\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sSup_le",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a"
+          },
+          {
+            "name": "Real.iSup_le",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {ι : Sort u_1} {f : ι → ℝ} {a : ℝ}, (∀ (i : ι), f i ≤ a) → 0 ≤ a → ⨆ i, f i ≤ a"
+          },
+          {
+            "name": "sup_le",
+            "module_name": "Mathlib.Order.Lattice",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} [inst : SemilatticeSup α] {a b c : α}, a ≤ c → b ≤ c → a ⊔ b ≤ c"
+          },
+          {
+            "name": "ciSup_le",
+            "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Indexed",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {ι : Sort u_4} [inst : ConditionallyCompleteLattice α] [Nonempty ι] {f : ι → α} {c : α},\n  (∀ (x : ι), f x ≤ c) → iSup f ≤ c"
+          },
+          {
+            "name": "Real.sSup_nonpos",
+            "module_name": "Mathlib.Data.Real.Archimedean",
+            "kind": "theorem",
+            "type": "∀ {s : Set ℝ}, (∀ x ∈ s, x ≤ 0) → sSup s ≤ 0"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local",
+    "query": "sSup_le",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"CategoryTheory.Subobject.sSup_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/CategoryTheory/Subobject/Lattice.lean\"\n    },\n    {\n      \"name\": \"DirectedOn.sSup_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/CompletePartialOrder.lean\"\n    },\n    {\n      \"name\": \"LinearPMap.sSup_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/LinearPMap.lean\"\n    },\n    {\n      \"name\": \"Real.sSup_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean\"\n    },\n    {\n      \"name\": \"sSup_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Defs.lean\"\n    },\n    {\n      \"name\": \"sSup_le_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Defs.lean\"\n    },\n    {\n      \"name\": \"sSup_le_sSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Set/Defs.lean\"\n    },\n    {\n      \"name\": \"sSup_le_sSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Defs.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "CategoryTheory.Subobject.sSup_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/CategoryTheory/Subobject/Lattice.lean"
+          },
+          {
+            "name": "DirectedOn.sSup_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Order/CompletePartialOrder.lean"
+          },
+          {
+            "name": "LinearPMap.sSup_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/LinearPMap.lean"
+          },
+          {
+            "name": "Real.sSup_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/Real/Basic.lean"
+          },
+          {
+            "name": "sSup_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Defs.lean"
+          },
+          {
+            "name": "sSup_le_iff",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Defs.lean"
+          },
+          {
+            "name": "sSup_le_sSup",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Set/Defs.lean"
+          },
+          {
+            "name": "sSup_le_sSup",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/CompleteLattice/Defs.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

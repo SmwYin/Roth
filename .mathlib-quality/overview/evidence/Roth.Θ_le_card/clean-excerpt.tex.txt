@@ -1,0 +1,70 @@
+
+For nonzero $c$ and $l>0$, the same definition gives
+\[
+\ind(cP;\alpha;r)=\ind(P;\alpha;r),\qquad
+\ind(P;\alpha;lr)=\frac1l\ind(P;\alpha;r),
+\]
+with the second identity interpreted in the extended nonnegative reals.
+
+\section{Index across sets of polynomials}
+
+Let $m$ be a natural number $m \geq 1$. For positive integers $r_1, \dots, r_m$ and a real number $B \geq 1$ we let
+$$
+\mathcal R_m = \mathcal R_m (B; r_1, \dots, r_m)
+$$
+be the set of polynomials $R(x_1, \dots, x_m)$ in the variables $x_1, \dots, x_m$ such that:
+\begin{enumerate}
+    \item $R$ has integral coefficients and is not identically zero;
+    \item $R$ has degree at most $r_j$ in $x_j$ for $1 \leq j \leq m$;
+    \item the coefficients of $R$ have absolute values not exceeding $B$.
+\end{enumerate}
+
+Let $q_1, \dots, q_m$ denote positive integers. We define
+$$
+\Theta_m(B; q_1, \dots, q_m; r_1, \dots, r_m)
+$$
+to be the supremum of the numbers
+$$
+\ind (R; \frac{h_1}{q_1}, \dots, \frac{h_m}{q_m}; r_1, \dots, r_m)
+$$
+over all $R \in \mathcal R_m(B; r_1, \dots, r_m)$ and integers $h_i$, $1 \leq i \leq m$, with $\gcd(h_i, q_i)=1$.
+This supremum is well-defined and satisfies $0\leq\Theta_m\leq m$:
+the constant polynomial $1$ with every $h_i=1$ is allowed, and Taylor's theorem gives a nonzero
+derivative with $0\leq i_j\leq r_j$, of weight at most $m$.
+Also, $\Theta_m$ is nondecreasing in $B$, since increasing $B$ enlarges the
+set of allowed polynomials.
+
+\begin{lem}\label{roth:lem5}
+    Suppose additionally that $q_1>1$. Then we have
+    $$
+    \Theta_1(B; q_1; r_1) \leq \frac{\log B}{r_1 \log q_1}.
+    $$
+\end{lem}
+\begin{proof}
+    Let $R\in\mathcal R_1(B;r_1)$ and $\gcd(h_1,q_1)=1$.
+    Let $t\in\N$ be the multiplicity of $h_1/q_1$ as a root of $R$;
+    Taylor's theorem gives $\theta=\ind(R;h_1/q_1;r_1)=t/r_1$.
+    The polynomial $(q_1x_1-h_1)^t$ is primitive and divides $R$ over $\Q$.
+    Gauss's lemma therefore gives a nonzero $Q\in\Z[x_1]$ with
+    \[
+    R(x_1)=(q_1x_1-h_1)^tQ(x_1).
+    \]
+    Comparing nonzero leading coefficients yields
+    \[
+    B\geq|\operatorname{lc}(R)|
+       =q_1^t|\operatorname{lc}(Q)|\geq q_1^t.
+    \]
+    Since $\log q_1>0$ and $r_1>0$, taking logarithms gives
+    $\theta\leq\log B/(r_1\log q_1)$. Taking the supremum proves the claim.
+\end{proof}
+
+\lean{First identify the one-variable index with $t/r_1$, where $t$ is the
+natural-number root multiplicity. Use
+Gauss's lemma\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Polynomial/GaussLemma.html}}
+for the primitive polynomial $(q_1X-h_1)^t$, compare leading coefficients
+in $\Z$, and only then cast to $\R$ and take logarithms, using $q_1>1$.
+For $\Theta_m$, record nonemptiness and boundedness of the defining family,
+together with lemmas for bounding an individual index and monotonicity in
+$B$, before using the supremum.}
+
+\begin{lem}\label{roth:lem6}

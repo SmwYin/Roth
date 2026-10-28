@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 188/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 189/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 188; remaining: 105.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 42 NO-mathlib-has-it, 56 BORDERLINE-needs-human, 33 SKIP.
+- Completed applicable assessments: 189; remaining: 104.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 42 NO-mathlib-has-it, 57 BORDERLINE-needs-human, 33 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2169,6 +2169,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: declarations: Roth.index_le_lem6; source line: 583; call occurrences: 2; direct kernel value consumers: 1; direct type consumers: 0; external module consumers: 0
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.Θ_nonneg.md).
 
+### Completed: `Roth.Θ_le_card`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] {B : ℝ} (q : σ → ℕ) {r : σ → ℕ},
+  Roth.Θ B q r ≤ ↑(Fintype.card σ)`
+- What: The supremum of all admissible polynomial indices is bounded by the number of variables, for every real coefficient bound and all natural denominator/weight vectors.
+- How: Apply Real.sSup_le with nonnegative cardinality; destruct each admissible index, transport nonzero and coordinate degrees through the injective integer-to-real coefficient map, then apply project index_le_card.
+- Hypotheses: Fintype σ; arbitrary B:ℝ and q,r:σ→ℕ. No DecidableEq, nonempty σ, B≥1, q>0 or r>0 assumptions. Hidden degree bounds matter; nonzero can be dropped only for a separately enlarged family under real-default0 index convention.
+- Project dependencies: Roth.Θ, Roth.indexSet, Roth.RSet, Roth.index_le_card
+- Caller summary: One explicit application at Theta.lean:939 in private theta_lt_of_large_delta_aux (933–958); zero external-file calls. Canonical audit293 confirms one direct value consumer and no type consumer. Complete caller replay verified with replacement.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.Θ_le_card.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2571,6 +2582,8 @@ Completed `Roth.index_le_Θ`: Pinned le_csSup exactly supplies the abstract memb
 
 Completed `Roth.Θ_nonneg`: law: Real.sSup_nonneg; parent: SupSet.sSup; pointwise: Real.sInf_nonneg, Finset.sum_nonneg, div_nonneg, Nat.cast_nonneg; family transport: Set.forall_mem_image2.mpr; defaults: Real.sSup_empty, Real.sSup_of_not_bddAbove; status: 15 search cells and five clean native sets
 
+Completed `Roth.Θ_le_card`: Five actual methods on current, literature and abstract forms. Real.sSup_le exactly covers supremum transport and Set.forall_mem_image2 covers quantifier transport. weightedOrder_le and polynomial degree lemmas are partial building blocks; full degree-normalized uniform bound still uses project index_le_card.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2948,6 +2961,8 @@ Completed `Roth.indexSet_bddAbove`: Θ_le_card repeats the same mapped-degree/in
 Completed `Roth.index_le_Θ`: Dependent law of parent Θ, already exact SupSet.sSup; re-aim gate applies after independent native law/bridge checks.
 
 Completed `Roth.Θ_nonneg`: Existing nonnegative real supremum law specialized to the project family; parent re-aim independently checked.
+
+Completed `Roth.Θ_le_card`: indexSet_bddAbove repeats the same arithmetic pointwise proof but asserts existence of an upper bound; Θ_le_card retains the known bound. Neither is identical to the other, and BddAbove alone cannot supply this cardinality bound.
 
 ## Part 5: Generalization opportunities
 
@@ -3337,6 +3352,8 @@ Completed `Roth.index_le_Θ`: Fixed polynomial interface needs Fintype; expanded
 
 Completed `Roth.Θ_nonneg`: unchanged parent: No extra premise to drop; Fintype fixed by current index interface.; expanded: Arbitrary Set ℝ or arbitrary real two-argument family with pointwise nonnegativity; already existing law.; guard: Negative singleton rules out deleting the nonnegative-value premise; preserve real default0.
 
+Completed `Roth.Θ_le_card`: Verified expanded_family handles arbitrary sets of real multivariate polynomials (including zero) and arbitrary real evaluation points, with only coordinate degree bounds. This changes the parent family/interface; it is not deletion of a hypothesis from the existing Θ statement. Generic supremum law already exists.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3715,6 +3732,8 @@ Completed `Roth.indexSet_bddAbove`: Upstream design choice for reusable weighted
 Completed `Roth.index_le_Θ`: No missing generic supremum law. Substantive arithmetic boundedness remains project API, accepted186 BORDERLINE; it is not a mathlib building block.
 
 Completed `Roth.Θ_nonneg`: None
+
+Completed `Roth.Θ_le_card`: Whether a Taylor coordinate-degree/cardinality envelope merits named upstream API after the index/Taylor parent representation is settled. Generic supremum transport is present; no claim that search failure proves absence.
 
 ## Part 7: Junk / removable
 
@@ -4097,6 +4116,8 @@ Completed `Roth.index_le_Θ`: Useful local helper; not dead. Upstream duplicate 
 
 Completed `Roth.Θ_nonneg`: Not dead code: two explicit calls in one declaration; not tagged simp.
 
+Completed `Roth.Θ_le_card`: Not dead: used once to close the large-delta branch of Lemma7. Retain local API during read-only assessment.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4289,6 +4310,7 @@ Completed `Roth.Θ_nonneg`: Not dead code: two explicit calls in one declaration
 | 186 | `Roth.indexSet_bddAbove` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.indexSet_bddAbove.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.indexSet_bddAbove/root-acceptance.json) |
 | 187 | `Roth.index_le_Θ` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_le_Θ.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_le_Θ/root-acceptance.json) |
 | 188 | `Roth.Θ_nonneg` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_nonneg/root-acceptance.json) |
+| 189 | `Roth.Θ_le_card` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_le_card.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_le_card/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4664,12 +4686,14 @@ Completed `Roth.index_le_Θ` action: Do not upstream this theorem. Inline le_csS
 
 Completed `Roth.Θ_nonneg` action: NO-mathlib-has-it. Inline Real.sSup_nonneg at both index_le_lem6 occurrences with independent pointwise premise, or retain project-local manuscript convenience theorem; no upstream addition.
 
+Completed `Roth.Θ_le_card` action: BORDERLINE-needs-human: retain Roth/Theta.lean theorem; resolve upstream normalized-index envelope/parent representation and whether any family corollary belongs upstream. Future cleanup can factor shared pointwise arithmetic bound with indexSet_bddAbove. No production changes.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.Θ_le_card` next. Supporting identities receive their own applicable checks.
+   `Roth.Θ_le_of_forall_index_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

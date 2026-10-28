@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\n#check_failure Roth.Θ_le_card\n#check @Real.sSup_le\n#check @csSup_le\n#check @Set.forall_mem_image2\nnamespace ThetaLeCard189Isolated\nuniverse u v\ntheorem law {s : Set ℝ} {c : ℝ} (hs : ∀ x ∈ s, x ≤ c) (hc : 0 ≤ c) : sSup s ≤ c :=\n  Real.sSup_le hs hc\ntheorem family {A : Type u} {H : Type v} (f : A → H → ℝ) (s : Set A) (t : Set H)\n    {c : ℝ} (hf : ∀ a ∈ s, ∀ h ∈ t, f a h ≤ c) (hc : 0 ≤ c) :\n    sSup (Set.image2 f s t) ≤ c :=\n  Real.sSup_le (Set.forall_mem_image2.mpr hf) hc\ntheorem nonempty_law {s : Set ℝ} {c : ℝ} (hs : s.Nonempty) (hb : ∀ x ∈ s, x ≤ c) :\n    sSup s ≤ c := csSup_le hs hb\ntheorem empty_guard : ¬ (∀ (s : Set ℝ) (c : ℝ), (∀ x ∈ s, x ≤ c) → sSup s ≤ c) := by\n  intro h\n  have h' := h ∅ (-1) (by simp)\n  rw [Real.sSup_empty] at h'\n  norm_num at h'\ntheorem bdd_guard : ¬ (∀ s : Set ℝ, BddAbove s → sSup s ≤ 1) := by\n  intro h\n  have h' := h {2} (bddAbove_singleton (a := (2 : ℝ)))\n  rw [csSup_singleton] at h'\n  norm_num at h'\n#print axioms law\n#print axioms family\n#print axioms nonempty_law\n#print axioms empty_guard\n#print axioms bdd_guard\nend ThetaLeCard189Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.Θ_le_card`\",\n      \"line\": 16,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sSup_le : ∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@csSup_le : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\\n  s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Set.forall_mem_image2 : ∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} {f : α → β → γ} {s : Set α} {t : Set β}\\n  {p : γ → Prop}, (∀ z ∈ Set.image2 f s t, p z) ↔ ∀ x ∈ s, ∀ y ∈ t, p (f x y)\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaLeCard189Isolated.law' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaLeCard189Isolated.family' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaLeCard189Isolated.nonempty_law' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaLeCard189Isolated.empty_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaLeCard189Isolated.bdd_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.Θ_le_card`",
+          "line": 16,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sSup_le : ∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@csSup_le : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\n  s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Set.forall_mem_image2 : ∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} {f : α → β → γ} {s : Set α} {t : Set β}\n  {p : γ → Prop}, (∀ z ∈ Set.image2 f s t, p z) ↔ ∀ x ∈ s, ∀ y ∈ t, p (f x y)",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaLeCard189Isolated.law' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaLeCard189Isolated.family' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaLeCard189Isolated.nonempty_law' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaLeCard189Isolated.empty_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaLeCard189Isolated.bdd_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 232
+}
