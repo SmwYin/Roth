@@ -1,0 +1,11 @@
+private lemma factorial_coefficient_le_two_pow_aux (p r₁ l : ℕ) (hl : l ≤ 2 ^ r₁) :
+    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤ 2 ^ ((2 * p + 1) * r₁ * l) := by
+  calc
+    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁)
+        ≤ (2 ^ r₁) ^ (p * l) * (2 ^ r₁) ^ l * 2 ^ (p * l * r₁) := by
+          gcongr
+          · exact Nat.lt_two_pow_self
+          · exact (Nat.factorial_le_pow l).trans (Nat.pow_le_pow_left hl _)
+    _ = 2 ^ ((2 * p + 1) * r₁ * l) := by
+      rw [← pow_mul, ← pow_mul, ← pow_add, ← pow_add]
+      ring_nf

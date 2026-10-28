@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 609,
+  "name": "Roth.factorial_coefficient_le_two_pow_aux",
+  "short": "factorial_coefficient_le_two_pow_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 619,
+  "source": "private lemma factorial_coefficient_le_two_pow_aux (p r₁ l : ℕ) (hl : l ≤ 2 ^ r₁) :\n    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤ 2 ^ ((2 * p + 1) * r₁ * l) := by\n  calc\n    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁)\n        ≤ (2 ^ r₁) ^ (p * l) * (2 ^ r₁) ^ l * 2 ^ (p * l * r₁) := by\n          gcongr\n          · exact Nat.lt_two_pow_self\n          · exact (Nat.factorial_le_pow l).trans (Nat.pow_le_pow_left hl _)\n    _ = 2 ^ ((2 * p + 1) * r₁ * l) := by\n      rw [← pow_mul, ← pow_mul, ← pow_add, ← pow_add]\n      ring_nf",
+  "signature": "private lemma factorial_coefficient_le_two_pow_aux (p r₁ l : ℕ) (hl : l ≤ 2 ^ r₁) :\n    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤ 2 ^ ((2 * p + 1) * r₁ * l)",
+  "body": "by\n  calc\n    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁)\n        ≤ (2 ^ r₁) ^ (p * l) * (2 ^ r₁) ^ l * 2 ^ (p * l * r₁) := by\n          gcongr\n          · exact Nat.lt_two_pow_self\n          · exact (Nat.factorial_le_pow l).trans (Nat.pow_le_pow_left hl _)\n    _ = 2 ^ ((2 * p + 1) * r₁ * l) := by\n      rw [← pow_mul, ← pow_mul, ← pow_add, ← pow_add]\n      ring_nf",
+  "proof_lines": 10,
+  "sha256": "73af3cb032b812206db468d4e46a0d89ebbfe127560c7b668ad3abd61201d613",
+  "what": "The non-coefficient factors in the determinant bound are bounded by a single power of two.",
+  "how": "Bound r+1 by two to r and l! by l to l using Nat.lt_two_pow_self and Nat.factorial_le_pow; combine power exponents.",
+  "hypotheses": "Determinant size at most two to the maximum degree.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.lem6M_lt",
+      "file": "Roth/Theta.lean",
+      "line": 649
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.lem6M_lt"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 169,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.lem6M_lt",
+      "file": "Roth/Theta.lean",
+      "line": 649
+    }
+  ]
+}
