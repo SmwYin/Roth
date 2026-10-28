@@ -1,0 +1,96 @@
+[
+  {
+    "file": "Roth/Theta.lean",
+    "line": 556,
+    "name": "Roth.index_le_lem6",
+    "short": "index_le_lem6",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 587,
+    "source": "theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option τ → ℕ}\n    (hrp : 3 ≤ (r none : ℝ)) (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ}\n    (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ} (_hq : ∀ j, 0 < q j) {B : ℝ}\n    {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r) {h : Option τ → ℤ}\n    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧\n      index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤\n        2 * (lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +\n          √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by\n  -- Retain the paper's positive-denominator setting.\n  classical\n  have hrp0 : (0 : ℝ) < r none := (by norm_num : (0 : ℝ) < 3).trans_le hrp\n  have hr0 : ∀ j, 0 < r j := fun j ↦ by\n    cases j with\n    | none => exact_mod_cast hrp0\n    | some j => exact_mod_cast pos_of_mul_pos_right (hrp0.trans_le (hratio j)) hδ0\n  obtain ⟨l, hl, hl', D, hD, U, V, hU, hV, hUd, hVd, hF⟩ := exists_det_eq_mul hR.1 hR.2.1\n  refine ⟨l, hl, hl', ?_⟩\n  let α : Option τ → ℝ := fun j ↦ (h j : ℝ) / q j\n  let Φ := lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l\n  -- The two bounds for the index of `F`.\n  have hlower := sum_max_sub_le_index_det D hD (mapped_det_ne_zero_aux hU hV hF) α hr0\n    (fun d hd ↦ weight_le_delta_aux hδ0 hratio (hd.trans (Nat.sub_le_iff_le_add.2 hl')))\n  have hupper := index_det_le hr0 hr₁ hR hh hl hU hV hUd hVd hF\n  simp only [RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map, Matrix.of_apply] at hupper\n  simp only [hasseDeriv_map] at hlower\n  -- Both summands of `Φ` are nonnegative.\n  apply index_numeric_bound_aux (Φ := Φ) (l := (l : ℝ))\n    (add_nonneg (Θ_nonneg _) (Θ_nonneg _)) hδ1 hrp\n    (by exact_mod_cast (show 0 < l from hl))\n    (by exact_mod_cast hl')\n  exact (min_le_sum_max (θ := index (map (Int.castRingHom ℝ) R) α r) (rp := r none) l).trans\n    (by simpa only [mul_add] using sub_le_iff_le_add.1 (hlower.trans hupper))",
+    "signature": "theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option τ → ℕ}\n    (hrp : 3 ≤ (r none : ℝ)) (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ}\n    (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ} (_hq : ∀ j, 0 < q j) {B : ℝ}\n    {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r) {h : Option τ → ℤ}\n    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧\n      index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤\n        2 * (lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +\n          √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ)",
+    "body": "by\n  -- Retain the paper's positive-denominator setting.\n  classical\n  have hrp0 : (0 : ℝ) < r none := (by norm_num : (0 : ℝ) < 3).trans_le hrp\n  have hr0 : ∀ j, 0 < r j := fun j ↦ by\n    cases j with\n    | none => exact_mod_cast hrp0\n    | some j => exact_mod_cast pos_of_mul_pos_right (hrp0.trans_le (hratio j)) hδ0\n  obtain ⟨l, hl, hl', D, hD, U, V, hU, hV, hUd, hVd, hF⟩ := exists_det_eq_mul hR.1 hR.2.1\n  refine ⟨l, hl, hl', ?_⟩\n  let α : Option τ → ℝ := fun j ↦ (h j : ℝ) / q j\n  let Φ := lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l\n  -- The two bounds for the index of `F`.\n  have hlower := sum_max_sub_le_index_det D hD (mapped_det_ne_zero_aux hU hV hF) α hr0\n    (fun d hd ↦ weight_le_delta_aux hδ0 hratio (hd.trans (Nat.sub_le_iff_le_add.2 hl')))\n  have hupper := index_det_le hr0 hr₁ hR hh hl hU hV hUd hVd hF\n  simp only [RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map, Matrix.of_apply] at hupper\n  simp only [hasseDeriv_map] at hlower\n  -- Both summands of `Φ` are nonnegative.\n  apply index_numeric_bound_aux (Φ := Φ) (l := (l : ℝ))\n    (add_nonneg (Θ_nonneg _) (Θ_nonneg _)) hδ1 hrp\n    (by exact_mod_cast (show 0 < l from hl))\n    (by exact_mod_cast hl')\n  exact (min_le_sum_max (θ := index (map (Int.castRingHom ℝ) R) α r) (rp := r none) l).trans\n    (by simpa only [mul_add] using sub_le_iff_le_add.1 (hlower.trans hupper))",
+    "proof_lines": 25,
+    "sha256": "eb0760229f8ef18bb0ebcac10647faaa0924aac9891c3c9f84aee04c42f563fd",
+    "what": "For each admissible polynomial there is a determinant size yielding the Lemma6 index bound.",
+    "how": "Choose exists_det_eq_mul; combine sum_max_sub_le_index_det, index_det_le and min_le_sum_max, then apply index_numeric_bound_aux.",
+    "hypotheses": "Nonnegative delta at most one; distinguished weight at least three; degree ratio and maximum bounds; coprime positive-denominator point.",
+    "source_body_refs": [
+      "MvPolynomial.hasseDeriv_map",
+      "Roth.exists_det_eq_mul",
+      "Roth.index",
+      "Roth.index_det_le",
+      "Roth.index_numeric_bound_aux",
+      "Roth.lem6M",
+      "Roth.lem6Φ",
+      "Roth.mapped_det_ne_zero_aux",
+      "Roth.min_le_sum_max",
+      "Roth.sum_max_sub_le_index_det",
+      "Roth.weight_le_delta_aux",
+      "Roth.Θ_nonneg"
+    ],
+    "source_type_refs": [
+      "Roth.RSet",
+      "Roth.index",
+      "Roth.lem6M",
+      "Roth.lem6Φ"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.Θ_option_le",
+        "file": "Roth/Theta.lean",
+        "line": 593
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+    "uses_from_project": [
+      "MvPolynomial.hasseDeriv_map",
+      "Roth.exists_det_eq_mul",
+      "Roth.index",
+      "Roth.index_det_le",
+      "Roth.index_numeric_bound_aux",
+      "Roth.lem6M",
+      "Roth.lem6Φ",
+      "Roth.mapped_det_ne_zero_aux",
+      "Roth.min_le_sum_max",
+      "Roth.sum_max_sub_le_index_det",
+      "Roth.weight_le_delta_aux",
+      "Roth.Θ_nonneg"
+    ],
+    "used_by_in_file": [
+      "Roth.Θ_option_le"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 584,
+    "project_body_refs": [
+      "MvPolynomial.hasseDeriv_map",
+      "Roth.exists_det_eq_mul",
+      "Roth.index",
+      "Roth.index_det_le",
+      "Roth.index_numeric_bound_aux",
+      "Roth.lem6M",
+      "Roth.lem6Φ",
+      "Roth.mapped_det_ne_zero_aux",
+      "Roth.min_le_sum_max",
+      "Roth.sum_max_sub_le_index_det",
+      "Roth.weight_le_delta_aux",
+      "Roth.Θ_nonneg"
+    ],
+    "project_type_refs": [
+      "Roth.RSet",
+      "Roth.index",
+      "Roth.lem6M",
+      "Roth.lem6Φ"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.Θ_option_le",
+        "file": "Roth/Theta.lean",
+        "line": 593
+      }
+    ]
+  }
+]

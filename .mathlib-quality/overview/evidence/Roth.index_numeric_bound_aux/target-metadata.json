@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 531,
+  "name": "Roth.index_numeric_bound_aux",
+  "short": "index_numeric_bound_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 549,
+  "source": "private lemma index_numeric_bound_aux {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 3 ≤ rp)\n    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ l * (Φ + δ)) :\n    θ ≤ 2 * (Φ + √Φ + √δ) := by\n  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.\n  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _\n  have hrp0 : 0 < rp := (by norm_num : (0 : ℝ) < 3).trans_le hrp\n  rcases min_le_iff.1 hmin with hk | hk\n  · have hθ : θ ≤ 2 * (Φ + δ) := by\n      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk\n    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]\n  · have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := (mul_le_mul_iff_right₀ hrp0).1 (by\n      have hsize : 3 * l ≤ 4 * rp := by linarith only [hl', hrp]\n      linear_combination 3 * hk + mul_le_mul_of_nonneg_right hsize\n        (nonneg_of_mul_nonneg_right\n          ((div_nonneg (mul_nonneg hrp0.le (sq_nonneg θ)) (by norm_num)).trans hk) hl))\n    have hθ : θ ≤ 2 * (√Φ + √δ) := le_of_sq_le_sq (by\n      linear_combination hsq + 4 * ((le_max_left δ 0).trans_eq (Real.sq_sqrt').symm) +\n        4 * (Real.sq_sqrt hΦ).symm + 8 * mul_nonneg hsΦ (Real.sqrt_nonneg δ)) (by positivity)\n    linarith only [hθ, hΦ]",
+  "signature": "private lemma index_numeric_bound_aux {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 3 ≤ rp)\n    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ l * (Φ + δ)) :\n    θ ≤ 2 * (Φ + √Φ + √δ)",
+  "body": "by\n  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.\n  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _\n  have hrp0 : 0 < rp := (by norm_num : (0 : ℝ) < 3).trans_le hrp\n  rcases min_le_iff.1 hmin with hk | hk\n  · have hθ : θ ≤ 2 * (Φ + δ) := by\n      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk\n    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]\n  · have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := (mul_le_mul_iff_right₀ hrp0).1 (by\n      have hsize : 3 * l ≤ 4 * rp := by linarith only [hl', hrp]\n      linear_combination 3 * hk + mul_le_mul_of_nonneg_right hsize\n        (nonneg_of_mul_nonneg_right\n          ((div_nonneg (mul_nonneg hrp0.le (sq_nonneg θ)) (by norm_num)).trans hk) hl))\n    have hθ : θ ≤ 2 * (√Φ + √δ) := le_of_sq_le_sq (by\n      linear_combination hsq + 4 * ((le_max_left δ 0).trans_eq (Real.sq_sqrt').symm) +\n        4 * (Real.sq_sqrt hΦ).symm + 8 * mul_nonneg hsΦ (Real.sqrt_nonneg δ)) (by positivity)\n    linarith only [hθ, hΦ]",
+  "proof_lines": 17,
+  "sha256": "e8dea612c0fd3d992bdab00d1f96c85e11782b33b953ac295898c3b5c0cde25c",
+  "what": "A minimum of linear and quadratic bounds implies a square-root upper bound for the index variable.",
+  "how": "Split min_le_iff; solve the linear case directly and use Real.sq_sqrt and Real.le_sqrt_self_iff in the quadratic comparison.",
+  "hypotheses": "Nonnegative Phi, delta at most one, scale at least three and positive length at most scale plus one.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.index_le_lem6",
+      "file": "Roth/Theta.lean",
+      "line": 556
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.index_le_lem6"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 217,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.index_le_lem6",
+      "file": "Roth/Theta.lean",
+      "line": 556
+    }
+  ]
+}
