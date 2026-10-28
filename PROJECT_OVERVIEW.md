@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 185/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 186/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 185; remaining: 108.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 40 NO-mathlib-has-it, 55 BORDERLINE-needs-human, 33 SKIP.
+- Completed applicable assessments: 186; remaining: 107.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 40 NO-mathlib-has-it, 56 BORDERLINE-needs-human, 33 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2134,6 +2134,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 2 explicit calls, both Theta:127/136;0 outside-file; canonical293 finds2 value/0 type consumers. Both complete caller replacements native clean.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.indexSet_nonempty.md).
 
+### Completed: `Roth.indexSet_bddAbove`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] (B : ℝ) (q : σ → ℕ) {r : σ → ℕ},
+  BddAbove (Roth.indexSet B q r)`
+- What: The real index family of degree/coefficient-bounded nonzero integer polynomials at coprime rational numerator choices is bounded above by cardσ.
+- How: Choose cardσ, unpack family witnesses, transfer nonzero and degrees through integer-real coefficient map, apply project index_le_card. Generic image2 packaging independently verified.
+- Hypotheses: Arbitrary universe σ with Fintype; arbitrary real B; natural vectors q,r. No positivity, 1≤B, DecidableEq or nonempty-family premise.
+- Project dependencies: Roth.indexSet, Roth.RSet, Roth.index, Roth.index_le_card
+- Caller summary: explicit applications: 2; external to file: 0; callers: Roth.index_le_Θ, Roth.Θ_mono; canonical value consumers: 2; canonical type consumers: 0
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.indexSet_bddAbove.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2530,6 +2541,8 @@ Completed `Roth.one_mem_RSet`: All15 search cells; pinned degreeOf_one, coeff_on
 
 Completed `Roth.indexSet_nonempty`: All15 method×form cells: Set.Nonempty.image2 and Set.image2_nonempty_iff independently native verified; local index unavailable disclosed.
 
+Completed `Roth.indexSet_bddAbove`: Set.forall_mem_image2 gives one-call structural predicate transport; constructor yields BddAbove from supplied uniform bound. BddAbove.image2 rejected because monotonicity and bounded ordered source premises differ. No full existing arithmetic theorem established.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2901,6 +2914,8 @@ Completed `Roth.lem6Φ`: Existing addition of two supremal values; no standalone
 Completed `Roth.one_mem_RSet`: Elementary unit-degree and coefficient-delta facts exist; exact all-three-condition family membership law not independently verified upstream. No absence claim from unavailable local index.
 
 Completed `Roth.indexSet_nonempty`: Binary-image nonemptiness after accepted180 parent re-aim. Arithmetic complete-family witness is separately project mathematics, not a mathlib building block.
+
+Completed `Roth.indexSet_bddAbove`: Θ_le_card repeats the same mapped-degree/index bound inside a stronger numeric supremum estimate; full target is useful local side-condition API.
 
 ## Part 5: Generalization opportunities
 
@@ -3284,6 +3299,8 @@ Completed `Roth.one_mem_RSet`: Already arbitrary σ and r under fixed RSet. Expa
 
 Completed `Roth.indexSet_nonempty`: Abstract law accepts arbitrary types/sets/total binary maps without Fintype, arithmetic, order or topology. Original hB is sharp: actual indexSet.Nonempty↔1≤B checked via nonzero integer coefficient.
 
+Completed `Roth.indexSet_bddAbove`: No mechanical deletion of target assumptions verified or claimed. Generic structural law works at LE and arbitrary domains; it retains the substantive uniform-bound premise. Parent infDegree/Finsupp.weight representation does not settle full Taylor-degree/cardinality bound.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3656,6 +3673,8 @@ Completed `Roth.lem6Φ`: No missing API for outer constructor; index-infDegree b
 Completed `Roth.one_mem_RSet`: Possible generic nonzero degree/height family unit-membership API, to be designed with BORDERLINE parent RSet; no missing primitive lemma needed for current proof.
 
 Completed `Roth.indexSet_nonempty`: No missing binary-image nonempty law. Accepted184 bounded-family API judgment remains separate.
+
+Completed `Roth.indexSet_bddAbove`: Upstream design choice for reusable weighted Taylor degree-envelope law; generic binary-image packaging needs no new theorem.
 
 ## Part 7: Junk / removable
 
@@ -4032,6 +4051,8 @@ Completed `Roth.one_mem_RSet`: Retain locally in Roth/Theta.lean: live unit witn
 
 Completed `Roth.indexSet_nonempty`: Useful locally to2 supremum callers; delete wrapper with parent re-aim and use existing image2 law; local paper-navigation compatibility is the only retention rationale.
 
+Completed `Roth.indexSet_bddAbove`: Not dead: two explicit uses. Docstring wrongly suggests positive r despite no premise.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4221,6 +4242,7 @@ Completed `Roth.indexSet_nonempty`: Useful locally to2 supremum callers; delete 
 | 183 | `Roth.lem6Φ` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.lem6Φ.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem6Φ/root-acceptance.json) |
 | 184 | `Roth.one_mem_RSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.one_mem_RSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_mem_RSet/root-acceptance.json) |
 | 185 | `Roth.indexSet_nonempty` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.indexSet_nonempty.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.indexSet_nonempty/root-acceptance.json) |
+| 186 | `Roth.indexSet_bddAbove` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.indexSet_bddAbove.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.indexSet_bddAbove/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4590,12 +4612,14 @@ Completed `Roth.one_mem_RSet` action: BORDERLINE; retain local theorem. Future g
 
 Completed `Roth.indexSet_nonempty` action: NO-mathlib-has-it: re-aim indexSet at image2; replace nonempty premises at Θ_le_of_forall_index_le and Θ_mono by image2_nonempty_iff plus full unit and coprime witnesses; no upstream addition.
 
+Completed `Roth.indexSet_bddAbove` action: BORDERLINE-needs-human: retain Roth/Theta.lean helper; decide upstream uniform envelope/infinity convention and coordinate-envelope versus card specialization. Keep arithmetic proof separate from generic image law.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.indexSet_bddAbove` next. Supporting identities receive their own applicable checks.
+   `Roth.index_le_Θ` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

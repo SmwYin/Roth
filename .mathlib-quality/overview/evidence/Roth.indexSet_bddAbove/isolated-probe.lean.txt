@@ -1,0 +1,17 @@
+#check_failure Roth.indexSet_bddAbove
+namespace BddAbove186
+universe u v w
+variable {α : Type u} {β : Type v} {γ : Type w} [Preorder γ]
+variable {f : α → β → γ} {s : Set α} {t : Set β} {c : γ}
+theorem image2_bound (h : ∀ x ∈ s, ∀ y ∈ t, f x y ≤ c) :
+    BddAbove (Set.image2 f s t) :=
+  ⟨c, Set.forall_mem_image2.mpr h⟩
+theorem image2_bound_iff : BddAbove (Set.image2 f s t) ↔
+    ∃ c, ∀ x ∈ s, ∀ y ∈ t, f x y ≤ c := by
+  simp only [bddAbove_def, Set.forall_mem_image2]
+#print axioms image2_bound
+#print axioms image2_bound_iff
+#check @Set.forall_mem_image2
+#check @bddAbove_def
+#check @BddAbove.image2
+end BddAbove186

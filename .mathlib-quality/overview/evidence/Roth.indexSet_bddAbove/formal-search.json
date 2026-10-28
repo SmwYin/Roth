@@ -1,0 +1,590 @@
+[
+  {
+    "form": "current",
+    "method": "finder",
+    "request": {
+      "query": "The indices of nonzero multivariate integer polynomials of bounded individual degrees at rational points form a bounded above set",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_pos\",\n      \"informal_name\": \"Positivity of Degree Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ), 0 < ChevalleyThm.MvPolynomialC.degBound k D n\",\n      \"informal_description\": \"For any natural number $k$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the degree bound $\\\\text{degBound}\\\\,k\\\\,D\\\\,n$ satisfies $0 < \\\\text{degBound}\\\\,k\\\\,D\\\\,n$ for all $n \\\\in \\\\mathbb{N}$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_zero\",\n      \"informal_name\": \"Base Case for Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ), ChevalleyThm.MvPolynomialC.numBound k D 0 = k\",\n      \"informal_description\": \"For any natural numbers $k$ and $D$, the numerical bound function evaluated at $k$, $D$, and $0$ returns $k$, establishing the base case for recursion in the context of multivariate polynomials and Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.degBound\",\n      \"informal_name\": \"Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\\\text{Fin.val}$ over the multiset $d$ of type $\\\\text{Fin} \\\\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound_pos",
+            "informal_name": "Positivity of Degree Bound in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ), 0 < ChevalleyThm.MvPolynomialC.degBound k D n",
+            "informal_description": "For any natural number $k$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the degree bound $\\text{degBound}\\,k\\,D\\,n$ satisfies $0 < \\text{degBound}\\,k\\,D\\,n$ for all $n \\in \\mathbb{N}$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound_zero",
+            "informal_name": "Base Case for Numerical Bound in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ (k : ℕ) (D : ℕ → ℕ), ChevalleyThm.MvPolynomialC.numBound k D 0 = k",
+            "informal_description": "For any natural numbers $k$ and $D$, the numerical bound function evaluated at $k$, $D$, and $0$ returns $k$, establishing the base case for recursion in the context of multivariate polynomials and Chevalley's theorem.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.degBound",
+            "informal_name": "Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\text{Fin.val}$ over the multiset $d$ of type $\\text{Fin} \\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "loogle",
+    "request": {
+      "query": "BddAbove, MvPolynomial"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "leansearch",
+    "request": {
+      "query": "The indices of nonzero multivariate integer polynomials of bounded individual degrees at rational points form a bounded above set",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.finite_mahlerMeasure_le\",\n      \"module_name\": \"Mathlib.NumberTheory.MahlerMeasure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal), {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.Finite\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_sup_sum\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\\n  p ≠ 0 →\\n    ∀ (S : Fin n → Finset R),\\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card\"\n    },\n    {\n      \"name\": \"MvPolynomial.support\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset (σ →₀ ℕ)\"\n    },\n    {\n      \"name\": \"Poly.isPoly\",\n      \"module_name\": \"Mathlib.NumberTheory.Dioph\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} (f : Poly α), IsPoly ⇑f\"\n    },\n    {\n      \"name\": \"MvPolynomial.restrictDegree\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"(σ : Type u) → (R : Type v) → [inst : CommSemiring R] → ℕ → Submodule R (MvPolynomial σ R)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.finite_mahlerMeasure_le",
+            "module_name": "Mathlib.NumberTheory.MahlerMeasure",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (B : NNReal), {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.Finite"
+          },
+          {
+            "name": "MvPolynomial.schwartz_zippel_sup_sum",
+            "module_name": "Mathlib.Algebra.MvPolynomial.SchwartzZippel",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\n  p ≠ 0 →\n    ∀ (S : Fin n → Finset R),\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card"
+          },
+          {
+            "name": "MvPolynomial.support",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset (σ →₀ ℕ)"
+          },
+          {
+            "name": "Poly.isPoly",
+            "module_name": "Mathlib.NumberTheory.Dioph",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} (f : Poly α), IsPoly ⇑f"
+          },
+          {
+            "name": "MvPolynomial.restrictDegree",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "(σ : Type u) → (R : Type v) → [inst : CommSemiring R] → ℕ → Submodule R (MvPolynomial σ R)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "request": {
+      "query": "indexSet_bddAbove",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 15
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.indexSet_bddAbove\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Theta.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.indexSet_bddAbove",
+            "kind": "theorem",
+            "file": "Roth/Theta.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "finder",
+    "request": {
+      "query": "A uniform bound on a function over two sets implies its binary image is bounded above",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"BddAbove.image2\",\n      \"informal_name\": \"Image of Binary Function on Bounded Above Sets is Bounded Above\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)\",\n      \"informal_description\": \"If $ s $ and $ t $ are bounded above, then the image of the binary function $ f $ on $ s \\times t $ is bounded above.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"formal_name\": \"BddBelow.bddAbove_image2_of_bddAbove\",\n      \"informal_name\": \"Bounded Above Image of Binary Function from Bounded Below and Bounded Above Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Antitone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → BddBelow s → BddAbove t → BddAbove (Set.image2 f s t)\",\n      \"informal_description\": \"If a set $ s $ is bounded below and a set $ t $ is bounded above, then the image of the binary function $ f $ applied to $ s $ and $ t $ is bounded above.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"formal_name\": \"BddAbove.bddAbove_image2_of_bddBelow\",\n      \"informal_name\": \"Bounded Above Image of Binary Function on Bounded Above and Bounded Below Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Antitone (f a)) → BddAbove s → BddBelow t → BddAbove (Set.image2 f s t)\",\n      \"informal_description\": \"If a set $ s \\\\subseteq \\\\alpha $ is bounded above and a set $ t \\\\subseteq \\\\beta $ is bounded below, then the image of the binary function $ f : \\\\alpha \\\\times \\\\beta \\\\to \\\\gamma $ over $ s \\\\times t $ is bounded above.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"formal_name\": \"BddBelow.image2_bddAbove\",\n      \"informal_name\": \"Image of Binary Function on Bounded Below Sets is Bounded Above\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Antitone (Function.swap f b)) →\\n    (∀ (a : α), Antitone (f a)) → BddBelow s → BddBelow t → BddAbove (Set.image2 f s t)\",\n      \"informal_description\": \"If $ s $ and $ t $ are sets bounded below in a preorder $ \\\\alpha $, then the image of a binary function $ f $ applied to $ s \\\\times t $ is bounded above in $ \\\\gamma $. Formally, $ \\\\text{BddBelow}(s) $ and $ \\\\text{BddBelow}(t) $ imply $ \\\\text{BddAbove}(\\\\text{image2}(f, s, t)) $.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"formal_name\": \"BddAbove.bddBelow_image2_of_bddAbove\",\n      \"informal_name\": \"Image of Bounded Above and Bounded Below Sets Under Antitone-Monotone Function is Bounded Below\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Antitone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddBelow t → BddBelow (Set.image2 f s t)\",\n      \"informal_description\": \"If a set $ s $ is bounded above and a set $ t $ is bounded below, then the image of the binary function $ f $ on $ s \\times t $ is bounded below, provided that $ f $ is antitone in the first argument and monotone in the second.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "BddAbove.image2",
+            "informal_name": "Image of Binary Function on Bounded Above Sets is Bounded Above",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)",
+            "informal_description": "If $ s $ and $ t $ are bounded above, then the image of the binary function $ f $ on $ s \times t $ is bounded above.",
+            "path": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "formal_name": "BddBelow.bddAbove_image2_of_bddAbove",
+            "informal_name": "Bounded Above Image of Binary Function from Bounded Below and Bounded Above Sets",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Antitone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → BddBelow s → BddAbove t → BddAbove (Set.image2 f s t)",
+            "informal_description": "If a set $ s $ is bounded below and a set $ t $ is bounded above, then the image of the binary function $ f $ applied to $ s $ and $ t $ is bounded above.",
+            "path": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "formal_name": "BddAbove.bddAbove_image2_of_bddBelow",
+            "informal_name": "Bounded Above Image of Binary Function on Bounded Above and Bounded Below Sets",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Antitone (f a)) → BddAbove s → BddBelow t → BddAbove (Set.image2 f s t)",
+            "informal_description": "If a set $ s \\subseteq \\alpha $ is bounded above and a set $ t \\subseteq \\beta $ is bounded below, then the image of the binary function $ f : \\alpha \\times \\beta \\to \\gamma $ over $ s \\times t $ is bounded above.",
+            "path": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "formal_name": "BddBelow.image2_bddAbove",
+            "informal_name": "Image of Binary Function on Bounded Below Sets is Bounded Above",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Antitone (Function.swap f b)) →\n    (∀ (a : α), Antitone (f a)) → BddBelow s → BddBelow t → BddAbove (Set.image2 f s t)",
+            "informal_description": "If $ s $ and $ t $ are sets bounded below in a preorder $ \\alpha $, then the image of a binary function $ f $ applied to $ s \\times t $ is bounded above in $ \\gamma $. Formally, $ \\text{BddBelow}(s) $ and $ \\text{BddBelow}(t) $ imply $ \\text{BddAbove}(\\text{image2}(f, s, t)) $.",
+            "path": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "formal_name": "BddAbove.bddBelow_image2_of_bddAbove",
+            "informal_name": "Image of Bounded Above and Bounded Below Sets Under Antitone-Monotone Function is Bounded Below",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Antitone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddBelow t → BddBelow (Set.image2 f s t)",
+            "informal_description": "If a set $ s $ is bounded above and a set $ t $ is bounded below, then the image of the binary function $ f $ on $ s \times t $ is bounded below, provided that $ f $ is antitone in the first argument and monotone in the second.",
+            "path": "Mathlib.Order.Bounds.Image"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "loogle",
+    "request": {
+      "query": "BddAbove, Set.image2"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"BddAbove.bddAbove_image2_of_bddBelow\",\n      \"type\": \" {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Monotone (Function.swap f b)) (h₁ : ∀ (a : α), Antitone (f a)) : BddAbove s → BddBelow t → BddAbove (Set.image2 f s t)\",\n      \"module\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"name\": \"BddAbove.bddBelow_image2_of_bddBelow\",\n      \"type\": \" {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Antitone (Function.swap f b)) (h₁ : ∀ (a : α), Monotone (f a)) : BddAbove s → BddBelow t → BddBelow (Set.image2 f s t)\",\n      \"module\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"name\": \"BddAbove.image2\",\n      \"type\": \" {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Monotone (Function.swap f b)) (h₁ : ∀ (a : α), Monotone (f a)) : BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)\",\n      \"module\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"name\": \"BddAbove.image2_bddBelow\",\n      \"type\": \" {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Antitone (Function.swap f b)) (h₁ : ∀ (a : α), Antitone (f a)) : BddAbove s → BddAbove t → BddBelow (Set.image2 f s t)\",\n      \"module\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"name\": \"BddBelow.bddAbove_image2_of_bddAbove\",\n      \"type\": \" {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Antitone (Function.swap f b)) (h₁ : ∀ (a : α), Monotone (f a)) : BddBelow s → BddAbove t → BddAbove (Set.image2 f s t)\",\n      \"module\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"name\": \"BddBelow.bddBelow_image2_of_bddAbove\",\n      \"type\": \" {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Monotone (Function.swap f b)) (h₁ : ∀ (a : α), Antitone (f a)) : BddBelow s → BddAbove t → BddBelow (Set.image2 f s t)\",\n      \"module\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"name\": \"BddBelow.image2_bddAbove\",\n      \"type\": \" {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Antitone (Function.swap f b)) (h₁ : ∀ (a : α), Antitone (f a)) : BddBelow s → BddBelow t → BddAbove (Set.image2 f s t)\",\n      \"module\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"name\": \"csSup_image2_eq_csSup_csSup\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {γ : Type u_3} [ConditionallyCompleteLattice α] [ConditionallyCompleteLattice β] [ConditionallyCompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b) (u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a) (u₂ a)) (hs₀ : s.Nonempty) (hs₁ : BddAbove s) (ht₀ : t.Nonempty) (ht₁ : BddAbove t) : sSup (Set.image2 l s t) = l (sSup s) (sSup t)\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "BddAbove.bddAbove_image2_of_bddBelow",
+            "type": " {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Monotone (Function.swap f b)) (h₁ : ∀ (a : α), Antitone (f a)) : BddAbove s → BddBelow t → BddAbove (Set.image2 f s t)",
+            "module": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "name": "BddAbove.bddBelow_image2_of_bddBelow",
+            "type": " {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Antitone (Function.swap f b)) (h₁ : ∀ (a : α), Monotone (f a)) : BddAbove s → BddBelow t → BddBelow (Set.image2 f s t)",
+            "module": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "name": "BddAbove.image2",
+            "type": " {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Monotone (Function.swap f b)) (h₁ : ∀ (a : α), Monotone (f a)) : BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)",
+            "module": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "name": "BddAbove.image2_bddBelow",
+            "type": " {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Antitone (Function.swap f b)) (h₁ : ∀ (a : α), Antitone (f a)) : BddAbove s → BddAbove t → BddBelow (Set.image2 f s t)",
+            "module": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "name": "BddBelow.bddAbove_image2_of_bddAbove",
+            "type": " {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Antitone (Function.swap f b)) (h₁ : ∀ (a : α), Monotone (f a)) : BddBelow s → BddAbove t → BddAbove (Set.image2 f s t)",
+            "module": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "name": "BddBelow.bddBelow_image2_of_bddAbove",
+            "type": " {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Monotone (Function.swap f b)) (h₁ : ∀ (a : α), Antitone (f a)) : BddBelow s → BddAbove t → BddBelow (Set.image2 f s t)",
+            "module": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "name": "BddBelow.image2_bddAbove",
+            "type": " {α : Type u} {β : Type v} {γ : Type w} [Preorder α] [Preorder β] [Preorder γ] {f : α → β → γ} {s : Set α} {t : Set β} (h₀ : ∀ (b : β), Antitone (Function.swap f b)) (h₁ : ∀ (a : α), Antitone (f a)) : BddBelow s → BddBelow t → BddAbove (Set.image2 f s t)",
+            "module": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "name": "csSup_image2_eq_csSup_csSup",
+            "type": " {α : Type u_1} {β : Type u_2} {γ : Type u_3} [ConditionallyCompleteLattice α] [ConditionallyCompleteLattice β] [ConditionallyCompleteLattice γ] {s : Set α} {t : Set β} {l : α → β → γ} {u₁ : β → γ → α} {u₂ : α → γ → β} (h₁ : ∀ (b : β), GaloisConnection (Function.swap l b) (u₁ b)) (h₂ : ∀ (a : α), GaloisConnection (l a) (u₂ a)) (hs₀ : s.Nonempty) (hs₁ : BddAbove s) (ht₀ : t.Nonempty) (ht₁ : BddAbove t) : sSup (Set.image2 l s t) = l (sSup s) (sSup t)",
+            "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "leansearch",
+    "request": {
+      "query": "A uniform bound on a function over two sets implies its binary image is bounded above",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"mem_upperBounds_image2\",\n      \"module_name\": \"Mathlib.Order.Bounds.Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β} {a : α} {b : β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → a ∈ upperBounds s → b ∈ upperBounds t → f a b ∈ upperBounds (Set.image2 f s t)\"\n    },\n    {\n      \"name\": \"BddAbove.image2\",\n      \"module_name\": \"Mathlib.Order.Bounds.Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)\"\n    },\n    {\n      \"name\": \"Finset.sup_image₂_le\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\\n  {t : Finset β} [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] {g : γ → δ} {a : δ},\\n  (Finset.image₂ f s t).sup g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a\"\n    },\n    {\n      \"name\": \"mem_upperBounds_image2_of_mem_upperBounds_of_mem_lowerBounds\",\n      \"module_name\": \"Mathlib.Order.Bounds.Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β} {a : α} {b : β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Antitone (f a)) → a ∈ upperBounds s → b ∈ lowerBounds t → f a b ∈ upperBounds (Set.image2 f s t)\"\n    },\n    {\n      \"name\": \"Finset.sup'_image₂_le\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\\n  {t : Finset β} [inst_1 : SemilatticeSup δ] {g : γ → δ} {a : δ} (h : (Finset.image₂ f s t).Nonempty),\\n  (Finset.image₂ f s t).sup' h g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "mem_upperBounds_image2",
+            "module_name": "Mathlib.Order.Bounds.Image",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β} {a : α} {b : β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → a ∈ upperBounds s → b ∈ upperBounds t → f a b ∈ upperBounds (Set.image2 f s t)"
+          },
+          {
+            "name": "BddAbove.image2",
+            "module_name": "Mathlib.Order.Bounds.Image",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)"
+          },
+          {
+            "name": "Finset.sup_image₂_le",
+            "module_name": "Mathlib.Data.Finset.NAry",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\n  {t : Finset β} [inst_1 : SemilatticeSup δ] [inst_2 : OrderBot δ] {g : γ → δ} {a : δ},\n  (Finset.image₂ f s t).sup g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a"
+          },
+          {
+            "name": "mem_upperBounds_image2_of_mem_upperBounds_of_mem_lowerBounds",
+            "module_name": "Mathlib.Order.Bounds.Image",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β} {a : α} {b : β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Antitone (f a)) → a ∈ upperBounds s → b ∈ lowerBounds t → f a b ∈ upperBounds (Set.image2 f s t)"
+          },
+          {
+            "name": "Finset.sup'_image₂_le",
+            "module_name": "Mathlib.Data.Finset.NAry",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\n  {t : Finset β} [inst_1 : SemilatticeSup δ] {g : γ → δ} {a : δ} (h : (Finset.image₂ f s t).Nonempty),\n  (Finset.image₂ f s t).sup' h g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "local",
+    "request": {
+      "query": "BddAbove",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 15
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"BddAbove\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Bounds/Defs.lean\"\n    },\n    {\n      \"name\": \"BddAbove.bddAbove_image2_of_bddBelow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Bounds/Image.lean\"\n    },\n    {\n      \"name\": \"BddAbove.inv\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Pointwise/Bounds.lean\"\n    },\n    {\n      \"name\": \"BddAbove.mul\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Pointwise/Bounds.lean\"\n    },\n    {\n      \"name\": \"BddAbove.dual\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean\"\n    },\n    {\n      \"name\": \"BddAbove.mono\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean\"\n    },\n    {\n      \"name\": \"BddAbove.union\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean\"\n    },\n    {\n      \"name\": \"BddAbove.image2\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Bounds/Image.lean\"\n    },\n    {\n      \"name\": \"BddAbove.insert\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean\"\n    },\n    {\n      \"name\": \"BddAbove.exists_ge\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean\"\n    },\n    {\n      \"name\": \"BddAbove.isBounded\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Topology/Order/Bornology.lean\"\n    },\n    {\n      \"name\": \"BddAbove.range_inv\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Pointwise/Bounds.lean\"\n    },\n    {\n      \"name\": \"BddAbove.range_mul\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Pointwise/Bounds.lean\"\n    },\n    {\n      \"name\": \"BddAbove.of_closure\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Topology/Order/OrderClosed.lean\"\n    },\n    {\n      \"name\": \"BddAbove.range_mono\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Bounds/Image.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "BddAbove",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Order/Bounds/Defs.lean"
+          },
+          {
+            "name": "BddAbove.bddAbove_image2_of_bddBelow",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/Bounds/Image.lean"
+          },
+          {
+            "name": "BddAbove.inv",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Pointwise/Bounds.lean"
+          },
+          {
+            "name": "BddAbove.mul",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Pointwise/Bounds.lean"
+          },
+          {
+            "name": "BddAbove.dual",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean"
+          },
+          {
+            "name": "BddAbove.mono",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean"
+          },
+          {
+            "name": "BddAbove.union",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean"
+          },
+          {
+            "name": "BddAbove.image2",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/Bounds/Image.lean"
+          },
+          {
+            "name": "BddAbove.insert",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean"
+          },
+          {
+            "name": "BddAbove.exists_ge",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/Bounds/Basic.lean"
+          },
+          {
+            "name": "BddAbove.isBounded",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Topology/Order/Bornology.lean"
+          },
+          {
+            "name": "BddAbove.range_inv",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Pointwise/Bounds.lean"
+          },
+          {
+            "name": "BddAbove.range_mul",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Pointwise/Bounds.lean"
+          },
+          {
+            "name": "BddAbove.of_closure",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Topology/Order/OrderClosed.lean"
+          },
+          {
+            "name": "BddAbove.range_mono",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Order/Bounds/Image.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "finder",
+    "request": {
+      "query": "Set.image2 upper bound forall_mem_image2 BddAbove",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"BddAbove.image2\",\n      \"informal_name\": \"Image of Binary Function on Bounded Above Sets is Bounded Above\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)\",\n      \"informal_description\": \"If $ s $ and $ t $ are bounded above, then the image of the binary function $ f $ on $ s \\times t $ is bounded above.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"formal_name\": \"BddBelow.bddAbove_image2_of_bddAbove\",\n      \"informal_name\": \"Bounded Above Image of Binary Function from Bounded Below and Bounded Above Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Antitone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → BddBelow s → BddAbove t → BddAbove (Set.image2 f s t)\",\n      \"informal_description\": \"If a set $ s $ is bounded below and a set $ t $ is bounded above, then the image of the binary function $ f $ applied to $ s $ and $ t $ is bounded above.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"formal_name\": \"BddAbove.bddAbove_image2_of_bddBelow\",\n      \"informal_name\": \"Bounded Above Image of Binary Function on Bounded Above and Bounded Below Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Antitone (f a)) → BddAbove s → BddBelow t → BddAbove (Set.image2 f s t)\",\n      \"informal_description\": \"If a set $ s \\\\subseteq \\\\alpha $ is bounded above and a set $ t \\\\subseteq \\\\beta $ is bounded below, then the image of the binary function $ f : \\\\alpha \\\\times \\\\beta \\\\to \\\\gamma $ over $ s \\\\times t $ is bounded above.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"formal_name\": \"BddBelow.image2_bddAbove\",\n      \"informal_name\": \"Image of Binary Function on Bounded Below Sets is Bounded Above\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Antitone (Function.swap f b)) →\\n    (∀ (a : α), Antitone (f a)) → BddBelow s → BddBelow t → BddAbove (Set.image2 f s t)\",\n      \"informal_description\": \"If $ s $ and $ t $ are sets bounded below in a preorder $ \\\\alpha $, then the image of a binary function $ f $ applied to $ s \\\\times t $ is bounded above in $ \\\\gamma $. Formally, $ \\\\text{BddBelow}(s) $ and $ \\\\text{BddBelow}(t) $ imply $ \\\\text{BddAbove}(\\\\text{image2}(f, s, t)) $.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    },\n    {\n      \"formal_name\": \"BddAbove.image2_bddBelow\",\n      \"informal_name\": \"Image of Bounded Above Sets Under Binary Function is Bounded Below\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Antitone (Function.swap f b)) →\\n    (∀ (a : α), Antitone (f a)) → BddAbove s → BddAbove t → BddBelow (Set.image2 f s t)\",\n      \"informal_description\": \"If $ s $ and $ t $ are bounded above subsets of a preorder $ \\\\alpha $ and $ \\\\beta $, respectively, then the image of the binary function $ f $ on $ s \\\\times t $ is a bounded below subset of $ \\\\gamma $. Formally, $ \\\\text{BddAbove}(s) $ and $ \\\\text{BddAbove}(t) $ imply $ \\\\text{BddBelow}(\\\\text{image}_2(f, s, t)) $.\",\n      \"path\": \"Mathlib.Order.Bounds.Image\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "BddAbove.image2",
+            "informal_name": "Image of Binary Function on Bounded Above Sets is Bounded Above",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)",
+            "informal_description": "If $ s $ and $ t $ are bounded above, then the image of the binary function $ f $ on $ s \times t $ is bounded above.",
+            "path": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "formal_name": "BddBelow.bddAbove_image2_of_bddAbove",
+            "informal_name": "Bounded Above Image of Binary Function from Bounded Below and Bounded Above Sets",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Antitone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → BddBelow s → BddAbove t → BddAbove (Set.image2 f s t)",
+            "informal_description": "If a set $ s $ is bounded below and a set $ t $ is bounded above, then the image of the binary function $ f $ applied to $ s $ and $ t $ is bounded above.",
+            "path": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "formal_name": "BddAbove.bddAbove_image2_of_bddBelow",
+            "informal_name": "Bounded Above Image of Binary Function on Bounded Above and Bounded Below Sets",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Antitone (f a)) → BddAbove s → BddBelow t → BddAbove (Set.image2 f s t)",
+            "informal_description": "If a set $ s \\subseteq \\alpha $ is bounded above and a set $ t \\subseteq \\beta $ is bounded below, then the image of the binary function $ f : \\alpha \\times \\beta \\to \\gamma $ over $ s \\times t $ is bounded above.",
+            "path": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "formal_name": "BddBelow.image2_bddAbove",
+            "informal_name": "Image of Binary Function on Bounded Below Sets is Bounded Above",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Antitone (Function.swap f b)) →\n    (∀ (a : α), Antitone (f a)) → BddBelow s → BddBelow t → BddAbove (Set.image2 f s t)",
+            "informal_description": "If $ s $ and $ t $ are sets bounded below in a preorder $ \\alpha $, then the image of a binary function $ f $ applied to $ s \\times t $ is bounded above in $ \\gamma $. Formally, $ \\text{BddBelow}(s) $ and $ \\text{BddBelow}(t) $ imply $ \\text{BddAbove}(\\text{image2}(f, s, t)) $.",
+            "path": "Mathlib.Order.Bounds.Image"
+          },
+          {
+            "formal_name": "BddAbove.image2_bddBelow",
+            "informal_name": "Image of Bounded Above Sets Under Binary Function is Bounded Below",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Antitone (Function.swap f b)) →\n    (∀ (a : α), Antitone (f a)) → BddAbove s → BddAbove t → BddBelow (Set.image2 f s t)",
+            "informal_description": "If $ s $ and $ t $ are bounded above subsets of a preorder $ \\alpha $ and $ \\beta $, respectively, then the image of the binary function $ f $ on $ s \\times t $ is a bounded below subset of $ \\gamma $. Formally, $ \\text{BddAbove}(s) $ and $ \\text{BddAbove}(t) $ imply $ \\text{BddBelow}(\\text{image}_2(f, s, t)) $.",
+            "path": "Mathlib.Order.Bounds.Image"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "loogle",
+    "request": {
+      "query": "Set.image2, ∀ x ∈ _, ∀ y ∈ _, _"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "leansearch",
+    "request": {
+      "query": "Set.image2 upper bound forall_mem_image2 BddAbove",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"BddAbove.image2\",\n      \"module_name\": \"Mathlib.Order.Bounds.Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)\"\n    },\n    {\n      \"name\": \"mem_upperBounds_image2\",\n      \"module_name\": \"Mathlib.Order.Bounds.Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β} {a : α} {b : β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → a ∈ upperBounds s → b ∈ upperBounds t → f a b ∈ upperBounds (Set.image2 f s t)\"\n    },\n    {\n      \"name\": \"Finset.sup'_image₂_le\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\\n  {t : Finset β} [inst_1 : SemilatticeSup δ] {g : γ → δ} {a : δ} (h : (Finset.image₂ f s t).Nonempty),\\n  (Finset.image₂ f s t).sup' h g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a\"\n    },\n    {\n      \"name\": \"mem_upperBounds_image2_of_mem_upperBounds_of_mem_upperBounds\",\n      \"module_name\": \"Mathlib.Order.Bounds.Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β} {a : α} {b : β},\\n  (∀ (b : β), Antitone (Function.swap f b)) →\\n    (∀ (a : α), Monotone (f a)) → a ∈ lowerBounds s → b ∈ upperBounds t → f a b ∈ upperBounds (Set.image2 f s t)\"\n    },\n    {\n      \"name\": \"mem_upperBounds_image2_of_mem_upperBounds_of_mem_lowerBounds\",\n      \"module_name\": \"Mathlib.Order.Bounds.Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\\n  {s : Set α} {t : Set β} {a : α} {b : β},\\n  (∀ (b : β), Monotone (Function.swap f b)) →\\n    (∀ (a : α), Antitone (f a)) → a ∈ upperBounds s → b ∈ lowerBounds t → f a b ∈ upperBounds (Set.image2 f s t)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "BddAbove.image2",
+            "module_name": "Mathlib.Order.Bounds.Image",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → BddAbove s → BddAbove t → BddAbove (Set.image2 f s t)"
+          },
+          {
+            "name": "mem_upperBounds_image2",
+            "module_name": "Mathlib.Order.Bounds.Image",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β} {a : α} {b : β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → a ∈ upperBounds s → b ∈ upperBounds t → f a b ∈ upperBounds (Set.image2 f s t)"
+          },
+          {
+            "name": "Finset.sup'_image₂_le",
+            "module_name": "Mathlib.Data.Finset.NAry",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {δ : Type u_7} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α}\n  {t : Finset β} [inst_1 : SemilatticeSup δ] {g : γ → δ} {a : δ} (h : (Finset.image₂ f s t).Nonempty),\n  (Finset.image₂ f s t).sup' h g ≤ a ↔ ∀ x ∈ s, ∀ y ∈ t, g (f x y) ≤ a"
+          },
+          {
+            "name": "mem_upperBounds_image2_of_mem_upperBounds_of_mem_upperBounds",
+            "module_name": "Mathlib.Order.Bounds.Image",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β} {a : α} {b : β},\n  (∀ (b : β), Antitone (Function.swap f b)) →\n    (∀ (a : α), Monotone (f a)) → a ∈ lowerBounds s → b ∈ upperBounds t → f a b ∈ upperBounds (Set.image2 f s t)"
+          },
+          {
+            "name": "mem_upperBounds_image2_of_mem_upperBounds_of_mem_lowerBounds",
+            "module_name": "Mathlib.Order.Bounds.Image",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {γ : Type w} [inst : Preorder α] [inst_1 : Preorder β] [inst_2 : Preorder γ] {f : α → β → γ}\n  {s : Set α} {t : Set β} {a : α} {b : β},\n  (∀ (b : β), Monotone (Function.swap f b)) →\n    (∀ (a : α), Antitone (f a)) → a ∈ upperBounds s → b ∈ lowerBounds t → f a b ∈ upperBounds (Set.image2 f s t)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local",
+    "request": {
+      "query": "forall_mem_image2",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 15
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.forall_mem_image2\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Set/NAry.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Set.forall_mem_image2",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Set/NAry.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

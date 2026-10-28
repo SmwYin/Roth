@@ -1,0 +1,38 @@
+namespace BddAbove186Project
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem bridge (B : ℝ) (q r : σ → ℕ) :
+    Roth.indexSet B q r = Set.image2
+      (fun (R : MvPolynomial σ ℤ) (h : σ → ℤ) ↦
+        Roth.index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r)
+      (Roth.RSet B r) {h | ∀ j, IsCoprime (h j) (q j : ℤ)} := rfl
+theorem pointwise (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} :
+    ∀ R ∈ Roth.RSet B r, ∀ h : σ → ℤ,
+      (∀ j, IsCoprime (h j) (q j : ℤ)) →
+      Roth.index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤
+        Fintype.card σ := by
+  classical
+  rintro R ⟨hR0, hRd, _⟩ h _
+  exact Roth.index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)
+    (by simpa [degreeOf, degrees_map_of_injective R (f := Int.castRingHom ℝ)
+          Int.cast_injective] using hRd) _
+theorem replacement (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} :
+    BddAbove (Roth.indexSet B q r) := by
+  rw [bridge]
+  exact ⟨(Fintype.card σ : ℝ), Set.forall_mem_image2.mpr (pointwise B q)⟩
+theorem caller_index_le {B : ℝ} {q r : σ → ℕ} {R : MvPolynomial σ ℤ}
+    (hR : R ∈ Roth.RSet B r) {h : σ → ℤ}
+    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
+    Roth.index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ Roth.Θ B q r :=
+  le_csSup (replacement B q) ⟨R, hR, h, hh, rfl⟩
+theorem caller_mono {B B' : ℝ} (hB : 1 ≤ B) (hBB' : B ≤ B')
+    (q : σ → ℕ) {r : σ → ℕ} : Roth.Θ B q r ≤ Roth.Θ B' q r := by
+  refine csSup_le_csSup (replacement B' q) (Roth.indexSet_nonempty hB q r) ?_
+  rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
+  exact ⟨R, ⟨hR0, hRd, fun d ↦ (hRc d).trans hBB'⟩, h, hh, rfl⟩
+#print axioms bridge
+#print axioms pointwise
+#print axioms replacement
+#print axioms caller_index_le
+#print axioms caller_mono
+end BddAbove186Project

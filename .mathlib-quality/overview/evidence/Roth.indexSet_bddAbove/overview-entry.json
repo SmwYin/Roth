@@ -1,0 +1,30 @@
+{
+  "declaration": "Roth.indexSet_bddAbove",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] (B : ℝ) (q : σ → ℕ) {r : σ → ℕ},\n  BddAbove (Roth.indexSet B q r)",
+  "what": "The real index family of degree/coefficient-bounded nonzero integer polynomials at coprime rational numerator choices is bounded above by cardσ.",
+  "how": "Choose cardσ, unpack family witnesses, transfer nonzero and degrees through integer-real coefficient map, apply project index_le_card. Generic image2 packaging independently verified.",
+  "hypotheses": "Arbitrary universe σ with Fintype; arbitrary real B; natural vectors q,r. No positivity, 1≤B, DecidableEq or nonempty-family premise.",
+  "project_dependencies": [
+    "Roth.indexSet",
+    "Roth.RSet",
+    "Roth.index",
+    "Roth.index_le_card"
+  ],
+  "caller_summary": {
+    "explicit_applications": 2,
+    "external_to_file": 0,
+    "callers": [
+      "Roth.index_le_Θ",
+      "Roth.Θ_mono"
+    ],
+    "canonical_value_consumers": 2,
+    "canonical_type_consumers": 0
+  },
+  "mathlib_api_audit": "Set.forall_mem_image2 gives one-call structural predicate transport; constructor yields BddAbove from supplied uniform bound. BddAbove.image2 rejected because monotonicity and bounded ordered source premises differ. No full existing arithmetic theorem established.",
+  "moral_duplications": "Θ_le_card repeats the same mapped-degree/index bound inside a stronger numeric supremum estimate; full target is useful local side-condition API.",
+  "generalization": "No mechanical deletion of target assumptions verified or claimed. Generic structural law works at LE and arbitrary domains; it retains the substantive uniform-bound premise. Parent infDegree/Finsupp.weight representation does not settle full Taylor-degree/cardinality bound.",
+  "missing_api": "Upstream design choice for reusable weighted Taylor degree-envelope law; generic binary-image packaging needs no new theorem.",
+  "junk": "Not dead: two explicit uses. Docstring wrongly suggests positive r despite no premise.",
+  "action": "BORDERLINE-needs-human: retain Roth/Theta.lean helper; decide upstream uniform envelope/infinity convention and coordinate-envelope versus card specialization. Keep arithmetic proof separate from generic image law."
+}
