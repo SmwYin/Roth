@@ -1,0 +1,152 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+namespace Delta234Generic
+#check @Real.continuousAt_rpow_const
+#check @Real.zero_rpow
+#check @ContinuousAt.eventually_lt
+#check @Metric.eventually_nhds_iff
+#check @mem_nhdsGE_iff_exists_Icc_subset
+#check @Real.lt_sqrt_of_sq_lt
+#check @Real.sq_sqrt
+#check @Real.sqrt_pos
+#check @Filter.Eventually.exists_Ioo_subset
+-- Existing two-call neighborhood transport: h already contains all substantive content.
+theorem transport {P : ℝ → Prop} (h : ∀ᶠ δ in 𝓝 (0 : ℝ), P δ) :
+    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ ∈ Set.Icc 0 δ₀, P δ :=
+  mem_nhdsGE_iff_exists_Icc_subset.mp (nhdsWithin_le_nhds h)
+-- This is a new proof, not a mathlib declaration.
+theorem small_continuous {f : ℝ → ℝ} {a b : ℝ} (ha : 0 < a)
+    (hc : ContinuousAt f 0) (hgap : f 0 < b) :
+    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ → δ < a ∧ f δ < b := by
+  obtain ⟨δ₀, hδ₀, h⟩ := transport
+    ((eventually_lt_nhds ha).and (hc.eventually_lt continuousAt_const hgap))
+  exact ⟨δ₀, hδ₀, fun δ hδ hle ↦ h δ ⟨hδ, hle⟩⟩
+theorem small_power_perturbation {a b C D p r : ℝ} (ha : 0 < a) (hp : 0 < p)
+    (hgap : b < r) : ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ →
+      δ < a ∧ C * δ ^ p + b + D * δ < r := by
+  apply small_continuous ha
+  · exact (((Real.continuousAt_rpow_const 0 p (.inr hp.le)).const_mul C).add_const b).add
+      (continuousAt_const.mul continuousAt_id)
+  · simpa [Real.zero_rpow hp.ne'] using hgap
+theorem gap_iff (n m : ℕ) :
+    2 * (n : ℝ) * √(m : ℝ) < m / 2 ↔ 16 * n ^ 2 < m := by
+  constructor
+  · intro h
+    have hs := Real.sq_sqrt (Nat.cast_nonneg m)
+    have hm : (0 : ℝ) < m := by
+      nlinarith only [h, mul_nonneg (Nat.cast_nonneg n) (Real.sqrt_nonneg (m : ℝ))]
+    have h4 : 4 * (n : ℝ) < √(m : ℝ) := by
+      apply (mul_lt_mul_iff_of_pos_right (Real.sqrt_pos.mpr hm)).mp
+      nlinarith only [h, hs]
+    have hsq := mul_self_lt_mul_self (by positivity : 0 ≤ 4 * (n : ℝ)) h4
+    have hn : (16 * n ^ 2 : ℝ) < m := by nlinarith only [hsq, hs]
+    exact_mod_cast hn
+  · intro hm
+    have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm
+    have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm
+    have h4 : 4 * (n : ℝ) < √(m : ℝ) :=
+      Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])
+    nlinarith only [Real.sq_sqrt hm0.le,
+      mul_lt_mul_of_pos_right h4 (Real.sqrt_pos.mpr hm0)]
+-- Expanded original form; only genuinely existing mathlib operations occur.
+theorem original_expanded {n m : ℕ} (hm : 16 * n ^ 2 < m) :
+    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ → δ < 1 / m ∧
+      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 := by
+  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm
+  obtain ⟨δ₀, hδ₀, h⟩ := small_power_perturbation
+    (C := (10 : ℝ) ^ m) (D := 6 * n * √(m : ℝ)) (by positivity : 0 < 1 / (m : ℝ))
+    (by positivity : 0 < (1 / 2 : ℝ) ^ m) ((gap_iff n m).2 hm)
+  refine ⟨δ₀, hδ₀, fun δ hδ hle ↦ ⟨(h δ hδ hle).1, ?_⟩⟩
+  nlinarith only [(h δ hδ hle).2]
+theorem no_m_zero (n : ℕ) : ¬ ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,
+    0 ≤ δ → δ ≤ δ₀ → δ < 1 / (0 : ℝ) ∧
+      10 ^ (0 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (0 : ℕ)) +
+        2 * (1 + 3 * δ) * n * √(0 : ℝ) < (0 : ℝ) / 2 := by
+  rintro ⟨δ₀, hδ₀, h⟩
+  have := (h 0 le_rfl hδ₀.le).1
+  norm_num at this
+theorem equality_boundary : ¬ ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,
+    0 ≤ δ → δ ≤ δ₀ → δ < 1 / (16 : ℝ) ∧
+      10 ^ (16 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (16 : ℕ)) +
+        2 * (1 + 3 * δ) * (1 : ℝ) * √(16 : ℝ) < (16 : ℝ) / 2 := by
+  rintro ⟨δ₀, hδ₀, h⟩
+  have hbad := (h 0 le_rfl hδ₀.le).2
+  norm_num [Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ (16 : ℕ) ≠ 0),
+    Real.sqrt_eq_iff_eq_sq] at hbad
+theorem exponent_zero_fails : ¬ ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,
+    0 ≤ δ → δ ≤ δ₀ → (1 : ℝ) * δ ^ (0 : ℝ) < 1 / 2 := by
+  rintro ⟨δ₀, hδ₀, h⟩
+  have := h 0 le_rfl hδ₀.le
+  norm_num at this
+end Delta234Generic
+#print axioms Delta234Generic.transport
+#print axioms Delta234Generic.small_continuous
+#print axioms Delta234Generic.small_power_perturbation
+#print axioms Delta234Generic.gap_iff
+#print axioms Delta234Generic.original_expanded
+#print axioms Delta234Generic.no_m_zero
+#print axioms Delta234Generic.equality_boundary
+#print axioms Delta234Generic.exponent_zero_fails
+
+namespace Delta234Project
+open Roth
+open scoped Topology
+theorem sharp_iff (n m : ℕ) : (∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,
+    0 ≤ δ → δ ≤ δ₀ → δ < 1 / m ∧
+      eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2) ↔ 16 * n ^ 2 < m := by
+  constructor
+  · rintro ⟨δ₀, hδ₀, h⟩
+    apply (Delta234Generic.gap_iff n m).1
+    simpa [eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)] using
+      (h 0 le_rfl hδ₀.le).2
+  · exact exists_delta_bound
+theorem closed_endpoints {n m : ℕ} (hm : 16 * n ^ 2 < m) : ∃ δ₀ : ℝ, 0 < δ₀ ∧
+    (eta 0 m + 2 * (1 + 3 * 0) * n * √(m : ℝ) < m / 2) ∧ δ₀ < 1 / m ∧
+      eta δ₀ m + 2 * (1 + 3 * δ₀) * n * √(m : ℝ) < m / 2 := by
+  obtain ⟨δ₀, hδ₀, h⟩ := exists_delta_bound hm
+  exact ⟨δ₀, hδ₀, (h 0 le_rfl hδ₀.le).2, h δ₀ hδ₀.le le_rfl⟩
+theorem n_zero : ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ →
+    δ < 1 / (1 : ℝ) ∧ eta δ 1 + 2 * (1 + 3 * δ) * (0 : ℕ) * √(1 : ℝ) < (1 : ℝ) / 2 :=
+  exists_delta_bound (n := 0) (m := 1) (by norm_num)
+theorem generic_specializes {n m : ℕ} (hm : 16 * n ^ 2 < m) : ∃ δ₀ : ℝ,
+    0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ → δ < 1 / m ∧
+      eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 := by
+  simpa only [eta] using Delta234Generic.original_expanded hm
+theorem interval_shape {n m : ℕ} (hm : 16 * n ^ 2 < m) : ∃ δ₀ : ℝ, 0 < δ₀ ∧
+    ∀ δ ∈ Set.Icc 0 δ₀, δ < 1 / m ∧
+      eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 := by
+  obtain ⟨δ₀, hδ₀, h⟩ := exists_delta_bound hm
+  exact ⟨δ₀, hδ₀, fun δ hδ ↦ h δ hδ.1 hδ.2⟩
+-- Generic transport closes once the entire substantive event is supplied.
+theorem transport_full_event {n m : ℕ}
+    (he : ∀ᶠ δ in 𝓝 (0 : ℝ), δ < 1 / m ∧
+      eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2) :
+    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ ∈ Set.Icc 0 δ₀, δ < 1 / m ∧
+      eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 :=
+  mem_nhdsGE_iff_exists_Icc_subset.mp (nhdsWithin_le_nhds he)
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let ci ← Lean.getConstInfo `Roth.exists_delta_bound
+  let some v := ci.value? (allowOpaque := true) | throwError "DELTA234_NO_BODY"
+  let project := v.getUsedConstants.toList.filter (fun n ↦ n.toString.startsWith "Roth.")
+  Lean.logInfo m!"DELTA234_PROJECT_BODY_DEPENDENCIES: {project}"
+  Lean.logInfo "DELTA234_PROJECT: sharp iff, n=0, both closed endpoints and generic bridge verified"
+end Delta234Project
+#print axioms Delta234Project.sharp_iff
+#print axioms Delta234Project.closed_endpoints
+#print axioms Delta234Project.n_zero
+#print axioms Delta234Project.generic_specializes
+#print axioms Delta234Project.interval_shape
+#print axioms Delta234Project.transport_full_event

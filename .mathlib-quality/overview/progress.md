@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-28. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 233 / 293 written declarations.**
+**Completed: 234 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -241,8 +241,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 231 | `Roth.eta` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.eta.md) |
 | 232 | `Roth.mainCoeffBound` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.mainCoeffBound.md) |
 | 233 | `Roth.boxFamily` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.boxFamily.md) |
+| 234 | `Roth.exists_delta_bound` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.exists_delta_bound.md) |
 
-**Next declaration: `Roth.exists_delta_bound`**, `Roth/MainLemma.lean:77`.
+**Next declaration: `Roth.eta_lt_gam_iff`**, `Roth/MainLemma.lean:100`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

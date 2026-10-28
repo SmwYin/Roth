@@ -1,0 +1,59 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 77,
+  "name": "Roth.exists_delta_bound",
+  "short": "exists_delta_bound",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 93,
+  "source": "theorem exists_delta_bound {n m : ℕ} (hm : 16 * n ^ 2 < m) : ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ →\n    δ ≤ δ₀ → δ < 1 / m ∧ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 := by\n  have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm\n  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm\n  have h4n : 4 * (n : ℝ) < √(m : ℝ) := Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])\n  have hgap : 2 * (n : ℝ) * √(m : ℝ) < m / 2 := by\n    nlinarith only [Real.sq_sqrt hm0.le,\n      mul_lt_mul_of_pos_right h4n (Real.sqrt_pos.mpr hm0)]\n  have hc : ContinuousAt (fun δ ↦ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ)) 0 :=\n    (Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _ |>.add (by fun_prop)\n  obtain ⟨ε, hε, hbound⟩ := Metric.eventually_nhds_iff.mp\n    (hc.eventually_lt continuousAt_const (by\n      simpa [eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)] using hgap))\n  refine ⟨min (1 / (m : ℝ)) ε / 2, by positivity, fun δ hδ hle ↦ ?_⟩\n  have hlt := hle.trans_lt (half_lt_self (by positivity : 0 < min (1 / (m : ℝ)) ε))\n  exact ⟨(lt_min_iff.mp hlt).1,\n    hbound (by simpa [Real.dist_eq, abs_of_nonneg hδ] using (lt_min_iff.mp hlt).2)⟩",
+  "signature": "theorem exists_delta_bound {n m : ℕ} (hm : 16 * n ^ 2 < m) : ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ →\n    δ ≤ δ₀ → δ < 1 / m ∧ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2",
+  "body": "by\n  have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm\n  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm\n  have h4n : 4 * (n : ℝ) < √(m : ℝ) := Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])\n  have hgap : 2 * (n : ℝ) * √(m : ℝ) < m / 2 := by\n    nlinarith only [Real.sq_sqrt hm0.le,\n      mul_lt_mul_of_pos_right h4n (Real.sqrt_pos.mpr hm0)]\n  have hc : ContinuousAt (fun δ ↦ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ)) 0 :=\n    (Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _ |>.add (by fun_prop)\n  obtain ⟨ε, hε, hbound⟩ := Metric.eventually_nhds_iff.mp\n    (hc.eventually_lt continuousAt_const (by\n      simpa [eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)] using hgap))\n  refine ⟨min (1 / (m : ℝ)) ε / 2, by positivity, fun δ hδ hle ↦ ?_⟩\n  have hlt := hle.trans_lt (half_lt_self (by positivity : 0 < min (1 / (m : ℝ)) ε))\n  exact ⟨(lt_min_iff.mp hlt).1,\n    hbound (by simpa [Real.dist_eq, abs_of_nonneg hδ] using (lt_min_iff.mp hlt).2)⟩",
+  "proof_lines": 16,
+  "sha256": "95cc92b4cff383f12327f698f0733e583ac9e4d943e26f5cf6827bb6cc38cba5",
+  "what": "A sufficiently large dimension permits a uniform small positive delta interval satisfying both required numerical bounds.",
+  "how": "Derive a strict square-root gap at delta zero using Real.lt_sqrt_of_sq_lt, use continuity via Real.continuousAt_rpow_const, and select a half-minimum neighborhood.",
+  "hypotheses": "Dimension greater than sixteen times squared polynomial degree.",
+  "source_body_refs": [
+    "Roth.eta"
+  ],
+  "source_type_refs": [
+    "Roth.eta"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_delta",
+      "file": "Roth/Main.lean",
+      "line": 227
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.eta"
+  ],
+  "used_by_in_file": [],
+  "used_by_other_files": [
+    {
+      "name": "Roth.exists_delta",
+      "file": "Roth/Main.lean",
+      "line": 227
+    }
+  ],
+  "assignment_offset": 171,
+  "project_body_refs": [
+    "Roth.eta"
+  ],
+  "project_type_refs": [
+    "Roth.eta"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_delta",
+      "file": "Roth/Main.lean",
+      "line": 227
+    }
+  ]
+}

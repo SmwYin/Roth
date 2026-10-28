@@ -1,0 +1,109 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
+
+#check_failure Roth.exists_delta_bound
+open scoped Topology
+namespace Delta234Generic
+#check @Real.continuousAt_rpow_const
+#check @Real.zero_rpow
+#check @ContinuousAt.eventually_lt
+#check @Metric.eventually_nhds_iff
+#check @mem_nhdsGE_iff_exists_Icc_subset
+#check @Real.lt_sqrt_of_sq_lt
+#check @Real.sq_sqrt
+#check @Real.sqrt_pos
+#check @Filter.Eventually.exists_Ioo_subset
+-- Existing two-call neighborhood transport: h already contains all substantive content.
+theorem transport {P : ℝ → Prop} (h : ∀ᶠ δ in 𝓝 (0 : ℝ), P δ) :
+    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ ∈ Set.Icc 0 δ₀, P δ :=
+  mem_nhdsGE_iff_exists_Icc_subset.mp (nhdsWithin_le_nhds h)
+-- This is a new proof, not a mathlib declaration.
+theorem small_continuous {f : ℝ → ℝ} {a b : ℝ} (ha : 0 < a)
+    (hc : ContinuousAt f 0) (hgap : f 0 < b) :
+    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ → δ < a ∧ f δ < b := by
+  obtain ⟨δ₀, hδ₀, h⟩ := transport
+    ((eventually_lt_nhds ha).and (hc.eventually_lt continuousAt_const hgap))
+  exact ⟨δ₀, hδ₀, fun δ hδ hle ↦ h δ ⟨hδ, hle⟩⟩
+theorem small_power_perturbation {a b C D p r : ℝ} (ha : 0 < a) (hp : 0 < p)
+    (hgap : b < r) : ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ →
+      δ < a ∧ C * δ ^ p + b + D * δ < r := by
+  apply small_continuous ha
+  · exact (((Real.continuousAt_rpow_const 0 p (.inr hp.le)).const_mul C).add_const b).add
+      (continuousAt_const.mul continuousAt_id)
+  · simpa [Real.zero_rpow hp.ne'] using hgap
+theorem gap_iff (n m : ℕ) :
+    2 * (n : ℝ) * √(m : ℝ) < m / 2 ↔ 16 * n ^ 2 < m := by
+  constructor
+  · intro h
+    have hs := Real.sq_sqrt (Nat.cast_nonneg m)
+    have hm : (0 : ℝ) < m := by
+      nlinarith only [h, mul_nonneg (Nat.cast_nonneg n) (Real.sqrt_nonneg (m : ℝ))]
+    have h4 : 4 * (n : ℝ) < √(m : ℝ) := by
+      apply (mul_lt_mul_right (Real.sqrt_pos.mpr hm)).mp
+      nlinarith only [h, hs]
+    have hsq := mul_self_lt_mul_self (by positivity : 0 ≤ 4 * (n : ℝ)) h4
+    have hn : (16 * n ^ 2 : ℝ) < m := by nlinarith only [hsq, hs]
+    exact_mod_cast hn
+  · intro hm
+    have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm
+    have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm
+    have h4 : 4 * (n : ℝ) < √(m : ℝ) :=
+      Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])
+    nlinarith only [Real.sq_sqrt hm0.le,
+      mul_lt_mul_of_pos_right h4 (Real.sqrt_pos.mpr hm0)]
+-- Expanded original form; only genuinely existing mathlib operations occur.
+theorem original_expanded {n m : ℕ} (hm : 16 * n ^ 2 < m) :
+    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ → δ < 1 / m ∧
+      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 := by
+  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm
+  obtain ⟨δ₀, hδ₀, h⟩ := small_power_perturbation
+    (C := (10 : ℝ) ^ m) (D := 6 * n * √(m : ℝ)) (by positivity : 0 < 1 / (m : ℝ))
+    (by positivity : 0 < (1 / 2 : ℝ) ^ m) ((gap_iff n m).2 hm)
+  refine ⟨δ₀, hδ₀, fun δ hδ hle ↦ ⟨(h δ hδ hle).1, ?_⟩⟩
+  nlinarith only [(h δ hδ hle).2]
+theorem no_m_zero (n : ℕ) : ¬ ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,
+    0 ≤ δ → δ ≤ δ₀ → δ < 1 / (0 : ℝ) ∧
+      10 ^ (0 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (0 : ℕ)) +
+        2 * (1 + 3 * δ) * n * √(0 : ℝ) < (0 : ℝ) / 2 := by
+  rintro ⟨δ₀, hδ₀, h⟩
+  have := (h 0 le_rfl hδ₀.le).1
+  norm_num at this
+theorem equality_boundary : ¬ ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,
+    0 ≤ δ → δ ≤ δ₀ → δ < 1 / (16 : ℝ) ∧
+      10 ^ (16 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (16 : ℕ)) +
+        2 * (1 + 3 * δ) * (1 : ℝ) * √(16 : ℝ) < (16 : ℝ) / 2 := by
+  rintro ⟨δ₀, hδ₀, h⟩
+  have hbad := (h 0 le_rfl hδ₀.le).2
+  norm_num [Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ (16 : ℕ) ≠ 0),
+    Real.sqrt_eq_iff_eq_sq] at hbad
+theorem exponent_zero_fails : ¬ ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,
+    0 ≤ δ → δ ≤ δ₀ → (1 : ℝ) * δ ^ (0 : ℝ) < 1 / 2 := by
+  rintro ⟨δ₀, hδ₀, h⟩
+  have := h 0 le_rfl hδ₀.le
+  norm_num at this
+end Delta234Generic
+#print axioms Delta234Generic.transport
+#print axioms Delta234Generic.small_continuous
+#print axioms Delta234Generic.small_power_perturbation
+#print axioms Delta234Generic.gap_iff
+#print axioms Delta234Generic.original_expanded
+#print axioms Delta234Generic.no_m_zero
+#print axioms Delta234Generic.equality_boundary
+#print axioms Delta234Generic.exponent_zero_fails

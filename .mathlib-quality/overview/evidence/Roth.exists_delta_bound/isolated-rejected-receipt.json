@@ -1,0 +1,201 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Continuity\n\n#check_failure Roth.exists_delta_bound\nopen scoped Topology\nnamespace Delta234Generic\n#check @Real.continuousAt_rpow_const\n#check @Real.zero_rpow\n#check @ContinuousAt.eventually_lt\n#check @Metric.eventually_nhds_iff\n#check @mem_nhdsGE_iff_exists_Icc_subset\n#check @Real.lt_sqrt_of_sq_lt\n#check @Real.sq_sqrt\n#check @Real.sqrt_pos\n#check @Filter.Eventually.exists_Ioo_subset\n-- Existing two-call neighborhood transport: h already contains all substantive content.\ntheorem transport {P : ℝ → Prop} (h : ∀ᶠ δ in 𝓝 (0 : ℝ), P δ) :\n    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ ∈ Set.Icc 0 δ₀, P δ :=\n  mem_nhdsGE_iff_exists_Icc_subset.mp (nhdsWithin_le_nhds h)\n-- This is a new proof, not a mathlib declaration.\ntheorem small_continuous {f : ℝ → ℝ} {a b : ℝ} (ha : 0 < a)\n    (hc : ContinuousAt f 0) (hgap : f 0 < b) :\n    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ → δ < a ∧ f δ < b := by\n  obtain ⟨δ₀, hδ₀, h⟩ := transport\n    ((eventually_lt_nhds ha).and (hc.eventually_lt continuousAt_const hgap))\n  exact ⟨δ₀, hδ₀, fun δ hδ hle ↦ h δ ⟨hδ, hle⟩⟩\ntheorem small_power_perturbation {a b C D p r : ℝ} (ha : 0 < a) (hp : 0 < p)\n    (hgap : b < r) : ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ →\n      δ < a ∧ C * δ ^ p + b + D * δ < r := by\n  apply small_continuous ha\n  · exact (((Real.continuousAt_rpow_const 0 p (.inr hp.le)).const_mul C).add_const b).add\n      (continuousAt_const.mul continuousAt_id)\n  · simpa [Real.zero_rpow hp.ne'] using hgap\ntheorem gap_iff (n m : ℕ) :\n    2 * (n : ℝ) * √(m : ℝ) < m / 2 ↔ 16 * n ^ 2 < m := by\n  constructor\n  · intro h\n    have hs := Real.sq_sqrt (Nat.cast_nonneg m)\n    have hm : (0 : ℝ) < m := by\n      nlinarith only [h, mul_nonneg (Nat.cast_nonneg n) (Real.sqrt_nonneg (m : ℝ))]\n    have h4 : 4 * (n : ℝ) < √(m : ℝ) := by\n      apply (mul_lt_mul_right (Real.sqrt_pos.mpr hm)).mp\n      nlinarith only [h, hs]\n    have hsq := mul_self_lt_mul_self (by positivity : 0 ≤ 4 * (n : ℝ)) h4\n    have hn : (16 * n ^ 2 : ℝ) < m := by nlinarith only [hsq, hs]\n    exact_mod_cast hn\n  · intro hm\n    have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm\n    have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm\n    have h4 : 4 * (n : ℝ) < √(m : ℝ) :=\n      Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])\n    nlinarith only [Real.sq_sqrt hm0.le,\n      mul_lt_mul_of_pos_right h4 (Real.sqrt_pos.mpr hm0)]\n-- Expanded original form; only genuinely existing mathlib operations occur.\ntheorem original_expanded {n m : ℕ} (hm : 16 * n ^ 2 < m) :\n    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ → δ ≤ δ₀ → δ < 1 / m ∧\n      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 := by\n  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm\n  obtain ⟨δ₀, hδ₀, h⟩ := small_power_perturbation\n    (C := (10 : ℝ) ^ m) (D := 6 * n * √(m : ℝ)) (by positivity : 0 < 1 / (m : ℝ))\n    (by positivity : 0 < (1 / 2 : ℝ) ^ m) ((gap_iff n m).2 hm)\n  refine ⟨δ₀, hδ₀, fun δ hδ hle ↦ ⟨(h δ hδ hle).1, ?_⟩⟩\n  nlinarith only [(h δ hδ hle).2]\ntheorem no_m_zero (n : ℕ) : ¬ ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,\n    0 ≤ δ → δ ≤ δ₀ → δ < 1 / (0 : ℝ) ∧\n      10 ^ (0 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (0 : ℕ)) +\n        2 * (1 + 3 * δ) * n * √(0 : ℝ) < (0 : ℝ) / 2 := by\n  rintro ⟨δ₀, hδ₀, h⟩\n  have := (h 0 le_rfl hδ₀.le).1\n  norm_num at this\ntheorem equality_boundary : ¬ ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,\n    0 ≤ δ → δ ≤ δ₀ → δ < 1 / (16 : ℝ) ∧\n      10 ^ (16 : ℕ) * δ ^ ((1 / 2 : ℝ) ^ (16 : ℕ)) +\n        2 * (1 + 3 * δ) * (1 : ℝ) * √(16 : ℝ) < (16 : ℝ) / 2 := by\n  rintro ⟨δ₀, hδ₀, h⟩\n  have hbad := (h 0 le_rfl hδ₀.le).2\n  norm_num [Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ (16 : ℕ) ≠ 0),\n    Real.sqrt_eq_iff_eq_sq] at hbad\ntheorem exponent_zero_fails : ¬ ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ,\n    0 ≤ δ → δ ≤ δ₀ → (1 : ℝ) * δ ^ (0 : ℝ) < 1 / 2 := by\n  rintro ⟨δ₀, hδ₀, h⟩\n  have := h 0 le_rfl hδ₀.le\n  norm_num at this\nend Delta234Generic\n#print axioms Delta234Generic.transport\n#print axioms Delta234Generic.small_continuous\n#print axioms Delta234Generic.small_power_perturbation\n#print axioms Delta234Generic.gap_iff\n#print axioms Delta234Generic.original_expanded\n#print axioms Delta234Generic.no_m_zero\n#print axioms Delta234Generic.equality_boundary\n#print axioms Delta234Generic.exponent_zero_fails\n"
+  },
+  "raw": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_delta_bound`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.continuousAt_rpow_const : ∀ (x q : ℝ), x ≠ 0 ∨ 0 ≤ q → ContinuousAt (fun x ↦ x ^ q) x\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.zero_rpow : ∀ {x : ℝ}, x ≠ 0 → 0 ^ x = 0\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@ContinuousAt.eventually_lt : ∀ {α : Type u_1} {β : Type u_2} [inst : TopologicalSpace α] [inst_1 : LinearOrder α]\\n  [OrderClosedTopology α] {f g : β → α} [inst_3 : TopologicalSpace β] {x₀ : β},\\n  ContinuousAt f x₀ → ContinuousAt g x₀ → f x₀ < g x₀ → ∀ᶠ (x : β) in 𝓝 x₀, f x < g x\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Metric.eventually_nhds_iff : ∀ {α : Type u_1} [inst : PseudoMetricSpace α] {x : α} {p : α → Prop},\\n  (∀ᶠ (y : α) in 𝓝 x, p y) ↔ ∃ ε > 0, ∀ ⦃y : α⦄, dist y x < ε → p y\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@mem_nhdsGE_iff_exists_Icc_subset : ∀ {α : Type u_1} [inst : TopologicalSpace α] [inst_1 : LinearOrder α]\\n  [OrderTopology α] [NoMaxOrder α] [DenselyOrdered α] {a : α} {s : Set α}, s ∈ 𝓝[≥] a ↔ ∃ u, a < u ∧ Set.Icc a u ⊆ s\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.lt_sqrt_of_sq_lt : ∀ {x y : ℝ}, x ^ 2 < y → x < √y\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sq_sqrt : ∀ {x : ℝ}, 0 ≤ x → √x ^ 2 = x\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sqrt_pos : ∀ {x : ℝ}, 0 < √x ↔ 0 < x\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Filter.Eventually.exists_Ioo_subset : ∀ {α : Type u_1} [inst : TopologicalSpace α] [inst_1 : LinearOrder α]\\n  [OrderTopology α] [NoMaxOrder α] [NoMinOrder α] {a : α} {p : α → Prop},\\n  (∀ᶠ (x : α) in 𝓝 a, p x) → ∃ l u, a ∈ Set.Ioo l u ∧ Set.Ioo l u ⊆ {x | p x}\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  MulLeftStrictMono ℝ\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 59,\n      \"column\": 14,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"No goals to be solved\",\n      \"line\": 60,\n      \"column\": 7,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Delta234Generic.transport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 102,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Delta234Generic.small_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 103,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Delta234Generic.small_power_perturbation' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 104,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Delta234Generic.gap_iff' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 105,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Delta234Generic.original_expanded' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 106,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Delta234Generic.no_m_zero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 107,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Delta234Generic.equality_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 108,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Delta234Generic.exponent_zero_fails' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 109,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_delta_bound`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.continuousAt_rpow_const : ∀ (x q : ℝ), x ≠ 0 ∨ 0 ≤ q → ContinuousAt (fun x ↦ x ^ q) x",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.zero_rpow : ∀ {x : ℝ}, x ≠ 0 → 0 ^ x = 0",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@ContinuousAt.eventually_lt : ∀ {α : Type u_1} {β : Type u_2} [inst : TopologicalSpace α] [inst_1 : LinearOrder α]\n  [OrderClosedTopology α] {f g : β → α} [inst_3 : TopologicalSpace β] {x₀ : β},\n  ContinuousAt f x₀ → ContinuousAt g x₀ → f x₀ < g x₀ → ∀ᶠ (x : β) in 𝓝 x₀, f x < g x",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Metric.eventually_nhds_iff : ∀ {α : Type u_1} [inst : PseudoMetricSpace α] {x : α} {p : α → Prop},\n  (∀ᶠ (y : α) in 𝓝 x, p y) ↔ ∃ ε > 0, ∀ ⦃y : α⦄, dist y x < ε → p y",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@mem_nhdsGE_iff_exists_Icc_subset : ∀ {α : Type u_1} [inst : TopologicalSpace α] [inst_1 : LinearOrder α]\n  [OrderTopology α] [NoMaxOrder α] [DenselyOrdered α] {a : α} {s : Set α}, s ∈ 𝓝[≥] a ↔ ∃ u, a < u ∧ Set.Icc a u ⊆ s",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.lt_sqrt_of_sq_lt : ∀ {x y : ℝ}, x ^ 2 < y → x < √y",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sq_sqrt : ∀ {x : ℝ}, 0 ≤ x → √x ^ 2 = x",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sqrt_pos : ∀ {x : ℝ}, 0 < √x ↔ 0 < x",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Filter.Eventually.exists_Ioo_subset : ∀ {α : Type u_1} [inst : TopologicalSpace α] [inst_1 : LinearOrder α]\n  [OrderTopology α] [NoMaxOrder α] [NoMinOrder α] {a : α} {p : α → Prop},\n  (∀ᶠ (x : α) in 𝓝 a, p x) → ∃ l u, a ∈ Set.Ioo l u ∧ Set.Ioo l u ⊆ {x | p x}",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  MulLeftStrictMono ℝ\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 59,
+          "column": 14,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "No goals to be solved",
+          "line": 60,
+          "column": 7,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Delta234Generic.transport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 102,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Delta234Generic.small_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 103,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Delta234Generic.small_power_perturbation' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 104,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Delta234Generic.gap_iff' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 105,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Delta234Generic.original_expanded' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 106,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Delta234Generic.no_m_zero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 107,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Delta234Generic.equality_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 108,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Delta234Generic.exponent_zero_fails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 109,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 97724
+}

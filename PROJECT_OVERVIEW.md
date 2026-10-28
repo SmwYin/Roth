@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 233/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 234/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 233; remaining: 60.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 75 BORDERLINE-needs-human, 54 SKIP.
+- Completed applicable assessments: 234; remaining: 59.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 76 BORDERLINE-needs-human, 54 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2866,6 +2866,18 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Seven MainLemma callers, no external file callers; seven kernel-value and six kernel-type consumers. Complete literal inlining preserves all seven original signatures.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.boxFamily.md).
 
+### Completed: `Roth.exists_delta_bound`
+
+- Type: `∀ {n m : ℕ},
+  16 * n ^ 2 < m →
+    ∃ (δ₀ : ℝ), 0 < δ₀ ∧ ∀ (δ : ℝ), 0 ≤ δ → δ ≤ δ₀ → δ < 1 / ↑m ∧ Roth.eta δ m + 2 * (1 + 3 * δ) * ↑n * √↑m < ↑m / 2`
+- What: For each fixed natural m>16n², a positive δ₀ makes δ<1/m and η(δ,m)+2(1+3δ)n√m<m/2 hold simultaneously for every δ in the closed interval [0,δ₀].
+- How: Derive the strict square-root gap at zero using Real.lt_sqrt_of_sq_lt; apply Real.continuousAt_rpow_const and ContinuousAt.eventually_lt, extract a radius with Metric.eventually_nhds_iff, then shrink it by a half-minimum.
+- Hypotheses: A nonnegative natural degree parameter n, with n=0 allowed., A fixed natural dimension m strictly greater than sixteen times the square of n; this strict threshold is verified necessary and sufficient for the closed-interval conclusion.
+- Project dependencies: Roth.eta
+- Caller summary: One source caller and one canonical direct kernel-value consumer: Roth.exists_delta at Main.lean:227 (target call line231). It uses the returned bound at0 (denominator gap) and chosen δ (29/30). No canonical direct type consumers; no target simp attribute.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_delta_bound.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3358,6 +3370,8 @@ Completed `Roth.mainCoeffBound`: Nat.floor + Real.rpow + multiplication gives st
 
 Completed `Roth.boxFamily`: Finset.finsupp/card_finsupp and Finsupp.card_Iic enumerate finite coefficient products; coeffEquiv supplies representation; restrictSupport captures only the degree/support layer. New degree-box coefficient bridge is proved separately.
 
+Completed `Roth.exists_delta_bound`: Existing ContinuousAt.eventually_lt, Real.continuousAt_rpow_const and mem_nhdsGE_iff_exists_Icc_subset cover separate stages. Full fixed-m arithmetic result is not verified as ≤3 existing calls; the complete supplied-event transport is two existing calls.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3825,6 +3839,8 @@ Completed `Roth.eta`: The same dyadic profile occurs in Roth.lem7_Φ_bound with 
 Completed `Roth.mainCoeffBound`: Same floor-of-power pattern appears as Cn in exists_mem_RSet_le_index_of_rpow_bound_aux and in pigeonhole_count, with different bases/exponents. Existing sqrt_lt_floor already isolates the generic square-root floor argument; the named B1 is its application, not new rounding machinery.
 
 Completed `Roth.boxFamily`: RSet differs by nonzero and symmetric absolute bounds; restrictSupport omits coefficient bounds. No exact duplicate established.
+
+Completed `Roth.exists_delta_bound`: Shares neighborhood shrinking with Roth.exists_delta; its strict square-root gap is independent content. No other source inlining of this exact bound found.
 
 ## Part 5: Generalization opportunities
 
@@ -4304,6 +4320,8 @@ Completed `Roth.mainCoeffBound`: Compiled floorPower (q e : ℝ) := ⌊q^e⌋₊
 
 Completed `Roth.boxFamily`: Verified CommSemiring coefficient-family with monomial-specific allowed sets; arbitrary sigma and function-valued r retained for Set semantics; finite enumeration uses finitely supported r. Tested zero-membership premise is sufficient, not minimal.
 
+Completed `Roth.exists_delta_bound`: No removable original premise: native sharp iff. Verified new arbitrary-real C,D,b,r,a and positive-exponent p perturbation theorem; specialization still needs the square-root gap and a normalization proof. This is a proposed generic API, not a previously existing mathlib result.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4772,6 +4790,8 @@ Completed `Roth.eta`: No arithmetic infrastructure gap. A local eta continuity/z
 Completed `Roth.mainCoeffBound`: No missing arithmetic API needed for this definition. The isolated sqrtLower proof is new assessment evidence of the earlier project generic floor estimate, not an existing mathlib replacement or an automatic verdict for that theorem.
 
 Completed `Roth.boxFamily`: Potential general degree-box/coefficient-family image bridge; whether a named family belongs upstream is an API choice.
+
+Completed `Roth.exists_delta_bound`: Possible convenience helper for positive-power perturbations on a closed right interval; generic topology transport already exists. Whether to add that helper is an upstream API choice.
 
 ## Part 7: Junk / removable
 
@@ -5244,6 +5264,8 @@ Completed `Roth.mainCoeffBound`: Used local numerical notation, not dead code. R
 
 Completed `Roth.boxFamily`: Not dead: seven actual consumers and semantic-name exemption. Literal inlining works, but does not establish an existing mathlib replacement.
 
+Completed `Roth.exists_delta_bound`: Used, nontrivial 16-line proof; not established redundant. Inlining is possible and verified at the sole caller but adds the entire arithmetic/continuity argument.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5481,6 +5503,7 @@ Completed `Roth.boxFamily`: Not dead: seven actual consumers and semantic-name e
 | 231 | `Roth.eta` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eta.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eta/root-acceptance.json) |
 | 232 | `Roth.mainCoeffBound` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.mainCoeffBound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mainCoeffBound/root-acceptance.json) |
 | 233 | `Roth.boxFamily` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily/root-acceptance.json) |
+| 234 | `Roth.exists_delta_bound` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_delta_bound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_delta_bound/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5946,12 +5969,14 @@ Completed `Roth.mainCoeffBound` action: NO-composable-from-mathlib. For upstream
 
 Completed `Roth.boxFamily` action: BORDERLINE-needs-human: retain local boxFamily; decide three concrete upstream API questions before naming/generalizing an upstream interface. Assessment complete, verification unresolved empty.
 
+Completed `Roth.exists_delta_bound` action: BORDERLINE-needs-human: retain project-local theorem for now. Three concrete future upstream API questions in the detailed report; assessment complete, no current user blocker.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_delta_bound` next. Supporting identities receive their own applicable checks.
+   `Roth.eta_lt_gam_iff` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

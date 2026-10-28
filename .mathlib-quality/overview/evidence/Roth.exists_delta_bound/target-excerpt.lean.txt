@@ -1,0 +1,17 @@
+theorem exists_delta_bound {n m : ℕ} (hm : 16 * n ^ 2 < m) : ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ →
+    δ ≤ δ₀ → δ < 1 / m ∧ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 := by
+  have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm
+  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm
+  have h4n : 4 * (n : ℝ) < √(m : ℝ) := Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])
+  have hgap : 2 * (n : ℝ) * √(m : ℝ) < m / 2 := by
+    nlinarith only [Real.sq_sqrt hm0.le,
+      mul_lt_mul_of_pos_right h4n (Real.sqrt_pos.mpr hm0)]
+  have hc : ContinuousAt (fun δ ↦ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ)) 0 :=
+    (Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _ |>.add (by fun_prop)
+  obtain ⟨ε, hε, hbound⟩ := Metric.eventually_nhds_iff.mp
+    (hc.eventually_lt continuousAt_const (by
+      simpa [eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)] using hgap))
+  refine ⟨min (1 / (m : ℝ)) ε / 2, by positivity, fun δ hδ hle ↦ ?_⟩
+  have hlt := hle.trans_lt (half_lt_self (by positivity : 0 < min (1 / (m : ℝ)) ε))
+  exact ⟨(lt_min_iff.mp hlt).1,
+    hbound (by simpa [Real.dist_eq, abs_of_nonneg hδ] using (lt_min_iff.mp hlt).2)⟩
