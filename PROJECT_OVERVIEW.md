@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 202/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 203/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 202; remaining: 91.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 62 BORDERLINE-needs-human, 37 SKIP.
+- Completed applicable assessments: 203; remaining: 90.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 62 BORDERLINE-needs-human, 38 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2346,6 +2346,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Zero explicit source callers and zero canonical direct value/type consumers among293constants; no simp attribute. Whole Theta body replayed successfully.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sq_div_three_lt_floor_sq_div_two.md).
 
+### Completed: `Roth.mul_div_two_le_sum_max_aux`
+
+- Type: `∀ {θ r : ℝ} {l : ℕ},
+  ↑l ≤ θ * r → ↑l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ↑ν / r)`
+- What: If the natural truncation length l is at most θr, the sum of positive parts max(0,θ−ν/r) over ν<l is at least lθ/2.
+- How: Treat empty and nonpositive-height cases, then use Finset.sum_range_id_mul_two and bound each positive part below by its residual.
+- Hypotheses: Truncation length at most height times scale. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: None
+- Caller summary: 2 explicit source caller declarations, all in Theta.lean; 2 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.mul_div_two_le_sum_max_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2776,6 +2787,8 @@ Completed `Roth.floor_sq_div_two_le_sum`: All five methods on current/standard/a
 
 Completed `Roth.sq_div_three_lt_floor_sq_div_two`: All15cells of five methods on current/standard/abstract forms executed. Pinned Nat floor-error/monotonicity and square-monotonicity APIs checked and used. No exact replacement or strict three-existing-call composition established.
 
+Completed `Roth.mul_div_two_le_sum_max_aux`: Handle l=0 and nonpositive θ directly. Otherwise l>0 and l≤θr force r>0. Cast the natural Gauss identity for the sum of ν<l, bound each positive part below by its affine residual, distribute sums and divide by the positive r, then use l≤θr to finish the linear estimate. This is the short-truncation branch used both in the boundary case of mul_sq_div_three_le_sum_max_aux and in min_le_sum_max; it is not the floor-square comparison or the longer quadratic-truncation estimate.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3181,6 +3194,8 @@ Completed `Roth.one_le_lem6M`: {'other': 'List.one_le_prod', 'same_statement': F
 Completed `Roth.floor_sq_div_two_le_sum`: Gauss summation already in Finset.sum_range_id_mul_two/sum_range_id. Nearby mul_div_two_le_sum_max_aux and mul_sq_div_three_le_sum_max_of_pos_aux repeat cast/sum normalization, with different full conclusions.
 
 Completed `Roth.sq_div_three_lt_floor_sq_div_two`: Private mul_sq_div_three_le_sum_max_of_pos_aux directly proves a²/3≤sum using Gauss identity and nonnegative remainders; it bypasses but does not rederive strict floor-square comparison. MainLemma sqrt comparison is related, with a different conclusion.
+
+Completed `Roth.mul_div_two_le_sum_max_aux`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -3598,6 +3613,8 @@ Completed `Roth.floor_sq_div_two_le_sum`: Verified Field/LinearOrder/IsStrictOrd
 
 Completed `Roth.sq_div_three_lt_floor_sq_div_two`: Verified Field/LinearOrder/IsStrictOrderedRing/FloorSemiring with5≤a; floor-free2*a²<3*n² for ordered CommRing from0≤a,5≤n,a<n+1. Certified99/20 and0counterexamples, plus negative abstract-input guard. No optimal cutoff/minimal hierarchy claim.
 
+Completed `Roth.mul_div_two_le_sum_max_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4004,6 +4021,8 @@ Completed `Roth.one_le_lem6M`: No missing elementary order arithmetic API identi
 Completed `Roth.floor_sq_div_two_le_sum`: Potential exact affine arithmetic-series normalization or arbitrary natural-cutoff lower-bound API; these are newly proved candidates, not existing hits.
 
 Completed `Roth.sq_div_three_lt_floor_sq_div_two`: Potential numeric floor-square comparison or arbitrary approximation polynomial-comparison API; demand and statement grain remain design questions. All proposed helpers are new proofs.
+
+Completed `Roth.mul_div_two_le_sum_max_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -4414,6 +4433,8 @@ Completed `Roth.floor_sq_div_two_le_sum`: Unused within this tracked project; no
 
 Completed `Roth.sq_div_three_lt_floor_sq_div_two`: Unused by current source and canonical direct consumers; no external-deadness claim. Paper-facing second FACT is bypassed by the stronger direct-sum argument.
 
+Completed `Roth.mul_div_two_le_sum_max_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4620,6 +4641,7 @@ Completed `Roth.sq_div_three_lt_floor_sq_div_two`: Unused by current source and 
 | 200 | `Roth.one_le_lem6M` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.one_le_lem6M.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_le_lem6M/root-acceptance.json) |
 | 201 | `Roth.floor_sq_div_two_le_sum` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.floor_sq_div_two_le_sum.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.floor_sq_div_two_le_sum/root-acceptance.json) |
 | 202 | `Roth.sq_div_three_lt_floor_sq_div_two` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sq_div_three_lt_floor_sq_div_two.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sq_div_three_lt_floor_sq_div_two/root-acceptance.json) |
+| 203 | `Roth.mul_div_two_le_sum_max_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_div_two_le_sum_max_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_div_two_le_sum_max_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5023,12 +5045,14 @@ Completed `Roth.floor_sq_div_two_le_sum` action: BORDERLINE-needs-human: choose 
 
 Completed `Roth.sq_div_three_lt_floor_sq_div_two` action: BORDERLINE-needs-human: decide upstream demand and floor-free versus floor corollary grain. Future authorized local refactor can consider removing unused public endpoint; zero explicit callers to update, retain only if documentary purpose is intentional. No production edits.
 
+Completed `Roth.mul_div_two_le_sum_max_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.mul_div_two_le_sum_max_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.mul_sq_div_three_le_sum_max_of_pos_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

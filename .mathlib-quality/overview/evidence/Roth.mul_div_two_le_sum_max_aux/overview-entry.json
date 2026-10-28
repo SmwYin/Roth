@@ -1,0 +1,16 @@
+{
+  "declaration": "Roth.mul_div_two_le_sum_max_aux",
+  "kind": "lemma",
+  "type": "∀ {θ r : ℝ} {l : ℕ},\n  ↑l ≤ θ * r → ↑l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ↑ν / r)",
+  "what": "If the natural truncation length l is at most θr, the sum of positive parts max(0,θ−ν/r) over ν<l is at least lθ/2.",
+  "how": "Treat empty and nonpositive-height cases, then use Finset.sum_range_id_mul_two and bound each positive part below by its residual.",
+  "hypotheses": "Truncation length at most height times scale. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [],
+  "caller_summary": "2 explicit source caller declarations, all in Theta.lean; 2 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Handle l=0 and nonpositive θ directly. Otherwise l>0 and l≤θr force r>0. Cast the natural Gauss identity for the sum of ν<l, bound each positive part below by its affine residual, distribute sums and divide by the positive r, then use l≤θr to finish the linear estimate. This is the short-truncation branch used both in the boundary case of mul_sq_div_three_le_sum_max_aux and in min_le_sum_max; it is not the floor-square comparison or the longer quadratic-truncation estimate.",
+  "moral_duplications": "The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

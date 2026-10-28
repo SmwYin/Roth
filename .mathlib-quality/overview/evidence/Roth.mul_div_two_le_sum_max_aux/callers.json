@@ -1,0 +1,110 @@
+[
+  {
+    "file": "Roth/Theta.lean",
+    "line": 347,
+    "name": "Roth.mul_sq_div_three_le_sum_max_aux",
+    "short": "mul_sq_div_three_le_sum_max_aux",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 355,
+    "source": "private lemma mul_sq_div_three_le_sum_max_aux {θ r : ℝ} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :\n    r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  rcases le_or_gt r 0 with hr | hr\n  · exact (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hr (sq_nonneg θ))\n      (by norm_num)).trans (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n  rcases lt_or_eq_of_le hl with hl | hl\n  · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl\n  · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,\n      mul_nonneg hr.le (sq_nonneg θ)]",
+    "signature": "private lemma mul_sq_div_three_le_sum_max_aux {θ r : ℝ} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :\n    r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r)",
+    "body": "by\n  rcases le_or_gt r 0 with hr | hr\n  · exact (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hr (sq_nonneg θ))\n      (by norm_num)).trans (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n  rcases lt_or_eq_of_le hl with hl | hl\n  · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl\n  · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,\n      mul_nonneg hr.le (sq_nonneg θ)]",
+    "proof_lines": 8,
+    "sha256": "0e5798be585061fbc5bd5f35fe856fdf04c59f0c5fa95c93e961ef57b623adcb",
+    "what": "The quadratic residual-sum estimate also holds on the equality boundary and for nonpositive scales.",
+    "how": "Combine mul_sq_div_three_le_sum_max_of_pos_aux with nonpositivity and the boundary case from mul_div_two_le_sum_max_aux.",
+    "hypotheses": "Nonnegative height; height times scale no larger than truncation length.",
+    "source_body_refs": [
+      "Roth.mul_div_two_le_sum_max_aux",
+      "Roth.mul_sq_div_three_le_sum_max_of_pos_aux"
+    ],
+    "source_type_refs": [],
+    "source_callers": [
+      {
+        "name": "Roth.min_le_sum_max",
+        "file": "Roth/Theta.lean",
+        "line": 362
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+    "uses_from_project": [
+      "Roth.mul_div_two_le_sum_max_aux",
+      "Roth.mul_sq_div_three_le_sum_max_of_pos_aux"
+    ],
+    "used_by_in_file": [
+      "Roth.min_le_sum_max"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 156,
+    "project_body_refs": [
+      "Roth.mul_div_two_le_sum_max_aux",
+      "Roth.mul_sq_div_three_le_sum_max_of_pos_aux"
+    ],
+    "project_type_refs": [],
+    "project_callers": [
+      {
+        "name": "Roth.min_le_sum_max",
+        "file": "Roth/Theta.lean",
+        "line": 362
+      }
+    ]
+  },
+  {
+    "file": "Roth/Theta.lean",
+    "line": 362,
+    "name": "Roth.min_le_sum_max",
+    "short": "min_le_sum_max",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 370,
+    "source": "theorem min_le_sum_max {θ : ℝ} {rp : ℕ} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\n  by_cases hθ : θ ≤ 0\n  · exact (min_le_left _ _).trans ((div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _))\n  rcases le_or_gt (l : ℝ) (θ * rp) with hl | hl\n  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)\n  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)",
+    "signature": "theorem min_le_sum_max {θ : ℝ} {rp : ℕ} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp)",
+    "body": "by\n  by_cases hθ : θ ≤ 0\n  · exact (min_le_left _ _).trans ((div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _))\n  rcases le_or_gt (l : ℝ) (θ * rp) with hl | hl\n  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)\n  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)",
+    "proof_lines": 8,
+    "sha256": "fa8783fa7a0405ae42c1d0befbefae401144ed3ee09d448ffb5b5d828342d40d",
+    "what": "The residual positive-part sum dominates the minimum of the linear and quadratic estimates.",
+    "how": "Split nonpositive height and short/long truncation cases, then apply mul_div_two_le_sum_max_aux or mul_sq_div_three_le_sum_max_aux.",
+    "hypotheses": "Natural scale and truncation length; arbitrary real height.",
+    "source_body_refs": [
+      "Roth.mul_div_two_le_sum_max_aux",
+      "Roth.mul_sq_div_three_le_sum_max_aux"
+    ],
+    "source_type_refs": [],
+    "source_callers": [
+      {
+        "name": "Roth.index_le_lem6",
+        "file": "Roth/Theta.lean",
+        "line": 556
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+    "uses_from_project": [
+      "Roth.mul_div_two_le_sum_max_aux",
+      "Roth.mul_sq_div_three_le_sum_max_aux"
+    ],
+    "used_by_in_file": [
+      "Roth.index_le_lem6"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 130,
+    "project_body_refs": [
+      "Roth.mul_div_two_le_sum_max_aux",
+      "Roth.mul_sq_div_three_le_sum_max_aux"
+    ],
+    "project_type_refs": [],
+    "project_callers": [
+      {
+        "name": "Roth.index_le_lem6",
+        "file": "Roth/Theta.lean",
+        "line": 556
+      }
+    ]
+  }
+]
