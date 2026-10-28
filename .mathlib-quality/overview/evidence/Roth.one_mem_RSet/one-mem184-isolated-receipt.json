@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\n#check_failure Roth.one_mem_RSet\nnamespace OneMem184Isolated\nopen MvPolynomial\nuniverse u v\n-- Complete arithmetic predicate, without importing any Roth module.\ntheorem arithmetic {\u03c3 : Type u} {B : \u211d} (hB : 1 \u2264 B) (r : \u03c3 \u2192 \u2115) :\n    (1 : MvPolynomial \u03c3 \u2124) \u2260 0 \u2227\n      (\u2200 j, degreeOf j (1 : MvPolynomial \u03c3 \u2124) \u2264 r j) \u2227\n      \u2200 d, |(((1 : MvPolynomial \u03c3 \u2124).coeff d : \u2124) : \u211d)| \u2264 B := by\n  classical\n  simp [coeff_one, apply_ite, ite_apply, hB, zero_le_one.trans hB]\n#print axioms arithmetic\n-- The fixed coefficient and bound representation can be expanded to normed fields.\ntheorem normed {\u03c3 : Type u} {K : Type v} [NormedField K] {B : \u211d}\n    (hB : 1 \u2264 B) (r : \u03c3 \u2192 \u2115) :\n    (1 : MvPolynomial \u03c3 K) \u2260 0 \u2227\n      (\u2200 j, degreeOf j (1 : MvPolynomial \u03c3 K) \u2264 r j) \u2227\n      \u2200 d, \u2016(1 : MvPolynomial \u03c3 K).coeff d\u2016 \u2264 B := by\n  classical\n  simp [coeff_one, apply_ite, ite_apply, hB, zero_le_one.trans hB]\n#print axioms normed\n-- Necessity of the lower bound, witnessed at the constant coefficient.\ntheorem iff_bound {\u03c3 : Type u} {B : \u211d} (r : \u03c3 \u2192 \u2115) :\n    ((1 : MvPolynomial \u03c3 \u2124) \u2260 0 \u2227\n      (\u2200 j, degreeOf j (1 : MvPolynomial \u03c3 \u2124) \u2264 r j) \u2227\n      \u2200 d, |(((1 : MvPolynomial \u03c3 \u2124).coeff d : \u2124) : \u211d)| \u2264 B) \u2194 1 \u2264 B := by\n  constructor\n  \u00b7 intro h\n    simpa using h.2.2 0\n  \u00b7 intro h\n    exact arithmetic h r\n#print axioms iff_bound\n#check MvPolynomial.degreeOf_one\n#check MvPolynomial.coeff_one\n#check AddMonoidAlgebra.coeff_one_zero\n#check one_ne_zero\n#check Nat.zero_le\n#check abs_one\n#check abs_zero\nend OneMem184Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.one_mem_RSet`\",\n      \"line\": 16,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneMem184Isolated.arithmetic' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneMem184Isolated.normed' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneMem184Isolated.iff_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 47,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.degreeOf_one.{u, u_1} {R : Type u} {\u03c3 : Type u_1} [CommSemiring R] (n : \u03c3) : degreeOf n 1 = 0\",\n      \"line\": 48,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.coeff_one.{u, u_1} {R : Type u} {\u03c3 : Type u_1} [CommSemiring R] [DecidableEq \u03c3] (m : \u03c3 \u2192\u2080 \u2115) :\\n  (AddMonoidAlgebra.coeff 1) m = if 0 = m then 1 else 0\",\n      \"line\": 49,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"AddMonoidAlgebra.coeff_one_zero.{u_1, u_4} {R : Type u_1} {M : Type u_4} [Semiring R] [Zero M] :\\n  (AddMonoidAlgebra.coeff 1) 0 = 1\",\n      \"line\": 50,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"one_ne_zero.{u_2} {\u03b1 : Type u_2} [Zero \u03b1] [One \u03b1] [NeZero 1] : 1 \u2260 0\",\n      \"line\": 51,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Nat.zero_le (n : \u2115) : 0 \u2264 n\",\n      \"line\": 52,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"abs_one.{u_1} {\u03b1 : Type u_1} [Ring \u03b1] [LinearOrder \u03b1] [IsOrderedRing \u03b1] : |1| = 1\",\n      \"line\": 53,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"abs_zero.{u_1} {\u03b1 : Type u_1} [Lattice \u03b1] [AddGroup \u03b1] [AddLeftMono \u03b1] : |0| = 0\",\n      \"line\": 54,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.one_mem_RSet`",
+          "line": 16,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneMem184Isolated.arithmetic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneMem184Isolated.normed' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneMem184Isolated.iff_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 47,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.degreeOf_one.{u, u_1} {R : Type u} {\u03c3 : Type u_1} [CommSemiring R] (n : \u03c3) : degreeOf n 1 = 0",
+          "line": 48,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.coeff_one.{u, u_1} {R : Type u} {\u03c3 : Type u_1} [CommSemiring R] [DecidableEq \u03c3] (m : \u03c3 \u2192\u2080 \u2115) :\n  (AddMonoidAlgebra.coeff 1) m = if 0 = m then 1 else 0",
+          "line": 49,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "AddMonoidAlgebra.coeff_one_zero.{u_1, u_4} {R : Type u_1} {M : Type u_4} [Semiring R] [Zero M] :\n  (AddMonoidAlgebra.coeff 1) 0 = 1",
+          "line": 50,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "one_ne_zero.{u_2} {\u03b1 : Type u_2} [Zero \u03b1] [One \u03b1] [NeZero 1] : 1 \u2260 0",
+          "line": 51,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Nat.zero_le (n : \u2115) : 0 \u2264 n",
+          "line": 52,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "abs_one.{u_1} {\u03b1 : Type u_1} [Ring \u03b1] [LinearOrder \u03b1] [IsOrderedRing \u03b1] : |1| = 1",
+          "line": 53,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "abs_zero.{u_1} {\u03b1 : Type u_1} [Lattice \u03b1] [AddGroup \u03b1] [AddLeftMono \u03b1] : |0| = 0",
+          "line": 54,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 525
+}

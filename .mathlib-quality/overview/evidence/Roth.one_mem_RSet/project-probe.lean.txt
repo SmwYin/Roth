@@ -1,0 +1,15 @@
+namespace OneMem184
+open MvPolynomial
+universe u
+-- Independent old-form proof; no target theorem or downstream simp is used.
+theorem expanded {σ : Type u} {B : ℝ} (hB : 1 ≤ B) (r : σ → ℕ) :
+    (1 : MvPolynomial σ ℤ) ∈ Roth.RSet B r := by
+  classical
+  simp [Roth.RSet, coeff_one, apply_ite, ite_apply, hB, zero_le_one.trans hB]
+#print axioms expanded
+-- The only explicit caller, rebuilt with the independent proof.
+theorem caller {σ : Type u} [Fintype σ] {B : ℝ} (hB : 1 ≤ B) (q r : σ → ℕ) :
+    (Roth.indexSet B q r).Nonempty :=
+  ⟨_, 1, expanded hB r, fun _ ↦ 1, fun _ ↦ isCoprime_one_left, rfl⟩
+#print axioms caller
+end OneMem184

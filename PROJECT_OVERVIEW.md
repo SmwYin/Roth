@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 183/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 184/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 183; remaining: 110.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 39 NO-mathlib-has-it, 54 BORDERLINE-needs-human, 33 SKIP.
+- Completed applicable assessments: 184; remaining: 109.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 39 NO-mathlib-has-it, 55 BORDERLINE-needs-human, 33 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2114,6 +2114,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Eleven semantic source lines in five declarations, all Theta; five direct kernel-value and four direct kernel-type consumers.
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.lem6Φ.md).
 
+### Completed: `Roth.one_mem_RSet`
+
+- Type: `∀ {σ : Type u_1} {B : ℝ}, 1 ≤ B → ∀ (r : σ → ℕ), 1 ∈ Roth.RSet B r`
+- What: Constant integer polynomial1 belongs to the complete nonzero degree-bounded coefficient-bounded family if1≤B.
+- How: Local classical simplification using MvPolynomial.coeff_one and MvPolynomial.degreeOf_one=0, nonzero1 and0≤1≤B. Independent full arithmetic, generic normed-ring and exact Int specialization proofs verified.
+- Hypotheses: σ arbitrary universe-polymorphic type; B real; r:σ→ℕ;1≤B necessary and sufficient. No Fintype, DecidableEq, positive degree or nonempty variable hypotheses.
+- Project dependencies: Roth.RSet
+- Caller summary: One explicit caller Roth.indexSet_nonempty at Theta:81, one direct kernel-value consumer, zero direct kernel-type consumers.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.one_mem_RSet.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2506,6 +2516,8 @@ Completed `Roth.lem6M`: Five methods on current/standard/abstract forms; arithme
 
 Completed `Roth.lem6Φ`: All15cells; positive generic Add.add(sSup A)(sSup B) exactly3outercalls; expanded arithmetic inputs have morecalls and are not mislabeled.
 
+Completed `Roth.one_mem_RSet`: All15 search cells; pinned degreeOf_one, coeff_one, coeff_one_zero, one_ne_zero, Nat.zero_le, abs_one/zero. Full family not replaced by univariate root or height results. Closing simp is SIMP-COMPOSABLE; no strict≤3existing-call term verified.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2873,6 +2885,8 @@ Completed `Roth.Θ`: Outer supremum operation is exact existing SupSet.sSup spec
 Completed `Roth.lem6M`: Chosen majorant of determinant coefficient estimate; not Matrix.det_le, whose hypotheses and object differ.
 
 Completed `Roth.lem6Φ`: Existing addition of two supremal values; no standalone universal Roth Phi concept established. Real totalization prohibits silently replacing it by extended-real or product-set suprema.
+
+Completed `Roth.one_mem_RSet`: Elementary unit-degree and coefficient-delta facts exist; exact all-three-condition family membership law not independently verified upstream. No absence claim from unavailable local index.
 
 ## Part 5: Generalization opportunities
 
@@ -3252,6 +3266,8 @@ Completed `Roth.lem6M`: Semiring expression compiles; representation expansion o
 
 Completed `Roth.lem6Φ`: Generic SupSet+Add formula compiled; arbitrary-variable expanded representation compiled. Fintype belongs to fixed Θ parent interface; no new generalization ticket needed for existing outer operations.
 
+Completed `Roth.one_mem_RSet`: Already arbitrary σ and r under fixed RSet. Expanded normalized normed-ring form compiles and specializes back to ℤ via Int.norm_eq_abs; changing fixed RSet is a separate API project.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3620,6 +3636,8 @@ Completed `Roth.Θ`: No missing generic supremum constructor/bound API establish
 Completed `Roth.lem6M`: Upstream packaging of auxiliary polynomial height/index infrastructure is a design question; later declarations assessed independently.
 
 Completed `Roth.lem6Φ`: No missing API for outer constructor; index-infDegree bridge is new representation evidence assessed separately, not a claimed existing replacement.
+
+Completed `Roth.one_mem_RSet`: Possible generic nonzero degree/height family unit-membership API, to be designed with BORDERLINE parent RSet; no missing primitive lemma needed for current proof.
 
 ## Part 7: Junk / removable
 
@@ -3992,6 +4010,8 @@ Completed `Roth.lem6M`: Retain locally: live semantic API used on19 source lines
 
 Completed `Roth.lem6Φ`: Retain locally: useful semantic name used by five declarations; not dead code.
 
+Completed `Roth.one_mem_RSet`: Retain locally in Roth/Theta.lean: live unit witness for index-family nonemptiness.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4179,6 +4199,7 @@ Completed `Roth.lem6Φ`: Retain locally: useful semantic name used by five decla
 | 181 | `Roth.Θ` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ/root-acceptance.json) |
 | 182 | `Roth.lem6M` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lem6M.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem6M/root-acceptance.json) |
 | 183 | `Roth.lem6Φ` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.lem6Φ.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem6Φ/root-acceptance.json) |
+| 184 | `Roth.one_mem_RSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.one_mem_RSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_mem_RSet/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4544,12 +4565,14 @@ Completed `Roth.lem6M` action: Retain locally; BORDERLINE standalone upstream st
 
 Completed `Roth.lem6Φ` action: NO-composable standalone upstream. Retain locally in Roth/Theta.lean; if future upstream rewrite deletes it, inline both summands at every listed caller and keep equivalence transport normalization.
 
+Completed `Roth.one_mem_RSet` action: BORDERLINE; retain local theorem. Future generic family design could decide sufficient condition versus iff unit law and raw-set versus dedicated API. No standalone Roth-specific upstream PR yet.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.one_mem_RSet` next. Supporting identities receive their own applicable checks.
+   `Roth.indexSet_nonempty` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
