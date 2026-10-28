@@ -1,0 +1,159 @@
+{
+  "declaration": "Roth.index_det_le",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "c0e0cc4004561777716d874870c2ccd21e12d6b6924aedb9d1ea7cd0346328a3",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "required_info": [
+        "'DetUpper209.replay' depends on axioms:",
+        "'DetUpper209.index_le_lem6' depends on axioms:",
+        "'DetUpper209.Θ_lt' depends on axioms:"
+      ]
+    },
+    {
+      "label": "generic",
+      "source": "generic-executed.lean.txt",
+      "source_sha256": "578dcb98d2ab976f55d388d51aa633a5f37d5c9476ab3da482e8da77d9148e6f",
+      "receipt": "generic-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 991,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "required_info": [
+        "'DetUpper209.generic' depends on axioms:",
+        "'DetUpper209.originalViaGeneric' depends on axioms:",
+        "'DetUpper209.actualCallerViaGeneric' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "bfd029de505008c2c31bc62642372692f488791c0b6811f48dad1d2f12ab6167",
+      "receipt": "inline-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 1086,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "required_info": [
+        "'DetUpper209.inlineCaller' depends on axioms:"
+      ]
+    },
+    {
+      "label": "factors",
+      "source": "factors-executed.lean.txt",
+      "source_sha256": "b100ba74393d675801ac0504bf8513317a466630591c97bd3a50a6b8e7e1400a",
+      "receipt": "factors-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 1159,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "required_info": [
+        "'DetUpper209.arbitraryFactors' depends on axioms:",
+        "'DetUpper209.derivedFactorDegrees' depends on axioms:"
+      ]
+    },
+    {
+      "label": "final",
+      "source": "final-executed.lean.txt",
+      "source_sha256": "db7e819f009daf7237f875824b2ddae9299e62226a110c54988752c585ccfd21",
+      "receipt": "final-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 1159,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "required_info": [
+        "'DetUpper209.arbitraryFactors' depends on axioms:",
+        "'DetUpper209.derivedFactorDegrees' depends on axioms:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "7374e4e8f938f84cf01404a584f3c84505561668829b24f7330047c86bdef1be",
+      "receipt": "isolated-receipt.json",
+      "format": "raw",
+      "native_region_start_line": 20,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.index_det_le\n#check @Int.one_le_abs\n#check @Polynomial.leadingCoeff_ne_zero\n#check @MvPowerSeries.weightedOrder_mul\n#check @MvPolynomial.coeff_mul\n#check @Polynomial.coeff_mul\n#check @Matrix.det_isEmpty\nnamespace DetUpper209Isolated\n\ntheorem coefficient_nonzero_lower {c : ℤ} (hc : c ≠ 0) : (1 : ℝ) ≤ |(c : ℝ)| := by\n  exact_mod_cast Int.one_le_abs hc\n\ntheorem factor_bounds {A B : Type*} (f : A → ℤ) (g : B → ℤ) {M : ℝ}\n    (hf : ∃ a, f a ≠ 0) (hg : ∃ b, g b ≠ 0)\n    (h : ∀ a b, |((f a : ℝ) * (g b : ℝ))| ≤ M) :\n    (∀ a, |(f a : ℝ)| ≤ M) ∧ (∀ b, |(g b : ℝ)| ≤ M) := by\n  obtain ⟨a₀, ha₀⟩ := hf\n  obtain ⟨b₀, hb₀⟩ := hg\n  constructor\n  · intro a\n    have hab := h a b₀\n    rw [abs_mul] at hab\n    exact (le_mul_of_one_le_right (abs_nonneg _) (coefficient_nonzero_lower hb₀)).trans hab\n  · intro b\n    have hab := h a₀ b\n    rw [abs_mul] at hab\n    exact (le_mul_of_one_le_left (abs_nonneg _) (coefficient_nonzero_lower ha₀)).trans hab\n\ntheorem real_size_bounds {A B : Type*} (f : A → ℝ) (g : B → ℝ) {M : ℝ}\n    (hf : ∀ a, 0 ≤ f a) (hg : ∀ b, 0 ≤ g b)\n    (hf1 : ∃ a, 1 ≤ f a) (hg1 : ∃ b, 1 ≤ g b)\n    (h : ∀ a b, f a * g b ≤ M) : (∀ a, f a ≤ M) ∧ (∀ b, g b ≤ M) := by\n  obtain ⟨a₀, ha₀⟩ := hf1\n  obtain ⟨b₀, hb₀⟩ := hg1\n  exact ⟨fun a ↦ (le_mul_of_one_le_right (hf a) hb₀).trans (h a b₀),\n    fun b ↦ (le_mul_of_one_le_left (hg b) ha₀).trans (h a₀ b)⟩\n\ntheorem rational_factor_height_guard :\n    |(100 : ℚ) * (1 / 100)| = 1 ∧ ¬ |(100 : ℚ)| ≤ 1 := by norm_num\n\ntheorem weighted_order_hit {σ R : Type*} [Semiring R] [NoZeroDivisors R]\n    (w : σ → ℕ) (f g : MvPowerSeries σ R) :\n    (f * g).weightedOrder w = f.weightedOrder w + g.weightedOrder w :=\n  MvPowerSeries.weightedOrder_mul w f g\n\n#print axioms factor_bounds\n#print axioms real_size_bounds\n#print axioms rational_factor_height_guard\n#print axioms weighted_order_hit\nend DetUpper209Isolated\n"
+      },
+      "required_info": [
+        "'DetUpper209Isolated.factor_bounds' depends on axioms:",
+        "'DetUpper209Isolated.real_size_bounds' depends on axioms:",
+        "'DetUpper209Isolated.rational_factor_height_guard' depends on axioms:",
+        "'DetUpper209Isolated.weighted_order_hit' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "generic-initial-executed.lean.txt",
+      "receipt": "generic-initial-receipt.json",
+      "accepted": false,
+      "reason": "Missing open Roth after reopening namespace; recovered sorryAx excluded."
+    },
+    {
+      "source": "generic-warnings-executed.lean.txt",
+      "receipt": "generic-warnings-receipt.json",
+      "accepted": false,
+      "reason": "Unused hl and isolated central dot; axiom-correct but warnings excluded."
+    }
+  ],
+  "preparation_rejected": [
+    "Width guard caught one109-character line before any source write or native execution; wrapped it before subsequent preparation."
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "marker": "DETUPPER209",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293,
+    "preexecution_check": "python3 /private/tmp/roth-overview/check_audit_source.py original-executed.lean.txt: PASS exact293 unique source order"
+  },
+  "canonical_direct_consumers": [
+    "Roth.index_le_lem6"
+  ],
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "project_helpers_counted_as_mathlib": false,
+    "new_helpers_counted_as_existing": false,
+    "source_callers": 1,
+    "actual_caller_replays": 1,
+    "inline_caller_replays": 1,
+    "whole_original_module_replay": true,
+    "generalized_caller_separate_from_original_module": true,
+    "no_circular_target_use": true
+  },
+  "generalization": {
+    "arbitrary_derivative_matrix": true,
+    "direct_input_degree_bound": true,
+    "unbundled_coefficients": true,
+    "unused_input_nonzero_removed": true,
+    "positive_l_removed": true,
+    "zero_factors_handled": true,
+    "real_zero_default_required": true,
+    "old_interface_factor_degrees_derived_separately": true,
+    "full_coefficient_ring_generalization_claimed": false,
+    "maximality_claimed": false
+  },
+  "active_virtual_import_count": 18,
+  "persistent_disk_import_count": 9
+}

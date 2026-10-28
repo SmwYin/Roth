@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-28. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 208 / 293 written declarations.**
+**Completed: 209 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -216,8 +216,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 206 | `Roth.min_le_sum_max` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.min_le_sum_max.md) |
 | 207 | `Roth.sum_max_sub_le_index_det` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.sum_max_sub_le_index_det.md) |
 | 208 | `Roth.index_separated_mul_le_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.index_separated_mul_le_aux.md) |
+| 209 | `Roth.index_det_le` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.index_det_le.md) |
 
-**Next declaration: `Roth.index_det_le`**, `Roth/Theta.lean:457`.
+**Next declaration: `Roth.weight_le_delta_aux`**, `Roth/Theta.lean:494`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

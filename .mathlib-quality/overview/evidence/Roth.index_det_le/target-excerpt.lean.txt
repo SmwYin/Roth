@@ -1,0 +1,35 @@
+theorem index_det_le {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁)
+    {q : Option τ → ℕ} {B : ℝ} {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r)
+    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {l : ℕ} (hl : 1 ≤ l)
+    {D : Fin l → (τ →₀ ℕ)} {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)
+    (hUd : ∀ j, degreeOf j U ≤ l * r (some j)) (hVd : V.natDegree ≤ l * r none)
+    (hF : (Matrix.of fun μ ν : Fin l ↦
+        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
+      rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :
+    index (map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦
+        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det)
+      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l := by
+  classical
+  -- Step 1: the coefficients of `F` are bounded by `M`.
+  have hFcoef (d) : |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv
+      ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det.coeff d : ℤ) : ℝ)| ≤
+      lem6M (Fintype.card τ + 1) r₁ B l := by
+    simpa only [lem6M, Finset.prod_const, Finset.sum_const, Finset.card_univ,
+      Fintype.card_option, nsmul_eq_mul, Nat.cast_id, pow_mul, mul_right_comm] using
+      abs_coeff_det_hasseDeriv_le _ R (r := fun _ ↦ r₁) (fun j ↦ (hR.2.1 j).trans (hr₁ j))
+        ((abs_nonneg ((R.coeff 0 : ℤ) : ℝ)).trans (hR.2.2 0)) hR.2.2 d
+  -- Step 2: the coefficients of `U` and `V` are bounded by `M`.
+  have hUc : ∀ a, |((U.coeff a : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun a ↦ by
+    have h1 := hFcoef (a.mapDomain some + Finsupp.single none V.natDegree)
+    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1
+    exact (le_mul_of_one_le_right (abs_nonneg _) (by
+      exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hV))).trans h1
+  have hVc : ∀ b, |((V.coeff b : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun b ↦ by
+    obtain ⟨a₀, ha₀⟩ := MvPolynomial.ne_zero_iff.1 hU
+    have h1 := hFcoef (a₀.mapDomain some + Finsupp.single none b)
+    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1
+    exact (le_mul_of_one_le_left (abs_nonneg _) (by
+      exact_mod_cast Int.one_le_abs ha₀)).trans h1
+  -- Step 3: Lemma 4-2, the index of the product of polynomials in separate variables.
+  rw [hF]
+  exact index_separated_mul_le_aux hr0 hh hl ⟨hU, hUd, hUc⟩ hV hVd hVc

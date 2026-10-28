@@ -1,0 +1,35 @@
+{
+  "declaration": "Roth.index_det_le",
+  "kind": "theorem",
+  "type": "∀ {τ : Type u_2} [inst : Fintype τ] {r : Option τ → ℕ},\n  (∀ (j : Option τ), 0 < r j) →\n    ∀ {r₁ : ℕ},\n      (∀ (j : Option τ), r j ≤ r₁) →\n        ∀ {q : Option τ → ℕ} {B : ℝ} {R : MvPolynomial (Option τ) ℤ},\n          R ∈ Roth.RSet B r →\n            ∀ {h : Option τ → ℤ},\n              (∀ (j : Option τ), IsCoprime (h j) ↑(q j)) →\n                ∀ {l : ℕ},\n                  1 ≤ l →\n                    ∀ {D : Fin l → τ →₀ ℕ} {U : MvPolynomial τ ℤ} {V : Polynomial ℤ},\n                      U ≠ 0 →\n                        V ≠ 0 →\n                          (∀ (j : τ), degreeOf j U ≤ l * r (some j)) →\n                            V.natDegree ≤ l * r none →\n                              (Matrix.of fun μ ν ↦\n                                      (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det =\n                                  (rename some) U * (Polynomial.aeval (X none)) V →\n                                Roth.index\n                                    ((map (Int.castRingHom ℝ))\n                                      (Matrix.of fun μ ν ↦\n                                          (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det)\n                                    (fun j ↦ ↑(h j) / ↑(q j)) r ≤\n                                  ↑l * Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l",
+  "what": "The real weighted index of an integer mixed-Hasse determinant with a separated factorization is at most l times its two extremal indices at the Lemma6 coefficient envelope.",
+  "how": "First abs_coeff_det_hasseDeriv_le bounds every determinant coefficient by lem6M. Then coeff_rename_mul_aeval identifies a separated coefficient as one product; Polynomial.leadingCoeff_ne_zero and Int.one_le_abs, together with MvPolynomial.ne_zero_iff, bound both integer factors. Finally index_separated_mul_le_aux uses index_mul, index_rename, index_le_Θ and index_mul_left_weights to obtain l times lem6Φ.",
+  "hypotheses": "Finite variable family; positive natural index weights and uniform degree ceiling; RSet input; coprime rational point; positive l; nonzero integer factors, their scaled degree bounds and exact determinant factorization. Verified alternative interfaces remove several redundant hypotheses.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.abs_coeff_det_hasseDeriv_le",
+    "Roth.coeff_rename_mul_aeval",
+    "Roth.index_separated_mul_le_aux",
+    "Roth.lem6M",
+    "Roth.RSet",
+    "Roth.index",
+    "Roth.lem6Φ"
+  ],
+  "caller_summary": {
+    "explicit_callers": 1,
+    "application_occurrences": 1,
+    "names": [
+      "Roth.index_le_lem6"
+    ],
+    "direct_kernel_value_consumers": [
+      "Roth.index_le_lem6"
+    ],
+    "validation": "Original whole Theta module replay, complete caller via generic core, and full local inlining compiled separately."
+  },
+  "mathlib_api_audit": "20 actual search cells: five methods on current, standard and abstract forms plus parent infDegree re-aim. Pinned Int.one_le_abs and weightedOrder_mul are ingredients, not the complete arithmetic extremal bound; local index warming/error is not absence.",
+  "moral_duplications": "Index support-minimum and multiplication have generic mathlib counterparts; the determinant envelope and separated integer factor-height membership proof remain project/new content.",
+  "generalization": "Compiled arbitrary derivative matrix E, direct input degree/coeff bounds, no RSet nonzero, no hl including l=0, and zero-factor endpoint cases under real index(0)=0. Separately derived both factor degree bounds under the original coupled nonzero interface. No full arbitrary-coefficient or maximality claim.",
+  "missing_api": "Potential reusable separated coefficient-height transfer with size≥1 witnesses; audience and primary extremal-index endpoint remain future upstream scope questions.",
+  "junk": "The theorem has the live sole caller Roth.index_le_lem6 and supplies its determinant upper estimate; the caller and inline experiments establish useful proof structure, not a claim that the theorem can be removed.",
+  "action": "Keep in Roth/Theta.lean; consider extracting the independent factor-height stage and use the verified broader interfaces before any future upstream leaf. BORDERLINE questions concern API scope, not pending verification."
+}

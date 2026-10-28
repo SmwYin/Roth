@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 208/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 209/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 208; remaining: 85.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 64 BORDERLINE-needs-human, 41 SKIP.
+- Completed applicable assessments: 209; remaining: 84.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 65 BORDERLINE-needs-human, 41 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2435,6 +2435,39 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_separated_mul_le_aux.md).
 
+### Completed: `Roth.index_det_le`
+
+- Type: `∀ {τ : Type u_2} [inst : Fintype τ] {r : Option τ → ℕ},
+  (∀ (j : Option τ), 0 < r j) →
+    ∀ {r₁ : ℕ},
+      (∀ (j : Option τ), r j ≤ r₁) →
+        ∀ {q : Option τ → ℕ} {B : ℝ} {R : MvPolynomial (Option τ) ℤ},
+          R ∈ Roth.RSet B r →
+            ∀ {h : Option τ → ℤ},
+              (∀ (j : Option τ), IsCoprime (h j) ↑(q j)) →
+                ∀ {l : ℕ},
+                  1 ≤ l →
+                    ∀ {D : Fin l → τ →₀ ℕ} {U : MvPolynomial τ ℤ} {V : Polynomial ℤ},
+                      U ≠ 0 →
+                        V ≠ 0 →
+                          (∀ (j : τ), degreeOf j U ≤ l * r (some j)) →
+                            V.natDegree ≤ l * r none →
+                              (Matrix.of fun μ ν ↦
+                                      (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det =
+                                  (rename some) U * (Polynomial.aeval (X none)) V →
+                                Roth.index
+                                    ((map (Int.castRingHom ℝ))
+                                      (Matrix.of fun μ ν ↦
+                                          (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det)
+                                    (fun j ↦ ↑(h j) / ↑(q j)) r ≤
+                                  ↑l * Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l`
+- What: The real weighted index of an integer mixed-Hasse determinant with a separated factorization is at most l times its two extremal indices at the Lemma6 coefficient envelope.
+- How: First abs_coeff_det_hasseDeriv_le bounds every determinant coefficient by lem6M. Then coeff_rename_mul_aeval identifies a separated coefficient as one product; Polynomial.leadingCoeff_ne_zero and Int.one_le_abs, together with MvPolynomial.ne_zero_iff, bound both integer factors. Finally index_separated_mul_le_aux uses index_mul, index_rename, index_le_Θ and index_mul_left_weights to obtain l times lem6Φ.
+- Hypotheses: Finite variable family; positive natural index weights and uniform degree ceiling; RSet input; coprime rational point; positive l; nonzero integer factors, their scaled degree bounds and exact determinant factorization. Verified alternative interfaces remove several redundant hypotheses.
+- Project dependencies: MvPolynomial.hasseDeriv, Roth.abs_coeff_det_hasseDeriv_le, Roth.coeff_rename_mul_aeval, Roth.index_separated_mul_le_aux, Roth.lem6M, Roth.RSet, Roth.index, Roth.lem6Φ
+- Caller summary: explicit callers: 1; application occurrences: 1; names: Roth.index_le_lem6; direct kernel value consumers: Roth.index_le_lem6; validation: Original whole Theta module replay, complete caller via generic core, and full local inlining compiled separately.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_det_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2877,6 +2910,8 @@ Completed `Roth.sum_max_sub_le_index_det`: Existing det_apply′, finite sums/pr
 
 Completed `Roth.index_separated_mul_le_aux`: Represent the univariate factor as a Unit-variable multivariate polynomial via uniqueAlgEquiv and prove membership in its scaled RSet from the degree and coefficient bounds. Injective coefficient maps and disjoint renamings preserve nonzero factors. Use index_mul and index_rename to split the product index, apply index_le_Θ to both admissible factors, then index_mul_left_weights and positivity of l clear the two divisions. This is the private separated-factor-to-extremal-index bridge used by index_det_le; it is distinct from determinant coefficient bounds and from the Hasse determinant lower estimate.
 
+Completed `Roth.index_det_le`: 20 actual search cells: five methods on current, standard and abstract forms plus parent infDegree re-aim. Pinned Int.one_le_abs and weightedOrder_mul are ingredients, not the complete arithmetic extremal bound; local index warming/error is not absence.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3294,6 +3329,8 @@ Completed `Roth.min_le_sum_max`: Three private helpers are complementary branche
 Completed `Roth.sum_max_sub_le_index_det`: Abstract determinant-order argument parallels valuation/tropical determinant lower bound; Matrix.det_le is an absolute-value upper bound and is not a replacement. Project index helpers do not count as existing mathlib.
 
 Completed `Roth.index_separated_mul_le_aux`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.index_det_le`: Index support-minimum and multiplication have generic mathlib counterparts; the determinant envelope and separated integer factor-height membership proof remain project/new content.
 
 ## Part 5: Generalization opportunities
 
@@ -3723,6 +3760,8 @@ Completed `Roth.sum_max_sub_le_index_det`: Compiled new generic row/column schem
 
 Completed `Roth.index_separated_mul_le_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.index_det_le`: Compiled arbitrary derivative matrix E, direct input degree/coeff bounds, no RSet nonzero, no hl including l=0, and zero-factor endpoint cases under real index(0)=0. Separately derived both factor degree bounds under the original coupled nonzero interface. No full arbitrary-coefficient or maximality claim.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4141,6 +4180,8 @@ Completed `Roth.min_le_sum_max`: Potential finite positive-part arithmetic-progr
 Completed `Roth.sum_max_sub_le_index_det`: Upstream design choice: generic determinant lower bound against valuation/infDegree with top, and separation of entry Hasse bound from matrix transport. Current real index maps zero to0, requiring nonvanishing guards.
 
 Completed `Roth.index_separated_mul_le_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.index_det_le`: Potential reusable separated coefficient-height transfer with size≥1 witnesses; audience and primary extremal-index endpoint remain future upstream scope questions.
 
 ## Part 7: Junk / removable
 
@@ -4563,6 +4604,8 @@ Completed `Roth.sum_max_sub_le_index_det`: Live, not simp-tagged; one explicit c
 
 Completed `Roth.index_separated_mul_le_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.index_det_le`: The theorem has the live sole caller Roth.index_le_lem6 and supplies its determinant upper estimate; the caller and inline experiments establish useful proof structure, not a claim that the theorem can be removed.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4775,6 +4818,7 @@ Completed `Roth.index_separated_mul_le_aux`: Retain a live private proof interfa
 | 206 | `Roth.min_le_sum_max` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.min_le_sum_max.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.min_le_sum_max/root-acceptance.json) |
 | 207 | `Roth.sum_max_sub_le_index_det` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_max_sub_le_index_det.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_max_sub_le_index_det/root-acceptance.json) |
 | 208 | `Roth.index_separated_mul_le_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.index_separated_mul_le_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_separated_mul_le_aux/root-acceptance.json) |
+| 209 | `Roth.index_det_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_det_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_det_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5190,12 +5234,14 @@ Completed `Roth.sum_max_sub_le_index_det` action: Retain locally in Theta pendin
 
 Completed `Roth.index_separated_mul_le_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.index_det_le` action: Keep in Roth/Theta.lean; consider extracting the independent factor-height stage and use the verified broader interfaces before any future upstream leaf. BORDERLINE questions concern API scope, not pending verification.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_det_le` next. Supporting identities receive their own applicable checks.
+   `Roth.weight_le_delta_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

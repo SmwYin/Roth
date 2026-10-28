@@ -1,0 +1,84 @@
+\begin{lem}\label{roth:lem6}
+    Let $p \geq 2$ be a positive integer, and let $0 < \delta <1$. Let $r_1, \dots, r_p$ be positive integers satisfying
+    $$
+    r_p > 10 \delta^{-1}, \quad r_{j-1}/r_j > \delta^{-1}, \text{ for } 2 \leq j \leq p.
+    $$
+    Also, let $q_1, \dots, q_p$ be positive integers. Then
+    \begin{equation}\label{roth:eq13}
+    \Theta_p(B; q_1, \dots, q_p; r_1, \dots, r_p) \leq
+    2 \max_l (\Phi + \Phi^{1/2}+ \delta^{1/2}),
+    \end{equation}
+    where the maximum is taken over integers $l$ satisfying
+    $$
+    1 \leq l \leq r_p +1,
+    $$
+    and where
+    \begin{equation}\label{roth:eq15}
+    \Phi = \Theta_1(M; q_p; lr_p) + \Theta_{p-1}(M; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1})
+    \end{equation}
+    and
+    \begin{equation}\label{roth:eq16}
+    M= (r_1+1)^{pl} l! B^l 2^{plr_1}.
+    \end{equation}
+\end{lem}
+\begin{proof}
+    Let $R\in\mathcal R_p(B;r_1,\dots,r_p)$ and choose integers $h_1,\dots,h_p$ with $\gcd(h_i,q_i)=1$ for every $i$. We need to show that the index
+    $$
+    \ind(R; \frac{h_1}{q_1}, \dots, \frac{h_p}{q_p}; r_1, \dots, r_p)
+    $$
+    is bounded by the right hand side of \eqref{roth:eq13}.
+
+    The polynomial $R$ satisfies the conditions of Lemma \ref{roth:lem2}, and therefore there is an integer $l$ satisfying $1 \leq l \leq r_p+1$ and a polynomial $F$ as in Lemma \ref{roth:lem2}. By Lemma \ref{roth:lem3} the coefficients of $F$ have absolute value not exceeding
+    $$
+    ((r_1+1)\cdots (r_p+1))^l l! B^l 2^{(r_1+\cdots+r_p)l} < (r_1+1)^{pl}l! B^l 2^{pr_1 l} = M,
+    $$
+    as $r_1 > r_2 > \dots > r_p$. Since
+    $$
+    F = U(x_1, \dots, x_{p-1})V(x_p)
+    $$
+    and $U,V$ are nonzero integral polynomials in disjoint variables,
+each coefficient of $F$ is a unique product of one coefficient from each
+factor. Thus $abc(F)=abc(U)abc(V)$, while $abc(U),abc(V)\geq1$, and hence
+    $$
+    abc(U) < M, \quad abc(V) < M.
+    $$
+
+    By Lemma \ref{roth:lem2},
+    $$
+    U \in \mathcal{R}_{p-1}(M; lr_1, \dots, lr_{p-1}).
+    $$
+    Hence,
+    $$
+    \ind(U; \frac{h_1}{q_1}, \dots, \frac{h_{p-1}}{q_{p-1}}; l r_1, \dots, l r_{p-1}) \leq \Theta_{p-1}(M; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1}).
+    $$
+    Consequently, by scaling the weights,
+    \[
+    \ind(U;h_1/q_1,\dots,h_{p-1}/q_{p-1};r_1,\dots,r_{p-1})
+    \leq l\Theta_{p-1}(M;q_1,\dots,q_{p-1};lr_1,\dots,lr_{p-1}).
+    \]
+    Similarly, $V(x_p)\in\mathcal R_1(M;lr_p)$, and
+    $$
+    \ind (V; \frac{h_p}{q_p}; r_p) \leq l \Theta_1(M; q_p; lr_p).
+    $$
+    By Lemma \ref{roth:lem4-2}, writing $a=(h_1/q_1,\dots,h_p/q_p)$,
+    \begin{align*}
+    \ind(F;a;r)
+    &=\ind(U;a_1,\dots,a_{p-1};r_1,\dots,r_{p-1})
+        +\ind(V;a_p;r_p)\\
+    &\leq l\Theta_{p-1}(M;q_1,\dots,q_{p-1};lr_1,\dots,lr_{p-1})
+       +l\Theta_1(M;q_p;lr_p)=l\Phi.
+    \end{align*}
+    Thus we have established
+    \begin{equation}\label{roth:eq17}
+        \ind F\leq l\Phi.
+    \end{equation}
+
+\lean{Keep a polynomial's degree bounds separate from the positive
+parameters used to measure its index. Multiplying the index parameters
+by $l>0$ divides the index by $l$, but does not change which polynomials
+satisfy a degree bound. Here $U$ has degree bounds $lr_j$, so apply the
+index-scaling identity to $U$ first and retain those bounds in
+$\Theta_{p-1}(M;q_1,\ldots,q_{p-1};lr_1,\ldots,lr_{p-1})$.}
+
+    Next, we find a lower bound for the index of $F$ in terms of the index of $R$.
+

@@ -1,0 +1,69 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.index_det_le
+#check @Int.one_le_abs
+#check @Polynomial.leadingCoeff_ne_zero
+#check @MvPowerSeries.weightedOrder_mul
+#check @MvPolynomial.coeff_mul
+#check @Polynomial.coeff_mul
+#check @Matrix.det_isEmpty
+namespace DetUpper209Isolated
+
+theorem coefficient_nonzero_lower {c : ℤ} (hc : c ≠ 0) : (1 : ℝ) ≤ |(c : ℝ)| := by
+  exact_mod_cast Int.one_le_abs hc
+
+theorem factor_bounds {A B : Type*} (f : A → ℤ) (g : B → ℤ) {M : ℝ}
+    (hf : ∃ a, f a ≠ 0) (hg : ∃ b, g b ≠ 0)
+    (h : ∀ a b, |((f a : ℝ) * (g b : ℝ))| ≤ M) :
+    (∀ a, |(f a : ℝ)| ≤ M) ∧ (∀ b, |(g b : ℝ)| ≤ M) := by
+  obtain ⟨a₀, ha₀⟩ := hf
+  obtain ⟨b₀, hb₀⟩ := hg
+  constructor
+  · intro a
+    have hab := h a b₀
+    rw [abs_mul] at hab
+    exact (le_mul_of_one_le_right (abs_nonneg _) (coefficient_nonzero_lower hb₀)).trans hab
+  · intro b
+    have hab := h a₀ b
+    rw [abs_mul] at hab
+    exact (le_mul_of_one_le_left (abs_nonneg _) (coefficient_nonzero_lower ha₀)).trans hab
+
+theorem real_size_bounds {A B : Type*} (f : A → ℝ) (g : B → ℝ) {M : ℝ}
+    (hf : ∀ a, 0 ≤ f a) (hg : ∀ b, 0 ≤ g b)
+    (hf1 : ∃ a, 1 ≤ f a) (hg1 : ∃ b, 1 ≤ g b)
+    (h : ∀ a b, f a * g b ≤ M) : (∀ a, f a ≤ M) ∧ (∀ b, g b ≤ M) := by
+  obtain ⟨a₀, ha₀⟩ := hf1
+  obtain ⟨b₀, hb₀⟩ := hg1
+  exact ⟨fun a ↦ (le_mul_of_one_le_right (hf a) hb₀).trans (h a b₀),
+    fun b ↦ (le_mul_of_one_le_left (hg b) ha₀).trans (h a₀ b)⟩
+
+theorem rational_factor_height_guard :
+    |(100 : ℚ) * (1 / 100)| = 1 ∧ ¬ |(100 : ℚ)| ≤ 1 := by norm_num
+
+theorem weighted_order_hit {σ R : Type*} [Semiring R] [NoZeroDivisors R]
+    (w : σ → ℕ) (f g : MvPowerSeries σ R) :
+    (f * g).weightedOrder w = f.weightedOrder w + g.weightedOrder w :=
+  MvPowerSeries.weightedOrder_mul w f g
+
+#print axioms factor_bounds
+#print axioms real_size_bounds
+#print axioms rational_factor_height_guard
+#print axioms weighted_order_hit
+end DetUpper209Isolated
