@@ -1,0 +1,539 @@
+[
+  {
+    "form": "current",
+    "method": "finder",
+    "request": {
+      "query": "Roth polynomial index supremum monotone coefficient bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_mono\",\n      \"informal_name\": \"Monotonicity of Chevalley's Numerical Bound for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k₁ k₂ : ℕ} {D₁ D₂ : ℕ → ℕ},\\n  k₁ ≤ k₂ →\\n    ∀ (n : ℕ),\\n      (∀ i < n, D₁ i ≤ D₂ i) → ChevalleyThm.MvPolynomialC.numBound k₁ D₁ n ≤ ChevalleyThm.MvPolynomialC.numBound k₂ D₂ n\",\n      \"informal_description\": \"For natural numbers $k₁ ≤ k₂$ and functions $D₁, D₂ : ℕ → ℕ$ satisfying $D₁(i) ≤ D₂(i)$ for all $i < n$, the numerical bound function satisfies $\\\\text{numBound}(k₁, D₁, n) ≤ \\\\text{numBound}(k₂, D₂, n)$. This establishes monotonicity of the bound in the context of multivariate polynomials and Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_le_degBound\",\n      \"informal_name\": \"Monotonicity of Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k₁ k₂ : ℕ} {D₁ D₂ : ℕ → ℕ},\\n  k₁ ≤ k₂ →\\n    ∀ (n : ℕ),\\n      (∀ i < n, D₁ i ≤ D₂ i) → ChevalleyThm.MvPolynomialC.degBound k₁ D₁ n ≤ ChevalleyThm.MvPolynomialC.degBound k₂ D₂ n\",\n      \"informal_description\": \"For natural numbers $k_1 \\\\leq k_2$, functions $D_1, D_2 : \\\\mathbb{N} \\\\to \\\\mathbb{N}$ satisfying $D_1(i) \\\\leq D_2(i)$ for all $i < n$, and any $n \\\\in \\\\mathbb{N}$, the degree bound computed with parameters $k_1$ and $D_1$ at $n$ is less than or equal to the degree bound computed with parameters $k_2$ and $D_2$ at $n$, i.e., $\\\\text{degBound}(k_1, D_1, n) \\\\leq \\\\text{degBound}(k_2, D_2, n)$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"rothNumberNat\",\n      \"informal_name\": \"Roth number function on natural numbers\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ →o ℕ\",\n      \"informal_description\": \"The function maps a natural number $ n $ to the maximum size of a subset of $ \\\\{0, 1, \\\\ldots, n-1\\\\} $ containing no three distinct elements forming an arithmetic progression (i.e., no $ a, b, c $ with $ a + c = 2b $). This function is monotonic with respect to increasing values of $ n $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\"\n    },\n    {\n      \"formal_name\": \"rothNumberNat_le\",\n      \"informal_name\": \"Roth Number Upper Bound: $ \\\\text{rothNumberNat}(N) \\\\leq N $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (N : ℕ), rothNumberNat N ≤ N\",\n      \"informal_description\": \"For any natural number $ N $, the Roth number $ \\\\text{rothNumberNat}(N) $, which denotes the maximum size of a subset of $ \\\\{0, 1, \\\\ldots, N-1\\\\} $ containing no three distinct elements forming an arithmetic progression, satisfies $ \\\\text{rothNumberNat}(N) \\\\leq N $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\"\n    },\n    {\n      \"formal_name\": \"Fin.addRothNumber_le_rothNumberNat\",\n      \"informal_name\": \"Roth Number Inequality for Initial Segment in Fin\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k n : ℕ), k ≤ n → addRothNumber (Finset.Iio ↑k) ≤ rothNumberNat k\",\n      \"informal_description\": \"For natural numbers $k$ and $n$ with $k \\\\leq n$, the Roth number of the finite set $\\\\{0, 1, \\\\ldots, k-1\\\\}$ in $\\\\mathrm{Fin}(n+1)$ is less than or equal to the Roth number of the natural number $k$.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound_mono",
+            "informal_name": "Monotonicity of Chevalley's Numerical Bound for Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {k₁ k₂ : ℕ} {D₁ D₂ : ℕ → ℕ},\n  k₁ ≤ k₂ →\n    ∀ (n : ℕ),\n      (∀ i < n, D₁ i ≤ D₂ i) → ChevalleyThm.MvPolynomialC.numBound k₁ D₁ n ≤ ChevalleyThm.MvPolynomialC.numBound k₂ D₂ n",
+            "informal_description": "For natural numbers $k₁ ≤ k₂$ and functions $D₁, D₂ : ℕ → ℕ$ satisfying $D₁(i) ≤ D₂(i)$ for all $i < n$, the numerical bound function satisfies $\\text{numBound}(k₁, D₁, n) ≤ \\text{numBound}(k₂, D₂, n)$. This establishes monotonicity of the bound in the context of multivariate polynomials and Chevalley's theorem.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound_le_degBound",
+            "informal_name": "Monotonicity of Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ {k₁ k₂ : ℕ} {D₁ D₂ : ℕ → ℕ},\n  k₁ ≤ k₂ →\n    ∀ (n : ℕ),\n      (∀ i < n, D₁ i ≤ D₂ i) → ChevalleyThm.MvPolynomialC.degBound k₁ D₁ n ≤ ChevalleyThm.MvPolynomialC.degBound k₂ D₂ n",
+            "informal_description": "For natural numbers $k_1 \\leq k_2$, functions $D_1, D_2 : \\mathbb{N} \\to \\mathbb{N}$ satisfying $D_1(i) \\leq D_2(i)$ for all $i < n$, and any $n \\in \\mathbb{N}$, the degree bound computed with parameters $k_1$ and $D_1$ at $n$ is less than or equal to the degree bound computed with parameters $k_2$ and $D_2$ at $n$, i.e., $\\text{degBound}(k_1, D_1, n) \\leq \\text{degBound}(k_2, D_2, n)$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "rothNumberNat",
+            "informal_name": "Roth number function on natural numbers",
+            "kind": "definition",
+            "type": "ℕ →o ℕ",
+            "informal_description": "The function maps a natural number $ n $ to the maximum size of a subset of $ \\{0, 1, \\ldots, n-1\\} $ containing no three distinct elements forming an arithmetic progression (i.e., no $ a, b, c $ with $ a + c = 2b $). This function is monotonic with respect to increasing values of $ n $.",
+            "path": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+          },
+          {
+            "formal_name": "rothNumberNat_le",
+            "informal_name": "Roth Number Upper Bound: $ \\text{rothNumberNat}(N) \\leq N $",
+            "kind": "theorem",
+            "type": "∀ (N : ℕ), rothNumberNat N ≤ N",
+            "informal_description": "For any natural number $ N $, the Roth number $ \\text{rothNumberNat}(N) $, which denotes the maximum size of a subset of $ \\{0, 1, \\ldots, N-1\\} $ containing no three distinct elements forming an arithmetic progression, satisfies $ \\text{rothNumberNat}(N) \\leq N $.",
+            "path": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+          },
+          {
+            "formal_name": "Fin.addRothNumber_le_rothNumberNat",
+            "informal_name": "Roth Number Inequality for Initial Segment in Fin",
+            "kind": "theorem",
+            "type": "∀ (k n : ℕ), k ≤ n → addRothNumber (Finset.Iio ↑k) ≤ rothNumberNat k",
+            "informal_description": "For natural numbers $k$ and $n$ with $k \\leq n$, the Roth number of the finite set $\\{0, 1, \\ldots, k-1\\}$ in $\\mathrm{Fin}(n+1)$ is less than or equal to the Roth number of the natural number $k$.",
+            "path": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "leansearch",
+    "request": {
+      "query": "Roth polynomial index supremum monotone coefficient bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.coeff_bdd_of_roots_le\",\n      \"module_name\": \"Mathlib.Topology.Algebra.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {B : ℝ} {d : ℕ} (f : F →+* K)\\n  {p : Polynomial F},\\n  p.Monic →\\n    (Polynomial.map f p).Splits →\\n      p.natDegree ≤ d →\\n        (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\\n          ∀ (i : ℕ), ‖(Polynomial.map f p).coeff i‖ ≤ max B 1 ^ d * ↑(d.choose (d / 2))\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_le_of_roots_le\",\n      \"module_name\": \"Mathlib.Topology.Algebra.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\\n  (i : ℕ),\\n  p.Monic →\\n    (Polynomial.map f p).Splits →\\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)\"\n    },\n    {\n      \"name\": \"Polynomial.Chebyshev.coeff_le_of_forall_abs_le_one\",\n      \"module_name\": \"Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Extremal\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : ℕ} {P : Polynomial ℝ},\\n  P.degree ≤ ↑n → (∀ x ∈ Set.Icc (-1) 1, |Polynomial.eval x P| ≤ 1) → P.coeff n ≤ 2 ^ (n - 1)\"\n    },\n    {\n      \"name\": \"Ideal.leadingCoeffNth_mono\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (I : Ideal (Polynomial R)) {m n : ℕ},\\n  m ≤ n → I.leadingCoeffNth m ≤ I.leadingCoeffNth n\"\n    },\n    {\n      \"name\": \"Polynomial.cauchyBound_zero\",\n      \"module_name\": \"Mathlib.Analysis.Polynomial.CauchyBound\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : NormedDivisionRing K], Polynomial.cauchyBound 0 = 1\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.coeff_bdd_of_roots_le",
+            "module_name": "Mathlib.Topology.Algebra.Polynomial",
+            "kind": "theorem",
+            "type": "∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {B : ℝ} {d : ℕ} (f : F →+* K)\n  {p : Polynomial F},\n  p.Monic →\n    (Polynomial.map f p).Splits →\n      p.natDegree ≤ d →\n        (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\n          ∀ (i : ℕ), ‖(Polynomial.map f p).coeff i‖ ≤ max B 1 ^ d * ↑(d.choose (d / 2))"
+          },
+          {
+            "name": "Polynomial.coeff_le_of_roots_le",
+            "module_name": "Mathlib.Topology.Algebra.Polynomial",
+            "kind": "theorem",
+            "type": "∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\n  (i : ℕ),\n  p.Monic →\n    (Polynomial.map f p).Splits →\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)"
+          },
+          {
+            "name": "Polynomial.Chebyshev.coeff_le_of_forall_abs_le_one",
+            "module_name": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Extremal",
+            "kind": "theorem",
+            "type": "∀ {n : ℕ} {P : Polynomial ℝ},\n  P.degree ≤ ↑n → (∀ x ∈ Set.Icc (-1) 1, |Polynomial.eval x P| ≤ 1) → P.coeff n ≤ 2 ^ (n - 1)"
+          },
+          {
+            "name": "Ideal.leadingCoeffNth_mono",
+            "module_name": "Mathlib.RingTheory.Polynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (I : Ideal (Polynomial R)) {m n : ℕ},\n  m ≤ n → I.leadingCoeffNth m ≤ I.leadingCoeffNth n"
+          },
+          {
+            "name": "Polynomial.cauchyBound_zero",
+            "module_name": "Mathlib.Analysis.Polynomial.CauchyBound",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} [inst : NormedDivisionRing K], Polynomial.cauchyBound 0 = 1"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "loogle",
+    "request": {
+      "query": "\"Θ_mono\""
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "local_search",
+    "request": {
+      "query": "Θ_mono"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "finder",
+    "request": {
+      "query": "supremum monotonicity nonempty bounded sets subset"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"csSup_le_csSup\",\n      \"informal_name\": \"Subset Supremum Inequality in Conditionally Complete Lattices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s t : Set α},\\n  BddAbove t → s.Nonempty → s ⊆ t → sSup s ≤ sSup t\",\n      \"informal_description\": \"In a conditionally complete lattice, if $ s $ is a non-empty subset of a bounded above set $ t $, then the supremum of $ s $ satisfies $ \\\\sup s \\\\leq \\\\sup t $.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"csSup_le_csSup'\",\n      \"informal_name\": \"Supremum of Subset ≤ Supremum of Superset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrderBot α] {s t : Set α}, BddAbove t → s ⊆ t → sSup s ≤ sSup t\",\n      \"informal_description\": \"If $ s $ is a subset of $ t $ and $ t $ is bounded above, then the supremum of $ s $ is less than or equal to the supremum of $ t $.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"Finset.sup'_mono\",\n      \"informal_name\": \"Monotonicity of Supremum under Subset Inclusion in Sup-Semilattices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] (f : β → α) {s₁ s₂ : Finset β} (h : s₁ ⊆ s₂)\\n  (h₁ : s₁.Nonempty), s₁.sup' h₁ f ≤ s₂.sup' ⋯ f\",\n      \"informal_description\": \"For any non-empty finite sets $ s_1 $ and $ s_2 $ of type $ \\\\beta $, where $ s_1 \\\\subseteq s_2 $, and for any function $ f : \\\\beta \\\\to \\\\alpha $ into a sup-semilattice $ \\\\alpha $, the supremum of $ f $ over $ s_1 $ is less than or equal to the supremum of $ f $ over $ s_2 $. Formally, $ \\\\sup'_{x \\\\in s_1} f(x) \\\\leq \\\\sup'_{x \\\\in s_2} f(x) $, where $ \\\\sup' $ denotes the supremum operation for non-empty finite sets.\",\n      \"path\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"formal_name\": \"sSup_le_sSup\",\n      \"informal_name\": \"Subset Supremum Inequality: $\\\\sup s \\\\leq \\\\sup t$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : CompleteSemilatticeSup α] {s t : Set α}, s ⊆ t → sSup s ≤ sSup t\",\n      \"informal_description\": \"In a complete semilattice with supremum, if $ s \\\\subseteq t $, then $ \\\\sup s \\\\leq \\\\sup t $.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Defs\"\n    },\n    {\n      \"formal_name\": \"IsLUB.mono\",\n      \"informal_name\": \"Monotonicity of Least Upper Bounds under Subset Inclusion\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : Preorder α] {s t : Set α} {a b : α}, IsLUB s a → IsLUB t b → s ⊆ t → a ≤ b\",\n      \"informal_description\": \"If $ a $ is the least upper bound of a set $ s $, $ b $ is the least upper bound of a set $ t $, and $ s \\\\subseteq t $, then $ a \\\\le b $.\",\n      \"path\": \"Mathlib.Order.Bounds.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "csSup_le_csSup",
+            "informal_name": "Subset Supremum Inequality in Conditionally Complete Lattices",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s t : Set α},\n  BddAbove t → s.Nonempty → s ⊆ t → sSup s ≤ sSup t",
+            "informal_description": "In a conditionally complete lattice, if $ s $ is a non-empty subset of a bounded above set $ t $, then the supremum of $ s $ satisfies $ \\sup s \\leq \\sup t $.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "formal_name": "csSup_le_csSup'",
+            "informal_name": "Supremum of Subset ≤ Supremum of Superset",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrderBot α] {s t : Set α}, BddAbove t → s ⊆ t → sSup s ≤ sSup t",
+            "informal_description": "If $ s $ is a subset of $ t $ and $ t $ is bounded above, then the supremum of $ s $ is less than or equal to the supremum of $ t $.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "formal_name": "Finset.sup'_mono",
+            "informal_name": "Monotonicity of Supremum under Subset Inclusion in Sup-Semilattices",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] (f : β → α) {s₁ s₂ : Finset β} (h : s₁ ⊆ s₂)\n  (h₁ : s₁.Nonempty), s₁.sup' h₁ f ≤ s₂.sup' ⋯ f",
+            "informal_description": "For any non-empty finite sets $ s_1 $ and $ s_2 $ of type $ \\beta $, where $ s_1 \\subseteq s_2 $, and for any function $ f : \\beta \\to \\alpha $ into a sup-semilattice $ \\alpha $, the supremum of $ f $ over $ s_1 $ is less than or equal to the supremum of $ f $ over $ s_2 $. Formally, $ \\sup'_{x \\in s_1} f(x) \\leq \\sup'_{x \\in s_2} f(x) $, where $ \\sup' $ denotes the supremum operation for non-empty finite sets.",
+            "path": "Mathlib.Data.Finset.Lattice.Fold"
+          },
+          {
+            "formal_name": "sSup_le_sSup",
+            "informal_name": "Subset Supremum Inequality: $\\sup s \\leq \\sup t$",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : CompleteSemilatticeSup α] {s t : Set α}, s ⊆ t → sSup s ≤ sSup t",
+            "informal_description": "In a complete semilattice with supremum, if $ s \\subseteq t $, then $ \\sup s \\leq \\sup t $.",
+            "path": "Mathlib.Order.CompleteLattice.Defs"
+          },
+          {
+            "formal_name": "IsLUB.mono",
+            "informal_name": "Monotonicity of Least Upper Bounds under Subset Inclusion",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : Preorder α] {s t : Set α} {a b : α}, IsLUB s a → IsLUB t b → s ⊆ t → a ≤ b",
+            "informal_description": "If $ a $ is the least upper bound of a set $ s $, $ b $ is the least upper bound of a set $ t $, and $ s \\subseteq t $, then $ a \\le b $.",
+            "path": "Mathlib.Order.Bounds.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "leansearch",
+    "request": {
+      "query": "supremum monotonicity nonempty bounded sets subset"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"IsLUB.mono\",\n      \"module_name\": \"Mathlib.Order.Bounds.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : Preorder α] {s t : Set α} {a b : α}, IsLUB s a → IsLUB t b → s ⊆ t → a ≤ b\"\n    },\n    {\n      \"name\": \"Finset.sup'_mono\",\n      \"module_name\": \"Mathlib.Data.Finset.Lattice.Fold\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] (f : β → α) {s₁ s₂ : Finset β} (h : s₁ ⊆ s₂)\\n  (h₁ : s₁.Nonempty), s₁.sup' h₁ f ≤ s₂.sup' ⋯ f\"\n    },\n    {\n      \"name\": \"MonotoneOn.csSup_eq_of_subset_of_forall_exists_le\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} [inst : Preorder α] [inst_1 : ConditionallyCompleteLattice β] {f : α → β} {s t : Set α},\\n  BddAbove (f '' t) → MonotoneOn f t → s ⊆ t → (∀ y ∈ t, ∃ x ∈ s, y ≤ x) → sSup (f '' s) = sSup (f '' t)\"\n    },\n    {\n      \"name\": \"csSup_le_csSup'\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrderBot α] {s t : Set α}, BddAbove t → s ⊆ t → sSup s ≤ sSup t\"\n    },\n    {\n      \"name\": \"subset_sSup_of_within\",\n      \"module_name\": \"Mathlib.Order.CompleteLatticeIntervals\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} (s : Set α) [inst : Preorder α] [inst_1 : SupSet α] [inst_2 : Inhabited ↑s] {t : Set ↑s},\\n  t.Nonempty → BddAbove t → sSup (Subtype.val '' t) ∈ s → sSup (Subtype.val '' t) = ↑(sSup t)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "IsLUB.mono",
+            "module_name": "Mathlib.Order.Bounds.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : Preorder α] {s t : Set α} {a b : α}, IsLUB s a → IsLUB t b → s ⊆ t → a ≤ b"
+          },
+          {
+            "name": "Finset.sup'_mono",
+            "module_name": "Mathlib.Data.Finset.Lattice.Fold",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} {β : Type u_3} [inst : SemilatticeSup α] (f : β → α) {s₁ s₂ : Finset β} (h : s₁ ⊆ s₂)\n  (h₁ : s₁.Nonempty), s₁.sup' h₁ f ≤ s₂.sup' ⋯ f"
+          },
+          {
+            "name": "MonotoneOn.csSup_eq_of_subset_of_forall_exists_le",
+            "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} [inst : Preorder α] [inst_1 : ConditionallyCompleteLattice β] {f : α → β} {s t : Set α},\n  BddAbove (f '' t) → MonotoneOn f t → s ⊆ t → (∀ y ∈ t, ∃ x ∈ s, y ≤ x) → sSup (f '' s) = sSup (f '' t)"
+          },
+          {
+            "name": "csSup_le_csSup'",
+            "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrderBot α] {s t : Set α}, BddAbove t → s ⊆ t → sSup s ≤ sSup t"
+          },
+          {
+            "name": "subset_sSup_of_within",
+            "module_name": "Mathlib.Order.CompleteLatticeIntervals",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} (s : Set α) [inst : Preorder α] [inst_1 : SupSet α] [inst_2 : Inhabited ↑s] {t : Set ↑s},\n  t.Nonempty → BddAbove t → sSup (Subtype.val '' t) ∈ s → sSup (Subtype.val '' t) = ↑(sSup t)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "loogle",
+    "request": {
+      "query": "sSup ?s ≤ sSup ?t"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"sSup_le_sSup\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : s ⊆ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Defs\"\n    },\n    {\n      \"name\": \"sSup_le_sSup_of_isCofinalFor\",\n      \"type\": \" {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : IsCofinalFor s t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"sSup_le_sSup_of_subset_insert_bot\",\n      \"type\": \" {α : Type u_1} [CompleteLattice α] {s t : Set α} (h : s ⊆ insert ⊥ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.CompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"DirectedOn.csSup_le_csSup\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompletePartialOrderSup α] {s t : Set α} (hds : DirectedOn (fun x1 x2 => x1 ≤ x2) s) (hdt : DirectedOn (fun x1 x2 => x1 ≤ x2) t) (ht : BddAbove t) (hs : s.Nonempty) (h : s ⊆ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.ConditionallyCompletePartialOrder.Basic\"\n    },\n    {\n      \"name\": \"csSup_le_csSup\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompleteLattice α] {s t : Set α} (ht : BddAbove t) (hs : s.Nonempty) (h : s ⊆ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"csSup_le_csSup'\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompleteLinearOrderBot α] {s t : Set α} (h₁ : BddAbove t) (h₂ : s ⊆ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"cbiSup_id\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompleteLattice α] {s : Set α} (hs : BddAbove s) (h : sSup ∅ ≤ sSup s) : ⨆ i ∈ s, i = sSup s\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Indexed\"\n    },\n    {\n      \"name\": \"Ordinal.sSup_le_sSup_add_one\",\n      \"type\": \" (s : Set Ordinal.{u_3}) : sSup s ≤ sSup ((fun x => x + 1) '' s)\",\n      \"module\": \"Mathlib.SetTheory.Ordinal.Family\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "sSup_le_sSup",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : s ⊆ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Defs"
+          },
+          {
+            "name": "sSup_le_sSup_of_isCofinalFor",
+            "type": " {α : Type u_1} [CompleteSemilatticeSup α] {s t : Set α} (h : IsCofinalFor s t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Basic"
+          },
+          {
+            "name": "sSup_le_sSup_of_subset_insert_bot",
+            "type": " {α : Type u_1} [CompleteLattice α] {s t : Set α} (h : s ⊆ insert ⊥ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.CompleteLattice.Basic"
+          },
+          {
+            "name": "DirectedOn.csSup_le_csSup",
+            "type": " {α : Type u_1} [ConditionallyCompletePartialOrderSup α] {s t : Set α} (hds : DirectedOn (fun x1 x2 => x1 ≤ x2) s) (hdt : DirectedOn (fun x1 x2 => x1 ≤ x2) t) (ht : BddAbove t) (hs : s.Nonempty) (h : s ⊆ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.ConditionallyCompletePartialOrder.Basic"
+          },
+          {
+            "name": "csSup_le_csSup",
+            "type": " {α : Type u_1} [ConditionallyCompleteLattice α] {s t : Set α} (ht : BddAbove t) (hs : s.Nonempty) (h : s ⊆ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "name": "csSup_le_csSup'",
+            "type": " {α : Type u_1} [ConditionallyCompleteLinearOrderBot α] {s t : Set α} (h₁ : BddAbove t) (h₂ : s ⊆ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "name": "cbiSup_id",
+            "type": " {α : Type u_1} [ConditionallyCompleteLattice α] {s : Set α} (hs : BddAbove s) (h : sSup ∅ ≤ sSup s) : ⨆ i ∈ s, i = sSup s",
+            "module": "Mathlib.Order.ConditionallyCompleteLattice.Indexed"
+          },
+          {
+            "name": "Ordinal.sSup_le_sSup_add_one",
+            "type": " (s : Set Ordinal.{u_3}) : sSup s ≤ sSup ((fun x => x + 1) '' s)",
+            "module": "Mathlib.SetTheory.Ordinal.Family"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "local_search",
+    "request": {
+      "query": "csSup_le_csSup"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"DirectedOn.csSup_le_csSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Basic.lean\"\n    },\n    {\n      \"name\": \"csSup_le_csSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"csSup_le_csSup'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "DirectedOn.csSup_le_csSup",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Basic.lean"
+          },
+          {
+            "name": "csSup_le_csSup",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          },
+          {
+            "name": "csSup_le_csSup'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "finder",
+    "request": {
+      "query": "conditionally complete lattice supremum monotone subset nonempty bounded above"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"csSup_le_csSup\",\n      \"informal_name\": \"Subset Supremum Inequality in Conditionally Complete Lattices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s t : Set α},\\n  BddAbove t → s.Nonempty → s ⊆ t → sSup s ≤ sSup t\",\n      \"informal_description\": \"In a conditionally complete lattice, if $ s $ is a non-empty subset of a bounded above set $ t $, then the supremum of $ s $ satisfies $ \\\\sup s \\\\leq \\\\sup t $.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"csSup_le_csSup'\",\n      \"informal_name\": \"Supremum of Subset ≤ Supremum of Superset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrderBot α] {s t : Set α}, BddAbove t → s ⊆ t → sSup s ≤ sSup t\",\n      \"informal_description\": \"If $ s $ is a subset of $ t $ and $ t $ is bounded above, then the supremum of $ s $ is less than or equal to the supremum of $ t $.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"formal_name\": \"ciSup_mono\",\n      \"informal_name\": \"Monotonicity of Supremum in Conditionally Complete Lattices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} [inst : ConditionallyCompleteLattice α] {f g : ι → α},\\n  BddAbove (Set.range g) → (∀ (x : ι), f x ≤ g x) → iSup f ≤ iSup g\",\n      \"informal_description\": \"Let $\\\\alpha$ be a conditionally complete lattice, and let $f, g : \\\\iota \\\\to \\\\alpha$ be functions. If the image of $g$ is bounded above and $f(x) \\\\leq g(x)$ for all $x : \\\\iota$, then the supremum of $f$ is less than or equal to the supremum of $g$, i.e., $\\\\sup_{x} f(x) \\\\leq \\\\sup_{x} g(x)$.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Indexed\"\n    },\n    {\n      \"formal_name\": \"ciSup_mono'\",\n      \"informal_name\": \"Supremum Monotonicity Under Element-wise Bounds\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Sort u_4} [inst : ConditionallyCompleteLinearOrderBot α] {ι' : Sort u_5} {f : ι → α} {g : ι' → α},\\n  BddAbove (Set.range g) → (∀ (i : ι), ∃ i', f i ≤ g i') → iSup f ≤ iSup g\",\n      \"informal_description\": \"Let $\\\\alpha$ be a conditionally complete lattice. For any functions $f : \\\\iota \\\\to \\\\alpha$ and $g : \\\\iota' \\\\to \\\\alpha$, if the range of $g$ is bounded above and for every $i \\\\in \\\\iota$ there exists $i' \\\\in \\\\iota'$ such that $f(i) \\\\leq g(i')$, then the supremum of the range of $f$ is less than or equal to the supremum of the range of $g$, i.e., $\\\\sup_{i \\\\in \\\\iota} f(i) \\\\leq \\\\sup_{i' \\\\in \\\\iota'} g(i')$.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Indexed\"\n    },\n    {\n      \"formal_name\": \"MonotoneOn.csSup_eq_of_subset_of_forall_exists_le\",\n      \"informal_name\": \"Supremum Equality for Monotonic Functions on Cofinal Subsets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} [inst : Preorder α] [inst_1 : ConditionallyCompleteLattice β] {f : α → β} {s t : Set α},\\n  BddAbove (f '' t) → MonotoneOn f t → s ⊆ t → (∀ y ∈ t, ∃ x ∈ s, y ≤ x) → sSup (f '' s) = sSup (f '' t)\",\n      \"informal_description\": \"Let $\\\\alpha$ be a preorder and $\\\\beta$ a conditionally complete lattice. For a function $f : \\\\alpha \\\\to \\\\beta$ that is monotonic on a set $t \\\\subseteq \\\\alpha$, if $s \\\\subseteq t$ is a subset such that every element of $t$ is bounded above by some element of $s$, and the image $f(t)$ is bounded above in $\\\\beta$, then the supremum of $f(s)$ equals the supremum of $f(t)$, i.e., $\\\\sup(f(s)) = \\\\sup(f(t))$.\",\n      \"path\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "csSup_le_csSup",
+            "informal_name": "Subset Supremum Inequality in Conditionally Complete Lattices",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s t : Set α},\n  BddAbove t → s.Nonempty → s ⊆ t → sSup s ≤ sSup t",
+            "informal_description": "In a conditionally complete lattice, if $ s $ is a non-empty subset of a bounded above set $ t $, then the supremum of $ s $ satisfies $ \\sup s \\leq \\sup t $.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "formal_name": "csSup_le_csSup'",
+            "informal_name": "Supremum of Subset ≤ Supremum of Superset",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLinearOrderBot α] {s t : Set α}, BddAbove t → s ⊆ t → sSup s ≤ sSup t",
+            "informal_description": "If $ s $ is a subset of $ t $ and $ t $ is bounded above, then the supremum of $ s $ is less than or equal to the supremum of $ t $.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "formal_name": "ciSup_mono",
+            "informal_name": "Monotonicity of Supremum in Conditionally Complete Lattices",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {ι : Sort u_4} [inst : ConditionallyCompleteLattice α] {f g : ι → α},\n  BddAbove (Set.range g) → (∀ (x : ι), f x ≤ g x) → iSup f ≤ iSup g",
+            "informal_description": "Let $\\alpha$ be a conditionally complete lattice, and let $f, g : \\iota \\to \\alpha$ be functions. If the image of $g$ is bounded above and $f(x) \\leq g(x)$ for all $x : \\iota$, then the supremum of $f$ is less than or equal to the supremum of $g$, i.e., $\\sup_{x} f(x) \\leq \\sup_{x} g(x)$.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Indexed"
+          },
+          {
+            "formal_name": "ciSup_mono'",
+            "informal_name": "Supremum Monotonicity Under Element-wise Bounds",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {ι : Sort u_4} [inst : ConditionallyCompleteLinearOrderBot α] {ι' : Sort u_5} {f : ι → α} {g : ι' → α},\n  BddAbove (Set.range g) → (∀ (i : ι), ∃ i', f i ≤ g i') → iSup f ≤ iSup g",
+            "informal_description": "Let $\\alpha$ be a conditionally complete lattice. For any functions $f : \\iota \\to \\alpha$ and $g : \\iota' \\to \\alpha$, if the range of $g$ is bounded above and for every $i \\in \\iota$ there exists $i' \\in \\iota'$ such that $f(i) \\leq g(i')$, then the supremum of the range of $f$ is less than or equal to the supremum of the range of $g$, i.e., $\\sup_{i \\in \\iota} f(i) \\leq \\sup_{i' \\in \\iota'} g(i')$.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Indexed"
+          },
+          {
+            "formal_name": "MonotoneOn.csSup_eq_of_subset_of_forall_exists_le",
+            "informal_name": "Supremum Equality for Monotonic Functions on Cofinal Subsets",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} [inst : Preorder α] [inst_1 : ConditionallyCompleteLattice β] {f : α → β} {s t : Set α},\n  BddAbove (f '' t) → MonotoneOn f t → s ⊆ t → (∀ y ∈ t, ∃ x ∈ s, y ≤ x) → sSup (f '' s) = sSup (f '' t)",
+            "informal_description": "Let $\\alpha$ be a preorder and $\\beta$ a conditionally complete lattice. For a function $f : \\alpha \\to \\beta$ that is monotonic on a set $t \\subseteq \\alpha$, if $s \\subseteq t$ is a subset such that every element of $t$ is bounded above by some element of $s$, and the image $f(t)$ is bounded above in $\\beta$, then the supremum of $f(s)$ equals the supremum of $f(t)$, i.e., $\\sup(f(s)) = \\sup(f(t))$.",
+            "path": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "leansearch",
+    "request": {
+      "query": "conditionally complete lattice supremum monotone subset nonempty bounded above"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"isLUB_csSup\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α}, s.Nonempty → BddAbove s → IsLUB s (sSup s)\"\n    },\n    {\n      \"name\": \"le_csSup\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α}, BddAbove s → a ∈ s → a ≤ sSup s\"\n    },\n    {\n      \"name\": \"ConditionallyCompleteLattice.csSup_le\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_5} [self : ConditionallyCompleteLattice α] (s : Set α) (a : α),\\n  s.Nonempty → a ∈ upperBounds s → sSup s ≤ a\"\n    },\n    {\n      \"name\": \"csSup_le\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α}, s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a\"\n    },\n    {\n      \"name\": \"csSup_le_csSup\",\n      \"module_name\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s t : Set α},\\n  BddAbove t → s.Nonempty → s ⊆ t → sSup s ≤ sSup t\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "isLUB_csSup",
+            "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α}, s.Nonempty → BddAbove s → IsLUB s (sSup s)"
+          },
+          {
+            "name": "le_csSup",
+            "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α}, BddAbove s → a ∈ s → a ≤ sSup s"
+          },
+          {
+            "name": "ConditionallyCompleteLattice.csSup_le",
+            "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Defs",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_5} [self : ConditionallyCompleteLattice α] (s : Set α) (a : α),\n  s.Nonempty → a ∈ upperBounds s → sSup s ≤ a"
+          },
+          {
+            "name": "csSup_le",
+            "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α}, s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a"
+          },
+          {
+            "name": "csSup_le_csSup",
+            "module_name": "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s t : Set α},\n  BddAbove t → s.Nonempty → s ⊆ t → sSup s ≤ sSup t"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "loogle",
+    "request": {
+      "query": "\"csSup_le_csSup\""
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"DirectedOn.csSup_le_csSup\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompletePartialOrderSup α] {s t : Set α} (hds : DirectedOn (fun x1 x2 => x1 ≤ x2) s) (hdt : DirectedOn (fun x1 x2 => x1 ≤ x2) t) (ht : BddAbove t) (hs : s.Nonempty) (h : s ⊆ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.ConditionallyCompletePartialOrder.Basic\"\n    },\n    {\n      \"name\": \"csSup_le_csSup\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompleteLattice α] {s t : Set α} (ht : BddAbove t) (hs : s.Nonempty) (h : s ⊆ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    },\n    {\n      \"name\": \"csSup_le_csSup'\",\n      \"type\": \" {α : Type u_1} [ConditionallyCompleteLinearOrderBot α] {s t : Set α} (h₁ : BddAbove t) (h₂ : s ⊆ t) : sSup s ≤ sSup t\",\n      \"module\": \"Mathlib.Order.ConditionallyCompleteLattice.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "DirectedOn.csSup_le_csSup",
+            "type": " {α : Type u_1} [ConditionallyCompletePartialOrderSup α] {s t : Set α} (hds : DirectedOn (fun x1 x2 => x1 ≤ x2) s) (hdt : DirectedOn (fun x1 x2 => x1 ≤ x2) t) (ht : BddAbove t) (hs : s.Nonempty) (h : s ⊆ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.ConditionallyCompletePartialOrder.Basic"
+          },
+          {
+            "name": "csSup_le_csSup",
+            "type": " {α : Type u_1} [ConditionallyCompleteLattice α] {s t : Set α} (ht : BddAbove t) (hs : s.Nonempty) (h : s ⊆ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          },
+          {
+            "name": "csSup_le_csSup'",
+            "type": " {α : Type u_1} [ConditionallyCompleteLinearOrderBot α] {s t : Set α} (h₁ : BddAbove t) (h₂ : s ⊆ t) : sSup s ≤ sSup t",
+            "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local_search",
+    "request": {
+      "query": "csSup_le_csSup"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"DirectedOn.csSup_le_csSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Basic.lean\"\n    },\n    {\n      \"name\": \"csSup_le_csSup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    },\n    {\n      \"name\": \"csSup_le_csSup'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "DirectedOn.csSup_le_csSup",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompletePartialOrder/Basic.lean"
+          },
+          {
+            "name": "csSup_le_csSup",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          },
+          {
+            "name": "csSup_le_csSup'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Order/ConditionallyCompleteLattice/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]
+

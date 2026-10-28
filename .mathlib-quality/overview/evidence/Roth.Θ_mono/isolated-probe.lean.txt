@@ -1,0 +1,19 @@
+namespace Assessment191Isolated
+#check_failure Roth.Θ_mono
+#check @csSup_le_csSup
+#check @Real.sSup_le
+theorem abstract_mono {α : Type*} [ConditionallyCompleteLattice α] {s t : Set α}
+    (ht : BddAbove t) (hs : s.Nonempty) (hst : s ⊆ t) : sSup s ≤ sSup t :=
+  csSup_le_csSup ht hs hst
+theorem nonneg_real_mono {s t : Set ℝ} (ht : BddAbove t) (hst : s ⊆ t)
+    (h0 : ∀ x ∈ t, 0 ≤ x) : sSup s ≤ sSup t :=
+  Real.sSup_le (fun _ hx ↦ le_csSup ht (hst hx)) (Real.sSup_nonneg h0)
+theorem subset_alone_false :
+    ¬ (∀ (s t : Set ℝ), BddAbove t → s ⊆ t → sSup s ≤ sSup t) := by
+  intro h
+  have bad := h ∅ {(-1 : ℝ)} (by simp) (by simp)
+  norm_num at bad
+#print axioms abstract_mono
+#print axioms nonneg_real_mono
+#print axioms subset_alone_false
+end Assessment191Isolated

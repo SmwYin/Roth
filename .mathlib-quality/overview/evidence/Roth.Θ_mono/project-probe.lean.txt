@@ -1,0 +1,30 @@
+namespace Assessment191
+open MvPolynomial
+#check @csSup_le_csSup
+#check @csSup_le_csSup'
+#check @Real.sSup_le
+#print axioms Roth.Θ_mono
+theorem bridge {σ : Type*} [Fintype σ] (B : ℝ) (q r : σ → ℕ) :
+    Roth.Θ B q r = sSup (Roth.indexSet B q r) := rfl
+theorem height_subset {σ : Type*} [Fintype σ] {B B' : ℝ} (hBB' : B ≤ B')
+    (q r : σ → ℕ) : Roth.indexSet B q r ⊆ Roth.indexSet B' q r := by
+  rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
+  exact ⟨R, ⟨hR0, hRd, fun d ↦ (hRc d).trans hBB'⟩, h, hh, rfl⟩
+theorem replacement {σ : Type*} [Fintype σ] {B B' : ℝ} (hB : 1 ≤ B)
+    (hBB' : B ≤ B') (q : σ → ℕ) {r : σ → ℕ} : Roth.Θ B q r ≤ Roth.Θ B' q r := by
+  exact csSup_le_csSup (Roth.indexSet_bddAbove B' q) (Roth.indexSet_nonempty hB q r)
+    (height_subset hBB' q r)
+-- Stronger local law, with hB removed; not claimed an existing mathlib declaration.
+theorem all_bounds {σ : Type*} [Fintype σ] {B B' : ℝ} (hBB' : B ≤ B')
+    (q : σ → ℕ) {r : σ → ℕ} : Roth.Θ B q r ≤ Roth.Θ B' q r := by
+  exact Real.sSup_le
+    (fun _ hx ↦ le_csSup (Roth.indexSet_bddAbove B' q) (height_subset hBB' q r hx))
+    (Roth.Θ_nonneg q)
+theorem monotone_all {σ : Type*} [Fintype σ] (q r : σ → ℕ) :
+    Monotone (fun B ↦ Roth.Θ B q r) := fun _ _ h ↦ all_bounds h q
+#print axioms bridge
+#print axioms height_subset
+#print axioms replacement
+#print axioms all_bounds
+#print axioms monotone_all
+end Assessment191

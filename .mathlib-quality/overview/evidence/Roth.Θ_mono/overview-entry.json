@@ -1,0 +1,70 @@
+{
+  "declaration": "Roth.Θ_mono",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {B B' : ℝ},\n  1 ≤ B → B ≤ B' → ∀ (q : σ → ℕ) {r : σ → ℕ}, Roth.Θ B q r ≤ Roth.Θ B' q r",
+  "what": "The supremum of polynomial indices is monotone in the coefficient bound B.",
+  "how": "Apply csSup_le_csSup to the larger bounded family and smaller nonempty family; reuse the same polynomial/numerator witnesses and enlarge their coefficient bound by transitivity.",
+  "hypotheses": [
+    "σ : Type*",
+    "[Fintype σ]",
+    "B B′ : ℝ",
+    "hB : 1 ≤ B",
+    "hBB′ : B ≤ B′",
+    "q r : σ → ℕ; no positivity assumptions",
+    "No DecidableEq instance in elaborated type"
+  ],
+  "project_dependencies": [
+    "Roth.Θ",
+    "Roth.indexSet",
+    "Roth.RSet",
+    "Roth.indexSet_bddAbove",
+    "Roth.indexSet_nonempty"
+  ],
+  "caller_summary": {
+    "call_occurrences": 2,
+    "distinct_declarations": 2,
+    "external_to_file": 0,
+    "statement_occurrences": 0,
+    "documentation_occurrences": 1,
+    "callers": [
+      {
+        "name": "Roth.theta_scaled_unique_le_aux",
+        "visibility": "private",
+        "file": "Roth/Theta.lean",
+        "line": 758,
+        "reference": "refine (Θ_mono hM1 hM _).trans",
+        "refactor": "Inline csSup_le_csSup at s=indexSet M (fun _:Unit ↦ q₂) (fun _ ↦ l*r₂), t=indexSet (q₁^(δ*(l*r₁))) same q/r; retain indexSet_bddAbove, indexSet_nonempty hM1 and height inclusion using hM; preserve full Θ_unique_le/arithmetic continuation"
+      },
+      {
+        "name": "Roth.theta_prefix_lt_aux",
+        "visibility": "private",
+        "file": "Roth/Theta.lean",
+        "line": 790,
+        "reference": "refine (Θ_mono hM1 hM _).trans_lt",
+        "refactor": "Inline csSup_le_csSup at q=(fun j:Fin(n+1) ↦ q j.castSucc), r=(fun j ↦ l*r j.castSucc), heights M and q0^(ε*(l*r0)); retain project boundedness/nonempty and height inclusion using hM; preserve hCeq/ih/finite-index arithmetic continuation"
+      }
+    ]
+  },
+  "mathlib_api_audit": {
+    "existing": "csSup_le_csSup",
+    "path": "Mathlib/Order/ConditionallyCompleteLattice/Basic.lean:209",
+    "isolated_verified": true,
+    "bridge": "Θ = sSup indexSet is definitional; height-family inclusion is a new explicit project-specific proof, verified separately.",
+    "project_helpers_not_mathlib_blocks": [
+      "Roth.indexSet_bddAbove",
+      "Roth.indexSet_nonempty"
+    ]
+  },
+  "moral_duplications": [
+    "The analogous monotonicity law for sSup already exists in csSup_le_csSup; apply the parent re-aim rule rather than proposing a Roth-specific upstream law."
+  ],
+  "generalization": {
+    "verified_hypothesis_deletion": "hB can be dropped for this actual family: Real.sSup_le plus le_csSup, height inclusion, and Θ_nonneg. Native all_bounds/monotone_all verified.",
+    "abstract_form": "csSup_le_csSup over any ConditionallyCompleteLattice, already in mathlib.",
+    "interface_constraint": "Fintype remains needed by Θ/index fixed signatures; removing it from the abstract set theorem is a change of interface.",
+    "false_generalization_guard": "Subset alone is false for real sSup: ∅ ⊆ {-1}, with sSup∅=0 > -1. No CompleteLattice/OrderBot instance for ℝ assumed."
+  },
+  "missing_api": "No missing generic supremum monotonicity law. A local indexSet-height inclusion helper may improve organization; it is not an existing mathlib replacement. This does not resolve the substantive boundedness API assessment.",
+  "junk": "Used twice in private Lemma7 helpers; not dead code. No explicit type consumers or external-to-file callers. Not a simp theorem.",
+  "action": "Do not upstream Θ_mono separately. In Roth/Theta.lean either keep this convenient wrapper, strengthen it locally by deleting hB, or inline csSup_le_csSup with the verified family inclusion at both identified callers. Production remains unchanged."
+}

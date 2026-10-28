@@ -1,0 +1,88 @@
+namespace Assessment191Callers
+open Roth
+theorem caller_theta_scaled_unique_le_aux {δ M : ℝ} {q₁ q₂ r₁ r₂ l : ℕ}
+    (hq₁ : 1 < q₁) (hr₁ : 0 < r₁)
+    (hl : 0 < l) (hqr : (r₁ : ℝ) * Real.log q₁ ≤ r₂ * Real.log q₂) (hM1 : 1 ≤ M)
+    (hM : M ≤ (q₁ : ℝ) ^ (δ * (l * r₁))) :
+    Θ M (fun _ : Unit ↦ q₂) (fun _ ↦ l * r₂) ≤ δ := by
+  have hδ0 : 0 ≤ δ := by
+    have h : (0 : ℝ) ≤ δ * (l * r₁) :=
+      (Real.rpow_le_rpow_left_iff (x := (q₁ : ℝ)) (by exact_mod_cast hq₁)).1
+        (by simpa using hM1.trans hM)
+    exact nonneg_of_mul_nonneg_left h
+      (mul_pos (by exact_mod_cast hl : (0 : ℝ) < l)
+        (by exact_mod_cast hr₁ : (0 : ℝ) < r₁))
+  have hL : (0 : ℝ) < r₂ * Real.log q₂ :=
+    (mul_pos (by exact_mod_cast hr₁) (Real.log_pos (by exact_mod_cast hq₁))).trans_le hqr
+  have hL₂ : 0 < Real.log (q₂ : ℝ) := pos_of_mul_pos_right hL (Nat.cast_nonneg r₂)
+  have hr₂ : 0 < r₂ := by exact_mod_cast pos_of_mul_pos_left hL hL₂.le
+  have hq₂ : 1 < q₂ := by
+    exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg q₂)).1 hL₂
+  have hmono : Θ M (fun _ : Unit ↦ q₂) (fun _ ↦ l * r₂) ≤
+      Θ ((q₁ : ℝ) ^ (δ * (l * r₁))) (fun _ : Unit ↦ q₂) (fun _ ↦ l * r₂) := by
+    refine csSup_le_csSup (indexSet_bddAbove _ _) (indexSet_nonempty hM1 _ _) ?_
+    rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
+    exact ⟨R, ⟨hR0, hRd, fun d ↦ (hRc d).trans hM⟩, h, hh, rfl⟩
+  refine hmono.trans
+    ((Θ_unique_le (q := fun _ : Unit ↦ q₂) (r := fun _ ↦ l * r₂)
+      (hM1.trans hM) hq₂).trans ?_)
+  rw [Real.log_rpow (by positivity), div_le_iff₀ (by
+    push_cast
+    exact mul_pos (mul_pos (by exact_mod_cast hl) (by exact_mod_cast hr₂)) hL₂)]
+  push_cast
+  nlinarith only [mul_le_mul_of_nonneg_left hqr (mul_nonneg hδ0 (Nat.cast_nonneg l))]
+
+
+theorem caller_theta_prefix_lt_aux {n : ℕ} {δ ε M : ℝ} (hδ0 : 0 < δ) (hδε : δ ≤ ε)
+    {r q : Fin (n + 2) → ℕ} (hanti : ∀ j, r (Fin.last (n + 1)) ≤ r j)
+    (hrlast : 3 ≤ (r (Fin.last (n + 1)) : ℝ))
+    (hratio : ∀ i : Fin (n + 1), (r i.succ : ℝ) ≤ δ * r i.castSucc)
+    (hq1 : ((n : ℝ) + 1 + 1) * (2 * ((n : ℝ) + 1 + 1) + 1) / δ ≤ Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) {l : ℕ} (hl : 1 ≤ l)
+    (hM1 : 1 ≤ M) (hM : M ≤ (q 0 : ℝ) ^ (ε * (l * r 0)))
+    (ih : ∀ {r q : Fin (n + 1) → ℕ}, 3 ≤ (r (Fin.last n) : ℝ) →
+      (∀ i : Fin n, (r i.succ : ℝ) ≤ ε * r i.castSucc) →
+      ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / ε ≤ Real.log (q 0) →
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) →
+      Θ ((q 0 : ℝ) ^ (ε * r 0)) q r < 10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1))) :
+    Θ M (fun j : Fin (n + 1) ↦ q j.castSucc) (fun j ↦ l * r j.castSucc) <
+      10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1)) := by
+  have hmono :
+      Θ M (fun j : Fin (n + 1) ↦ q j.castSucc) (fun j ↦ l * r j.castSucc) ≤
+      Θ ((q 0 : ℝ) ^ (ε * (l * r 0)))
+        (fun j : Fin (n + 1) ↦ q j.castSucc) (fun j ↦ l * r j.castSucc) := by
+    refine csSup_le_csSup (indexSet_bddAbove _ _) (indexSet_nonempty hM1 _ _) ?_
+    rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
+    exact ⟨R, ⟨hR0, hRd, fun d ↦ (hRc d).trans hM⟩, h, hh, rfl⟩
+  refine hmono.trans_lt ?_
+  have hCeq : (q 0 : ℝ) ^ (ε * (l * r 0)) =
+      (q (Fin.castSucc 0) : ℝ) ^ (ε * ((l * r (Fin.castSucc 0) : ℕ) : ℝ)) := by
+    simp [Nat.cast_mul]
+  rw [hCeq]
+  have hn : (0 : ℝ) ≤ n + 1 + 1 :=
+    add_nonneg (add_nonneg (Nat.cast_nonneg _) zero_le_one) zero_le_one
+  refine ih (r := fun j ↦ l * r j.castSucc) (q := fun j ↦ q j.castSucc) ?_ ?_
+    ((div_le_div₀ (mul_nonneg hn (add_nonneg (mul_nonneg (by norm_num) hn) zero_le_one)) (by
+      linarith only [Nat.cast_nonneg (α := ℝ) n]) hδ0 hδε).trans hq1) ?_
+  · have h2 : (r (Fin.last (n + 1)) : ℝ) ≤ r (Fin.castSucc (Fin.last n)) := by
+      exact_mod_cast hanti _
+    push_cast
+    exact hrlast.trans (h2.trans
+      (le_mul_of_one_le_left (Nat.cast_nonneg _) (by exact_mod_cast hl)))
+  · intro i
+    push_cast
+    calc
+      (l : ℝ) * r (Fin.castSucc i.succ) ≤ l * (δ * r (Fin.castSucc (Fin.castSucc i))) :=
+        mul_le_mul_of_nonneg_left (hratio (Fin.castSucc i)) (Nat.cast_nonneg l)
+      _ = δ * (l * r (Fin.castSucc (Fin.castSucc i))) := mul_left_comm _ _ _
+      _ ≤ ε * (l * r (Fin.castSucc (Fin.castSucc i))) :=
+        mul_le_mul_of_nonneg_right hδε (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
+  · intro j
+    push_cast
+    simpa only [mul_assoc, Fin.castSucc_zero] using
+      mul_le_mul_of_nonneg_left (hqr j.castSucc) (Nat.cast_nonneg l)
+
+
+#print axioms caller_theta_scaled_unique_le_aux
+#print axioms caller_theta_prefix_lt_aux
+end Assessment191Callers

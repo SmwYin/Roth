@@ -1,0 +1,106 @@
+{
+  "declaration": "Roth.Θ_mono",
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "theta-mono191-original-executed.lean.txt",
+      "source_sha256": "811b2a4792bd940b8055c6109880b49427d11126be0967d5999754e3ae4a2008",
+      "receipt": "theta-mono191-original-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 1,
+      "required_info": [
+        "THETAMONO191_FULL_TYPE:",
+        "THETAMONO191_AUDIT: requested=293; unique=293",
+        "THETAMONO191_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      }
+    },
+    {
+      "label": "project",
+      "source": "theta-mono191-project-executed.lean.txt",
+      "source_sha256": "98826eeceb5f67b4135b3a261e78462a500ebf17b6d4994d1bb86bb70dc3bada",
+      "receipt": "theta-mono191-project-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 344,
+      "required_info": [
+        "'Assessment191.bridge' depends on axioms",
+        "'Assessment191.height_subset' depends on axioms",
+        "'Assessment191.replacement' depends on axioms",
+        "'Assessment191.all_bounds' depends on axioms",
+        "'Assessment191.monotone_all' depends on axioms"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      }
+    },
+    {
+      "label": "isolated",
+      "source": "theta-mono191-isolated-executed.lean.txt",
+      "source_sha256": "5e49b933947110f4a961b6619b34af24a615ebc2973ae745a128f8ba2395e2ce",
+      "receipt": "theta-mono191-isolated-receipt.json",
+      "format": "raw",
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Assessment191Isolated.abstract_mono' does not depend on any axioms",
+        "'Assessment191Isolated.nonneg_real_mono' depends on axioms",
+        "'Assessment191Isolated.subset_alone_false' depends on axioms"
+      ],
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nnamespace Assessment191Isolated\n#check_failure Roth.Θ_mono\n#check @csSup_le_csSup\n#check @Real.sSup_le\ntheorem abstract_mono {α : Type*} [ConditionallyCompleteLattice α] {s t : Set α}\n    (ht : BddAbove t) (hs : s.Nonempty) (hst : s ⊆ t) : sSup s ≤ sSup t :=\n  csSup_le_csSup ht hs hst\ntheorem nonneg_real_mono {s t : Set ℝ} (ht : BddAbove t) (hst : s ⊆ t)\n    (h0 : ∀ x ∈ t, 0 ≤ x) : sSup s ≤ sSup t :=\n  Real.sSup_le (fun _ hx ↦ le_csSup ht (hst hx)) (Real.sSup_nonneg h0)\ntheorem subset_alone_false :\n    ¬ (∀ (s t : Set ℝ), BddAbove t → s ⊆ t → sSup s ≤ sSup t) := by\n  intro h\n  have bad := h ∅ {(-1 : ℝ)} (by simp) (by simp)\n  norm_num at bad\n#print axioms abstract_mono\n#print axioms nonneg_real_mono\n#print axioms subset_alone_false\nend Assessment191Isolated\n"
+      }
+    },
+    {
+      "label": "callers",
+      "source": "theta-mono191-callers-executed.lean.txt",
+      "source_sha256": "a15f9a53291a8f49a6605154f287cd1bc8662ee8554df7eb71e8d755c0056d74",
+      "receipt": "theta-mono191-callers-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 375,
+      "required_info": [
+        "'Assessment191Callers.caller_theta_scaled_unique_le_aux' depends on axioms",
+        "'Assessment191Callers.caller_theta_prefix_lt_aux' depends on axioms"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      }
+    }
+  ],
+  "rejected": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "audit": {
+    "source": "theta-mono191-original-executed.lean.txt",
+    "receipt": "theta-mono191-original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "_private.Roth.Theta.0.Roth.theta_scaled_unique_le_aux",
+    "_private.Roth.Theta.0.Roth.theta_prefix_lt_aux"
+  ],
+  "canonical_direct_type_consumers": [],
+  "composition": {
+    "parent_reaim_checked": true,
+    "bridge_definitional": true,
+    "height_inclusion_definitional": false,
+    "strict_three_existing_call_term_verified": false,
+    "parent_project_lemma_counted_as_mathlib_block": false,
+    "actual_caller_replays": 2,
+    "actual_call_occurrences": 2,
+    "no_circular_use_of_target_in_new_proof": true,
+    "no_global_absence_claim": true,
+    "verified_hypothesis_deletion": "hB",
+    "generic_empty_negative_counterexample": true
+  }
+}
