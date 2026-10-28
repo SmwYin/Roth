@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 167,
+  "name": "Roth.isPrimitive_linear",
+  "short": "isPrimitive_linear",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 173,
+  "source": "private lemma isPrimitive_linear {h : ℤ} {q : ℕ} (hcop : IsCoprime h (q : ℤ)) :\n    (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h).IsPrimitive := by\n  intro c hc\n  rw [Polynomial.C_dvd_iff_dvd_coeff] at hc\n  exact hcop.isUnit_of_dvd' (by simpa using hc 0)\n    (by simpa only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_one,\n      Polynomial.coeff_C, mul_one, one_ne_zero, ↓reduceIte, sub_zero] using hc 1)",
+  "signature": "private lemma isPrimitive_linear {h : ℤ} {q : ℕ} (hcop : IsCoprime h (q : ℤ)) :\n    (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h).IsPrimitive",
+  "body": "by\n  intro c hc\n  rw [Polynomial.C_dvd_iff_dvd_coeff] at hc\n  exact hcop.isUnit_of_dvd' (by simpa using hc 0)\n    (by simpa only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_one,\n      Polynomial.coeff_C, mul_one, one_ne_zero, ↓reduceIte, sub_zero] using hc 1)",
+  "proof_lines": 6,
+  "sha256": "c8fa23e08f4380dd65abaf537c344ae4838ee46d3d5a5967f8eceb2a5a5aab3a",
+  "what": "The integral linear polynomial qX minus h is primitive when h and q are coprime.",
+  "how": "Any common coefficient divisor divides the constant and linear coefficient, so coprimality makes it a unit.",
+  "hypotheses": "Coprime integer numerator and natural denominator.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.exists_eq_pow_mul_of_rootMultiplicity",
+      "file": "Roth/Theta.lean",
+      "line": 184
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.exists_eq_pow_mul_of_rootMultiplicity"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 151,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.exists_eq_pow_mul_of_rootMultiplicity",
+      "file": "Roth/Theta.lean",
+      "line": 184
+    }
+  ]
+}

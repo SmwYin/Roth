@@ -1,0 +1,7 @@
+private lemma isPrimitive_linear {h : ℤ} {q : ℕ} (hcop : IsCoprime h (q : ℤ)) :
+    (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h).IsPrimitive := by
+  intro c hc
+  rw [Polynomial.C_dvd_iff_dvd_coeff] at hc
+  exact hcop.isUnit_of_dvd' (by simpa using hc 0)
+    (by simpa only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_one,
+      Polynomial.coeff_C, mul_one, one_ne_zero, ↓reduceIte, sub_zero] using hc 1)
