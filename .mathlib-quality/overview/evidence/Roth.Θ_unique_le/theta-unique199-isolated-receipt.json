@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.Analysis.SpecialFunctions.Log.Basic\n-- Root prepends stable mathlib-only imports plus Mathlib.Analysis.SpecialFunctions.Log.Basic.\nnamespace ThetaUnique199Isolated\n#check_failure Roth.Θ_unique_le\n#check_failure Roth.index_unique_le_log_div\n#check @csSup_le\n#check @Real.log_le_log\n#check @Real.log_pow\n#check @Polynomial.pow_rootMultiplicity_dvd\n-- This is ONLY generic logarithmic/order packaging with the exponential premise supplied.\n-- It cannot establish that premise for integer polynomial root multiplicity.\ntheorem logarithmicOfPow {q B : ℝ} (hq : 1 < q) {t r : ℕ} (hpow : q ^ t ≤ B) :\n    (t : ℝ) / r ≤ Real.log B / (r * Real.log q) := by\n  have hlog := Real.log_le_log (pow_pos (zero_lt_one.trans hq) t) hpow\n  rw [Real.log_pow] at hlog\n  simpa [div_div, mul_comm] using\n    div_le_div_of_nonneg_right\n      ((le_div_iff₀ (Real.log_pos hq)).2 hlog) (Nat.cast_nonneg r)\ntheorem supremumOfLog {q B : ℝ} (hq : 1 < q) {r : ℕ} {s : Set ℝ}\n    (hs : s.Nonempty) (hpoint : ∀ x ∈ s, ∃ t : ℕ, x = (t : ℝ) / r ∧ q ^ t ≤ B) :\n    sSup s ≤ Real.log B / (r * Real.log q) := by\n  apply csSup_le hs\n  rintro x hx\n  obtain ⟨t, rfl, ht⟩ := hpoint x hx\n  exact logarithmicOfPow hq ht\n-- The actual arithmetic candidate is not solved by the elementary generic route.\n-- An explicit supplied hpow closes it; the experiment therefore records residual content.\nexample {R : Polynomial ℤ} {h : ℤ} {q : ℕ} {B : ℝ}\n    (hpow : (q : ℝ) ^ Polynomial.rootMultiplicity ((h : ℚ) / q)\n      (R.map (Int.castRingHom ℚ)) ≤ B) :\n    (q : ℝ) ^ Polynomial.rootMultiplicity ((h : ℚ) / q)\n      (R.map (Int.castRingHom ℚ)) ≤ B := hpow\n#print axioms logarithmicOfPow\n#print axioms supremumOfLog\nend ThetaUnique199Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.Θ_unique_le`\",\n      \"line\": 19,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_unique_le_log_div`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@csSup_le : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\\n  s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_le_log : ∀ {x y : ℝ}, 0 < x → x ≤ y → Real.log x ≤ Real.log y\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.log_pow : ∀ (x : ℝ) (n : ℕ), Real.log (x ^ n) = ↑n * Real.log x\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.pow_rootMultiplicity_dvd : ∀ {R : Type u_1} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaUnique199Isolated.logarithmicOfPow' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 48,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ThetaUnique199Isolated.supremumOfLog' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 49,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.Θ_unique_le`",
+          "line": 19,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_unique_le_log_div`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@csSup_le : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\n  s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_le_log : ∀ {x y : ℝ}, 0 < x → x ≤ y → Real.log x ≤ Real.log y",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.log_pow : ∀ (x : ℝ) (n : ℕ), Real.log (x ^ n) = ↑n * Real.log x",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.pow_rootMultiplicity_dvd : ∀ {R : Type u_1} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaUnique199Isolated.logarithmicOfPow' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 48,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ThetaUnique199Isolated.supremumOfLog' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 49,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 49102
+}

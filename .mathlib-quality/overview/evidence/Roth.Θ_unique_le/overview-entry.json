@@ -1,0 +1,46 @@
+{
+  "declaration": "Roth.Θ_unique_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : Unique σ] {B : ℝ},\n  1 ≤ B →\n    ∀ {q : σ → ℕ}, 1 < q default → ∀ {r : σ → ℕ}, Roth.Θ B q r ≤ Real.log B / (↑(r default) * Real.log ↑(q default))",
+  "what": "The extremal one-variable weighted index of bounded integer polynomials at reduced rational points of denominator q>1 is at most log B/(r log q).",
+  "how": "Use Θ_le_of_forall_index_le with index_unique_le_log_div: primitive rational-root factorization gives q^t≤|lc R|≤B, logarithm monotonicity gives t/r≤log B/(r log q), and csSup_le bounds the supremum.",
+  "hypotheses": "A singleton variable type, B≥1, natural denominator q>1, natural weight r (zero allowed); the family quantifies nonzero degree/coefficient-bounded integer polynomials and reduced numerators.",
+  "project_dependencies": [
+    "Roth.Θ_le_of_forall_index_le",
+    "Roth.index_unique_le_log_div"
+  ],
+  "caller_summary": {
+    "explicit_body_calls": 2,
+    "direct_kernel_value_consumers": [
+      "_private.Roth.Theta.0.Roth.theta_scaled_unique_le_aux",
+      "_private.Roth.Theta.0.Roth.theta_lt_base_aux"
+    ],
+    "direct_kernel_type_consumers": [],
+    "fullcaller_experiments": 2
+  },
+  "mathlib_api_audit": "Pinned csSup_le and log/power laws provide generic packaging; den_dvd_of_is_root only single denominator divisibility. Multiplicity-sensitive integer polynomial bound remains substantive. All five methods on three forms, pinned checks and mathlib-only order/log experiments completed.",
+  "moral_duplications": [
+    {
+      "other": "Roth.Θ_le_of_forall_index_le",
+      "same_statement": false,
+      "same_proof": false,
+      "assessment": "Only the outer supremum step agrees; current theorem must prove its arithmetic pointwise premise."
+    },
+    {
+      "other": "Roth.index_unique_le_log_div",
+      "same_statement": false,
+      "same_proof": "pointwise arithmetic reused",
+      "assessment": "One-polynomial logarithmic bound versus extremal-family bound; keep helper factoring."
+    },
+    {
+      "other": "csSup_le",
+      "same_statement": false,
+      "same_proof": "outer order step only",
+      "assessment": "Not a full arithmetic replacement."
+    }
+  ],
+  "generalization": "Native fullUniqueOnly drops redundant explicit Fintype binder under Unique; original already has no DecidableEq binder. Broader height/GCD-domain arithmetic belongs to independent196/197 proposals, not an automatic existing-mathlib replacement.",
+  "missing_api": "Upstream decision on coefficient/degree-bounded arithmetic extremal families; independently useful multiplicity-sensitive denominator and leading-coefficient APIs already assessed196/197.",
+  "junk": "Not dead code: two actual private consumers. Short source proof is not a composition of existing mathlib arithmetic.",
+  "action": "BORDERLINE: retain Roth/Theta.lean endpoint pending upstream family design. Remove redundant Fintype binder only in later authorized cleanup. Keep arithmetic API proposals independent."
+}

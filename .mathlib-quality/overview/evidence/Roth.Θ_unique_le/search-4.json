@@ -1,0 +1,69 @@
+{
+  "form": "standard",
+  "method": "Finder",
+  "request": "integer polynomial rational root multiplicity denominator power bounded by absolute leading coefficient",
+  "response": {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"one_le_pow_mul_abs_eval_div\",\n      \"informal_name\": \"Lower Bound for Polynomial Evaluation at Rational Points\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial ℤ} {a b : ℤ},\\n  0 < b →\\n    Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f) ≠ 0 →\\n      1 ≤ ↑b ^ f.natDegree * |Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f)|\",\n      \"informal_description\": \"For any linearly ordered field $ K $ with strict ordered ring structure, given a non-zero polynomial $ f \\\\in \\\\mathbb{Z}[X] $, integers $ a, b $ with $ b > 0 $, and assuming $ f\\\\left(\\\\frac{a}{b}\\\\right) \\\\neq 0 $, it holds that $ 1 \\\\leq b^{\\\\deg(f)} \\\\cdot \\\\left| f\\\\left(\\\\frac{a}{b}\\\\right) \\\\right| $, where $ \\\\deg(f) $ denotes the natural degree of $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.DenomsClearable\"\n    },\n    {\n      \"formal_name\": \"den_dvd_of_is_root\",\n      \"informal_name\": \"Denominator Divides Leading Coefficient for Roots in Fraction Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff\",\n      \"informal_description\": \"For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\\\text{aeval}(r, p) = 0 $), then the denominator $ \\\\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    },\n    {\n      \"formal_name\": \"denomsClearable_of_natDegree_le\",\n      \"informal_name\": \"Denominators Clearable Given Bounded Polynomial Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {K : Type u_2} [inst : Semiring R] [inst_1 : CommSemiring K] {i : R →+* K} {b : R} {bi : K} (N : ℕ)\\n  (a : R), bi * i b = 1 → ∀ (f : Polynomial R), f.natDegree ≤ N → DenomsClearable a b N f i\",\n      \"informal_description\": \"For a polynomial $ f $ with natural degree $ \\\\leq N $, there exist elements $ D \\\\in R $ and $ \\\\beta \\\\in K $ such that $ \\\\beta \\\\cdot i(b) = 1 $ and $ i(D) = i(b)^N \\\\cdot \\\\text{eval}_{i(a)\\\\beta}(f^i) $, where $ f^i $ denotes the polynomial obtained by applying the ring homomorphism $ i $ to each coefficient of $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.DenomsClearable\"\n    },\n    {\n      \"formal_name\": \"Polynomial.rootMultiplicity\",\n      \"informal_name\": \"Root multiplicity in polynomial rings\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ\",\n      \"informal_description\": \"For a semiring $ R $ with decidable equality, the function $\\\\operatorname{rootMultiplicity}(a, p) $ returns the largest natural number $ n $ such that the linear factor $ X - a $ divides the polynomial $ p $ exactly $ n $ times. If $ p $ is the zero polynomial, it returns $ 0 $. This is computed by finding the minimal $ n $ where $ (X - a)^{n+1} $ does not divide $ p $, leveraging the finite multiplicity property of linear factors in polynomial rings.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"one_lt_natDegree_of_irrational_root\",\n      \"informal_name\": \"Degree of Polynomial with Irrational Root is Greater Than One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (x : ℝ) (p : Polynomial ℤ), Irrational x → p ≠ 0 → (Polynomial.aeval x) p = 0 → 1 < p.natDegree\",\n      \"informal_description\": \"Let $ p $ be a non-zero polynomial with rational coefficients, and let $ x $ be an irrational real number such that $ p(x) = 0 $. Then the degree of $ p $ satisfies $ \\\\deg(p) > 1 $.\",\n      \"path\": \"Mathlib.NumberTheory.Real.Irrational\"\n    },\n    {\n      \"formal_name\": \"denomsClearable_natDegree\",\n      \"informal_name\": \"Denominators Clearable via Natural Degree of Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {K : Type u_2} [inst : Semiring R] [inst_1 : CommSemiring K] {b : R} {bi : K} (i : R →+* K)\\n  (f : Polynomial R) (a : R), bi * i b = 1 → DenomsClearable a b f.natDegree f i\",\n      \"informal_description\": \"For a ring homomorphism $ i : R \\\\to K $, polynomial $ f \\\\in R[X] $, and elements $ a, b \\\\in R $, if $ \\\\beta \\\\cdot i(b) = 1 $, then there exist $ D \\\\in R $ and $ \\\\beta \\\\in K $ such that $ i(D) = i(b)^{\\\\deg(f)} \\\\cdot \\\\text{eval}_{i(a)\\\\beta}(f^i) $, where $ \\\\deg(f) $ is the natural degree of $ f $ and $ f^i $ denotes coefficient-wise application of $ i $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.DenomsClearable\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "one_le_pow_mul_abs_eval_div",
+            "informal_name": "Lower Bound for Polynomial Evaluation at Rational Points",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial ℤ} {a b : ℤ},\n  0 < b →\n    Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f) ≠ 0 →\n      1 ≤ ↑b ^ f.natDegree * |Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f)|",
+            "informal_description": "For any linearly ordered field $ K $ with strict ordered ring structure, given a non-zero polynomial $ f \\in \\mathbb{Z}[X] $, integers $ a, b $ with $ b > 0 $, and assuming $ f\\left(\\frac{a}{b}\\right) \\neq 0 $, it holds that $ 1 \\leq b^{\\deg(f)} \\cdot \\left| f\\left(\\frac{a}{b}\\right) \\right| $, where $ \\deg(f) $ denotes the natural degree of $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.DenomsClearable"
+          },
+          {
+            "formal_name": "den_dvd_of_is_root",
+            "informal_name": "Denominator Divides Leading Coefficient for Roots in Fraction Ring",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff",
+            "informal_description": "For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\text{aeval}(r, p) = 0 $), then the denominator $ \\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          },
+          {
+            "formal_name": "denomsClearable_of_natDegree_le",
+            "informal_name": "Denominators Clearable Given Bounded Polynomial Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {K : Type u_2} [inst : Semiring R] [inst_1 : CommSemiring K] {i : R →+* K} {b : R} {bi : K} (N : ℕ)\n  (a : R), bi * i b = 1 → ∀ (f : Polynomial R), f.natDegree ≤ N → DenomsClearable a b N f i",
+            "informal_description": "For a polynomial $ f $ with natural degree $ \\leq N $, there exist elements $ D \\in R $ and $ \\beta \\in K $ such that $ \\beta \\cdot i(b) = 1 $ and $ i(D) = i(b)^N \\cdot \\text{eval}_{i(a)\\beta}(f^i) $, where $ f^i $ denotes the polynomial obtained by applying the ring homomorphism $ i $ to each coefficient of $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.DenomsClearable"
+          },
+          {
+            "formal_name": "Polynomial.rootMultiplicity",
+            "informal_name": "Root multiplicity in polynomial rings",
+            "kind": "definition",
+            "type": "{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ",
+            "informal_description": "For a semiring $ R $ with decidable equality, the function $\\operatorname{rootMultiplicity}(a, p) $ returns the largest natural number $ n $ such that the linear factor $ X - a $ divides the polynomial $ p $ exactly $ n $ times. If $ p $ is the zero polynomial, it returns $ 0 $. This is computed by finding the minimal $ n $ where $ (X - a)^{n+1} $ does not divide $ p $, leveraging the finite multiplicity property of linear factors in polynomial rings.",
+            "path": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "formal_name": "one_lt_natDegree_of_irrational_root",
+            "informal_name": "Degree of Polynomial with Irrational Root is Greater Than One",
+            "kind": "theorem",
+            "type": "∀ (x : ℝ) (p : Polynomial ℤ), Irrational x → p ≠ 0 → (Polynomial.aeval x) p = 0 → 1 < p.natDegree",
+            "informal_description": "Let $ p $ be a non-zero polynomial with rational coefficients, and let $ x $ be an irrational real number such that $ p(x) = 0 $. Then the degree of $ p $ satisfies $ \\deg(p) > 1 $.",
+            "path": "Mathlib.NumberTheory.Real.Irrational"
+          },
+          {
+            "formal_name": "denomsClearable_natDegree",
+            "informal_name": "Denominators Clearable via Natural Degree of Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {K : Type u_2} [inst : Semiring R] [inst_1 : CommSemiring K] {b : R} {bi : K} (i : R →+* K)\n  (f : Polynomial R) (a : R), bi * i b = 1 → DenomsClearable a b f.natDegree f i",
+            "informal_description": "For a ring homomorphism $ i : R \\to K $, polynomial $ f \\in R[X] $, and elements $ a, b \\in R $, if $ \\beta \\cdot i(b) = 1 $, then there exist $ D \\in R $ and $ \\beta \\in K $ such that $ i(D) = i(b)^{\\deg(f)} \\cdot \\text{eval}_{i(a)\\beta}(f^i) $, where $ \\deg(f) $ is the natural degree of $ f $ and $ f^i $ denotes coefficient-wise application of $ i $.",
+            "path": "Mathlib.Algebra.Polynomial.DenomsClearable"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+}

@@ -1,0 +1,47 @@
+open MvPolynomial
+namespace Roth
+namespace ThetaUnique199Callers
+theorem caller_scaled {δ M : ℝ} {q₁ q₂ r₁ r₂ l : ℕ} (hq₁ : 1 < q₁) (hr₁ : 0 < r₁)
+    (hl : 0 < l) (hqr : (r₁ : ℝ) * Real.log q₁ ≤ r₂ * Real.log q₂) (hM1 : 1 ≤ M)
+    (hM : M ≤ (q₁ : ℝ) ^ (δ * (l * r₁))) : Θ M (fun _ : Unit ↦ q₂) (fun _ ↦ l * r₂) ≤ δ := by
+  have hδ0 : 0 ≤ δ := by
+    have h : (0 : ℝ) ≤ δ * (l * r₁) :=
+      (Real.rpow_le_rpow_left_iff (x := (q₁ : ℝ)) (by exact_mod_cast hq₁)).1
+        (by simpa using hM1.trans hM)
+    exact nonneg_of_mul_nonneg_left h
+      (mul_pos (by exact_mod_cast hl : (0 : ℝ) < l)
+        (by exact_mod_cast hr₁ : (0 : ℝ) < r₁))
+  have hL : (0 : ℝ) < r₂ * Real.log q₂ :=
+    (mul_pos (by exact_mod_cast hr₁) (Real.log_pos (by exact_mod_cast hq₁))).trans_le hqr
+  have hL₂ : 0 < Real.log (q₂ : ℝ) := pos_of_mul_pos_right hL (Nat.cast_nonneg r₂)
+  have hr₂ : 0 < r₂ := by exact_mod_cast pos_of_mul_pos_left hL hL₂.le
+  have hq₂ : 1 < q₂ := by
+    exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg q₂)).1 hL₂
+  refine (Θ_mono hM1 hM _).trans
+    ((RothThetaUnique199.fullUniqueOnly (q := fun _ : Unit ↦ q₂) (r := fun _ ↦ l * r₂)
+      (hM1.trans hM) hq₂).trans ?_)
+  rw [Real.log_rpow (by positivity), div_le_iff₀ (by
+    push_cast
+    exact mul_pos (mul_pos (by exact_mod_cast hl) (by exact_mod_cast hr₂)) hL₂)]
+  push_cast
+  nlinarith only [mul_le_mul_of_nonneg_left hqr (mul_nonneg hδ0 (Nat.cast_nonneg l))]
+
+theorem caller_base {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ ≤ 1) {r q : Fin 1 → ℕ}
+    (hrlast : 0 < r 0) (hq1 : 1 < q 0) :
+    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ 1 * δ ^ ((1 / 2 : ℝ) ^ 1) := by
+  have h : Θ ((q 0 : ℝ) ^ (δ * r 0)) q r ≤ δ := by
+    refine (RothThetaUnique199.fullUniqueOnly (q := q) (r := r)
+      (Real.one_le_rpow (by exact_mod_cast hq1.le) (by positivity)) hq1).trans_eq ?_
+    rw [Subsingleton.elim (default : Fin 1) 0, Real.log_rpow (by positivity)]
+    field_simp [ne_of_gt (by exact_mod_cast hrlast : (0 : ℝ) < r 0),
+      ne_of_gt (Real.log_pos (by exact_mod_cast hq1 : (1 : ℝ) < q 0))]
+  have h1 : δ ≤ δ ^ ((1 / 2 : ℝ) ^ 1) := by
+    simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ (by norm_num : (1 / 2 : ℝ) ^ 1 ≤ 1)
+  norm_num only [pow_one] at h1 ⊢
+  exact h.trans_lt (h1.trans_lt
+    (lt_mul_of_one_lt_left (Real.rpow_pos_of_pos hδ0 _) (by norm_num : (1 : ℝ) < 10)))
+
+#print axioms caller_scaled
+#print axioms caller_base
+end ThetaUnique199Callers
+end Roth

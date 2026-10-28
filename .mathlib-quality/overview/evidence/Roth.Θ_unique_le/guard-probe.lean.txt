@@ -1,0 +1,13 @@
+namespace ThetaUnique199Guard
+theorem coefficient_bound_necessary :
+    ¬ Roth.Θ (1 / 2) (fun _ : Unit ↦ 2) (fun _ ↦ 1) ≤
+      Real.log (1 / 2) / ((1 : ℝ) * Real.log 2) := by
+  have hnonneg := Roth.Θ_nonneg (B := (1 / 2 : ℝ))
+    (r := fun _ : Unit ↦ 1) (fun _ : Unit ↦ 2)
+  have hlog : Real.log (1 / 2) = -Real.log 2 := by
+    rw [one_div, Real.log_inv]
+  have hL : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  rw [hlog, one_mul, neg_div, div_self hL.ne']
+  linarith
+#print axioms coefficient_bound_necessary
+end ThetaUnique199Guard

@@ -1,0 +1,34 @@
+-- Preparation-only; root prepends actual persistent document imports.
+open MvPolynomial
+namespace RothThetaUnique199
+elab "indexLog198" : term => do
+  return ← Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Theta `Roth.index_unique_le_log_div)
+-- Whole substantive theorem, not merely supplied-pointwise bound packaging.
+theorem fullNoDecEq {σ : Type*} [Fintype σ] [Unique σ]
+    {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq : 1 < q default) {r : σ → ℕ} :
+    Roth.Θ B q r ≤ Real.log B / (r default * Real.log (q default)) := by
+  refine Roth.Θ_le_of_forall_index_le hB fun R hR h hh ↦ ?_
+  exact indexLog198 hq hR.1
+    (by simpa only [Polynomial.leadingCoeff, coeff_uniqueAlgEquiv] using hR.2.2 _)
+    (hh default)
+-- Unique supplies a canonical finite enumeration: remove explicit Fintype binder.
+theorem fullUniqueOnly {σ : Type*} [Unique σ]
+    {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq : 1 < q default) {r : σ → ℕ} :
+    Roth.Θ B q r ≤ Real.log B / (r default * Real.log (q default)) :=
+  fullNoDecEq hB hq
+-- Native mathlib-only closure tactics in the actual goal must fail, without project helper.
+example {σ : Type*} [Fintype σ] [Unique σ]
+    {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq : 1 < q default) {r : σ → ℕ} :
+    Roth.Θ B q r ≤ Real.log B / (r default * Real.log (q default)) := by
+  fail_if_success exact csSup_le (Roth.indexSet_nonempty hB q r)
+  fail_if_success
+    solve | simp only [Roth.Θ, Roth.indexSet, Roth.RSet]
+  exact fullNoDecEq hB hq
+-- Replace the target occurrence at each COMPLETE explicit caller proof, preserving all else.
+-- Root can replace the two Θ_unique_le occurrences in source declarations at759,822
+-- with RothThetaUnique199.fullUniqueOnly and compile full declaration bodies.
+#print axioms fullNoDecEq
+#print axioms fullUniqueOnly
+#check @fullUniqueOnly
+end RothThetaUnique199
