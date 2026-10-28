@@ -1,0 +1,23 @@
+namespace Bound197
+#check @Polynomial.leadingCoeff_dvd_leadingCoeff
+#check @Int.le_of_dvd
+#check @Int.natAbs_le_of_dvd_ne_zero
+#check @Polynomial.leadingCoeff_linear
+#check @Polynomial.rootMultiplicity
+ theorem no_pos {R : Polynomial ℤ} (hR : R ≠ 0) {h : ℤ} {q : ℕ}
+    (hcop : IsCoprime h (q : ℤ)) {B : ℝ} (hB : |(R.leadingCoeff : ℝ)| ≤ B) :
+    (q : ℝ) ^ Polynomial.rootMultiplicity ((h : ℚ) / q)
+      (R.map (Int.castRingHom ℚ)) ≤ B := by
+  by_cases hq : q = 0
+  · subst q
+    have h1 : (1 : ℝ) ≤ |(R.leadingCoeff : ℝ)| := by
+      exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hR)
+    exact (pow_le_one₀ (by norm_num) (by norm_num)).trans (h1.trans hB)
+  · exact Roth.pow_rootMultiplicity_le hR (Nat.pos_of_ne_zero hq) hcop hB
+#print axioms no_pos
+ theorem no_nonzero_counter : ¬ ((2 : ℝ) ^
+    Polynomial.rootMultiplicity (0 : ℚ) ((0 : Polynomial ℤ).map (Int.castRingHom ℚ)) ≤
+      |((0 : Polynomial ℤ).leadingCoeff : ℝ)|) := by
+  norm_num
+#print axioms no_nonzero_counter
+end Bound197

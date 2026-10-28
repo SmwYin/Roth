@@ -1,0 +1,630 @@
+[
+  {
+    "form": "current",
+    "method": "finder",
+    "request": {
+      "query": "Power of denominator to rational root multiplicity is bounded by absolute leading coefficient of nonzero integer polynomial"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"one_le_pow_mul_abs_eval_div\",\n      \"informal_name\": \"Lower Bound for Polynomial Evaluation at Rational Points\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial ℤ} {a b : ℤ},\\n  0 < b →\\n    Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f) ≠ 0 →\\n      1 ≤ ↑b ^ f.natDegree * |Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f)|\",\n      \"informal_description\": \"For any linearly ordered field $ K $ with strict ordered ring structure, given a non-zero polynomial $ f \\\\in \\\\mathbb{Z}[X] $, integers $ a, b $ with $ b > 0 $, and assuming $ f\\\\left(\\\\frac{a}{b}\\\\right) \\\\neq 0 $, it holds that $ 1 \\\\leq b^{\\\\deg(f)} \\\\cdot \\\\left| f\\\\left(\\\\frac{a}{b}\\\\right) \\\\right| $, where $ \\\\deg(f) $ denotes the natural degree of $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.DenomsClearable\"\n    },\n    {\n      \"formal_name\": \"Polynomial.cauchyBound\",\n      \"informal_name\": \"Cauchy bound for polynomial roots\",\n      \"kind\": \"definition\",\n      \"type\": \"{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal\",\n      \"informal_description\": \"The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\\\frac{\\\\sup_{0 \\\\leq i < \\\\deg p} \\\\|\\\\text{coeff}_i(p)\\\\|}{\\\\|\\\\text{leadingCoeff}(p)\\\\|} $, where $ \\\\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\\\|\\\\cdot\\\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.CauchyBound\"\n    },\n    {\n      \"formal_name\": \"Liouville.exists_pos_real_of_irrational_root\",\n      \"informal_name\": \"Liouville's Approximation Theorem for Irrational Roots of Integer Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : ℝ},\\n  Irrational α →\\n    ∀ {f : Polynomial ℤ},\\n      f ≠ 0 →\\n        Polynomial.eval α (Polynomial.map (algebraMap ℤ ℝ) f) = 0 →\\n          ∃ A, 0 < A ∧ ∀ (a : ℤ) (b : ℕ), 1 ≤ (↑b + 1) ^ f.natDegree * (|α - ↑a / (↑b + 1)| * A)\",\n      \"informal_description\": \"Let $\\\\alpha$ be an irrational real number and let $f \\\\in \\\\mathbb{Z}[X]$ be a non-zero polynomial such that $f(\\\\alpha) = 0$. Then there exists a positive real number $A$ such that for all integers $a$ and natural numbers $b$, the inequality $1 \\\\leq A \\\\cdot (b + 1)^{\\\\deg(f)} \\\\cdot |\\\\alpha - \\\\frac{a}{b + 1}|$ holds.\",\n      \"path\": \"Mathlib.NumberTheory.Transcendental.Liouville.Basic\"\n    },\n    {\n      \"formal_name\": \"denomsClearable_of_natDegree_le\",\n      \"informal_name\": \"Denominators Clearable Given Bounded Polynomial Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {K : Type u_2} [inst : Semiring R] [inst_1 : CommSemiring K] {i : R →+* K} {b : R} {bi : K} (N : ℕ)\\n  (a : R), bi * i b = 1 → ∀ (f : Polynomial R), f.natDegree ≤ N → DenomsClearable a b N f i\",\n      \"informal_description\": \"For a polynomial $ f $ with natural degree $ \\\\leq N $, there exist elements $ D \\\\in R $ and $ \\\\beta \\\\in K $ such that $ \\\\beta \\\\cdot i(b) = 1 $ and $ i(D) = i(b)^N \\\\cdot \\\\text{eval}_{i(a)\\\\beta}(f^i) $, where $ f^i $ denotes the polynomial obtained by applying the ring homomorphism $ i $ to each coefficient of $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.DenomsClearable\"\n    },\n    {\n      \"formal_name\": \"den_dvd_of_is_root\",\n      \"informal_name\": \"Denominator Divides Leading Coefficient for Roots in Fraction Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff\",\n      \"informal_description\": \"For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\\\text{aeval}(r, p) = 0 $), then the denominator $ \\\\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "one_le_pow_mul_abs_eval_div",
+            "informal_name": "Lower Bound for Polynomial Evaluation at Rational Points",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial ℤ} {a b : ℤ},\n  0 < b →\n    Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f) ≠ 0 →\n      1 ≤ ↑b ^ f.natDegree * |Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f)|",
+            "informal_description": "For any linearly ordered field $ K $ with strict ordered ring structure, given a non-zero polynomial $ f \\in \\mathbb{Z}[X] $, integers $ a, b $ with $ b > 0 $, and assuming $ f\\left(\\frac{a}{b}\\right) \\neq 0 $, it holds that $ 1 \\leq b^{\\deg(f)} \\cdot \\left| f\\left(\\frac{a}{b}\\right) \\right| $, where $ \\deg(f) $ denotes the natural degree of $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.DenomsClearable"
+          },
+          {
+            "formal_name": "Polynomial.cauchyBound",
+            "informal_name": "Cauchy bound for polynomial roots",
+            "kind": "definition",
+            "type": "{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal",
+            "informal_description": "The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\frac{\\sup_{0 \\leq i < \\deg p} \\|\\text{coeff}_i(p)\\|}{\\|\\text{leadingCoeff}(p)\\|} $, where $ \\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\|\\cdot\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.",
+            "path": "Mathlib.Analysis.Polynomial.CauchyBound"
+          },
+          {
+            "formal_name": "Liouville.exists_pos_real_of_irrational_root",
+            "informal_name": "Liouville's Approximation Theorem for Irrational Roots of Integer Polynomials",
+            "kind": "theorem",
+            "type": "∀ {α : ℝ},\n  Irrational α →\n    ∀ {f : Polynomial ℤ},\n      f ≠ 0 →\n        Polynomial.eval α (Polynomial.map (algebraMap ℤ ℝ) f) = 0 →\n          ∃ A, 0 < A ∧ ∀ (a : ℤ) (b : ℕ), 1 ≤ (↑b + 1) ^ f.natDegree * (|α - ↑a / (↑b + 1)| * A)",
+            "informal_description": "Let $\\alpha$ be an irrational real number and let $f \\in \\mathbb{Z}[X]$ be a non-zero polynomial such that $f(\\alpha) = 0$. Then there exists a positive real number $A$ such that for all integers $a$ and natural numbers $b$, the inequality $1 \\leq A \\cdot (b + 1)^{\\deg(f)} \\cdot |\\alpha - \\frac{a}{b + 1}|$ holds.",
+            "path": "Mathlib.NumberTheory.Transcendental.Liouville.Basic"
+          },
+          {
+            "formal_name": "denomsClearable_of_natDegree_le",
+            "informal_name": "Denominators Clearable Given Bounded Polynomial Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {K : Type u_2} [inst : Semiring R] [inst_1 : CommSemiring K] {i : R →+* K} {b : R} {bi : K} (N : ℕ)\n  (a : R), bi * i b = 1 → ∀ (f : Polynomial R), f.natDegree ≤ N → DenomsClearable a b N f i",
+            "informal_description": "For a polynomial $ f $ with natural degree $ \\leq N $, there exist elements $ D \\in R $ and $ \\beta \\in K $ such that $ \\beta \\cdot i(b) = 1 $ and $ i(D) = i(b)^N \\cdot \\text{eval}_{i(a)\\beta}(f^i) $, where $ f^i $ denotes the polynomial obtained by applying the ring homomorphism $ i $ to each coefficient of $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.DenomsClearable"
+          },
+          {
+            "formal_name": "den_dvd_of_is_root",
+            "informal_name": "Denominator Divides Leading Coefficient for Roots in Fraction Ring",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff",
+            "informal_description": "For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\text{aeval}(r, p) = 0 $), then the denominator $ \\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "loogle",
+    "request": {
+      "query": "Polynomial.rootMultiplicity, _ ≤ _"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.rootMultiplicity_add\",\n      \"type\": \" {R : Type u} [Ring R] {p q : Polynomial R} (a : R) (hzero : p + q ≠ 0) : min (Polynomial.rootMultiplicity a p) (Polynomial.rootMultiplicity a q) ≤ Polynomial.rootMultiplicity a (p + q)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_le_rootMultiplicity_of_dvd\",\n      \"type\": \" {R : Type u} [CommRing R] {p q : Polynomial R} (hq : q ≠ 0) (hpq : p ∣ q) (x : R) : Polynomial.rootMultiplicity x p ≤ Polynomial.rootMultiplicity x q\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.le_rootMultiplicity_mul\",\n      \"type\": \" {R : Type u} [CommRing R] {p q : Polynomial R} (x : R) (hpq : p * q ≠ 0) : Polynomial.rootMultiplicity x p + Polynomial.rootMultiplicity x q ≤ Polynomial.rootMultiplicity x (p * q)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.le_rootMultiplicity_iff\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} {n : ℕ} : n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_le_iff\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) (n : ℕ) : Polynomial.rootMultiplicity a p ≤ n ↔ ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.exists_multiset_roots\",\n      \"type\": \" {R : Type u} [CommRing R] [IsDomain R] [DecidableEq R] {p : Polynomial R} : p ≠ 0 → ∃ s, ↑s.card ≤ p.degree ∧ ∀ (a : R), Multiset.count a s = Polynomial.rootMultiplicity a p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.RingDivision\"\n    },\n    {\n      \"name\": \"Polynomial.le_rootMultiplicity_map\",\n      \"type\": \" {A : Type u_1} {B : Type u_2} [CommRing A] [CommRing B] {p : Polynomial A} {f : A →+* B} (hmap : Polynomial.map f p ≠ 0) (a : A) : Polynomial.rootMultiplicity a p ≤ Polynomial.rootMultiplicity (f a) (Polynomial.map f p)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Roots\"\n    },\n    {\n      \"name\": \"Polynomial.count_map_roots_of_injective\",\n      \"type\": \" {A : Type u_1} {B : Type u_2} [CommRing A] [CommRing B] [IsDomain A] [DecidableEq B] (p : Polynomial A) {f : A →+* B} (hf : Function.Injective ⇑f) (b : B) : Multiset.count b (Multiset.map (⇑f) p.roots) ≤ Polynomial.rootMultiplicity b (Polynomial.map f p)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Roots\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.rootMultiplicity_add",
+            "type": " {R : Type u} [Ring R] {p q : Polynomial R} (a : R) (hzero : p + q ≠ 0) : min (Polynomial.rootMultiplicity a p) (Polynomial.rootMultiplicity a q) ≤ Polynomial.rootMultiplicity a (p + q)",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_le_rootMultiplicity_of_dvd",
+            "type": " {R : Type u} [CommRing R] {p q : Polynomial R} (hq : q ≠ 0) (hpq : p ∣ q) (x : R) : Polynomial.rootMultiplicity x p ≤ Polynomial.rootMultiplicity x q",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.le_rootMultiplicity_mul",
+            "type": " {R : Type u} [CommRing R] {p q : Polynomial R} (x : R) (hpq : p * q ≠ 0) : Polynomial.rootMultiplicity x p + Polynomial.rootMultiplicity x q ≤ Polynomial.rootMultiplicity x (p * q)",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.le_rootMultiplicity_iff",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} {n : ℕ} : n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_le_iff",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) (n : ℕ) : Polynomial.rootMultiplicity a p ≤ n ↔ ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.exists_multiset_roots",
+            "type": " {R : Type u} [CommRing R] [IsDomain R] [DecidableEq R] {p : Polynomial R} : p ≠ 0 → ∃ s, ↑s.card ≤ p.degree ∧ ∀ (a : R), Multiset.count a s = Polynomial.rootMultiplicity a p",
+            "module": "Mathlib.Algebra.Polynomial.RingDivision"
+          },
+          {
+            "name": "Polynomial.le_rootMultiplicity_map",
+            "type": " {A : Type u_1} {B : Type u_2} [CommRing A] [CommRing B] {p : Polynomial A} {f : A →+* B} (hmap : Polynomial.map f p ≠ 0) (a : A) : Polynomial.rootMultiplicity a p ≤ Polynomial.rootMultiplicity (f a) (Polynomial.map f p)",
+            "module": "Mathlib.Algebra.Polynomial.Roots"
+          },
+          {
+            "name": "Polynomial.count_map_roots_of_injective",
+            "type": " {A : Type u_1} {B : Type u_2} [CommRing A] [CommRing B] [IsDomain A] [DecidableEq B] (p : Polynomial A) {f : A →+* B} (hf : Function.Injective ⇑f) (b : B) : Multiset.count b (Multiset.map (⇑f) p.roots) ≤ Polynomial.rootMultiplicity b (Polynomial.map f p)",
+            "module": "Mathlib.Algebra.Polynomial.Roots"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "leansearch",
+    "request": {
+      "query": "integer polynomial rational root h/q multiplicity t denominator q^t at most leading coefficient absolute value"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"den_dvd_of_is_root\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.RationalRoot\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff\"\n    },\n    {\n      \"name\": \"num_dvd_of_is_root\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.RationalRoot\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0\"\n    },\n    {\n      \"name\": \"exists_integer_of_is_root_of_monic\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.RationalRoot\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [IsDomain A] [UniqueFactorizationMonoid A] [inst_3 : Field K]\\n  [inst_4 : Algebra A K] [IsFractionRing A K] {p : Polynomial A},\\n  p.Monic → ∀ {r : K}, (Polynomial.aeval r) p = 0 → ∃ r', r = (algebraMap A K) r' ∧ r' ∣ p.coeff 0\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_nat_find_of_nonzero\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] {p : Polynomial R} (p0 : p ≠ 0) {a : R},\\n  Polynomial.rootMultiplicity a p = Nat.find ⋯\"\n    },\n    {\n      \"name\": \"Polynomial.pow_rootMultiplicity_dvd\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "den_dvd_of_is_root",
+            "module_name": "Mathlib.RingTheory.Polynomial.RationalRoot",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff"
+          },
+          {
+            "name": "num_dvd_of_is_root",
+            "module_name": "Mathlib.RingTheory.Polynomial.RationalRoot",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0"
+          },
+          {
+            "name": "exists_integer_of_is_root_of_monic",
+            "module_name": "Mathlib.RingTheory.Polynomial.RationalRoot",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [IsDomain A] [UniqueFactorizationMonoid A] [inst_3 : Field K]\n  [inst_4 : Algebra A K] [IsFractionRing A K] {p : Polynomial A},\n  p.Monic → ∀ {r : K}, (Polynomial.aeval r) p = 0 → ∃ r', r = (algebraMap A K) r' ∧ r' ∣ p.coeff 0"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_eq_nat_find_of_nonzero",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] {p : Polynomial R} (p0 : p ≠ 0) {a : R},\n  Polynomial.rootMultiplicity a p = Nat.find ⋯"
+          },
+          {
+            "name": "Polynomial.pow_rootMultiplicity_dvd",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "request": {
+      "query": "rootMultiplicity"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.rootMultiplicity\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_add\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_pos\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_mul'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_pos'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.Chebyshev.rootMultiplicity_T_real\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean\"\n    },\n    {\n      \"name\": \"Polynomial.Chebyshev.rootMultiplicity_U_real\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.rootMultiplicity",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_C",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_add",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_mul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_pos",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_mul'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_pos'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.Chebyshev.rootMultiplicity_T_real",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean"
+          },
+          {
+            "name": "Polynomial.Chebyshev.rootMultiplicity_U_real",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "finder",
+    "request": {
+      "query": "Rational root theorem with multiplicity denominator power divides leading coefficient"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"den_dvd_of_is_root\",\n      \"informal_name\": \"Denominator Divides Leading Coefficient for Roots in Fraction Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff\",\n      \"informal_description\": \"For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\\\text{aeval}(r, p) = 0 $), then the denominator $ \\\\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    },\n    {\n      \"formal_name\": \"num_dvd_of_is_root\",\n      \"informal_name\": \"Rational Root Theorem: Numerator Divides Constant Term\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0\",\n      \"informal_description\": \"If $ r $ is a root of the polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ r $ divides the constant term $ p(0) $ of $ p $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    },\n    {\n      \"formal_name\": \"Polynomial.pow_rootMultiplicity_dvd\",\n      \"informal_name\": \"Divisibility by $(X - a)^{k}$ for Root Multiplicity $k$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\",\n      \"informal_description\": \"For any polynomial $ p \\\\in R[X] $ and any root $ a \\\\in R $, the polynomial $ (X - a)^{k} $, where $ k $ is the multiplicity of $ a $ in $ p $, divides $ p $. This asserts that the factor corresponding to a root raised to its multiplicity is a divisor of the polynomial.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"Polynomial.dvd_pow_natDegree_of_aeval_eq_zero\",\n      \"informal_name\": \"Divisibility Criterion: $ x \\\\mid y^{\\\\deg p} $ for Monic Polynomials with Root $ z $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {A : Type u_1} [inst : CommRing R] [inst_1 : CommRing A] [IsDomain R] [inst_3 : Algebra R A]\\n  [Nontrivial A] [Module.IsTorsionFree R A] {p : Polynomial R},\\n  p.Monic →\\n    ∀ (x y : R) (z : A), (Polynomial.aeval z) p = 0 → z * (algebraMap R A) x = (algebraMap R A) y → x ∣ y ^ p.natDegree\",\n      \"informal_description\": \"Let $ R $ be an integral domain and $ A $ a nontrivial torsion-free $ R $-algebra. For a monic polynomial $ p \\\\in R[X] $, if $ z \\\\in A $ satisfies $ p(z) = 0 $ and $ z \\\\cdot x = y $ in $ A $ for some $ x, y \\\\in R $, then $ x $ divides $ y^{\\\\deg p} $ in $ R $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Eisenstein.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_rootMultiplicity_iff\",\n      \"informal_name\": \"Root Multiplicity Characterization via Divisibility\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\\n  p ≠ 0 → ∀ {a : R} {n : ℕ}, n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p\",\n      \"informal_description\": \"For a non-zero polynomial $p$ over a commutative ring $R$, a root $a$ of $p$, and a natural number $n$, the inequality $n \\\\leq$ the multiplicity of $a$ as a root of $p$ holds if and only if $(X - a)^n$ divides $p$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "den_dvd_of_is_root",
+            "informal_name": "Denominator Divides Leading Coefficient for Roots in Fraction Ring",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff",
+            "informal_description": "For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\text{aeval}(r, p) = 0 $), then the denominator $ \\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          },
+          {
+            "formal_name": "num_dvd_of_is_root",
+            "informal_name": "Rational Root Theorem: Numerator Divides Constant Term",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0",
+            "informal_description": "If $ r $ is a root of the polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ r $ divides the constant term $ p(0) $ of $ p $.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          },
+          {
+            "formal_name": "Polynomial.pow_rootMultiplicity_dvd",
+            "informal_name": "Divisibility by $(X - a)^{k}$ for Root Multiplicity $k$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p",
+            "informal_description": "For any polynomial $ p \\in R[X] $ and any root $ a \\in R $, the polynomial $ (X - a)^{k} $, where $ k $ is the multiplicity of $ a $ in $ p $, divides $ p $. This asserts that the factor corresponding to a root raised to its multiplicity is a divisor of the polynomial.",
+            "path": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "formal_name": "Polynomial.dvd_pow_natDegree_of_aeval_eq_zero",
+            "informal_name": "Divisibility Criterion: $ x \\mid y^{\\deg p} $ for Monic Polynomials with Root $ z $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {A : Type u_1} [inst : CommRing R] [inst_1 : CommRing A] [IsDomain R] [inst_3 : Algebra R A]\n  [Nontrivial A] [Module.IsTorsionFree R A] {p : Polynomial R},\n  p.Monic →\n    ∀ (x y : R) (z : A), (Polynomial.aeval z) p = 0 → z * (algebraMap R A) x = (algebraMap R A) y → x ∣ y ^ p.natDegree",
+            "informal_description": "Let $ R $ be an integral domain and $ A $ a nontrivial torsion-free $ R $-algebra. For a monic polynomial $ p \\in R[X] $, if $ z \\in A $ satisfies $ p(z) = 0 $ and $ z \\cdot x = y $ in $ A $ for some $ x, y \\in R $, then $ x $ divides $ y^{\\deg p} $ in $ R $.",
+            "path": "Mathlib.RingTheory.Polynomial.Eisenstein.Basic"
+          },
+          {
+            "formal_name": "Polynomial.le_rootMultiplicity_iff",
+            "informal_name": "Root Multiplicity Characterization via Divisibility",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\n  p ≠ 0 → ∀ {a : R} {n : ℕ}, n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p",
+            "informal_description": "For a non-zero polynomial $p$ over a commutative ring $R$, a root $a$ of $p$, and a natural number $n$, the inequality $n \\leq$ the multiplicity of $a$ as a root of $p$ holds if and only if $(X - a)^n$ divides $p$.",
+            "path": "Mathlib.Algebra.Polynomial.Div"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "loogle",
+    "request": {
+      "query": "Polynomial.rootMultiplicity, _ ∣ _"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.rootMultiplicity_le_rootMultiplicity_of_dvd\",\n      \"type\": \" {R : Type u} [CommRing R] {p q : Polynomial R} (hq : q ≠ 0) (hpq : p ∣ q) (x : R) : Polynomial.rootMultiplicity x p ≤ Polynomial.rootMultiplicity x q\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.pow_rootMultiplicity_dvd\",\n      \"type\": \" {R : Type u} [Ring R] (p : Polynomial R) (a : R) : (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.le_rootMultiplicity_iff\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} {n : ℕ} : n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.pow_rootMultiplicity_not_dvd\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) : ¬(Polynomial.X - Polynomial.C a) ^ (Polynomial.rootMultiplicity a p + 1) ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_le_iff\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) (n : ℕ) : Polynomial.rootMultiplicity a p ≤ n ↔ ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd\",\n      \"type\": \" {R : Type u} [Ring R] (p : Polynomial R) (hp : p ≠ 0) (a : R) : ∃ q, p = (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p * q ∧ ¬Polynomial.X - Polynomial.C a ∣ q\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_natFind_of_ne_zero\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} [DecidablePred fun n => ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p] : Polynomial.rootMultiplicity a p = Nat.find ⋯\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.rootMultiplicity_le_rootMultiplicity_of_dvd",
+            "type": " {R : Type u} [CommRing R] {p q : Polynomial R} (hq : q ≠ 0) (hpq : p ∣ q) (x : R) : Polynomial.rootMultiplicity x p ≤ Polynomial.rootMultiplicity x q",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.pow_rootMultiplicity_dvd",
+            "type": " {R : Type u} [Ring R] (p : Polynomial R) (a : R) : (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.le_rootMultiplicity_iff",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} {n : ℕ} : n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.pow_rootMultiplicity_not_dvd",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) : ¬(Polynomial.X - Polynomial.C a) ^ (Polynomial.rootMultiplicity a p + 1) ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_le_iff",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) (n : ℕ) : Polynomial.rootMultiplicity a p ≤ n ↔ ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd",
+            "type": " {R : Type u} [Ring R] (p : Polynomial R) (hp : p ≠ 0) (a : R) : ∃ q, p = (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p * q ∧ ¬Polynomial.X - Polynomial.C a ∣ q",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_eq_natFind_of_ne_zero",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} [DecidablePred fun n => ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p] : Polynomial.rootMultiplicity a p = Nat.find ⋯",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "leansearch",
+    "request": {
+      "query": "Reduced rational root denominator power multiplicity divides leading coefficient polynomial"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"den_dvd_of_is_root\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.RationalRoot\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff\"\n    },\n    {\n      \"name\": \"Polynomial.pow_rootMultiplicity_dvd\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\"\n    },\n    {\n      \"name\": \"num_dvd_of_is_root\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.RationalRoot\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0\"\n    },\n    {\n      \"name\": \"Polynomial.le_rootMultiplicity_iff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\\n  p ≠ 0 → ∀ {a : R} {n : ℕ}, n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "den_dvd_of_is_root",
+            "module_name": "Mathlib.RingTheory.Polynomial.RationalRoot",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff"
+          },
+          {
+            "name": "Polynomial.pow_rootMultiplicity_dvd",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p"
+          },
+          {
+            "name": "num_dvd_of_is_root",
+            "module_name": "Mathlib.RingTheory.Polynomial.RationalRoot",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0"
+          },
+          {
+            "name": "Polynomial.le_rootMultiplicity_iff",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\n  p ≠ 0 → ∀ {a : R} {n : ℕ}, n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "definition",
+            "type": "{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "local",
+    "request": {
+      "query": "den_dvd_of_is_root"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"den_dvd_of_is_root\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/RationalRoot.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "den_dvd_of_is_root",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/RationalRoot.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "finder",
+    "request": {
+      "query": "GCD domain fraction field relatively prime numerator denominator root multiplicity power denominator divides leading coefficient"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"den_dvd_of_is_root\",\n      \"informal_name\": \"Denominator Divides Leading Coefficient for Roots in Fraction Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff\",\n      \"informal_description\": \"For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\\\text{aeval}(r, p) = 0 $), then the denominator $ \\\\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    },\n    {\n      \"formal_name\": \"RatFunc.num_div_dvd'\",\n      \"informal_name\": \"Divisibility by Normalized Coprime Polynomial Factor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u} [inst : Field K] (p : Polynomial K) {q : Polynomial K},\\n  q ≠ 0 → Polynomial.C (q / gcd p q).leadingCoeff⁻¹ * (p / gcd p q) ∣ p\",\n      \"informal_description\": \"For any polynomial $ p $ and non-zero polynomial $ q $ over a field $ K $, the product of the constant polynomial with coefficient equal to the inverse of the leading coefficient of $ q / \\\\gcd(p, q) $ and the polynomial $ p / \\\\gcd(p, q) $ divides $ p $. This constructs a normalized coprime divisor of $ p $ by adjusting the leading coefficient of the coprime part of $ q $.\",\n      \"path\": \"Mathlib.FieldTheory.RatFunc.Basic\"\n    },\n    {\n      \"formal_name\": \"IsFractionRing.num_den_reduced\",\n      \"informal_name\": \"Numerator and Denominator are Relatively Prime in Fraction Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (A : Type u_1) [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A] {K : Type u_2}\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] (x : K),\\n  IsRelPrime (IsFractionRing.num A x) ↑(IsFractionRing.den A x)\",\n      \"informal_description\": \"For every element $ x $ in the fraction ring $ K $ of a commutative semiring $ A $, the numerator $ \\\\text{num}(x) $ and denominator $ \\\\text{den}(x) $ of its reduced fraction representation satisfy the property that they are relatively prime, meaning every common divisor of $ \\\\text{num}(x) $ and $ \\\\text{den}(x) $ is a unit in $ A $.\",\n      \"path\": \"Mathlib.RingTheory.Localization.NumDen\"\n    },\n    {\n      \"formal_name\": \"num_dvd_of_is_root\",\n      \"informal_name\": \"Rational Root Theorem: Numerator Divides Constant Term\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0\",\n      \"informal_description\": \"If $ r $ is a root of the polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ r $ divides the constant term $ p(0) $ of $ p $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    },\n    {\n      \"formal_name\": \"num_isRoot_scaleRoots_of_aeval_eq_zero\",\n      \"informal_name\": \"Numerator is Root of Scaled Polynomial when Element is Root\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : Field K] [inst_2 : Algebra A K]\\n  [inst_3 : IsFractionRing A K] [inst_4 : IsDomain A] [inst_5 : UniqueFactorizationMonoid A] {p : Polynomial A} {x : K},\\n  (Polynomial.aeval x) p = 0 → (p.scaleRoots ↑(IsFractionRing.den A x)).IsRoot (IsFractionRing.num A x)\",\n      \"informal_description\": \"If $ x $ is a root of a polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ x $ is a root of the polynomial obtained by scaling $ p $ by the denominator of $ x $. Formally, if $ \\\\text{aeval}(x, p) = 0 $, then $ \\\\text{num}(x) $ is a root of $ \\\\text{scaleRoots}(p, \\\\text{den}(x)) $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "den_dvd_of_is_root",
+            "informal_name": "Denominator Divides Leading Coefficient for Roots in Fraction Ring",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff",
+            "informal_description": "For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\text{aeval}(r, p) = 0 $), then the denominator $ \\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          },
+          {
+            "formal_name": "RatFunc.num_div_dvd'",
+            "informal_name": "Divisibility by Normalized Coprime Polynomial Factor",
+            "kind": "theorem",
+            "type": "∀ {K : Type u} [inst : Field K] (p : Polynomial K) {q : Polynomial K},\n  q ≠ 0 → Polynomial.C (q / gcd p q).leadingCoeff⁻¹ * (p / gcd p q) ∣ p",
+            "informal_description": "For any polynomial $ p $ and non-zero polynomial $ q $ over a field $ K $, the product of the constant polynomial with coefficient equal to the inverse of the leading coefficient of $ q / \\gcd(p, q) $ and the polynomial $ p / \\gcd(p, q) $ divides $ p $. This constructs a normalized coprime divisor of $ p $ by adjusting the leading coefficient of the coprime part of $ q $.",
+            "path": "Mathlib.FieldTheory.RatFunc.Basic"
+          },
+          {
+            "formal_name": "IsFractionRing.num_den_reduced",
+            "informal_name": "Numerator and Denominator are Relatively Prime in Fraction Ring",
+            "kind": "theorem",
+            "type": "∀ (A : Type u_1) [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A] {K : Type u_2}\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] (x : K),\n  IsRelPrime (IsFractionRing.num A x) ↑(IsFractionRing.den A x)",
+            "informal_description": "For every element $ x $ in the fraction ring $ K $ of a commutative semiring $ A $, the numerator $ \\text{num}(x) $ and denominator $ \\text{den}(x) $ of its reduced fraction representation satisfy the property that they are relatively prime, meaning every common divisor of $ \\text{num}(x) $ and $ \\text{den}(x) $ is a unit in $ A $.",
+            "path": "Mathlib.RingTheory.Localization.NumDen"
+          },
+          {
+            "formal_name": "num_dvd_of_is_root",
+            "informal_name": "Rational Root Theorem: Numerator Divides Constant Term",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0",
+            "informal_description": "If $ r $ is a root of the polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ r $ divides the constant term $ p(0) $ of $ p $.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          },
+          {
+            "formal_name": "num_isRoot_scaleRoots_of_aeval_eq_zero",
+            "informal_name": "Numerator is Root of Scaled Polynomial when Element is Root",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : Field K] [inst_2 : Algebra A K]\n  [inst_3 : IsFractionRing A K] [inst_4 : IsDomain A] [inst_5 : UniqueFactorizationMonoid A] {p : Polynomial A} {x : K},\n  (Polynomial.aeval x) p = 0 → (p.scaleRoots ↑(IsFractionRing.den A x)).IsRoot (IsFractionRing.num A x)",
+            "informal_description": "If $ x $ is a root of a polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ x $ is a root of the polynomial obtained by scaling $ p $ by the denominator of $ x $. Formally, if $ \\text{aeval}(x, p) = 0 $, then $ \\text{num}(x) $ is a root of $ \\text{scaleRoots}(p, \\text{den}(x)) $.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "loogle",
+    "request": {
+      "query": "Polynomial.leadingCoeff, _ ∣ _"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.leadingCoeff_dvd_leadingCoeff\",\n      \"type\": \" {R : Type u} [Semiring R] [NoZeroDivisors R] {a p : Polynomial R} (hap : a ∣ p) : a.leadingCoeff ∣ p.leadingCoeff\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Degree.Operations\"\n    },\n    {\n      \"name\": \"Polynomial.dvd_mul_leadingCoeff_inv\",\n      \"type\": \" {K : Type u_1} [DivisionRing K] {p q : Polynomial K} (hp0 : p ≠ 0) : q ∣ p * Polynomial.C p.leadingCoeff⁻¹ ↔ q ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Degree.Lemmas\"\n    },\n    {\n      \"name\": \"Polynomial.eq_mul_leadingCoeff_of_monic_of_dvd_of_natDegree_le\",\n      \"type\": \" {R : Type u} [Semiring R] {p q : Polynomial R} (hp : p.Monic) (hdvd : p ∣ q) (hdeg : q.natDegree ≤ p.natDegree) : q = p * Polynomial.C q.leadingCoeff\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.eq_of_dvd_of_natDegree_le_of_leadingCoeff\",\n      \"type\": \" {R : Type u} [CommRing R] [IsDomain R] {p q : Polynomial R} (hpq : p ∣ q) (h₁ : q.natDegree ≤ p.natDegree) (h₂ : p.leadingCoeff = q.leadingCoeff) : p = q\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.associated_of_dvd_of_natDegree_le_of_leadingCoeff\",\n      \"type\": \" {R : Type u} [CommRing R] [IsDomain R] {p q : Polynomial R} (hpq : p ∣ q) (h₁ : q.natDegree ≤ p.natDegree) (h₂ : q.leadingCoeff ∣ p.leadingCoeff) : Associated p q\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le\",\n      \"type\": \" {R : Type u_1} [CommSemiring R] {p q : Polynomial R} (hp : p.Monic) (hdvd : p ∣ q) (hdeg : q.natDegree ≤ p.natDegree) : q = Polynomial.C q.leadingCoeff * p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.Monic.isUnit_leadingCoeff_of_dvd\",\n      \"type\": \" {R : Type u} [CommRing R] [IsDomain R] {a p : Polynomial R} (hp : p.Monic) (hap : a ∣ p) : IsUnit a.leadingCoeff\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Roots\"\n    },\n    {\n      \"name\": \"den_dvd_of_is_root\",\n      \"type\": \" {A : Type u_1} {K : Type u_2} [CommRing A] [IsDomain A] [UniqueFactorizationMonoid A] [Field K] [Algebra A K] [IsFractionRing A K] {p : Polynomial A} {r : K} (hr : (Polynomial.aeval r) p = 0) : ↑(IsFractionRing.den A r) ∣ p.leadingCoeff\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.leadingCoeff_dvd_leadingCoeff",
+            "type": " {R : Type u} [Semiring R] [NoZeroDivisors R] {a p : Polynomial R} (hap : a ∣ p) : a.leadingCoeff ∣ p.leadingCoeff",
+            "module": "Mathlib.Algebra.Polynomial.Degree.Operations"
+          },
+          {
+            "name": "Polynomial.dvd_mul_leadingCoeff_inv",
+            "type": " {K : Type u_1} [DivisionRing K] {p q : Polynomial K} (hp0 : p ≠ 0) : q ∣ p * Polynomial.C p.leadingCoeff⁻¹ ↔ q ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
+          },
+          {
+            "name": "Polynomial.eq_mul_leadingCoeff_of_monic_of_dvd_of_natDegree_le",
+            "type": " {R : Type u} [Semiring R] {p q : Polynomial R} (hp : p.Monic) (hdvd : p ∣ q) (hdeg : q.natDegree ≤ p.natDegree) : q = p * Polynomial.C q.leadingCoeff",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.eq_of_dvd_of_natDegree_le_of_leadingCoeff",
+            "type": " {R : Type u} [CommRing R] [IsDomain R] {p q : Polynomial R} (hpq : p ∣ q) (h₁ : q.natDegree ≤ p.natDegree) (h₂ : p.leadingCoeff = q.leadingCoeff) : p = q",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.associated_of_dvd_of_natDegree_le_of_leadingCoeff",
+            "type": " {R : Type u} [CommRing R] [IsDomain R] {p q : Polynomial R} (hpq : p ∣ q) (h₁ : q.natDegree ≤ p.natDegree) (h₂ : q.leadingCoeff ∣ p.leadingCoeff) : Associated p q",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le",
+            "type": " {R : Type u_1} [CommSemiring R] {p q : Polynomial R} (hp : p.Monic) (hdvd : p ∣ q) (hdeg : q.natDegree ≤ p.natDegree) : q = Polynomial.C q.leadingCoeff * p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.Monic.isUnit_leadingCoeff_of_dvd",
+            "type": " {R : Type u} [CommRing R] [IsDomain R] {a p : Polynomial R} (hp : p.Monic) (hap : a ∣ p) : IsUnit a.leadingCoeff",
+            "module": "Mathlib.Algebra.Polynomial.Roots"
+          },
+          {
+            "name": "den_dvd_of_is_root",
+            "type": " {A : Type u_1} {K : Type u_2} [CommRing A] [IsDomain A] [UniqueFactorizationMonoid A] [Field K] [Algebra A K] [IsFractionRing A K] {p : Polynomial A} {r : K} (hr : (Polynomial.aeval r) p = 0) : ↑(IsFractionRing.den A r) ∣ p.leadingCoeff",
+            "module": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "leansearch",
+    "request": {
+      "query": "Primitive linear polynomial power dividing polynomial implies leading coefficient divisibility GCD domain"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.leadingCoeff_dvd_leadingCoeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Operations\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] [NoZeroDivisors R] {a p : Polynomial R}, a ∣ p → a.leadingCoeff ∣ p.leadingCoeff\"\n    },\n    {\n      \"name\": \"Polynomial.dvd_iff_content_dvd_content_and_primPart_dvd_primPart\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Content\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [inst_1 : NormalizedGCDMonoid R] {p q : Polynomial R},\\n  q ≠ 0 → (p ∣ q ↔ p.content ∣ q.content ∧ p.primPart ∣ q.primPart)\"\n    },\n    {\n      \"name\": \"Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.GaussLemma\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q\"\n    },\n    {\n      \"name\": \"Polynomial.isPrimitive_of_dvd\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Content\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {p q : Polynomial R}, p.IsPrimitive → q ∣ p → q.IsPrimitive\"\n    },\n    {\n      \"name\": \"Polynomial.isPrimitive_iff_isUnit_of_C_dvd\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Content\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial R}, p.IsPrimitive ↔ ∀ (r : R), Polynomial.C r ∣ p → IsUnit r\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.leadingCoeff_dvd_leadingCoeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Degree.Operations",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] [NoZeroDivisors R] {a p : Polynomial R}, a ∣ p → a.leadingCoeff ∣ p.leadingCoeff"
+          },
+          {
+            "name": "Polynomial.dvd_iff_content_dvd_content_and_primPart_dvd_primPart",
+            "module_name": "Mathlib.RingTheory.Polynomial.Content",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : NormalizedGCDMonoid R] {p q : Polynomial R},\n  q ≠ 0 → (p ∣ q ↔ p.content ∣ q.content ∧ p.primPart ∣ q.primPart)"
+          },
+          {
+            "name": "Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map",
+            "module_name": "Mathlib.RingTheory.Polynomial.GaussLemma",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q"
+          },
+          {
+            "name": "Polynomial.isPrimitive_of_dvd",
+            "module_name": "Mathlib.RingTheory.Polynomial.Content",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] {p q : Polynomial R}, p.IsPrimitive → q ∣ p → q.IsPrimitive"
+          },
+          {
+            "name": "Polynomial.isPrimitive_iff_isUnit_of_C_dvd",
+            "module_name": "Mathlib.RingTheory.Polynomial.Content",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial R}, p.IsPrimitive ↔ ∀ (r : R), Polynomial.C r ∣ p → IsUnit r"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local",
+    "request": {
+      "query": "leadingCoeff_dvd"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.leadingCoeff_dvd_leadingCoeff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/Operations.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.leadingCoeff_dvd_leadingCoeff",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/Operations.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

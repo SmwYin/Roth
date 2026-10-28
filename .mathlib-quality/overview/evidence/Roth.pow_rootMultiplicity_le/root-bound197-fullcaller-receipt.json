@@ -1,0 +1,279 @@
+{
+  "request": {
+    "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+    "timeout_s": 45
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"partial\": false,\n  \"still_elaborating_lines\": null,\n  \"success\": true,\n  \"timed_out\": false,\n  \"items\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Roth.pow_rootMultiplicity_le : ∀ {R : Polynomial ℤ},\\n  R ≠ 0 →\\n    ∀ {h : ℤ} {q : ℕ},\\n      0 < q →\\n        IsCoprime h ↑q →\\n          ∀ {B : ℝ},\\n            |↑R.leadingCoeff| ≤ B →\\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem Roth.pow_rootMultiplicity_le : ∀ {R : Polynomial ℤ},\\n  R ≠ 0 →\\n    ∀ {h : ℤ} {q : ℕ},\\n      0 < q →\\n        IsCoprime h ↑q →\\n          ∀ {B : ℝ},\\n            |↑R.leadingCoeff| ≤ B →\\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B :=\\nfun {R} hR {h} {q} hq hcop {B} hB ↦\\n  Exists.casesOn (Roth.exists_eq_pow_mul_of_rootMultiplicity hq hcop) fun Q hQ ↦\\n    let t := Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R);\\n    Eq.mpr\\n      (id\\n        (congrArg (fun _a ↦ ↑q ^ _a ≤ B)\\n          (have this := rfl;\\n          this)))\\n      (have hlc :=\\n        Eq.mpr\\n          (id\\n            (congrArg (fun _a ↦ _a.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\\n              (Eq.mp\\n                (congrArg (fun _a ↦ R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\\n                  (have this := rfl;\\n                  this))\\n                hQ)))\\n          (Eq.mpr\\n            (id\\n              (congrArg (fun _a ↦ _a = ↑q ^ t * Q.leadingCoeff)\\n                (Polynomial.leadingCoeff_mul ((Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ t) Q)))\\n            (Eq.mpr\\n              (id\\n                (congrArg (fun _a ↦ _a * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\\n                  (Polynomial.leadingCoeff_pow (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) t)))\\n              (Eq.mpr\\n                (id\\n                  (congrArg (fun _a ↦ _a.leadingCoeff ^ t * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\\n                    (sub_eq_add_neg (Polynomial.C ↑q * Polynomial.X) (Polynomial.C h))))\\n                (Eq.mpr\\n                  (id\\n                    (congrArg\\n                      (fun _a ↦\\n                        (Polynomial.C ↑q * Polynomial.X + _a).leadingCoeff ^ t * Q.leadingCoeff =\\n                          ↑q ^ t * Q.leadingCoeff)\\n                      (Eq.symm Polynomial.C_neg)))\\n                  (Eq.mpr\\n                    (id\\n                      (congrArg (fun _a ↦ _a ^ t * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\\n                        (Polynomial.leadingCoeff_linear\\n                          (cast\\n                            (Eq.symm\\n                              (Eq.trans (congrArg (Ne ↑q) (Eq.symm Nat.cast_zero)) (congrArg Not Nat.cast_inj._simp_1)))\\n                            (LT.lt.ne' hq)))))\\n                    (Eq.refl (↑q ^ t * Q.leadingCoeff)))))));\\n      have h1 :=\\n        cast\\n          (Eq.trans\\n            (Eq.trans (congrFun' (congrArg LE.le (Eq.symm Nat.cast_one)) |Q.leadingCoeff|)\\n              (congrFun' (congrArg LE.le Nat.cast_one) |Q.leadingCoeff|))\\n            (Eq.symm\\n              (Eq.trans\\n                (Eq.trans (congrFun' (congrArg LE.le (Eq.symm Nat.cast_one)) |↑Q.leadingCoeff|)\\n                  (Eq.trans\\n                    (Eq.trans (congrArg (LE.le ↑1) Int.cast_abs._simp_1)\\n                      (congrArg (fun x ↦ x ≤ ↑|Q.leadingCoeff|)\\n                        (Eq.trans Nat.cast_one (Eq.symm (Eq.trans (congrArg Int.cast Nat.cast_one) Int.cast_one)))))\\n                    Int.cast_le._simp_1))\\n                (congrFun' (congrArg LE.le Nat.cast_one) |Q.leadingCoeff|))))\\n          (Int.one_le_abs\\n            (Polynomial.leadingCoeff_ne_zero.mpr\\n              (right_ne_zero_of_mul\\n                (Eq.mp\\n                    (congrArg (fun _a ↦ R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\\n                      (have this := rfl;\\n                      this))\\n                    hQ ▸\\n                  hR))));\\n      LE.le.trans (le_mul_of_one_le_right (le_of_lt (pow_pos (Nat.cast_pos'.mpr hq) t)) h1)\\n        (Eq.mp (congrArg (fun _a ↦ _a ^ t * |↑Q.leadingCoeff| ≤ B) (Nat.abs_cast q))\\n          (Eq.mp (congrArg (fun _a ↦ _a * |↑Q.leadingCoeff| ≤ B) (abs_pow (↑q) t))\\n            (Eq.mp (congrArg (fun _a ↦ _a ≤ B) (abs_mul (↑q ^ t) ↑Q.leadingCoeff))\\n              (Eq.mp\\n                (congrFun'\\n                  (congrArg LE.le\\n                    (congrArg abs\\n                      (Eq.trans (Int.cast_mul (↑q ^ t) Q.leadingCoeff)\\n                        (congrFun'\\n                          (congrArg HMul.hMul\\n                            (Eq.trans (Int.cast_pow (↑q) t) (congrFun' (congrArg HPow.hPow (Int.cast_natCast q)) t)))\\n                          ↑Q.leadingCoeff))))\\n                  B)\\n                (Eq.mp (congrArg (fun _a ↦ |↑_a| ≤ B) hlc) hB))))))\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTBOUND197_FULL_TYPE: ∀ {R : Polynomial ℤ},\\n  R ≠ 0 →\\n    ∀ {h : ℤ} {q : ℕ},\\n      0 < q →\\n        IsCoprime h ↑q →\\n          ∀ {B : ℝ},\\n            |↑R.leadingCoeff| ≤ B →\\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTBOUND197_DIRECT_CONSUMER: _private.Roth.Theta.0.Roth.index_unique_le_log_div\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTBOUND197_AUDIT: requested=293; unique=293\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTBOUND197_AUDIT_PRESENT: present=293; values=293\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2}\\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\\n  p.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q\",\n      \"line\": 345,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2)\\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\\n  p.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)\",\n      \"line\": 346,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast : ∀ (p q : Polynomial ℤ),\\n  p.IsPrimitive → (p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q)\",\n      \"line\": 347,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.pow_rootMultiplicity_dvd : ∀ {R : Type u_1} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\",\n      \"line\": 348,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.C_mul_dvd : ∀ {R : Type u_1} {a : R} [inst : Field R] {p q : Polynomial R},\\n  a ≠ 0 → (Polynomial.C a * p ∣ q ↔ p ∣ q)\",\n      \"line\": 349,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.IsPrimitive.mul : ∀ {R : Type u_1} [inst : CommRing R] [NormalizedGCDMonoid R] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → (p * q).IsPrimitive\",\n      \"line\": 350,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@isCoprime_zero_right : ∀ {R : Type u_1} [inst : CommSemiring R] {x : R}, IsCoprime x 0 ↔ IsUnit x\",\n      \"line\": 351,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197CallerRelPrime.primitive_linear' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 400,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197CallerRelPrime.primitive_pow' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 401,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197CallerRelPrime.generic_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 402,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197CallerRelPrime.generic' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 403,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197CallerRelPrime.original_without_hq' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 404,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@generic : ∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [IsDomain A] [IsGCDMonoid A] [inst_3 : Field K]\\n  [inst_4 : Algebra A K] [IsFractionRing A K] {R : A[X]} {h q : A},\\n  IsRelPrime h q →\\n    (C q * X - C h) ^ rootMultiplicity ((algebraMap A K) h / (algebraMap A K) q) (map (algebraMap A K) R) ∣ R\",\n      \"line\": 416,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197CallerGCD.generic' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 417,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Bound197CallerRelPrime.original_without_hq : ∀ {R : ℤ[X]} {h : ℤ} {q : ℕ},\\n  IsCoprime h ↑q → ∃ Q, R = (C ↑q * X - C h) ^ rootMultiplicity (↑h / ↑q) (map (Int.castRingHom ℚ) R) * Q\",\n      \"line\": 418,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@denominator_dvd : ∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [IsDomain A] [IsGCDMonoid A] [inst_3 : Field K]\\n  [inst_4 : Algebra A K] [IsFractionRing A K] {R : A[X]} {h q : A},\\n  q ≠ 0 →\\n    IsRelPrime h q →\\n      q ^ rootMultiplicity ((algebraMap A K) h / (algebraMap A K) q) (map (algebraMap A K) R) ∣ R.leadingCoeff\",\n      \"line\": 451,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@signed_bound : ∀ {L : Type u_1} [inst : Ring L] [inst_1 : LinearOrder L] [IsStrictOrderedRing L] {R : ℤ[X]},\\n  R ≠ 0 →\\n    ∀ {h q : ℤ}, IsRelPrime h q → |↑q| ^ rootMultiplicity (↑h / ↑q) (map (Int.castRingHom ℚ) R) ≤ |↑R.leadingCoeff|\",\n      \"line\": 452,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197CallerGeneric.denominator_dvd' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 453,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197CallerGeneric.signed_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 454,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197CallerGeneric.original_no_pos' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 455,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bound197Caller.fullcaller' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 490,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ],\n  \"failed_dependencies\": []\n}"
+      }
+    ],
+    "structuredContent": {
+      "result": {
+        "partial": false,
+        "still_elaborating_lines": null,
+        "success": true,
+        "timed_out": false,
+        "items": [
+          {
+            "severity": "info",
+            "message": "@Roth.pow_rootMultiplicity_le : ∀ {R : Polynomial ℤ},\n  R ≠ 0 →\n    ∀ {h : ℤ} {q : ℕ},\n      0 < q →\n        IsCoprime h ↑q →\n          ∀ {B : ℝ},\n            |↑R.leadingCoeff| ≤ B →\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B",
+            "line": 15,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "theorem Roth.pow_rootMultiplicity_le : ∀ {R : Polynomial ℤ},\n  R ≠ 0 →\n    ∀ {h : ℤ} {q : ℕ},\n      0 < q →\n        IsCoprime h ↑q →\n          ∀ {B : ℝ},\n            |↑R.leadingCoeff| ≤ B →\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B :=\nfun {R} hR {h} {q} hq hcop {B} hB ↦\n  Exists.casesOn (Roth.exists_eq_pow_mul_of_rootMultiplicity hq hcop) fun Q hQ ↦\n    let t := Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R);\n    Eq.mpr\n      (id\n        (congrArg (fun _a ↦ ↑q ^ _a ≤ B)\n          (have this := rfl;\n          this)))\n      (have hlc :=\n        Eq.mpr\n          (id\n            (congrArg (fun _a ↦ _a.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\n              (Eq.mp\n                (congrArg (fun _a ↦ R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\n                  (have this := rfl;\n                  this))\n                hQ)))\n          (Eq.mpr\n            (id\n              (congrArg (fun _a ↦ _a = ↑q ^ t * Q.leadingCoeff)\n                (Polynomial.leadingCoeff_mul ((Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ t) Q)))\n            (Eq.mpr\n              (id\n                (congrArg (fun _a ↦ _a * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\n                  (Polynomial.leadingCoeff_pow (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) t)))\n              (Eq.mpr\n                (id\n                  (congrArg (fun _a ↦ _a.leadingCoeff ^ t * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\n                    (sub_eq_add_neg (Polynomial.C ↑q * Polynomial.X) (Polynomial.C h))))\n                (Eq.mpr\n                  (id\n                    (congrArg\n                      (fun _a ↦\n                        (Polynomial.C ↑q * Polynomial.X + _a).leadingCoeff ^ t * Q.leadingCoeff =\n                          ↑q ^ t * Q.leadingCoeff)\n                      (Eq.symm Polynomial.C_neg)))\n                  (Eq.mpr\n                    (id\n                      (congrArg (fun _a ↦ _a ^ t * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\n                        (Polynomial.leadingCoeff_linear\n                          (cast\n                            (Eq.symm\n                              (Eq.trans (congrArg (Ne ↑q) (Eq.symm Nat.cast_zero)) (congrArg Not Nat.cast_inj._simp_1)))\n                            (LT.lt.ne' hq)))))\n                    (Eq.refl (↑q ^ t * Q.leadingCoeff)))))));\n      have h1 :=\n        cast\n          (Eq.trans\n            (Eq.trans (congrFun' (congrArg LE.le (Eq.symm Nat.cast_one)) |Q.leadingCoeff|)\n              (congrFun' (congrArg LE.le Nat.cast_one) |Q.leadingCoeff|))\n            (Eq.symm\n              (Eq.trans\n                (Eq.trans (congrFun' (congrArg LE.le (Eq.symm Nat.cast_one)) |↑Q.leadingCoeff|)\n                  (Eq.trans\n                    (Eq.trans (congrArg (LE.le ↑1) Int.cast_abs._simp_1)\n                      (congrArg (fun x ↦ x ≤ ↑|Q.leadingCoeff|)\n                        (Eq.trans Nat.cast_one (Eq.symm (Eq.trans (congrArg Int.cast Nat.cast_one) Int.cast_one)))))\n                    Int.cast_le._simp_1))\n                (congrFun' (congrArg LE.le Nat.cast_one) |Q.leadingCoeff|))))\n          (Int.one_le_abs\n            (Polynomial.leadingCoeff_ne_zero.mpr\n              (right_ne_zero_of_mul\n                (Eq.mp\n                    (congrArg (fun _a ↦ R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\n                      (have this := rfl;\n                      this))\n                    hQ ▸\n                  hR))));\n      LE.le.trans (le_mul_of_one_le_right (le_of_lt (pow_pos (Nat.cast_pos'.mpr hq) t)) h1)\n        (Eq.mp (congrArg (fun _a ↦ _a ^ t * |↑Q.leadingCoeff| ≤ B) (Nat.abs_cast q))\n          (Eq.mp (congrArg (fun _a ↦ _a * |↑Q.leadingCoeff| ≤ B) (abs_pow (↑q) t))\n            (Eq.mp (congrArg (fun _a ↦ _a ≤ B) (abs_mul (↑q ^ t) ↑Q.leadingCoeff))\n              (Eq.mp\n                (congrFun'\n                  (congrArg LE.le\n                    (congrArg abs\n                      (Eq.trans (Int.cast_mul (↑q ^ t) Q.leadingCoeff)\n                        (congrFun'\n                          (congrArg HMul.hMul\n                            (Eq.trans (Int.cast_pow (↑q) t) (congrFun' (congrArg HPow.hPow (Int.cast_natCast q)) t)))\n                          ↑Q.leadingCoeff))))\n                  B)\n                (Eq.mp (congrArg (fun _a ↦ |↑_a| ≤ B) hlc) hB))))))",
+            "line": 16,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Roth.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 17,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTBOUND197_FULL_TYPE: ∀ {R : Polynomial ℤ},\n  R ≠ 0 →\n    ∀ {h : ℤ} {q : ℕ},\n      0 < q →\n        IsCoprime h ↑q →\n          ∀ {B : ℝ},\n            |↑R.leadingCoeff| ≤ B →\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B",
+            "line": 18,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTBOUND197_DIRECT_CONSUMER: _private.Roth.Theta.0.Roth.index_unique_le_log_div",
+            "line": 24,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTBOUND197_AUDIT: requested=293; unique=293",
+            "line": 24,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTBOUND197_AUDIT_PRESENT: present=293; values=293",
+            "line": 24,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2}\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\n  p.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q",
+            "line": 345,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2)\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\n  p.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)",
+            "line": 346,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast : ∀ (p q : Polynomial ℤ),\n  p.IsPrimitive → (p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q)",
+            "line": 347,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@Polynomial.pow_rootMultiplicity_dvd : ∀ {R : Type u_1} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p",
+            "line": 348,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@Polynomial.C_mul_dvd : ∀ {R : Type u_1} {a : R} [inst : Field R] {p q : Polynomial R},\n  a ≠ 0 → (Polynomial.C a * p ∣ q ↔ p ∣ q)",
+            "line": 349,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@Polynomial.IsPrimitive.mul : ∀ {R : Type u_1} [inst : CommRing R] [NormalizedGCDMonoid R] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → (p * q).IsPrimitive",
+            "line": 350,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@isCoprime_zero_right : ∀ {R : Type u_1} [inst : CommSemiring R] {x : R}, IsCoprime x 0 ↔ IsUnit x",
+            "line": 351,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197CallerRelPrime.primitive_linear' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 400,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197CallerRelPrime.primitive_pow' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 401,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197CallerRelPrime.generic_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 402,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197CallerRelPrime.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 403,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197CallerRelPrime.original_without_hq' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 404,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@generic : ∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [IsDomain A] [IsGCDMonoid A] [inst_3 : Field K]\n  [inst_4 : Algebra A K] [IsFractionRing A K] {R : A[X]} {h q : A},\n  IsRelPrime h q →\n    (C q * X - C h) ^ rootMultiplicity ((algebraMap A K) h / (algebraMap A K) q) (map (algebraMap A K) R) ∣ R",
+            "line": 416,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197CallerGCD.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 417,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@Bound197CallerRelPrime.original_without_hq : ∀ {R : ℤ[X]} {h : ℤ} {q : ℕ},\n  IsCoprime h ↑q → ∃ Q, R = (C ↑q * X - C h) ^ rootMultiplicity (↑h / ↑q) (map (Int.castRingHom ℚ) R) * Q",
+            "line": 418,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@denominator_dvd : ∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [IsDomain A] [IsGCDMonoid A] [inst_3 : Field K]\n  [inst_4 : Algebra A K] [IsFractionRing A K] {R : A[X]} {h q : A},\n  q ≠ 0 →\n    IsRelPrime h q →\n      q ^ rootMultiplicity ((algebraMap A K) h / (algebraMap A K) q) (map (algebraMap A K) R) ∣ R.leadingCoeff",
+            "line": 451,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@signed_bound : ∀ {L : Type u_1} [inst : Ring L] [inst_1 : LinearOrder L] [IsStrictOrderedRing L] {R : ℤ[X]},\n  R ≠ 0 →\n    ∀ {h q : ℤ}, IsRelPrime h q → |↑q| ^ rootMultiplicity (↑h / ↑q) (map (Int.castRingHom ℚ) R) ≤ |↑R.leadingCoeff|",
+            "line": 452,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197CallerGeneric.denominator_dvd' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 453,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197CallerGeneric.signed_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 454,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197CallerGeneric.original_no_pos' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 455,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Bound197Caller.fullcaller' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 490,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          }
+        ],
+        "failed_dependencies": []
+      }
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1066
+}

@@ -1,0 +1,147 @@
+{
+  "declaration": "Roth.pow_rootMultiplicity_le",
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "root-bound197-original-executed.lean.txt",
+      "source_sha256": "5fa33bcafd6086505387b8a718167762aa8c787bc9b6ea75d5c19bc222d49e74",
+      "receipt": "root-bound197-original-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 15,
+      "required_info": [
+        "ROOTBOUND197_FULL_TYPE:",
+        "ROOTBOUND197_AUDIT: requested=293; unique=293",
+        "ROOTBOUND197_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "project",
+      "source": "root-bound197-project-executed.lean.txt",
+      "source_sha256": "54f4471044d2b9d9df9bfe5bc751247049457846d6c8218577bd3d4da890fe07",
+      "receipt": "root-bound197-project-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 344,
+      "required_info": [
+        "'Bound197.no_pos' depends on axioms:",
+        "'Bound197.no_nonzero_counter' depends on axioms:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "root-bound197-isolated-executed.lean.txt",
+      "source_sha256": "c653fe7052c4767a59aa40843e3f172883a745d48639a1e08609e0e99a609916",
+      "receipt": "root-bound197-isolated-receipt.json",
+      "format": "raw",
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Bound197Generic.denominator_dvd' depends on axioms:",
+        "'Bound197Generic.signed_bound' depends on axioms:",
+        "'Bound197Generic.original_no_pos' depends on axioms:"
+      ]
+    },
+    {
+      "label": "stronger",
+      "source": "root-bound197-stronger-executed.lean.txt",
+      "source_sha256": "65cbef62c81ab341b9838481d9b4d393bddec56e5a139e7b6766b2dabc09078c",
+      "receipt": "root-bound197-stronger-receipt.json",
+      "format": "raw",
+      "native_region_start_line": 16,
+      "required_info": [
+        "[inst : Ring L]",
+        "'Bound197Guards.coprime_necessary' depends on axioms:",
+        "'Bound197Guards.arbitrary_coefficients_fail' depends on axioms:",
+        "'Bound197Guards.zero_denominator_divisibility_fails' depends on axioms:"
+      ]
+    },
+    {
+      "label": "fullcaller",
+      "source": "root-bound197-fullcaller-executed.lean.txt",
+      "source_sha256": "f2fbdc28f1f7cd2e4740fb74ad407db73e6491015cf38403b46a2ad721d471a8",
+      "receipt": "root-bound197-fullcaller-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 344,
+      "required_info": [
+        "[inst : Ring L]",
+        "'Bound197Caller.fullcaller' depends on axioms:"
+      ]
+    },
+    {
+      "label": "positive",
+      "source": "root-bound197-positive-executed.lean.txt",
+      "source_sha256": "3f1772e546fe786987b3a2ddfdc8e844d9e56df13aecd8db4527561787e1f812",
+      "receipt": "root-bound197-positive-receipt.json",
+      "format": "raw",
+      "native_region_start_line": 18,
+      "required_info": [
+        "den_dvd_of_is_root",
+        "one_le_pow_mul_abs_eval_div",
+        "Int.natAbs_le_of_dvd_ne_zero"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "root-bound197-isolated-rejected-executed.lean.txt",
+      "source_sha256": "ce79ce27b3213f1a43386fb25de9bfaa7759d2a5fb1c2c2f1e400a810f176689",
+      "receipt": "root-bound197-isolated-rejected-receipt.json",
+      "reason": "mod_cast has type\n  (q ^ rootMultiplicity ((algebraMap ℤ ℚ) h / (algebraMap ℤ ℚ) q) (map (algebraMap ℤ ℚ) R)).natAbs ≤\n    R.leadingCoeff.natAbs\nbut is expected to have type\n  |q| ^ rootMultiplicity (Rat.divInt h q) (map (Int.castRingHom ℚ) R) ≤ |R.leadingCoeff|; Variable name `hq` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hq\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+      "accepted_as_proof": false
+    },
+    {
+      "source": "root-bound197-project-rejected-executed.lean.txt",
+      "source_sha256": "2bd83df8c20fc75f12201024d8ece01cf67b9221ccab6e8f45fe3acefe6f2b10",
+      "receipt": "root-bound197-project-rejected-receipt.json",
+      "reason": "'theorem no_pos {R : Polynomial ℤ} (hR : R ≠ 0) {h : ℤ} {q : ℕ} (hcop : IsCoprime h (q : ℤ)) {B : ℝ}\n    (hB : |(R.leadingCoeff : ℝ)| ≤ B) :\n    (q : ℝ) ^ Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) ≤ B :=\n  by\n  by_cases hq : q = 0\n  · subst q\n    have h1 : (1 : ℝ) ≤ |(R.leadingCoeff : ℝ)| := by\n      exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hR)\n    exact (pow_le_one₀ (by norm_num) (by norm_num)).trans (h1.trans hB)\n  ·\n    exact\n      Roth.pow_rootMultiplicity_le hR (Nat.pos_of_ne_zero hq) hcop\n        hB' starts on column 1, but all commands should start at the beginning of the line.\n\nNote: This linter can be disabled with `set_option linter.style.whitespace false`; 'theorem no_nonzero_counter :\n    ¬((2 : ℝ) ^ Polynomial.rootMultiplicity (0 : ℚ) ((0 : Polynomial ℤ).map (Int.castRingHom ℚ)) ≤\n        |((0 : Polynomial ℤ).leadingCoeff : ℝ)|) :=\n  by norm_num' starts on column 1, but all commands should start at the beginning of the line.\n\nNote: This linter can be disabled with `set_option linter.style.whitespace false`",
+      "accepted_as_proof": false
+    },
+    {
+      "source": "root-bound197-stronger-rejected-executed.lean.txt",
+      "source_sha256": "2be39d9700e08622f00151444b9eb07f4a08607eaf45d0647ee308abdf478394",
+      "receipt": "root-bound197-stronger-rejected-receipt.json",
+      "reason": "Type mismatch: After simplification, term\n  rootMultiplicity_X_sub_C_self\n has type\n  @Eq ℕ (rootMultiplicity 1 (X - C 1)) 1\nbut is expected to have type\n  @Eq ℕ (rootMultiplicity 1 (X - C ((Int.castRingHom ℚ) 1))) 1; unsolved goals\n⊢ |↑(X - 1).leadingCoeff| < 2 ^ rootMultiplicity 1 (X - 1); unsolved goals\n⊢ 1 / 100 * |↑(X - 1).leadingCoeff| < 1",
+      "accepted_as_proof": false
+    },
+    {
+      "source": "root-bound197-stronger-rejected2-executed.lean.txt",
+      "source_sha256": "0049fe7deebff1a74c2ea08ce31c917830aaab42c5796e5de6ca494b85342086",
+      "receipt": "root-bound197-stronger-rejected2-receipt.json",
+      "reason": "Type mismatch: After simplification, term\n  rootMultiplicity_X_sub_C_self\n has type\n  rootMultiplicity 1 (X - 1) = 1\nbut is expected to have type\n  rootMultiplicity 1 (X - map (Int.castRingHom ℚ) 1) = 1",
+      "accepted_as_proof": false
+    },
+    {
+      "source": "root-bound197-stronger-rejected3-executed.lean.txt",
+      "source_sha256": "3818ed6c81c963672d96cafacaac871bf88aaf94c3971d9a5fd9ba1cfb7a7865",
+      "receipt": "root-bound197-stronger-rejected3-receipt.json",
+      "reason": "This line exceeds the 100 character limit, please shorten it!\n\nNote: This linter can be disabled with `set_option linter.style.longLine false`",
+      "accepted_as_proof": false
+    }
+  ],
+  "canonical_direct_consumers": [
+    "_private.Roth.Theta.0.Roth.index_unique_le_log_div"
+  ],
+  "canonical_direct_type_consumers": [],
+  "audit": {
+    "source": "root-bound197-original-executed.lean.txt",
+    "receipt": "root-bound197-original-receipt.json",
+    "marker": "ROOTBOUND197",
+    "native_region_start_line": 15
+  },
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "parent_project_helpers_counted_as_mathlib_blocks": false,
+    "no_global_absence_claim": true,
+    "exact_search_timeout_is_absence_evidence": false,
+    "experiments": [
+      "pow_rootMultiplicity_dvd wrong output",
+      "leadingCoeff_dvd applied to field factor misses integral denominator bridge",
+      "den_dvd_of_is_root order1/chosen denominator",
+      "Gauss+coefficient+Int bound requires primitive-power and map normalization"
+    ]
+  }
+}

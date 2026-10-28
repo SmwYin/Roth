@@ -1,0 +1,25 @@
+namespace Bound197Guards
+open Polynomial
+theorem linear_multiplicity :
+    rootMultiplicity (1 : ℚ) ((X - C 1 : Polynomial ℤ).map (Int.castRingHom ℚ)) = 1 := by
+  simpa only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Int.cast_one] using
+    (rootMultiplicity_X_sub_C_self (x := (1 : ℚ)))
+theorem coprime_necessary : ¬ ((2 : ℝ) ^
+    rootMultiplicity ((2 : ℚ) / 2) ((X - C 1 : Polynomial ℤ).map (Int.castRingHom ℚ)) ≤
+      |((X - C 1 : Polynomial ℤ).leadingCoeff : ℝ)|) := by
+  norm_num [linear_multiplicity]
+theorem arbitrary_coefficients_fail : ¬ ((1 : ℝ) ^
+    rootMultiplicity (1 : ℚ) (C (1 / 100 : ℚ) * (X - C 1)) ≤
+      |((C (1 / 100 : ℚ) * (X - C 1)).leadingCoeff : ℝ)|) := by
+  norm_num [Polynomial.leadingCoeff_mul]
+theorem zero_denominator_divisibility_fails : ¬ ((0 : ℤ) ^
+    rootMultiplicity ((1 : ℚ) / 0) ((X : Polynomial ℤ).map (Int.castRingHom ℚ)) ∣
+      (X : Polynomial ℤ).leadingCoeff) := by
+  have hm : rootMultiplicity (0 : ℚ) (X : Polynomial ℚ) = 1 := by
+    simpa only [C_0, sub_zero] using (rootMultiplicity_X_sub_C_self (x := (0 : ℚ)))
+  norm_num [hm]
+#print axioms linear_multiplicity
+#print axioms coprime_necessary
+#print axioms arbitrary_coefficients_fail
+#print axioms zero_denominator_divisibility_fails
+end Bound197Guards

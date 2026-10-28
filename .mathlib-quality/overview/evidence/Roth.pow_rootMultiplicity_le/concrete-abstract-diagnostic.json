@@ -1,0 +1,11 @@
+{
+  "body": "  set t := Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ))\n  have hlc : R.leadingCoeff = (q : ℤ) ^ t * Q.leadingCoeff := by\n    rw [hQ, Polynomial.leadingCoeff_mul, Polynomial.leadingCoeff_pow, sub_eq_add_neg,\n      ← Polynomial.C_neg, Polynomial.leadingCoeff_linear (by exact_mod_cast hq.ne')]\n  have h1 : (1 : ℝ) ≤ |(Q.leadingCoeff : ℝ)| := by\n    exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2\n      (right_ne_zero_of_mul (hQ ▸ hR)))\n  rw [hlc] at hB\n  push_cast at hB\n  rw [abs_mul, abs_pow, Nat.abs_cast] at hB\n  exact (le_mul_of_one_le_right (by positivity) h1).trans hB\n\nomit [DecidableEq σ] in",
+  "counts": {
+    "ℤ": 1,
+    "ℚ": 1,
+    "ℝ": 1,
+    "Int.": 2,
+    "Nat.": 1
+  },
+  "conclusion": "Integer coefficient discreteness is essential to bound; algebraic GCD-domain divisibility can be separated. Generic ordered codomain does not require real analysis."
+}

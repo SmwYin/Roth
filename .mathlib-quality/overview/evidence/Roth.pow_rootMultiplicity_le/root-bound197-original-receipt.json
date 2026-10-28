@@ -1,0 +1,90 @@
+{
+  "request": {
+    "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+    "timeout_s": 45
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"partial\": false,\n  \"still_elaborating_lines\": null,\n  \"success\": true,\n  \"timed_out\": false,\n  \"items\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Roth.pow_rootMultiplicity_le : ∀ {R : Polynomial ℤ},\\n  R ≠ 0 →\\n    ∀ {h : ℤ} {q : ℕ},\\n      0 < q →\\n        IsCoprime h ↑q →\\n          ∀ {B : ℝ},\\n            |↑R.leadingCoeff| ≤ B →\\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem Roth.pow_rootMultiplicity_le : ∀ {R : Polynomial ℤ},\\n  R ≠ 0 →\\n    ∀ {h : ℤ} {q : ℕ},\\n      0 < q →\\n        IsCoprime h ↑q →\\n          ∀ {B : ℝ},\\n            |↑R.leadingCoeff| ≤ B →\\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B :=\\nfun {R} hR {h} {q} hq hcop {B} hB ↦\\n  Exists.casesOn (Roth.exists_eq_pow_mul_of_rootMultiplicity hq hcop) fun Q hQ ↦\\n    let t := Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R);\\n    Eq.mpr\\n      (id\\n        (congrArg (fun _a ↦ ↑q ^ _a ≤ B)\\n          (have this := rfl;\\n          this)))\\n      (have hlc :=\\n        Eq.mpr\\n          (id\\n            (congrArg (fun _a ↦ _a.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\\n              (Eq.mp\\n                (congrArg (fun _a ↦ R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\\n                  (have this := rfl;\\n                  this))\\n                hQ)))\\n          (Eq.mpr\\n            (id\\n              (congrArg (fun _a ↦ _a = ↑q ^ t * Q.leadingCoeff)\\n                (Polynomial.leadingCoeff_mul ((Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ t) Q)))\\n            (Eq.mpr\\n              (id\\n                (congrArg (fun _a ↦ _a * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\\n                  (Polynomial.leadingCoeff_pow (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) t)))\\n              (Eq.mpr\\n                (id\\n                  (congrArg (fun _a ↦ _a.leadingCoeff ^ t * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\\n                    (sub_eq_add_neg (Polynomial.C ↑q * Polynomial.X) (Polynomial.C h))))\\n                (Eq.mpr\\n                  (id\\n                    (congrArg\\n                      (fun _a ↦\\n                        (Polynomial.C ↑q * Polynomial.X + _a).leadingCoeff ^ t * Q.leadingCoeff =\\n                          ↑q ^ t * Q.leadingCoeff)\\n                      (Eq.symm Polynomial.C_neg)))\\n                  (Eq.mpr\\n                    (id\\n                      (congrArg (fun _a ↦ _a ^ t * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\\n                        (Polynomial.leadingCoeff_linear\\n                          (cast\\n                            (Eq.symm\\n                              (Eq.trans (congrArg (Ne ↑q) (Eq.symm Nat.cast_zero)) (congrArg Not Nat.cast_inj._simp_1)))\\n                            (LT.lt.ne' hq)))))\\n                    (Eq.refl (↑q ^ t * Q.leadingCoeff)))))));\\n      have h1 :=\\n        cast\\n          (Eq.trans\\n            (Eq.trans (congrFun' (congrArg LE.le (Eq.symm Nat.cast_one)) |Q.leadingCoeff|)\\n              (congrFun' (congrArg LE.le Nat.cast_one) |Q.leadingCoeff|))\\n            (Eq.symm\\n              (Eq.trans\\n                (Eq.trans (congrFun' (congrArg LE.le (Eq.symm Nat.cast_one)) |↑Q.leadingCoeff|)\\n                  (Eq.trans\\n                    (Eq.trans (congrArg (LE.le ↑1) Int.cast_abs._simp_1)\\n                      (congrArg (fun x ↦ x ≤ ↑|Q.leadingCoeff|)\\n                        (Eq.trans Nat.cast_one (Eq.symm (Eq.trans (congrArg Int.cast Nat.cast_one) Int.cast_one)))))\\n                    Int.cast_le._simp_1))\\n                (congrFun' (congrArg LE.le Nat.cast_one) |Q.leadingCoeff|))))\\n          (Int.one_le_abs\\n            (Polynomial.leadingCoeff_ne_zero.mpr\\n              (right_ne_zero_of_mul\\n                (Eq.mp\\n                    (congrArg (fun _a ↦ R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\\n                      (have this := rfl;\\n                      this))\\n                    hQ ▸\\n                  hR))));\\n      LE.le.trans (le_mul_of_one_le_right (le_of_lt (pow_pos (Nat.cast_pos'.mpr hq) t)) h1)\\n        (Eq.mp (congrArg (fun _a ↦ _a ^ t * |↑Q.leadingCoeff| ≤ B) (Nat.abs_cast q))\\n          (Eq.mp (congrArg (fun _a ↦ _a * |↑Q.leadingCoeff| ≤ B) (abs_pow (↑q) t))\\n            (Eq.mp (congrArg (fun _a ↦ _a ≤ B) (abs_mul (↑q ^ t) ↑Q.leadingCoeff))\\n              (Eq.mp\\n                (congrFun'\\n                  (congrArg LE.le\\n                    (congrArg abs\\n                      (Eq.trans (Int.cast_mul (↑q ^ t) Q.leadingCoeff)\\n                        (congrFun'\\n                          (congrArg HMul.hMul\\n                            (Eq.trans (Int.cast_pow (↑q) t) (congrFun' (congrArg HPow.hPow (Int.cast_natCast q)) t)))\\n                          ↑Q.leadingCoeff))))\\n                  B)\\n                (Eq.mp (congrArg (fun _a ↦ |↑_a| ≤ B) hlc) hB))))))\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTBOUND197_FULL_TYPE: ∀ {R : Polynomial ℤ},\\n  R ≠ 0 →\\n    ∀ {h : ℤ} {q : ℕ},\\n      0 < q →\\n        IsCoprime h ↑q →\\n          ∀ {B : ℝ},\\n            |↑R.leadingCoeff| ≤ B →\\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTBOUND197_DIRECT_CONSUMER: _private.Roth.Theta.0.Roth.index_unique_le_log_div\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTBOUND197_AUDIT: requested=293; unique=293\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTBOUND197_AUDIT_PRESENT: present=293; values=293\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ],\n  \"failed_dependencies\": []\n}"
+      }
+    ],
+    "structuredContent": {
+      "result": {
+        "partial": false,
+        "still_elaborating_lines": null,
+        "success": true,
+        "timed_out": false,
+        "items": [
+          {
+            "severity": "info",
+            "message": "@Roth.pow_rootMultiplicity_le : ∀ {R : Polynomial ℤ},\n  R ≠ 0 →\n    ∀ {h : ℤ} {q : ℕ},\n      0 < q →\n        IsCoprime h ↑q →\n          ∀ {B : ℝ},\n            |↑R.leadingCoeff| ≤ B →\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B",
+            "line": 15,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "theorem Roth.pow_rootMultiplicity_le : ∀ {R : Polynomial ℤ},\n  R ≠ 0 →\n    ∀ {h : ℤ} {q : ℕ},\n      0 < q →\n        IsCoprime h ↑q →\n          ∀ {B : ℝ},\n            |↑R.leadingCoeff| ≤ B →\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B :=\nfun {R} hR {h} {q} hq hcop {B} hB ↦\n  Exists.casesOn (Roth.exists_eq_pow_mul_of_rootMultiplicity hq hcop) fun Q hQ ↦\n    let t := Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R);\n    Eq.mpr\n      (id\n        (congrArg (fun _a ↦ ↑q ^ _a ≤ B)\n          (have this := rfl;\n          this)))\n      (have hlc :=\n        Eq.mpr\n          (id\n            (congrArg (fun _a ↦ _a.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\n              (Eq.mp\n                (congrArg (fun _a ↦ R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\n                  (have this := rfl;\n                  this))\n                hQ)))\n          (Eq.mpr\n            (id\n              (congrArg (fun _a ↦ _a = ↑q ^ t * Q.leadingCoeff)\n                (Polynomial.leadingCoeff_mul ((Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ t) Q)))\n            (Eq.mpr\n              (id\n                (congrArg (fun _a ↦ _a * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\n                  (Polynomial.leadingCoeff_pow (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) t)))\n              (Eq.mpr\n                (id\n                  (congrArg (fun _a ↦ _a.leadingCoeff ^ t * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\n                    (sub_eq_add_neg (Polynomial.C ↑q * Polynomial.X) (Polynomial.C h))))\n                (Eq.mpr\n                  (id\n                    (congrArg\n                      (fun _a ↦\n                        (Polynomial.C ↑q * Polynomial.X + _a).leadingCoeff ^ t * Q.leadingCoeff =\n                          ↑q ^ t * Q.leadingCoeff)\n                      (Eq.symm Polynomial.C_neg)))\n                  (Eq.mpr\n                    (id\n                      (congrArg (fun _a ↦ _a ^ t * Q.leadingCoeff = ↑q ^ t * Q.leadingCoeff)\n                        (Polynomial.leadingCoeff_linear\n                          (cast\n                            (Eq.symm\n                              (Eq.trans (congrArg (Ne ↑q) (Eq.symm Nat.cast_zero)) (congrArg Not Nat.cast_inj._simp_1)))\n                            (LT.lt.ne' hq)))))\n                    (Eq.refl (↑q ^ t * Q.leadingCoeff)))))));\n      have h1 :=\n        cast\n          (Eq.trans\n            (Eq.trans (congrFun' (congrArg LE.le (Eq.symm Nat.cast_one)) |Q.leadingCoeff|)\n              (congrFun' (congrArg LE.le Nat.cast_one) |Q.leadingCoeff|))\n            (Eq.symm\n              (Eq.trans\n                (Eq.trans (congrFun' (congrArg LE.le (Eq.symm Nat.cast_one)) |↑Q.leadingCoeff|)\n                  (Eq.trans\n                    (Eq.trans (congrArg (LE.le ↑1) Int.cast_abs._simp_1)\n                      (congrArg (fun x ↦ x ≤ ↑|Q.leadingCoeff|)\n                        (Eq.trans Nat.cast_one (Eq.symm (Eq.trans (congrArg Int.cast Nat.cast_one) Int.cast_one)))))\n                    Int.cast_le._simp_1))\n                (congrFun' (congrArg LE.le Nat.cast_one) |Q.leadingCoeff|))))\n          (Int.one_le_abs\n            (Polynomial.leadingCoeff_ne_zero.mpr\n              (right_ne_zero_of_mul\n                (Eq.mp\n                    (congrArg (fun _a ↦ R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\n                      (have this := rfl;\n                      this))\n                    hQ ▸\n                  hR))));\n      LE.le.trans (le_mul_of_one_le_right (le_of_lt (pow_pos (Nat.cast_pos'.mpr hq) t)) h1)\n        (Eq.mp (congrArg (fun _a ↦ _a ^ t * |↑Q.leadingCoeff| ≤ B) (Nat.abs_cast q))\n          (Eq.mp (congrArg (fun _a ↦ _a * |↑Q.leadingCoeff| ≤ B) (abs_pow (↑q) t))\n            (Eq.mp (congrArg (fun _a ↦ _a ≤ B) (abs_mul (↑q ^ t) ↑Q.leadingCoeff))\n              (Eq.mp\n                (congrFun'\n                  (congrArg LE.le\n                    (congrArg abs\n                      (Eq.trans (Int.cast_mul (↑q ^ t) Q.leadingCoeff)\n                        (congrFun'\n                          (congrArg HMul.hMul\n                            (Eq.trans (Int.cast_pow (↑q) t) (congrFun' (congrArg HPow.hPow (Int.cast_natCast q)) t)))\n                          ↑Q.leadingCoeff))))\n                  B)\n                (Eq.mp (congrArg (fun _a ↦ |↑_a| ≤ B) hlc) hB))))))",
+            "line": 16,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Roth.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 17,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTBOUND197_FULL_TYPE: ∀ {R : Polynomial ℤ},\n  R ≠ 0 →\n    ∀ {h : ℤ} {q : ℕ},\n      0 < q →\n        IsCoprime h ↑q →\n          ∀ {B : ℝ},\n            |↑R.leadingCoeff| ≤ B →\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B",
+            "line": 18,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTBOUND197_DIRECT_CONSUMER: _private.Roth.Theta.0.Roth.index_unique_le_log_div",
+            "line": 24,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTBOUND197_AUDIT: requested=293; unique=293",
+            "line": 24,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTBOUND197_AUDIT_PRESENT: present=293; values=293",
+            "line": 24,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          }
+        ],
+        "failed_dependencies": []
+      }
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1365
+}

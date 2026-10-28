@@ -1,0 +1,22 @@
+{
+  "kind": "theorem",
+  "type": "∀ {R : Polynomial ℤ},\n  R ≠ 0 →\n    ∀ {h : ℤ} {q : ℕ},\n      0 < q →\n        IsCoprime h ↑q →\n          ∀ {B : ℝ},\n            |↑R.leadingCoeff| ≤ B →\n              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B",
+  "what": "Reduced rational-root denominator to its multiplicity is bounded by absolute integer polynomial leading coefficient, hence by B.",
+  "how": "Primitive linear-factor descent through Gauss lemma, compare nonzero integer leading coefficients and cast.",
+  "hypotheses": [
+    "R≠0",
+    "q>0 (removable numerically)",
+    "IsCoprime h ↑q (IsRelPrime equivalent over ℤ)",
+    "absolute leading coefficient≤B"
+  ],
+  "project_dependencies": [
+    "Roth.exists_eq_pow_mul_of_rootMultiplicity"
+  ],
+  "caller_summary": "One explicit within-file caller: private Roth.index_unique_le_log_div at Theta:245; zero outside file; canonical1value/0type.",
+  "mathlib_api_audit": "Related pow_rootMultiplicity_dvd, Gauss descent, leadingCoeff_dvd_leadingCoeff, den_dvd_of_is_root and Int.natAbs_le_of_dvd_ne_zero verified; no exact retrieved replacement.",
+  "moral_duplications": "Rational root theorem with multiplicity; determinant coefficient proofs reuse integer discreteness but do not rederive this bound.",
+  "generalization": "Verified signed integer denominator, no positivity, Ring L ordered target, direct abs lc bound; separate GCD-domain/fraction-field denominator-power divisibility for q≠0. IsRelPrime strictly generalizes Bézout condition only in generic coefficient domains; numerical law retains ℤ coefficients.",
+  "missing_api": "Generic multiplicity integral-linear-factor descent and denominator-power leading-coefficient divisor; numeric discrete-order corollary.",
+  "junk": false,
+  "action": "YES-but-generalise-first; group accepted196 factor theorem, algebraic divisor and ordered integer bound; generalise and cleanup before PR."
+}

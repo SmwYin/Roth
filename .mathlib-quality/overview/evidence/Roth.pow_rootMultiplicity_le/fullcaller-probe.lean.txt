@@ -1,0 +1,148 @@
+-- Append to the stable 15-import prefix, including Polynomial.GaussLemma.
+#check @Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map
+#check @Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map
+#check @Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast
+#check @Polynomial.pow_rootMultiplicity_dvd
+#check @Polynomial.C_mul_dvd
+#check @Polynomial.IsPrimitive.mul
+#check @isCoprime_zero_right
+namespace Bound197CallerRelPrime
+open Polynomial
+variable {A K : Type*} [CommRing A] [IsDomain A] [NormalizedGCDMonoid A]
+  [Field K] [Algebra A K] [IsFractionRing A K]
+omit [IsDomain A] [NormalizedGCDMonoid A] in
+theorem primitive_linear {h q : A} (hcop : IsRelPrime h q) :
+    (C q * X - C h).IsPrimitive := by
+  intro c hc
+  rw [C_dvd_iff_dvd_coeff] at hc
+  exact hcop (by simpa using hc 0)
+    (by simpa only [coeff_sub, coeff_C_mul, coeff_X_one,
+      coeff_C, mul_one, one_ne_zero, ↓reduceIte, sub_zero] using hc 1)
+omit [IsDomain A] in
+theorem primitive_pow {p : A[X]} (hp : p.IsPrimitive) (t : ℕ) :
+    (p ^ t).IsPrimitive :=
+  Nat.rec isPrimitive_one (fun t ih ↦ by simpa [pow_succ] using ih.mul hp) t
+theorem generic_nonzero {R : A[X]} {h q : A} (hq : q ≠ 0)
+    (hcop : IsRelPrime h q) :
+    (C q * X - C h) ^ rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R := by
+  set t := rootMultiplicity (algebraMap A K h / algebraMap A K q)
+    (R.map (algebraMap A K))
+  have hq' : algebraMap A K q ≠ 0 :=
+    (map_ne_zero_iff _ (IsFractionRing.injective A K)).2 hq
+  have hmap : (C q * X - C h).map (algebraMap A K) =
+      C (algebraMap A K q) * (X - C (algebraMap A K h / algebraMap A K q)) := by
+    rw [Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_X,
+      Polynomial.map_C, mul_sub, ← C_mul, mul_div_cancel₀ _ hq']
+  apply (primitive_pow (primitive_linear hcop) t).dvd_of_fraction_map_dvd_fraction_map
+    (K := K)
+  rw [Polynomial.map_pow, hmap, mul_pow, ← C_pow, C_mul_dvd (pow_ne_zero _ hq')]
+  exact pow_rootMultiplicity_dvd _ _
+theorem generic {R : A[X]} {h q : A} (hcop : IsRelPrime h q) :
+    (C q * X - C h) ^ rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R := by
+  by_cases hq : q = 0
+  · subst q
+    have hh : IsUnit h := isRelPrime_zero_right.mp hcop
+    simpa only [C_0, zero_mul, zero_sub] using
+      (((hh.map C).neg).pow
+        (rootMultiplicity (algebraMap A K h / algebraMap A K 0)
+          (R.map (algebraMap A K)))).dvd
+  · exact generic_nonzero hq hcop
+theorem original_without_hq {R : Polynomial ℤ} {h : ℤ} {q : ℕ}
+    (hcop : IsCoprime h (q : ℤ)) : ∃ Q : Polynomial ℤ, R =
+      (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h) ^
+      Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) * Q := by
+  exact generic (K := ℚ) hcop.isRelPrime
+#print axioms primitive_linear
+#print axioms primitive_pow
+#print axioms generic_nonzero
+#print axioms generic
+#print axioms original_without_hq
+end Bound197CallerRelPrime
+
+namespace Bound197CallerGCD
+open Polynomial
+theorem generic {A K : Type*} [CommRing A] [IsDomain A] [IsGCDMonoid A]
+    [Field K] [Algebra A K] [IsFractionRing A K] {R : A[X]} {h q : A}
+    (hcop : IsRelPrime h q) :
+    (C q * X - C h) ^ rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R := by
+  let : NormalizedGCDMonoid A := Classical.choice inferInstance
+  exact Bound197CallerRelPrime.generic (K := K) hcop
+#check @generic
+#print axioms generic
+#check @Bound197CallerRelPrime.original_without_hq
+end Bound197CallerGCD
+
+namespace Bound197CallerGeneric
+open Polynomial
+theorem denominator_dvd {A K : Type*} [CommRing A] [IsDomain A] [IsGCDMonoid A]
+    [Field K] [Algebra A K] [IsFractionRing A K] {R : A[X]} {h q : A}
+    (hq : q ≠ 0) (hcop : IsRelPrime h q) :
+    q ^ rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R.leadingCoeff := by
+  have hd := leadingCoeff_dvd_leadingCoeff (Bound197CallerGCD.generic (R := R) (K := K) hcop)
+  simpa only [leadingCoeff_pow, sub_eq_add_neg, ← C_neg, leadingCoeff_linear hq] using hd
+theorem signed_bound {L : Type*} [Field L] [LinearOrder L] [IsStrictOrderedRing L]
+    {R : Polynomial ℤ} (hR : R ≠ 0) {h q : ℤ} (hcop : IsRelPrime h q) :
+    |(q : L)| ^ rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) ≤
+      |(R.leadingCoeff : L)| := by
+  by_cases hq : q = 0
+  · subst q
+    have h1 : (1 : L) ≤ |(R.leadingCoeff : L)| := by
+      exact_mod_cast Int.one_le_abs (leadingCoeff_ne_zero.2 hR)
+    simpa only [Int.cast_zero, abs_zero] using
+      (pow_le_one₀ (by norm_num) (by norm_num)).trans h1
+  · have hd0 : q ^ rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) ∣
+        R.leadingCoeff := denominator_dvd (R := R) (K := ℚ) hq hcop
+    have hd := Int.natAbs_le_of_dvd_ne_zero hd0 (leadingCoeff_ne_zero.2 hR)
+    rw [Int.natAbs_pow] at hd
+    have hc := Nat.cast_le (α := L).2 hd
+    simpa only [Nat.cast_pow, Nat.cast_natAbs, Int.cast_abs] using hc
+theorem original_no_pos {R : Polynomial ℤ} (hR : R ≠ 0) {h : ℤ} {q : ℕ}
+    (hcop : IsCoprime h (q : ℤ)) {B : ℝ} (hB : |(R.leadingCoeff : ℝ)| ≤ B) :
+    (q : ℝ) ^ rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) ≤ B := by
+  have hb := signed_bound (L := ℝ) hR hcop.isRelPrime
+  simpa only [Int.cast_natCast, Nat.abs_cast] using hb.trans hB
+#check @denominator_dvd
+#check @signed_bound
+#print axioms denominator_dvd
+#print axioms signed_bound
+#print axioms original_no_pos
+end Bound197CallerGeneric
+
+namespace Bound197Caller
+open Roth MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem fullcaller [Unique σ] {B : ℝ} {q r : σ → ℕ} (hq : 1 < q default)
+    {R : MvPolynomial σ ℤ} (hR : R ≠ 0) (hRB : |((uniqueAlgEquiv ℤ σ R).leadingCoeff : ℝ)| ≤ B)
+    {h : σ → ℤ} (hh : IsCoprime (h default) (q default : ℤ)) :
+    index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤
+      Real.log B / (r default * Real.log (q default)) := by
+  classical
+  let R1 : Polynomial ℤ := uniqueAlgEquiv ℤ σ R
+  have hmapeq : uniqueAlgEquiv ℝ σ (map (Int.castRingHom ℝ) R) =
+      R1.map (Int.castRingHom ℝ) := by
+    dsimp only [R1]
+    ext n
+    rw [coeff_uniqueAlgEquiv, Polynomial.coeff_map, coeff_uniqueAlgEquiv, coeff_map]
+  have hmult : Polynomial.rootMultiplicity ((h default : ℝ) / q default)
+      (R1.map (Int.castRingHom ℝ)) =
+      Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)) := by
+    rw [Polynomial.eq_rootMultiplicity_map (f := Rat.castHom ℝ) Rat.cast_injective,
+      Polynomial.map_map]
+    congr 1
+    simp
+  rw [index_unique ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR), hmapeq, hmult]
+  have hlog := Real.log_le_log (by positivity : (0 : ℝ) < (q default : ℝ) ^
+    Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)))
+    (Bound197CallerGeneric.original_no_pos ((map_ne_zero_iff _ (uniqueAlgEquiv ℤ σ).injective).2 hR)
+      hh hRB)
+  rw [Real.log_pow] at hlog
+  simpa [div_div, mul_comm] using
+    div_le_div_of_nonneg_right
+      ((le_div_iff₀ (Real.log_pos (by exact_mod_cast hq))).2 hlog) (Nat.cast_nonneg _)
+
+#print axioms fullcaller
+end Bound197Caller

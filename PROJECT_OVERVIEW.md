@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 196/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 197/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 196; remaining: 97.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 26 YES-but-generalise-first, 44 NO-mathlib-has-it, 58 BORDERLINE-needs-human, 36 SKIP.
+- Completed applicable assessments: 197; remaining: 96.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 58 BORDERLINE-needs-human, 36 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2268,6 +2268,23 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit body caller: Roth.pow_rootMultiplicity_le, Theta declaration206/call209; independently one canonical direct value consumer and zero type consumers. Full caller replays with strongest generic theorem specialized to exact old quotient type.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_eq_pow_mul_of_rootMultiplicity.md).
 
+### Completed: `Roth.pow_rootMultiplicity_le`
+
+- Type: `∀ {R : Polynomial ℤ},
+  R ≠ 0 →
+    ∀ {h : ℤ} {q : ℕ},
+      0 < q →
+        IsCoprime h ↑q →
+          ∀ {B : ℝ},
+            |↑R.leadingCoeff| ≤ B →
+              ↑q ^ Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) ≤ B`
+- What: Reduced rational-root denominator to its multiplicity is bounded by absolute integer polynomial leading coefficient, hence by B.
+- How: Primitive linear-factor descent through Gauss lemma, compare nonzero integer leading coefficients and cast.
+- Hypotheses: R≠0, q>0 (removable numerically), IsCoprime h ↑q (IsRelPrime equivalent over ℤ), absolute leading coefficient≤B
+- Project dependencies: Roth.exists_eq_pow_mul_of_rootMultiplicity
+- Caller summary: One explicit within-file caller: private Roth.index_unique_le_log_div at Theta:245; zero outside file; canonical1value/0type.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.pow_rootMultiplicity_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2686,6 +2703,8 @@ Completed `Roth.isPrimitive_pow`: Induct on the exponent: the constant polynomia
 
 Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: 15 actual method/form cells; partial hits Polynomial.pow_rootMultiplicity_dvd, Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map and integer iff. Pinned native signatures supersede stale Finder/LeanSearch signatures. Default-limit exact? and wildcard failures are rejected search evidence, never absence proofs.
 
+Completed `Roth.pow_rootMultiplicity_le`: Related pow_rootMultiplicity_dvd, Gauss descent, leadingCoeff_dvd_leadingCoeff, den_dvd_of_is_root and Int.natAbs_le_of_dvd_ne_zero verified; no exact retrieved replacement.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3079,6 +3098,8 @@ Completed `Roth.isPrimitive_linear`: The helper has a distinct role in the polyn
 Completed `Roth.isPrimitive_pow`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: Classical Gauss lemma plus root multiplicity divisibility; the missing bridge handles primitive qX-h and the full mapped root multiplicity. Existing rational-root numerator/denominator bounds are first-order partial analogues.
+
+Completed `Roth.pow_rootMultiplicity_le`: Rational root theorem with multiplicity; determinant coefficient proofs reuse integer discreteness but do not rederive this bound.
 
 ## Part 5: Generalization opportunities
 
@@ -3484,6 +3505,8 @@ Completed `Roth.isPrimitive_pow`: No public generality claim under the private p
 
 Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: Verified no-positive-denominator theorem, arbitrary commutative GCD domain A with any fraction field K, IsRelPrime h q rather than Bézout IsCoprime, IsGCDMonoid with locally chosen normalized gcd. Original exact quotient interface and full caller checked.
 
+Completed `Roth.pow_rootMultiplicity_le`: Verified signed integer denominator, no positivity, Ring L ordered target, direct abs lc bound; separate GCD-domain/fraction-field denominator-power divisibility for q≠0. IsRelPrime strictly generalizes Bézout condition only in generic coefficient domains; numerical law retains ℤ coefficients.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3878,6 +3901,8 @@ Completed `Roth.isPrimitive_linear`: No new primitive is needed for this interna
 Completed `Roth.isPrimitive_pow`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: Polynomial.pow_linear_dvd_of_rootMultiplicity: primitive reduced linear-factor power divides over a GCD domain to the full fraction-field root multiplicity. Generic primitive-linear and primitive-power helpers are additional new-proof candidates, not existing mathlib replacements.
+
+Completed `Roth.pow_rootMultiplicity_le`: Generic multiplicity integral-linear-factor descent and denominator-power leading-coefficient divisor; numeric discrete-order corollary.
 
 ## Part 7: Junk / removable
 
@@ -4276,6 +4301,8 @@ Completed `Roth.isPrimitive_pow`: Retain a live private proof interface. No plac
 
 Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: No dead-code finding. Docstring mentions nonzero R while actual theorem permits zero; adjust prose during cleanup.
 
+Completed `Roth.pow_rootMultiplicity_le`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4476,6 +4503,7 @@ Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity`: No dead-code finding. Do
 | 194 | `Roth.isPrimitive_linear` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.isPrimitive_linear.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.isPrimitive_linear/root-acceptance.json) |
 | 195 | `Roth.isPrimitive_pow` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.isPrimitive_pow.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.isPrimitive_pow/root-acceptance.json) |
 | 196 | `Roth.exists_eq_pow_mul_of_rootMultiplicity` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_eq_pow_mul_of_rootMultiplicity.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_eq_pow_mul_of_rootMultiplicity/root-acceptance.json) |
+| 197 | `Roth.pow_rootMultiplicity_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.pow_rootMultiplicity_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.pow_rootMultiplicity_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4867,12 +4895,14 @@ Completed `Roth.isPrimitive_pow` action: Keep unchanged; complete private-prefil
 
 Completed `Roth.exists_eq_pow_mul_of_rootMultiplicity` action: YES-but-generalise-first. Propose Mathlib/RingTheory/Polynomial/RationalRoot.lean with GaussLemma import after graph check; run /generalise and /cleanup, coordinate with accepted172 and176. Retain Theta local wrapper until upstream migration; sole caller uses explicitly original-typed generic quotient corollary.
 
+Completed `Roth.pow_rootMultiplicity_le` action: YES-but-generalise-first; group accepted196 factor theorem, algebraic divisor and ordered integer bound; generalise and cleanup before PR.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.pow_rootMultiplicity_le` next. Supporting identities receive their own applicable checks.
+   `Roth.index_unique_le_log_div` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
