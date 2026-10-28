@@ -1,0 +1,29 @@
+{
+  "type": "∀ {p : ℕ},\n  0 < p →\n    ∀ {δ : ℝ},\n      0 < δ →\n        ∀ {r₁ q₁ : ℕ},\n          ↑p * (2 * ↑p + 1) / δ ≤ Real.log ↑q₁ →\n            ∀ {l : ℕ}, 1 ≤ l → l ≤ r₁ → Roth.lem6M p r₁ (↑q₁ ^ (δ * ↑r₁)) l < ↑q₁ ^ (δ * (1 + 1 / ↑p) * (↑l * ↑r₁))",
+  "kind": "theorem",
+  "what": "The determinant bound at an exponential coefficient bound is absorbed by a slightly larger denominator power.",
+  "how": "Bound the natural prefactor using factorial_coefficient_le_two_pow_aux, absorb its power of two with two_pow_lt_rpow_aux, then use Real.rpow_mul_natCast and Real.rpow_add to combine exponents.",
+  "hypotheses": "p>0, delta>0, log q at least p(2p+1)/delta, and 1<=l<=r. No inherited typeclasses. Natural q and l<=r are analytically stronger than the compiled real-q/l<=2^r extension with r>0.",
+  "project_dependencies": [
+    "Roth.factorial_coefficient_le_two_pow_aux",
+    "Roth.lem6M",
+    "Roth.two_pow_lt_rpow_aux"
+  ],
+  "caller_summary": {
+    "explicit_in_file": 1,
+    "external_to_file": 0,
+    "source_callers": [
+      "Roth.theta_phi_lt_aux"
+    ],
+    "direct_kernel_value_consumers": [
+      "_private.Roth.Theta.0.Roth.theta_phi_lt_aux"
+    ],
+    "note": "Entire actual caller and all downstream module proofs compile with target body locally inlined; lexical and direct kernel counts are separate."
+  },
+  "mathlib_api_audit": "Fifteen actual current/standard/abstract search cells plus compiled pinned candidates. Nat.factorial_le_pow and Real log/rpow/exp laws are ingredients; Real.pow_div_factorial_le_exp has factorial in the denominator and is not a replacement. No existing exact replacement established; local index warming and external revision limits are recorded.",
+  "moral_duplications": "A source-specific application of factorial majorization and exponential absorption. Generic positive multiplication/rpow transport is already available, but supplying its numerical premises needs new/project proofs.",
+  "generalization": "Successfully compiled real q>=0 with threshold deriving q>1, l<=2^r and explicit r>0, with original theorem as checked wrapper and downstream statements unchanged. No optimality or maximality claim; endpoint formula guards and negative-log symmetry constrain unsupported widenings.",
+  "missing_api": "Potential public package: determinant coefficient-height envelope with factorial overhead and explicit large-denominator absorption. Whether this particular envelope should be public remains an audience/design question, not a proven universal missing API.",
+  "junk": "Not dead code: one explicit source caller and one direct canonical kernel-value consumer; its abstraction can organize the induction despite a single consumer.",
+  "action": "BORDERLINE-needs-human. Keep at Roth/Theta.lean. Future upstream design should decide public envelope scope, real-q interface, wider size/degree hypotheses, and helper visibility; assessment is complete and does not await user input."
+}

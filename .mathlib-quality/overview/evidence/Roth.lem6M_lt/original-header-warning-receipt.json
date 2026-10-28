@@ -1,0 +1,351 @@
+{
+  "request": {
+    "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+    "timeout_s": 45
+  },
+  "elapsed_ms": 50645,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"partial\": false,\n  \"still_elaborating_lines\": null,\n  \"success\": true,\n  \"timed_out\": false,\n  \"items\": [\n    {\n      \"severity\": \"warning\",\n      \"message\": \"The module doc-string for a file should be the first command after the imports.\\nPlease, add a module doc-string (`/-! ... -/`) before `open MvPolynomial`.\\n\\nHint: Type `m(odule docstring) + [tab]` to insert a template via snippet.\\n\\nNote: This linter can be disabled with `set_option linter.style.header false`\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Roth.lem6M_lt : ∀ {p : ℕ},\\n  0 < p →\\n    ∀ {δ : ℝ},\\n      0 < δ →\\n        ∀ {r₁ q₁ : ℕ},\\n          ↑p * (2 * ↑p + 1) / δ ≤ Real.log ↑q₁ →\\n            ∀ {l : ℕ}, 1 ≤ l → l ≤ r₁ → Roth.lem6M p r₁ (↑q₁ ^ (δ * ↑r₁)) l < ↑q₁ ^ (δ * (1 + 1 / ↑p) * (↑l * ↑r₁))\",\n      \"line\": 954,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem Roth.lem6M_lt : ∀ {p : ℕ},\\n  0 < p →\\n    ∀ {δ : ℝ},\\n      0 < δ →\\n        ∀ {r₁ q₁ : ℕ},\\n          ↑p * (2 * ↑p + 1) / δ ≤ Real.log ↑q₁ →\\n            ∀ {l : ℕ}, 1 ≤ l → l ≤ r₁ → Roth.lem6M p r₁ (↑q₁ ^ (δ * ↑r₁)) l < ↑q₁ ^ (δ * (1 + 1 / ↑p) * (↑l * ↑r₁)) :=\\nfun {p} hp {δ} hδ0 {r₁ q₁} hq₁ {l} hl hl' ↦\\n  have hp0 := cast (Eq.symm (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑p) Nat.cast_lt._simp_1)) hp;\\n  have hq1pos :=\\n    LT.lt.trans zero_lt_one\\n      ((Real.log_pos_iff (Nat.cast_nonneg q₁)).mp\\n        (lt_of_lt_of_le\\n          (div_pos\\n            (mul_pos (Nat.cast_pos'.mpr hp)\\n              (add_pos'\\n                (mul_pos\\n                  (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat ℝ (Eq.refl 2))\\n                    (Eq.refl (Nat.ble 1 2)))\\n                  (Nat.cast_pos'.mpr hp))\\n                (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one)\\n                  (Eq.refl (Nat.ble 1 1)))))\\n            hδ0)\\n          hq₁));\\n  have hnatR :=\\n    cast\\n      (Eq.symm\\n        (Eq.trans\\n          (congrFun'\\n            (congrArg LE.le\\n              (congrFun'\\n                (congrArg HMul.hMul\\n                  (congrFun'\\n                    (congrArg HMul.hMul\\n                      (congrFun' (congrArg HPow.hPow (congrArg (HAdd.hAdd ↑r₁) (Eq.symm Nat.cast_one))) (p * l)))\\n                    ↑l.factorial))\\n                (↑2 ^ (p * l * r₁))))\\n            (↑2 ^ ((2 * p + 1) * r₁ * l)))\\n          (Eq.trans\\n            (congr\\n              (congrArg LE.le\\n                (Eq.trans\\n                  (congr\\n                    (congrArg HMul.hMul\\n                      (Eq.trans\\n                        (congrFun'\\n                          (congrArg HMul.hMul\\n                            (Eq.trans (congrFun' (congrArg HPow.hPow (Nat.cast_add._simp_1 r₁ 1)) (p * l))\\n                              (Nat.cast_pow._simp_1 (r₁ + 1) (p * l))))\\n                          ↑l.factorial)\\n                        (Nat.cast_mul._simp_1 ((r₁ + 1) ^ (p * l)) l.factorial)))\\n                    (Nat.cast_pow._simp_1 2 (p * l * r₁)))\\n                  (Nat.cast_mul._simp_1 ((r₁ + 1) ^ (p * l) * l.factorial) (2 ^ (p * l * r₁)))))\\n              (Nat.cast_pow._simp_1 2 ((2 * p + 1) * r₁ * l)))\\n            Nat.cast_le._simp_1)))\\n      (Roth.factorial_coefficient_le_two_pow_aux✝ p r₁ l (LE.le.trans hl' (LT.lt.le Nat.lt_two_pow_self)));\\n  Trans.trans\\n    (Trans.trans\\n      (Trans.trans\\n        (Eq.mpr\\n          (id\\n            (congrArg (fun _a ↦ _a = (↑r₁ + 1) ^ (p * l) * ↑l.factorial * 2 ^ (p * l * r₁) * (↑q₁ ^ (δ * ↑r₁)) ^ l)\\n              (Roth.lem6M.eq_1 p r₁ (↑q₁ ^ (δ * ↑r₁)) l)))\\n          (Mathlib.Tactic.Ring.of_eq\\n            (Mathlib.Tactic.Ring.Common.mul_congr\\n              (Mathlib.Tactic.Ring.Common.mul_congr\\n                (Mathlib.Tactic.Ring.Common.mul_congr\\n                  (Mathlib.Tactic.Ring.Common.pow_congr\\n                    (Mathlib.Tactic.Ring.Common.add_congr\\n                      (Mathlib.Tactic.Ring.Common.atom_pf (↑r₁) rfl\\n                        (Eq.mpr\\n                          (id\\n                            (congrArg (fun _a ↦ ↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1 = ↑r₁ ^ Nat.rawCast 1 * _a)\\n                              (Eq.symm rfl)))\\n                          (Eq.refl (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1))))\\n                      (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one))\\n                      (Mathlib.Tactic.Ring.Common.add_pf_add_gt (Nat.rawCast 1)\\n                        (Mathlib.Tactic.Ring.Common.add_pf_add_zero (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))))\\n                    (Mathlib.Tactic.Ring.Common.mul_congr\\n                      (Mathlib.Tactic.Ring.Common.atom_pf p rfl\\n                        (Eq.mpr\\n                          (id\\n                            (congrArg (fun _a ↦ p ^ Nat.rawCast 1 * Nat.rawCast 1 = p ^ Nat.rawCast 1 * _a)\\n                              (Eq.symm rfl)))\\n  \\n\\n[... 50859 characters elided; set LEAN_MCP_MAX_OUTPUT_CHARS=0 for the full text ...]\\n\\n.Ring.Common.mul_zero (↑l ^ Nat.rawCast 1 * Nat.rawCast 1))\\n                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero\\n                        (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1) + 0)))\\n                    (Mathlib.Tactic.Ring.Common.zero_mul (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))\\n                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero\\n                      (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1) + 0))))\\n                (Mathlib.Tactic.Ring.Common.add_mul\\n                  (Mathlib.Tactic.Ring.Common.mul_add\\n                    (Mathlib.Tactic.Ring.Common.mul_pf_left δ (Nat.rawCast 1)\\n                      (Mathlib.Tactic.Ring.Common.mul_pf_left (↑p)⁻¹ (Nat.rawCast 1)\\n                        (Mathlib.Tactic.Ring.Common.mul_pf_right (↑l) (Nat.rawCast 1)\\n                          (Mathlib.Tactic.Ring.Common.mul_pf_right (↑r₁) (Nat.rawCast 1)\\n                            (Mathlib.Meta.NormNum.IsNat.to_raw_eq\\n                              (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)\\n                                (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1) (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1)\\n                                (Eq.refl 1)))))))\\n                    (Mathlib.Tactic.Ring.Common.mul_zero (δ ^ Nat.rawCast 1 * ((↑p)⁻¹ ^ Nat.rawCast 1 * Nat.rawCast 1)))\\n                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero\\n                      (δ ^ Nat.rawCast 1 *\\n                          ((↑p)⁻¹ ^ Nat.rawCast 1 * (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1))) +\\n                        0)))\\n                  (Mathlib.Tactic.Ring.Common.zero_mul (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1) + 0))\\n                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero\\n                    (δ ^ Nat.rawCast 1 *\\n                        ((↑p)⁻¹ ^ Nat.rawCast 1 * (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1))) +\\n                      ⋯))))\\n              ⋯ ⋯)\\n            ⋯))))\",\n      \"line\": 955,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth.lem6M_lt' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 956,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.RSet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 957,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.indexSet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 958,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.Θ' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 959,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.one_mem_RSet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 960,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.indexSet_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 961,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.indexSet_bddAbove' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 962,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.index_le_Θ' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 963,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.Θ_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 964,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.Θ_le_card' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 965,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.Θ_le_of_forall_index_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 966,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.Θ_mono' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 967,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.Θ_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 968,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.exists_eq_pow_mul_of_rootMultiplicity' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 969,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 970,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.Θ_unique_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 971,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 972,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.lem6Φ' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 973,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.one_le_lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 974,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.floor_sq_div_two_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 975,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.sq_div_three_lt_floor_sq_div_two' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 976,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.min_le_sum_max' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 977,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.sum_max_sub_le_index_det' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 978,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.index_det_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 979,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.index_le_lem6' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 980,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.Θ_option_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 981,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.replay' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 982,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.lem7_Φ_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 983,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.lem7_numeric' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 984,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 985,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEMSIXM217_DIRECT_CONSUMER: _private.Roth.Theta.0.Roth.theta_phi_lt_aux\",\n      \"line\": 988,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEMSIXM217_AUDIT: requested=293; unique=293\",\n      \"line\": 988,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEMSIXM217_AUDIT_PRESENT: present=293; values=293\",\n      \"line\": 988,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ],\n  \"failed_dependencies\": []\n}"
+      }
+    ],
+    "structuredContent": {
+      "result": {
+        "partial": false,
+        "still_elaborating_lines": null,
+        "success": true,
+        "timed_out": false,
+        "items": [
+          {
+            "severity": "warning",
+            "message": "The module doc-string for a file should be the first command after the imports.\nPlease, add a module doc-string (`/-! ... -/`) before `open MvPolynomial`.\n\nHint: Type `m(odule docstring) + [tab]` to insert a template via snippet.\n\nNote: This linter can be disabled with `set_option linter.style.header false`",
+            "line": 11,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "@Roth.lem6M_lt : ∀ {p : ℕ},\n  0 < p →\n    ∀ {δ : ℝ},\n      0 < δ →\n        ∀ {r₁ q₁ : ℕ},\n          ↑p * (2 * ↑p + 1) / δ ≤ Real.log ↑q₁ →\n            ∀ {l : ℕ}, 1 ≤ l → l ≤ r₁ → Roth.lem6M p r₁ (↑q₁ ^ (δ * ↑r₁)) l < ↑q₁ ^ (δ * (1 + 1 / ↑p) * (↑l * ↑r₁))",
+            "line": 954,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "theorem Roth.lem6M_lt : ∀ {p : ℕ},\n  0 < p →\n    ∀ {δ : ℝ},\n      0 < δ →\n        ∀ {r₁ q₁ : ℕ},\n          ↑p * (2 * ↑p + 1) / δ ≤ Real.log ↑q₁ →\n            ∀ {l : ℕ}, 1 ≤ l → l ≤ r₁ → Roth.lem6M p r₁ (↑q₁ ^ (δ * ↑r₁)) l < ↑q₁ ^ (δ * (1 + 1 / ↑p) * (↑l * ↑r₁)) :=\nfun {p} hp {δ} hδ0 {r₁ q₁} hq₁ {l} hl hl' ↦\n  have hp0 := cast (Eq.symm (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑p) Nat.cast_lt._simp_1)) hp;\n  have hq1pos :=\n    LT.lt.trans zero_lt_one\n      ((Real.log_pos_iff (Nat.cast_nonneg q₁)).mp\n        (lt_of_lt_of_le\n          (div_pos\n            (mul_pos (Nat.cast_pos'.mpr hp)\n              (add_pos'\n                (mul_pos\n                  (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat ℝ (Eq.refl 2))\n                    (Eq.refl (Nat.ble 1 2)))\n                  (Nat.cast_pos'.mpr hp))\n                (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one)\n                  (Eq.refl (Nat.ble 1 1)))))\n            hδ0)\n          hq₁));\n  have hnatR :=\n    cast\n      (Eq.symm\n        (Eq.trans\n          (congrFun'\n            (congrArg LE.le\n              (congrFun'\n                (congrArg HMul.hMul\n                  (congrFun'\n                    (congrArg HMul.hMul\n                      (congrFun' (congrArg HPow.hPow (congrArg (HAdd.hAdd ↑r₁) (Eq.symm Nat.cast_one))) (p * l)))\n                    ↑l.factorial))\n                (↑2 ^ (p * l * r₁))))\n            (↑2 ^ ((2 * p + 1) * r₁ * l)))\n          (Eq.trans\n            (congr\n              (congrArg LE.le\n                (Eq.trans\n                  (congr\n                    (congrArg HMul.hMul\n                      (Eq.trans\n                        (congrFun'\n                          (congrArg HMul.hMul\n                            (Eq.trans (congrFun' (congrArg HPow.hPow (Nat.cast_add._simp_1 r₁ 1)) (p * l))\n                              (Nat.cast_pow._simp_1 (r₁ + 1) (p * l))))\n                          ↑l.factorial)\n                        (Nat.cast_mul._simp_1 ((r₁ + 1) ^ (p * l)) l.factorial)))\n                    (Nat.cast_pow._simp_1 2 (p * l * r₁)))\n                  (Nat.cast_mul._simp_1 ((r₁ + 1) ^ (p * l) * l.factorial) (2 ^ (p * l * r₁)))))\n              (Nat.cast_pow._simp_1 2 ((2 * p + 1) * r₁ * l)))\n            Nat.cast_le._simp_1)))\n      (Roth.factorial_coefficient_le_two_pow_aux✝ p r₁ l (LE.le.trans hl' (LT.lt.le Nat.lt_two_pow_self)));\n  Trans.trans\n    (Trans.trans\n      (Trans.trans\n        (Eq.mpr\n          (id\n            (congrArg (fun _a ↦ _a = (↑r₁ + 1) ^ (p * l) * ↑l.factorial * 2 ^ (p * l * r₁) * (↑q₁ ^ (δ * ↑r₁)) ^ l)\n              (Roth.lem6M.eq_1 p r₁ (↑q₁ ^ (δ * ↑r₁)) l)))\n          (Mathlib.Tactic.Ring.of_eq\n            (Mathlib.Tactic.Ring.Common.mul_congr\n              (Mathlib.Tactic.Ring.Common.mul_congr\n                (Mathlib.Tactic.Ring.Common.mul_congr\n                  (Mathlib.Tactic.Ring.Common.pow_congr\n                    (Mathlib.Tactic.Ring.Common.add_congr\n                      (Mathlib.Tactic.Ring.Common.atom_pf (↑r₁) rfl\n                        (Eq.mpr\n                          (id\n                            (congrArg (fun _a ↦ ↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1 = ↑r₁ ^ Nat.rawCast 1 * _a)\n                              (Eq.symm rfl)))\n                          (Eq.refl (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1))))\n                      (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one))\n                      (Mathlib.Tactic.Ring.Common.add_pf_add_gt (Nat.rawCast 1)\n                        (Mathlib.Tactic.Ring.Common.add_pf_add_zero (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))))\n                    (Mathlib.Tactic.Ring.Common.mul_congr\n                      (Mathlib.Tactic.Ring.Common.atom_pf p rfl\n                        (Eq.mpr\n                          (id\n                            (congrArg (fun _a ↦ p ^ Nat.rawCast 1 * Nat.rawCast 1 = p ^ Nat.rawCast 1 * _a)\n                              (Eq.symm rfl)))\n  \n\n[... 50859 characters elided; set LEAN_MCP_MAX_OUTPUT_CHARS=0 for the full text ...]\n\n.Ring.Common.mul_zero (↑l ^ Nat.rawCast 1 * Nat.rawCast 1))\n                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero\n                        (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1) + 0)))\n                    (Mathlib.Tactic.Ring.Common.zero_mul (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))\n                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero\n                      (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1) + 0))))\n                (Mathlib.Tactic.Ring.Common.add_mul\n                  (Mathlib.Tactic.Ring.Common.mul_add\n                    (Mathlib.Tactic.Ring.Common.mul_pf_left δ (Nat.rawCast 1)\n                      (Mathlib.Tactic.Ring.Common.mul_pf_left (↑p)⁻¹ (Nat.rawCast 1)\n                        (Mathlib.Tactic.Ring.Common.mul_pf_right (↑l) (Nat.rawCast 1)\n                          (Mathlib.Tactic.Ring.Common.mul_pf_right (↑r₁) (Nat.rawCast 1)\n                            (Mathlib.Meta.NormNum.IsNat.to_raw_eq\n                              (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)\n                                (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1) (Mathlib.Meta.NormNum.IsNat.of_raw ℝ 1)\n                                (Eq.refl 1)))))))\n                    (Mathlib.Tactic.Ring.Common.mul_zero (δ ^ Nat.rawCast 1 * ((↑p)⁻¹ ^ Nat.rawCast 1 * Nat.rawCast 1)))\n                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero\n                      (δ ^ Nat.rawCast 1 *\n                          ((↑p)⁻¹ ^ Nat.rawCast 1 * (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1))) +\n                        0)))\n                  (Mathlib.Tactic.Ring.Common.zero_mul (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1) + 0))\n                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero\n                    (δ ^ Nat.rawCast 1 *\n                        ((↑p)⁻¹ ^ Nat.rawCast 1 * (↑l ^ Nat.rawCast 1 * (↑r₁ ^ Nat.rawCast 1 * Nat.rawCast 1))) +\n                      ⋯))))\n              ⋯ ⋯)\n            ⋯))))",
+            "line": 955,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Roth.lem6M_lt' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 956,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.RSet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 957,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.indexSet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 958,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.Θ' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 959,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.one_mem_RSet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 960,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.indexSet_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 961,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.indexSet_bddAbove' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 962,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.index_le_Θ' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 963,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.Θ_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 964,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.Θ_le_card' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 965,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.Θ_le_of_forall_index_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 966,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.Θ_mono' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 967,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.Θ_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 968,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.exists_eq_pow_mul_of_rootMultiplicity' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 969,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 970,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.Θ_unique_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 971,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 972,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.lem6Φ' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 973,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.one_le_lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 974,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.floor_sq_div_two_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 975,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.sq_div_three_lt_floor_sq_div_two' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 976,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.min_le_sum_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 977,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.sum_max_sub_le_index_det' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 978,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.index_det_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 979,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.index_le_lem6' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 980,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.Θ_option_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 981,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.replay' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 982,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.lem7_Φ_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 983,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.lem7_numeric' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 984,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSixM217.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 985,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEMSIXM217_DIRECT_CONSUMER: _private.Roth.Theta.0.Roth.theta_phi_lt_aux",
+            "line": 988,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEMSIXM217_AUDIT: requested=293; unique=293",
+            "line": 988,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEMSIXM217_AUDIT_PRESENT: present=293; values=293",
+            "line": 988,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          }
+        ],
+        "failed_dependencies": []
+      }
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 649,
+  "name": "Roth.lem6M_lt",
+  "short": "lem6M_lt",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 672,
+  "source": "theorem lem6M_lt {p : \u2115} (hp : 0 < p) {\u03b4 : \u211d} (h\u03b40 : 0 < \u03b4) {r\u2081 q\u2081 : \u2115}\n    (hq\u2081 : (p : \u211d) * (2 * p + 1) / \u03b4 \u2264 Real.log q\u2081) {l : \u2115} (hl : 1 \u2264 l) (hl' : l \u2264 r\u2081) :\n    lem6M p r\u2081 ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) l < (q\u2081 : \u211d) ^ (\u03b4 * (1 + 1 / p) * (l * r\u2081)) := by\n  have hp0 : (0 : \u211d) < p := by exact_mod_cast hp\n  have hq1pos : (0 : \u211d) < q\u2081 := zero_lt_one.trans <|\n    (Real.log_pos_iff (Nat.cast_nonneg q\u2081)).1 <| lt_of_lt_of_le (by positivity) hq\u2081\n  -- the factors other than `B^l` are at most `2^{(2p+1) r\u2081 l}`\n  have hnatR : ((r\u2081 : \u211d) + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r\u2081) \u2264\n      2 ^ ((2 * p + 1) * r\u2081 * l) := by\n    exact_mod_cast factorial_coefficient_le_two_pow_aux p r\u2081 l (hl'.trans Nat.lt_two_pow_self.le)\n  calc\n    lem6M p r\u2081 ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) l = ((r\u2081 : \u211d) + 1) ^ (p * l) * l.factorial *\n        2 ^ (p * l * r\u2081) * ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) ^ l := by\n          rw [lem6M]\n          ring\n    _ \u2264 2 ^ ((2 * p + 1) * r\u2081 * l) * ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) ^ l :=\n      mul_le_mul_of_nonneg_right hnatR (by positivity)\n    _ < (q\u2081 : \u211d) ^ (\u03b4 / p * (l * r\u2081)) * ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) ^ l :=\n      mul_lt_mul_of_pos_right\n        (two_pow_lt_rpow_aux hp h\u03b40 hq1pos.le hq\u2081 (Nat.mul_pos (by lia) (by lia))) (by positivity)\n    _ = (q\u2081 : \u211d) ^ (\u03b4 * (1 + 1 / p) * (l * r\u2081)) := by\n      rw [\u2190 Real.rpow_mul_natCast hq1pos.le, \u2190 Real.rpow_add hq1pos]\n      congr 1\n      ring",
+  "signature": "theorem lem6M_lt {p : \u2115} (hp : 0 < p) {\u03b4 : \u211d} (h\u03b40 : 0 < \u03b4) {r\u2081 q\u2081 : \u2115}\n    (hq\u2081 : (p : \u211d) * (2 * p + 1) / \u03b4 \u2264 Real.log q\u2081) {l : \u2115} (hl : 1 \u2264 l) (hl' : l \u2264 r\u2081) :\n    lem6M p r\u2081 ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) l < (q\u2081 : \u211d) ^ (\u03b4 * (1 + 1 / p) * (l * r\u2081))",
+  "body": "by\n  have hp0 : (0 : \u211d) < p := by exact_mod_cast hp\n  have hq1pos : (0 : \u211d) < q\u2081 := zero_lt_one.trans <|\n    (Real.log_pos_iff (Nat.cast_nonneg q\u2081)).1 <| lt_of_lt_of_le (by positivity) hq\u2081\n  -- the factors other than `B^l` are at most `2^{(2p+1) r\u2081 l}`\n  have hnatR : ((r\u2081 : \u211d) + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r\u2081) \u2264\n      2 ^ ((2 * p + 1) * r\u2081 * l) := by\n    exact_mod_cast factorial_coefficient_le_two_pow_aux p r\u2081 l (hl'.trans Nat.lt_two_pow_self.le)\n  calc\n    lem6M p r\u2081 ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) l = ((r\u2081 : \u211d) + 1) ^ (p * l) * l.factorial *\n        2 ^ (p * l * r\u2081) * ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) ^ l := by\n          rw [lem6M]\n          ring\n    _ \u2264 2 ^ ((2 * p + 1) * r\u2081 * l) * ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) ^ l :=\n      mul_le_mul_of_nonneg_right hnatR (by positivity)\n    _ < (q\u2081 : \u211d) ^ (\u03b4 / p * (l * r\u2081)) * ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) ^ l :=\n      mul_lt_mul_of_pos_right\n        (two_pow_lt_rpow_aux hp h\u03b40 hq1pos.le hq\u2081 (Nat.mul_pos (by lia) (by lia))) (by positivity)\n    _ = (q\u2081 : \u211d) ^ (\u03b4 * (1 + 1 / p) * (l * r\u2081)) := by\n      rw [\u2190 Real.rpow_mul_natCast hq1pos.le, \u2190 Real.rpow_add hq1pos]\n      congr 1\n      ring",
+  "proof_lines": 22,
+  "sha256": "00d555aa7d68dccb53966333b3939bd85e3f5779419609c4aa28eaac055d2d6e",
+  "what": "The determinant bound at an exponential coefficient bound is absorbed by a slightly larger denominator power.",
+  "how": "Bound factorial terms by factorial_coefficient_le_two_pow_aux, absorb the remaining power of two with two_pow_lt_rpow_aux, and add real-power exponents.",
+  "hypotheses": "Positive dimension/delta; sufficiently large logarithm; positive determinant size bounded by the degree.",
+  "source_body_refs": [
+    "Roth.factorial_coefficient_le_two_pow_aux",
+    "Roth.lem6M",
+    "Roth.two_pow_lt_rpow_aux"
+  ],
+  "source_type_refs": [
+    "Roth.lem6M"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient \u03c3 : Type*, [Fintype \u03c3], [DecidableEq \u03c3]; Lemma6 additionally \u03c4 : Type*, [Fintype \u03c4], [DecidableEq \u03c4]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [
+    "Roth.factorial_coefficient_le_two_pow_aux",
+    "Roth.lem6M",
+    "Roth.two_pow_lt_rpow_aux"
+  ],
+  "used_by_in_file": [
+    "Roth.theta_phi_lt_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 243,
+  "project_body_refs": [
+    "Roth.factorial_coefficient_le_two_pow_aux",
+    "Roth.lem6M",
+    "Roth.two_pow_lt_rpow_aux"
+  ],
+  "project_type_refs": [
+    "Roth.lem6M"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.theta_phi_lt_aux",
+      "file": "Roth/Theta.lean",
+      "line": 840
+    }
+  ]
+}

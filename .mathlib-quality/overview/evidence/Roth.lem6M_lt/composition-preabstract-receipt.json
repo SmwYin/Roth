@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n/-! Independent mathlib-only absorption experiments. -/\n#check_failure Roth.lem6M_lt\n#check_failure Roth.lem6M\nnamespace LemSixM217Composition\nnoncomputable def formula (p r : ℕ) (B : ℝ) (l : ℕ) : ℝ :=\n  ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r)\nprivate lemma factorial_coefficient_le_two_pow_aux (p r₁ l : ℕ) (hl : l ≤ 2 ^ r₁) :\n    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤ 2 ^ ((2 * p + 1) * r₁ * l) := by\n  calc\n    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁)\n        ≤ (2 ^ r₁) ^ (p * l) * (2 ^ r₁) ^ l * 2 ^ (p * l * r₁) := by\n          gcongr\n          · exact Nat.lt_two_pow_self\n          · exact (Nat.factorial_le_pow l).trans (Nat.pow_le_pow_left hl _)\n    _ = 2 ^ ((2 * p + 1) * r₁ * l) := by\n      rw [← pow_mul, ← pow_mul, ← pow_add, ← pow_add]\n      ring_nf\n\nprivate lemma two_pow_lt_rpow_aux {p r₁ l : ℕ} (hp : 0 < p) {δ q : ℝ} (hδ : 0 < δ) (hq : 0 ≤ q)\n    (hlog : (p : ℝ) * (2 * p + 1) / δ ≤ Real.log q) (hlr : 0 < l * r₁) :\n    (2 : ℝ) ^ ((2 * p + 1) * r₁ * l) < q ^ (δ / p * (l * r₁)) := by\n  have hp0 : (0 : ℝ) < p := by exact_mod_cast hp\n  replace hq : 0 < q := zero_lt_one.trans <|\n    (Real.log_pos_iff hq).1 <| lt_of_lt_of_le (by positivity) hlog\n  have hlog2 : Real.log 2 < 1 := by\n    exact (Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)).trans_eq\n      (by norm_num)\n  have h3 : (2 * p + 1 : ℝ) ≤ Real.log q * (δ / p) := by\n    rw [mul_div_assoc', le_div_iff₀ hp0]\n    rw [div_le_iff₀ hδ] at hlog\n    linarith\n  rw [← Real.rpow_natCast, Real.rpow_def_of_pos (by norm_num), Real.rpow_def_of_pos hq,\n    Real.exp_lt_exp]\n  calc\n    Real.log 2 * (((2 * p + 1) * r₁ * l : ℕ) : ℝ)\n        = Real.log 2 * (2 * p + 1) * (l * r₁) := by\n          push_cast\n          ring\n    _ < Real.log q * (δ / p) * (l * r₁) :=\n      mul_lt_mul_of_pos_right\n        ((mul_lt_of_lt_one_left (by positivity) hlog2).trans_le h3) (by exact_mod_cast hlr)\n    _ = Real.log q * (δ / p * (l * r₁)) := by ring\n\ntheorem directProbe {p : ℕ} (hp : 0 < p) {δ : ℝ} (hδ0 : 0 < δ) {r₁ : ℕ} {q₁ : ℝ}\n    (hq₁nonneg : 0 ≤ q₁)\n    (hq₁ : (p : ℝ) * (2 * p + 1) / δ ≤ Real.log q₁) {l : ℕ}\n    (hl : 1 ≤ l) (hl' : l ≤ 2 ^ r₁) (hr₁ : 0 < r₁) :\n    formula p r₁ (q₁ ^ (δ * r₁)) l < q₁ ^ (δ * (1 + 1 / p) * (l * r₁)) := by\n  fail_if_success exact?\n  fail_if_success\n    exact Real.pow_div_factorial_le_exp q₁ hq₁nonneg l\n  fail_if_success solve | simp only [formula]\n  have hp0 : (0 : ℝ) < p := by exact_mod_cast hp\n  have hq1pos : (0 : ℝ) < q₁ := zero_lt_one.trans <|\n    (Real.log_pos_iff hq₁nonneg).1 <| lt_of_lt_of_le (by positivity) hq₁\n  -- the factors other than `B^l` are at most `2^{(2p+1) r₁ l}`\n  have hnatR : ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤\n      2 ^ ((2 * p + 1) * r₁ * l) := by\n    exact_mod_cast factorial_coefficient_le_two_pow_aux p r₁ l hl'\n  calc\n    formula p r₁ (q₁ ^ (δ * r₁)) l = ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial *\n        2 ^ (p * l * r₁) * (q₁ ^ (δ * r₁)) ^ l := by\n          rw [formula]\n          ring\n    _ ≤ 2 ^ ((2 * p + 1) * r₁ * l) * (q₁ ^ (δ * r₁)) ^ l :=\n      mul_le_mul_of_nonneg_right hnatR (by positivity)\n    _ < q₁ ^ (δ / p * (l * r₁)) * (q₁ ^ (δ * r₁)) ^ l :=\n      mul_lt_mul_of_pos_right\n        (two_pow_lt_rpow_aux hp hδ0 hq1pos.le hq₁ (Nat.mul_pos (by lia) hr₁)) (by positivity)\n    _ = q₁ ^ (δ * (1 + 1 / p) * (l * r₁)) := by\n      rw [← Real.rpow_mul_natCast hq1pos.le, ← Real.rpow_add hq1pos]\n      congr 1\n      ring\ntheorem realEnvelope {p : ℕ} (hp : 0 < p) {δ : ℝ} (hδ0 : 0 < δ) {r₁ : ℕ} {q₁ : ℝ}\n    (hq₁nonneg : 0 ≤ q₁)\n    (hq₁ : (p : ℝ) * (2 * p + 1) / δ ≤ Real.log q₁) {l : ℕ}\n    (hl : 1 ≤ l) (hl' : l ≤ 2 ^ r₁) (hr₁ : 0 < r₁) :\n    formula p r₁ (q₁ ^ (δ * r₁)) l < q₁ ^ (δ * (1 + 1 / p) * (l * r₁)) := by\n  have hp0 : (0 : ℝ) < p := by exact_mod_cast hp\n  have hq1pos : (0 : ℝ) < q₁ := zero_lt_one.trans <|\n    (Real.log_pos_iff hq₁nonneg).1 <| lt_of_lt_of_le (by positivity) hq₁\n  -- the factors other than `B^l` are at most `2^{(2p+1) r₁ l}`\n  have hnatR : ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤\n      2 ^ ((2 * p + 1) * r₁ * l) := by\n    exact_mod_cast factorial_coefficient_le_two_pow_aux p r₁ l hl'\n  calc\n    formula p r₁ (q₁ ^ (δ * r₁)) l = ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial *\n        2 ^ (p * l * r₁) * (q₁ ^ (δ * r₁)) ^ l := by\n          rw [formula]\n          ring\n    _ ≤ 2 ^ ((2 * p + 1) * r₁ * l) * (q₁ ^ (δ * r₁)) ^ l :=\n      mul_le_mul_of_nonneg_right hnatR (by positivity)\n    _ < q₁ ^ (δ / p * (l * r₁)) * (q₁ ^ (δ * r₁)) ^ l :=\n      mul_lt_mul_of_pos_right\n        (two_pow_lt_rpow_aux hp hδ0 hq1pos.le hq₁ (Nat.mul_pos (by lia) hr₁)) (by positivity)\n    _ = q₁ ^ (δ * (1 + 1 / p) * (l * r₁)) := by\n      rw [← Real.rpow_mul_natCast hq1pos.le, ← Real.rpow_add hq1pos]\n      congr 1\n      ring\n#check @Nat.factorial_le_pow\n#check @Nat.lt_two_pow_self\n#check @Real.rpow_add\n#check @Real.rpow_mul_natCast\n#check @Real.log_pos_iff\n#check @Real.exp_lt_exp\n#check @Real.pow_div_factorial_le_exp\n#print axioms realEnvelope\n#print axioms directProbe\nend LemSixM217Composition\n"
+  },
+  "elapsed_ms": 8719,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.lem6M_lt`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.lem6M`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Nat.factorial_le_pow : ∀ (n : ℕ), n.factorial ≤ n ^ n\",\n      \"line\": 119,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.lt_two_pow_self : ∀ {n : ℕ}, n < 2 ^ n\",\n      \"line\": 120,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_add : ∀ {x : ℝ}, 0 < x → ∀ (y z : ℝ), x ^ (y + z) = x ^ y * x ^ z\",\n      \"line\": 121,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_mul_natCast : ∀ {x : ℝ}, 0 ≤ x → ∀ (y : ℝ) (n : ℕ), x ^ (y * ↑n) = (x ^ y) ^ n\",\n      \"line\": 122,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_pos_iff : ∀ {x : ℝ}, 0 ≤ x → (0 < Real.log x ↔ 1 < x)\",\n      \"line\": 123,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.exp_lt_exp : ∀ {x y : ℝ}, Real.exp x < Real.exp y ↔ x < y\",\n      \"line\": 124,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.pow_div_factorial_le_exp : ∀ (x : ℝ), 0 ≤ x → ∀ (n : ℕ), x ^ n / ↑n.factorial ≤ Real.exp x\",\n      \"line\": 125,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217Composition.realEnvelope' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 126,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSixM217Composition.directProbe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 127,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.lem6M_lt`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.lem6M`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Nat.factorial_le_pow : ∀ (n : ℕ), n.factorial ≤ n ^ n",
+          "line": 119,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.lt_two_pow_self : ∀ {n : ℕ}, n < 2 ^ n",
+          "line": 120,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_add : ∀ {x : ℝ}, 0 < x → ∀ (y z : ℝ), x ^ (y + z) = x ^ y * x ^ z",
+          "line": 121,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_mul_natCast : ∀ {x : ℝ}, 0 ≤ x → ∀ (y : ℝ) (n : ℕ), x ^ (y * ↑n) = (x ^ y) ^ n",
+          "line": 122,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_pos_iff : ∀ {x : ℝ}, 0 ≤ x → (0 < Real.log x ↔ 1 < x)",
+          "line": 123,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.exp_lt_exp : ∀ {x y : ℝ}, Real.exp x < Real.exp y ↔ x < y",
+          "line": 124,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.pow_div_factorial_le_exp : ∀ (x : ℝ), 0 ≤ x → ∀ (n : ℕ), x ^ n / ↑n.factorial ≤ Real.exp x",
+          "line": 125,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LemSixM217Composition.realEnvelope' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 126,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LemSixM217Composition.directProbe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 127,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

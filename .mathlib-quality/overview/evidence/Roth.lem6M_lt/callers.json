@@ -1,0 +1,85 @@
+[
+  {
+    "file": "Roth/Theta.lean",
+    "line": 840,
+    "name": "Roth.theta_phi_lt_aux",
+    "short": "theta_phi_lt_aux",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 889,
+    "source": "private lemma theta_phi_lt_aux {n : \u2115} {\u03b4 : \u211d} (h\u03b40 : 0 < \u03b4) (h\u03b4 : \u03b4 \u2264 1 / ((n : \u211d) + 1 + 1))\n    (h\u03b41 : \u03b4 < 1) {r q : Fin (n + 2) \u2192 \u2115} (hanti : Antitone r)\n    (hrlast : 3 \u2264 (r (Fin.last (n + 1)) : \u211d))\n    (hratio : \u2200 i : Fin (n + 1), (r i.succ : \u211d) \u2264 \u03b4 * r i.castSucc)\n    (hq1 : ((n : \u211d) + 1 + 1) * (2 * ((n : \u211d) + 1 + 1) + 1) / \u03b4 \u2264 Real.log (q 0))\n    (hqr : \u2200 j, (r 0 : \u211d) * Real.log (q 0) \u2264 r j * Real.log (q j))\n    (ih : \u2200 {\u03b4 : \u211d}, 0 < \u03b4 \u2192 \u03b4 \u2264 1 / ((n : \u211d) + 1) \u2192\n      \u2200 {r q : Fin (n + 1) \u2192 \u2115}, 3 \u2264 (r (Fin.last n) : \u211d) \u2192\n      (\u2200 i : Fin n, (r i.succ : \u211d) \u2264 \u03b4 * r i.castSucc) \u2192\n      ((n : \u211d) + 1) * (2 * ((n : \u211d) + 1) + 1) / \u03b4 \u2264 Real.log (q 0) \u2192\n      (\u2200 j, (r 0 : \u211d) * Real.log (q 0) \u2264 r j * Real.log (q j)) \u2192\n      \u0398 ((q 0 : \u211d) ^ (\u03b4 * r 0)) q r < 10 ^ (n + 1) * \u03b4 ^ ((1 / 2 : \u211d) ^ (n + 1))) {l : \u2115}\n    (hl : l \u2208 Finset.Icc 1 (r (Fin.last (n + 1)) + 1)) :\n    let M := lem6M (n + 2) (r 0) ((q 0 : \u211d) ^ (\u03b4 * r 0)) l\n    let \u03a6 := \u0398 M (fun _ : Unit \u21a6 q (Fin.last (n + 1))) (fun _ \u21a6 l * r (Fin.last (n + 1))) +\n      \u0398 M (fun j : Fin (n + 1) \u21a6 q j.castSucc) (fun j \u21a6 l * r j.castSucc)\n    \u03a6 + \u221a\u03a6 + \u221a\u03b4 < (10 ^ (n + 2) * \u03b4 ^ ((1 / 2 : \u211d) ^ (n + 2))) / 2 := by\n  dsimp only\n  obtain \u27e8hl1, hl2\u27e9 := Finset.mem_Icc.1 hl\n  have hr0 : \u2200 j, 0 < r j := fun j \u21a6 by\n    have h : (3 : \u211d) \u2264 r j := hrlast.trans (by exact_mod_cast hanti (Fin.le_last j))\n    exact_mod_cast (lt_of_lt_of_le (by norm_num : (0 : \u211d) < 3) h)\n  have hq := theta_denominators_one_lt_aux (hr0 0) (lt_of_lt_of_le (by positivity) hq1) hqr 0\n  let \u03b5 : \u211d := \u03b4 * (1 + 1 / ((n : \u211d) + 1 + 1))\n  have h\u03b50 : 0 < \u03b5 := mul_pos h\u03b40 (add_pos zero_lt_one (h\u03b40.trans_le h\u03b4))\n  let M := lem6M (n + 2) (r 0) ((q 0 : \u211d) ^ (\u03b4 * r 0)) l\n  have hM1 : 1 \u2264 M := one_le_lem6M _ _\n    (Real.one_le_rpow (by exact_mod_cast hq.le) (mul_nonneg h\u03b40.le (Nat.cast_nonneg _))) l\n  have hp : 2 \u2264 n + 1 + 1 := Nat.succ_le_succ (Nat.succ_le_succ (Nat.zero_le n))\n  have hM : M < (q 0 : \u211d) ^ (\u03b5 * (l * r 0)) := by\n    simpa only [\u03b5, Nat.cast_add, Nat.cast_one] using\n      lem6M_lt (p := n + 1 + 1) (Nat.zero_lt_succ _) h\u03b40\n      (by simpa only [Nat.cast_add, Nat.cast_one] using hq1) hl1\n      (hl2.trans (Nat.succ_le_of_lt ((hanti (Fin.le_last _)).trans_lt (by\n        exact_mod_cast (hratio 0).trans_lt\n          (mul_lt_of_lt_one_left (by exact_mod_cast hr0 0) h\u03b41)))))\n  have hb := lem7_\u03a6_bound (p := n + 1 + 1) hp h\u03b40 h\u03b41.le\n  simp only [Nat.add_sub_cancel, Nat.cast_add, Nat.cast_one] at hb\n  apply (lt_div_iff\u2080' (by norm_num : (0 : \u211d) < 2)).2\n  apply lem7_numeric hp h\u03b40 h\u03b41.le\n  -- combine\n  exact (lt_of_lt_of_le (add_lt_add_of_le_of_lt\n    -- the one-variable term\n    (theta_scaled_unique_le_aux hq (hr0 0) hl1\n      (hqr (Fin.last (n + 1))) hM1 hM.le)\n    -- the `(p - 1)`-variable term, by the induction hypothesis\n    (theta_prefix_lt_aux h\u03b40\n      (le_mul_of_one_le_right h\u03b40.le (le_add_of_nonneg_right (h\u03b40.trans_le h\u03b4).le))\n      (fun j \u21a6 hanti (Fin.le_last j)) hrlast hratio hq1 hqr hl1 hM1 hM.le\n      (ih h\u03b50 (theta_delta_succ_lt_aux n h\u03b4).le))) hb.le).le",
+    "signature": "private lemma theta_phi_lt_aux {n : \u2115} {\u03b4 : \u211d} (h\u03b40 : 0 < \u03b4) (h\u03b4 : \u03b4 \u2264 1 / ((n : \u211d) + 1 + 1))\n    (h\u03b41 : \u03b4 < 1) {r q : Fin (n + 2) \u2192 \u2115} (hanti : Antitone r)\n    (hrlast : 3 \u2264 (r (Fin.last (n + 1)) : \u211d))\n    (hratio : \u2200 i : Fin (n + 1), (r i.succ : \u211d) \u2264 \u03b4 * r i.castSucc)\n    (hq1 : ((n : \u211d) + 1 + 1) * (2 * ((n : \u211d) + 1 + 1) + 1) / \u03b4 \u2264 Real.log (q 0))\n    (hqr : \u2200 j, (r 0 : \u211d) * Real.log (q 0) \u2264 r j * Real.log (q j))\n    (ih : \u2200 {\u03b4 : \u211d}, 0 < \u03b4 \u2192 \u03b4 \u2264 1 / ((n : \u211d) + 1) \u2192\n      \u2200 {r q : Fin (n + 1) \u2192 \u2115}, 3 \u2264 (r (Fin.last n) : \u211d) \u2192\n      (\u2200 i : Fin n, (r i.succ : \u211d) \u2264 \u03b4 * r i.castSucc) \u2192\n      ((n : \u211d) + 1) * (2 * ((n : \u211d) + 1) + 1) / \u03b4 \u2264 Real.log (q 0) \u2192\n      (\u2200 j, (r 0 : \u211d) * Real.log (q 0) \u2264 r j * Real.log (q j)) \u2192\n      \u0398 ((q 0 : \u211d) ^ (\u03b4 * r 0)) q r < 10 ^ (n + 1) * \u03b4 ^ ((1 / 2 : \u211d) ^ (n + 1))) {l : \u2115}\n    (hl : l \u2208 Finset.Icc 1 (r (Fin.last (n + 1)) + 1)) :\n    let M := lem6M (n + 2) (r 0) ((q 0 : \u211d) ^ (\u03b4 * r 0)) l\n    let \u03a6 := \u0398 M (fun _ : Unit \u21a6 q (Fin.last (n + 1))) (fun _ \u21a6 l * r (Fin.last (n + 1))) +\n      \u0398 M (fun j : Fin (n + 1) \u21a6 q j.castSucc) (fun j \u21a6 l * r j.castSucc)\n    \u03a6 + \u221a\u03a6 + \u221a\u03b4 < (10 ^ (n + 2) * \u03b4 ^ ((1 / 2 : \u211d) ^ (n + 2))) / 2",
+    "body": "by\n  dsimp only\n  obtain \u27e8hl1, hl2\u27e9 := Finset.mem_Icc.1 hl\n  have hr0 : \u2200 j, 0 < r j := fun j \u21a6 by\n    have h : (3 : \u211d) \u2264 r j := hrlast.trans (by exact_mod_cast hanti (Fin.le_last j))\n    exact_mod_cast (lt_of_lt_of_le (by norm_num : (0 : \u211d) < 3) h)\n  have hq := theta_denominators_one_lt_aux (hr0 0) (lt_of_lt_of_le (by positivity) hq1) hqr 0\n  let \u03b5 : \u211d := \u03b4 * (1 + 1 / ((n : \u211d) + 1 + 1))\n  have h\u03b50 : 0 < \u03b5 := mul_pos h\u03b40 (add_pos zero_lt_one (h\u03b40.trans_le h\u03b4))\n  let M := lem6M (n + 2) (r 0) ((q 0 : \u211d) ^ (\u03b4 * r 0)) l\n  have hM1 : 1 \u2264 M := one_le_lem6M _ _\n    (Real.one_le_rpow (by exact_mod_cast hq.le) (mul_nonneg h\u03b40.le (Nat.cast_nonneg _))) l\n  have hp : 2 \u2264 n + 1 + 1 := Nat.succ_le_succ (Nat.succ_le_succ (Nat.zero_le n))\n  have hM : M < (q 0 : \u211d) ^ (\u03b5 * (l * r 0)) := by\n    simpa only [\u03b5, Nat.cast_add, Nat.cast_one] using\n      lem6M_lt (p := n + 1 + 1) (Nat.zero_lt_succ _) h\u03b40\n      (by simpa only [Nat.cast_add, Nat.cast_one] using hq1) hl1\n      (hl2.trans (Nat.succ_le_of_lt ((hanti (Fin.le_last _)).trans_lt (by\n        exact_mod_cast (hratio 0).trans_lt\n          (mul_lt_of_lt_one_left (by exact_mod_cast hr0 0) h\u03b41)))))\n  have hb := lem7_\u03a6_bound (p := n + 1 + 1) hp h\u03b40 h\u03b41.le\n  simp only [Nat.add_sub_cancel, Nat.cast_add, Nat.cast_one] at hb\n  apply (lt_div_iff\u2080' (by norm_num : (0 : \u211d) < 2)).2\n  apply lem7_numeric hp h\u03b40 h\u03b41.le\n  -- combine\n  exact (lt_of_lt_of_le (add_lt_add_of_le_of_lt\n    -- the one-variable term\n    (theta_scaled_unique_le_aux hq (hr0 0) hl1\n      (hqr (Fin.last (n + 1))) hM1 hM.le)\n    -- the `(p - 1)`-variable term, by the induction hypothesis\n    (theta_prefix_lt_aux h\u03b40\n      (le_mul_of_one_le_right h\u03b40.le (le_add_of_nonneg_right (h\u03b40.trans_le h\u03b4).le))\n      (fun j \u21a6 hanti (Fin.le_last j)) hrlast hratio hq1 hqr hl1 hM1 hM.le\n      (ih h\u03b50 (theta_delta_succ_lt_aux n h\u03b4).le))) hb.le).le",
+    "proof_lines": 34,
+    "sha256": "295d773b53d21b07b8ca2e7a2eae0974206364ea8120a5075c627de973606536",
+    "what": "The two separated extremal-index terms satisfy the numerical bound needed in the successor induction.",
+    "how": "Use lem6M_lt for the coefficient scale, theta_scaled_unique_le_aux for the singleton term, theta_prefix_lt_aux for the prefix, then lem7_\u03a6_bound and lem7_numeric.",
+    "hypotheses": "Small positive delta, antitone degree sequence, minimum last degree, ratios, denominator logarithm growth and the previous-dimensional induction hypothesis.",
+    "source_body_refs": [
+      "Roth.lem6M",
+      "Roth.lem6M_lt",
+      "Roth.lem7_numeric",
+      "Roth.lem7_\u03a6_bound",
+      "Roth.one_le_lem6M",
+      "Roth.theta_delta_succ_lt_aux",
+      "Roth.theta_denominators_one_lt_aux",
+      "Roth.theta_prefix_lt_aux",
+      "Roth.theta_scaled_unique_le_aux"
+    ],
+    "source_type_refs": [
+      "Roth.lem6M",
+      "Roth.\u0398"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.theta_lt_succ_aux",
+        "file": "Roth/Theta.lean",
+        "line": 891
+      }
+    ],
+    "notes": [
+      "proof/body >30 lines"
+    ],
+    "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient \u03c3 : Type*, [Fintype \u03c3], [DecidableEq \u03c3]; Lemma6 additionally \u03c4 : Type*, [Fintype \u03c4], [DecidableEq \u03c4]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+    "uses_from_project": [
+      "Roth.lem6M",
+      "Roth.lem6M_lt",
+      "Roth.lem7_numeric",
+      "Roth.lem7_\u03a6_bound",
+      "Roth.one_le_lem6M",
+      "Roth.theta_delta_succ_lt_aux",
+      "Roth.theta_denominators_one_lt_aux",
+      "Roth.theta_prefix_lt_aux",
+      "Roth.theta_scaled_unique_le_aux"
+    ],
+    "used_by_in_file": [
+      "Roth.theta_lt_succ_aux"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 1162,
+    "project_body_refs": [
+      "Roth.lem6M",
+      "Roth.lem6M_lt",
+      "Roth.lem7_numeric",
+      "Roth.lem7_\u03a6_bound",
+      "Roth.one_le_lem6M",
+      "Roth.theta_delta_succ_lt_aux",
+      "Roth.theta_denominators_one_lt_aux",
+      "Roth.theta_prefix_lt_aux",
+      "Roth.theta_scaled_unique_le_aux"
+    ],
+    "project_type_refs": [
+      "Roth.lem6M",
+      "Roth.\u0398"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.theta_lt_succ_aux",
+        "file": "Roth/Theta.lean",
+        "line": 891
+      }
+    ]
+  }
+]
