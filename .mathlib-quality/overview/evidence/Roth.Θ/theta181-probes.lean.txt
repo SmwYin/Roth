@@ -1,0 +1,67 @@
+namespace Theta181Probe
+open MvPolynomial Roth
+universe u
+variable {σ : Type u} [Fintype σ]
+theorem literal (B : ℝ) (q r : σ → ℕ) : Θ B q r = sSup (indexSet B q r) := rfl
+theorem image2 (B : ℝ) (q r : σ → ℕ) : Θ B q r = sSup (Set.image2
+    (fun R (h : σ → ℤ) => index (map (Int.castRingHom ℝ) R)
+      (fun j => (h j : ℝ) / q j) r)
+    (RSet B r) {h : σ → ℤ | ∀ j, IsCoprime (h j) (q j : ℤ)}) := rfl
+#check @SupSet.sSup
+#check @sSup_image2
+#check @csSup_image
+#check @Real.sSup_empty
+#check @Real.sSup_of_not_bddAbove
+#synth SupSet ℝ
+#check_failure (inferInstance : CoeFun ℝ (fun _ => ℝ → ℝ))
+example (B : ℝ) (q r : ULift.{1} Unit → ℕ) : ℝ := Θ B q r
+theorem finset_bridge {ι : Type u} (s : Finset ι) (w : ι → ℝ) :
+    (s.inf (fun d => (w d : WithTop ℝ))).untopD 0 = sInf (w '' (s : Set ι)) := by
+  classical
+  rcases s.eq_empty_or_nonempty with h | h
+  · subst s
+    simp
+  · change (s.inf (WithTop.some ∘ w)).untopD 0 = _
+    rw [← Finset.coe_inf' h w, Finset.inf'_eq_csInf_image]
+    rfl
+
+theorem index_bridge {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) : index P α r =
+    (AddMonoidAlgebra.infDegree
+      (fun d : σ →₀ ℕ => (Finsupp.weight (R := ℕ) (fun j => (r j : ℝ)⁻¹) d : WithTop ℝ))
+      (aeval (fun j => X j + C (α j)) P)).untopD 0 := by
+  have hw (d : σ →₀ ℕ) :
+      Finsupp.weight (R := ℕ) (fun j => (r j : ℝ)⁻¹) d = weight r d := by
+    simp only [weight, Finsupp.weight_eq_sum, nsmul_eq_mul, div_eq_mul_inv]
+  simpa only [index, taylor, hw, AddMonoidAlgebra.infDegree,
+    MvPolynomial.finsupp_support_eq_support] using
+    (finset_bridge (taylor α P).support (weight r)).symm
+
+theorem expanded_image2 {σ : Type u} [Fintype σ] (B : ℝ) (q r : σ → ℕ) :
+    indexSet B q r = Set.image2 (fun R (h : σ → ℤ) =>
+      (AddMonoidAlgebra.infDegree
+        (fun d : σ →₀ ℕ =>
+          (Finsupp.weight (R := ℕ) (fun j => (r j : ℝ)⁻¹) d : WithTop ℝ))
+        (aeval (fun j => X j + C ((h j : ℝ) / q j))
+          (map (Int.castRingHom ℝ) R))).untopD 0)
+      (RSet B r) {h : σ → ℤ | ∀ j, IsCoprime (h j) (q j : ℤ)} := by
+  change Set.image2 _ _ _ = _
+  exact Set.image2_congr' fun R h => index_bridge _ _ _
+#print axioms finset_bridge
+#print axioms index_bridge
+#print axioms expanded_image2
+
+
+theorem expanded (B : ℝ) (q r : σ → ℕ) : Θ B q r = sSup (Set.image2
+    (fun R (h : σ → ℤ) =>
+      (AddMonoidAlgebra.infDegree
+        (fun d : σ →₀ ℕ =>
+          (Finsupp.weight (R := ℕ) (fun j => (r j : ℝ)⁻¹) d : WithTop ℝ))
+        (aeval (fun j => X j + C ((h j : ℝ) / q j))
+          (map (Int.castRingHom ℝ) R))).untopD 0)
+    (RSet B r) {h : σ → ℤ | ∀ j, IsCoprime (h j) (q j : ℤ)}) :=
+  congrArg sSup (expanded_image2 B q r)
+#print axioms literal
+#print axioms image2
+#print axioms expanded
+end Theta181Probe

@@ -1,0 +1,13 @@
+{
+  "request": [
+    "rg",
+    "--no-ignore",
+    "-n",
+    "sSup|indexSet|csSup",
+    "Roth",
+    "Roth.lean"
+  ],
+  "exit_code": 0,
+  "stdout": "Roth/Theta.lean:26:* `Roth.indexSet B q r`: the set of indices of `R ∈ RSet B r` at the points `(h_j / q_j)_j`\nRoth/Theta.lean:28:* `Roth.Θ B q r`: the supremum of `Roth.indexSet B q r`.\nRoth/Theta.lean:62:def indexSet (B : ℝ) (q r : σ → ℕ) : Set ℝ :=\nRoth/Theta.lean:68:noncomputable def Θ (B : ℝ) (q r : σ → ℕ) : ℝ := sSup (indexSet B q r)\nRoth/Theta.lean:80:theorem indexSet_nonempty {B : ℝ} (hB : 1 ≤ B) (q r : σ → ℕ) : (indexSet B q r).Nonempty :=\nRoth/Theta.lean:87:theorem indexSet_bddAbove (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} : BddAbove (indexSet B q r) := by\nRoth/Theta.lean:102:  le_csSup (indexSet_bddAbove B q) ⟨R, hR, h, hh, rfl⟩\nRoth/Theta.lean:108:  apply Real.sSup_nonneg\nRoth/Theta.lean:115:  refine Real.sSup_le ?_ (Nat.cast_nonneg _)\nRoth/Theta.lean:127:  refine csSup_le (indexSet_nonempty hB q r) ?_\nRoth/Theta.lean:136:  refine csSup_le_csSup (indexSet_bddAbove B' q) (indexSet_nonempty hB q r) ?_\nRoth/Theta.lean:141:private lemma indexSet_comp_subset {τ : Type*} [Fintype τ] (e : σ ≃ τ) (B : ℝ) (q r : τ → ℕ) :\nRoth/Theta.lean:142:    indexSet B (q ∘ e) (r ∘ e) ⊆ indexSet B q r := by\nRoth/Theta.lean:161:  apply congrArg sSup\nRoth/Theta.lean:162:  refine subset_antisymm (indexSet_comp_subset e B q r) ?_\nRoth/Theta.lean:163:  simpa [Function.comp_def] using indexSet_comp_subset e.symm B (q ∘ e) (r ∘ e)\n",
+  "stderr": ""
+}

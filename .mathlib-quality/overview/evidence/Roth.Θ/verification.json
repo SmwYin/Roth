@@ -1,0 +1,168 @@
+{
+  "declaration": "Roth.Θ",
+  "accepted": [
+    {
+      "label": "original",
+      "source": "theta181-original-executed.lean.txt",
+      "source_sha256": "42761a044a434b252baea875a27f3355b75971c01150f9391eb967640ad3bd67",
+      "receipt": "theta181-original-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 15,
+      "required_info": [
+        "THETA181_FULL_TYPE:",
+        "'Roth.Θ' depends on axioms:",
+        "THETA181_AUDIT: requested=293; unique=293",
+        "THETA181_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "archive_kind": "exact-complete-executed-source"
+    },
+    {
+      "label": "probes",
+      "source": "theta181-probes-executed.lean.txt",
+      "source_sha256": "c321370a527548c87ef0f1c2db41368fbe0acd0fa48f808a26a9cab1dc8ac8cb",
+      "receipt": "theta181-probes-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 344,
+      "required_info": [
+        "'Theta181Probe.literal' depends on axioms:",
+        "'Theta181Probe.image2' depends on axioms:",
+        "'Theta181Probe.expanded' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "archive_kind": "exact-complete-executed-source"
+    },
+    {
+      "label": "isolated",
+      "source": "theta181-isolated-executed.lean.txt",
+      "source_sha256": "c00d65404941762d4cc9b5286d85ce0aaef76dc22631c9aa4b8a7f527601446b",
+      "receipt": "theta181-isolated-receipt.json",
+      "format": "raw",
+      "native_region_start_line": 1,
+      "required_info": [
+        "'Theta181Isolated.exact_sup' does not depend on any axioms",
+        "'Theta181Isolated.member' depends on axioms:",
+        "'Theta181Isolated.upper' depends on axioms:",
+        "'Theta181Isolated.empty' depends on axioms:",
+        "'Theta181Isolated.unbounded' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\n#check_failure Roth.Θ\n#check @SupSet.sSup\n#check @le_csSup\n#check @csSup_le\n#check @csSup_le_csSup\n#check @Real.sSup_nonneg\n#check @Real.sSup_le\n#check @sSup_image2\n#check @csSup_image\nnamespace Theta181Isolated\nuniverse u v w\nvariable {A : Type u} {H : Type v} {V : Type w}\nnoncomputable def generic [SupSet V] (s : Set V) : V := sSup s\ntheorem exact_sup [SupSet V] (s : Set V) : generic s = SupSet.sSup s := rfl\ntheorem member (f : A → H → ℝ) (s : Set A) (t : Set H)\n    (hb : BddAbove (Set.image2 f s t)) {a : A} (ha : a ∈ s) {h : H} (hh : h ∈ t) :\n    f a h ≤ sSup (Set.image2 f s t) := le_csSup hb (Set.mem_image2_of_mem ha hh)\ntheorem upper (f : A → H → ℝ) (s : Set A) (t : Set H)\n    (hne : (Set.image2 f s t).Nonempty) {c : ℝ}\n    (hc : ∀ a ∈ s, ∀ h ∈ t, f a h ≤ c) : sSup (Set.image2 f s t) ≤ c :=\n  csSup_le hne (Set.forall_mem_image2.mpr hc)\ntheorem empty : sSup (∅ : Set ℝ) = 0 := Real.sSup_empty\ntheorem unbounded {s : Set ℝ} (hs : ¬BddAbove s) : sSup s = 0 :=\n  Real.sSup_of_not_bddAbove hs\n#check_failure (inferInstance : CompleteLattice ℝ)\n#print axioms exact_sup\n#print axioms member\n#print axioms upper\n#print axioms empty\n#print axioms unbounded\nend Theta181Isolated\n"
+      },
+      "archive_kind": "exact-complete-executed-source"
+    },
+    {
+      "label": "callers",
+      "source": "theta181-callers-executed.lean.txt",
+      "source_sha256": "3661c1d8b2825cb5fa7d0825f36f68286d4e9d700deca8e0c471bf178bd164ae",
+      "receipt": "theta181-callers-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 413,
+      "required_info": [
+        "'Theta181Callers.member' depends on axioms:",
+        "'Theta181Callers.nonneg' depends on axioms:",
+        "'Theta181Callers.upper' depends on axioms:",
+        "'Theta181Callers.no_automatic_unfold' depends on axioms:",
+        "'Theta181MainCaller.main_eta_inline' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "archive_kind": "exact-complete-executed-source"
+    },
+    {
+      "label": "generality",
+      "source": "theta181-generality-executed.lean.txt",
+      "source_sha256": "989b463654a412cbfbdc3ecae7f6fbf8b3338810e912ca91ebc0d990c38e4cd5",
+      "receipt": "theta181-generality-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 475,
+      "required_info": [
+        "'Theta181Generality.arbitrary_variables' depends on axioms:",
+        "'Theta181Generality.specialize' depends on axioms:",
+        "'Theta181Generality.negative_bound' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "archive_kind": "exact-complete-executed-source"
+    }
+  ],
+  "rejected": [
+    {
+      "source": "theta181-probes-rejected1-executed.lean.txt",
+      "source_sha256": "c90f8bb6262c20103d32d0f0a42618517beb0219d5c3e6b7aadfc0a745eaefd2",
+      "receipt": "theta181-probes-rejected1-receipt.json",
+      "reason": "Universe probe example produces noncomputable Θ data; corrected by marking the example noncomputable, no mathematical failure or raised limit."
+    },
+    {
+      "source": "theta181-callers-rejected1-executed.lean.txt",
+      "source_sha256": "38268a6e34ae9f49099e2e1559b76811f0b34338900d6bfa313c42b7ce3bfd6f",
+      "receipt": "theta181-callers-rejected1-receipt.json",
+      "reason": "Main eta source replay final simpa needed explicit Θ unfolding; corrected using simpa [eta, Θ]. This is caller normalization glue, not new mathlib replacement API."
+    }
+  ],
+  "preparation_only": [
+    "theta181-probes.lean.txt",
+    "theta181-isolated.lean.txt",
+    "theta181-callers.lean.txt",
+    "theta181-generality.lean.txt"
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "audit": {
+    "source": "theta181-audit-executed.lean.txt",
+    "receipt": "theta181-original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "Roth.lem6Φ",
+    "_private.Roth.Theta.0.Roth.index_separated_mul_le_aux",
+    "Roth.index_le_lem6",
+    "_private.Roth.Theta.0.Roth.theta_scaled_unique_le_aux",
+    "_private.Roth.Theta.0.Roth.theta_prefix_lt_aux",
+    "_private.Roth.Theta.0.Roth.theta_lt_base_aux",
+    "_private.Roth.Theta.0.Roth.theta_phi_lt_aux",
+    "_private.Roth.Theta.0.Roth.theta_lt_succ_aux",
+    "_private.Roth.Theta.0.Roth.theta_lt_of_large_delta_aux",
+    "Roth.Θ_lt",
+    "_private.Roth.MainLemma.0.Roth.theta_lt_eta_of_sq_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+    "Roth.main_lemma"
+  ],
+  "canonical_direct_type_consumers": [
+    "Roth.index_le_Θ",
+    "Roth.Θ_nonneg",
+    "Roth.Θ_le_card",
+    "Roth.Θ_le_of_forall_index_le",
+    "Roth.Θ_mono",
+    "Roth.Θ_equiv",
+    "Roth.Θ_unique_le",
+    "Roth.Θ_option_le",
+    "_private.Roth.Theta.0.Roth.theta_scaled_unique_le_aux",
+    "_private.Roth.Theta.0.Roth.theta_prefix_lt_aux",
+    "_private.Roth.Theta.0.Roth.theta_lt_base_aux",
+    "_private.Roth.Theta.0.Roth.theta_phi_lt_aux",
+    "_private.Roth.Theta.0.Roth.theta_lt_succ_aux",
+    "_private.Roth.Theta.0.Roth.theta_lt_of_large_delta_aux",
+    "Roth.Θ_lt",
+    "_private.Roth.MainLemma.0.Roth.theta_lt_eta_of_sq_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux"
+  ],
+  "unresolved": [],
+  "scope": "Existing outer supremum constructor and independently rechecked full parent-map normalization. Generic real bound laws isolated from Roth; source caller replays retain substantive project arithmetic API."
+}

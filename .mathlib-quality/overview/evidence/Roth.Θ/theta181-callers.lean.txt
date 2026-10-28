@@ -1,0 +1,60 @@
+namespace Theta181Callers
+open MvPolynomial Roth
+universe u
+variable {σ : Type u} [Fintype σ]
+theorem member {B : ℝ} {q r : σ → ℕ} {R : MvPolynomial σ ℤ}
+    (hR : R ∈ RSet B r) {h : σ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
+    index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r ≤
+      sSup (indexSet B q r) :=
+  le_csSup (indexSet_bddAbove B q) ⟨R, hR, h, hh, rfl⟩
+theorem nonneg {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} :
+    0 ≤ sSup (indexSet B q r) := by
+  apply Real.sSup_nonneg
+  rintro _ ⟨R, _, h, _, rfl⟩
+  exact index_nonneg _ _ _
+theorem upper {B : ℝ} (hB : 1 ≤ B) {q r : σ → ℕ} {c : ℝ}
+    (hc : ∀ R ∈ RSet B r, ∀ h : σ → ℤ, (∀ j, IsCoprime (h j) (q j : ℤ)) →
+      index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r ≤ c) :
+    sSup (indexSet B q r) ≤ c := by
+  refine csSup_le (indexSet_nonempty hB q r) ?_
+  rintro _ ⟨R, hR, h, hh, rfl⟩
+  exact hc R hR h hh
+example {τ : Type u} [Fintype τ] (q r : Option τ → ℕ) (M : ℝ) (l : ℕ) :
+    lem6Φ q r M l = sSup (indexSet M (fun _ : Unit => q none) (fun _ => l * r none)) +
+      sSup (indexSet M (q ∘ some) (fun j => l * r (some j))) := rfl
+theorem no_automatic_unfold (B : ℝ) (q r : σ → ℕ) :
+    Θ B q r = sSup (indexSet B q r) := by
+  fail_if_success
+    simp only
+  rfl
+#print axioms member
+#print axioms nonneg
+#print axioms upper
+#print axioms no_automatic_unfold
+end Theta181Callers
+
+namespace Theta181MainCaller
+open MvPolynomial Roth
+theorem main_eta_inline {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ)
+    (hδm : δ * (m : ℝ) ≤ 1) {r q : Fin m → ℕ} (hrlast : 3 ≤ r (Fin.rev 0))
+    (hratio : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)
+    (hL : 2 * (m : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
+    sSup (indexSet ((q 0 : ℝ) ^ (δ * r 0)) q r) < eta δ m := by
+  obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)
+  let M : ℝ := (n + 1 : ℕ)
+  have hδpos : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by
+    simpa [← he] using ((by positivity : 0 < 2 * M + 1).trans_le hL)
+  have hq : M * (2 * M + 1) / δ ≤ Real.log (q 0) := by
+    apply (mul_le_mul_iff_of_pos_right (sq_pos_of_pos hδpos)).1
+    convert ((mul_le_mul_of_nonneg_right hδm (by positivity : 0 ≤ 2 * M + 1)).trans_eq
+      (one_mul _)).trans hL using 1
+    all_goals field_simp
+    all_goals ring
+  simpa [eta] using Θ_lt n hδpos
+    (by simpa only [Fin.rev_zero, Nat.cast_ofNat] using (Nat.cast_le (α := ℝ)).2 hrlast)
+    (fun i ↦ by simpa [mul_comm] using ((div_le_iff₀ hδpos).1 (hratio _ _ (by simp))))
+    (by simpa [M] using hq) hqr
+
+#print axioms main_eta_inline
+end Theta181MainCaller

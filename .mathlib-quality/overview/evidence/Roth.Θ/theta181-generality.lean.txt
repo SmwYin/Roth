@@ -1,0 +1,31 @@
+namespace Theta181Generality
+open MvPolynomial Roth
+universe u
+noncomputable def arbitrary_variables {σ : Type u} (B : ℝ) (q r : σ → ℕ) : ℝ :=
+  sSup (Set.image2 (fun R (h : σ → ℤ) =>
+    (AddMonoidAlgebra.infDegree
+      (fun d : σ →₀ ℕ =>
+        (Finsupp.weight (R := ℕ) (fun j => (r j : ℝ)⁻¹) d : WithTop ℝ))
+      (aeval (fun j => X j + C ((h j : ℝ) / q j))
+        (map (Int.castRingHom ℝ) R))).untopD 0)
+    (RSet B r) {h : σ → ℤ | ∀ j, IsCoprime (h j) (q j : ℤ)})
+theorem specialize {σ : Type u} [Fintype σ] (B : ℝ) (q r : σ → ℕ) :
+    Θ B q r = arbitrary_variables B q r := Theta181Probe.expanded B q r
+theorem negative_bound {σ : Type u} [Fintype σ] {B : ℝ} (hB : B < 0) (q r : σ → ℕ) :
+    Θ B q r = 0 := by
+  have hs : indexSet B q r = ∅ := by
+    apply Set.eq_empty_iff_forall_notMem.mpr
+    rintro x ⟨R, hR, h, hh, heq⟩
+    exact (not_le_of_gt hB) ((abs_nonneg _).trans (hR.2.2 0))
+  change sSup (indexSet B q r) = 0
+  rw [hs]
+  exact Real.sSup_empty
+example {σ : Type u} [Fintype σ] (B : ℝ) (r : σ → ℕ) :
+    Θ B (fun _ => 0) r = sSup (indexSet B (fun _ => 0) r) := rfl
+example {σ : Type u} [Fintype σ] (B : ℝ) (q : σ → ℕ) :
+    Θ B q (fun _ => 0) = arbitrary_variables B q (fun _ => 0) := specialize B q _
+#check @arbitrary_variables
+#print axioms arbitrary_variables
+#print axioms specialize
+#print axioms negative_bound
+end Theta181Generality

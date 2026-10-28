@@ -1,0 +1,49 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+#check_failure Roth.Θ
+#check @SupSet.sSup
+#check @le_csSup
+#check @csSup_le
+#check @csSup_le_csSup
+#check @Real.sSup_nonneg
+#check @Real.sSup_le
+#check @sSup_image2
+#check @csSup_image
+namespace Theta181Isolated
+universe u v w
+variable {A : Type u} {H : Type v} {V : Type w}
+noncomputable def generic [SupSet V] (s : Set V) : V := sSup s
+theorem exact_sup [SupSet V] (s : Set V) : generic s = SupSet.sSup s := rfl
+theorem member (f : A → H → ℝ) (s : Set A) (t : Set H)
+    (hb : BddAbove (Set.image2 f s t)) {a : A} (ha : a ∈ s) {h : H} (hh : h ∈ t) :
+    f a h ≤ sSup (Set.image2 f s t) := le_csSup hb (Set.mem_image2_of_mem ha hh)
+theorem upper (f : A → H → ℝ) (s : Set A) (t : Set H)
+    (hne : (Set.image2 f s t).Nonempty) {c : ℝ}
+    (hc : ∀ a ∈ s, ∀ h ∈ t, f a h ≤ c) : sSup (Set.image2 f s t) ≤ c :=
+  csSup_le hne (Set.forall_mem_image2.mpr hc)
+theorem empty : sSup (∅ : Set ℝ) = 0 := Real.sSup_empty
+theorem unbounded {s : Set ℝ} (hs : ¬BddAbove s) : sSup s = 0 :=
+  Real.sSup_of_not_bddAbove hs
+example : True := by
+  fail_if_success
+    have := (inferInstance : CompleteLattice ℝ)
+  trivial
+#print axioms exact_sup
+#print axioms member
+#print axioms upper
+#print axioms empty
+#print axioms unbounded
+end Theta181Isolated

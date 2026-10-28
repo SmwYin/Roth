@@ -1,0 +1,156 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\n#check_failure Roth.Θ\n#check @SupSet.sSup\n#check @le_csSup\n#check @csSup_le\n#check @csSup_le_csSup\n#check @Real.sSup_nonneg\n#check @Real.sSup_le\n#check @sSup_image2\n#check @csSup_image\nnamespace Theta181Isolated\nuniverse u v w\nvariable {A : Type u} {H : Type v} {V : Type w}\nnoncomputable def generic [SupSet V] (s : Set V) : V := sSup s\ntheorem exact_sup [SupSet V] (s : Set V) : generic s = SupSet.sSup s := rfl\ntheorem member (f : A → H → ℝ) (s : Set A) (t : Set H)\n    (hb : BddAbove (Set.image2 f s t)) {a : A} (ha : a ∈ s) {h : H} (hh : h ∈ t) :\n    f a h ≤ sSup (Set.image2 f s t) := le_csSup hb (Set.mem_image2_of_mem ha hh)\ntheorem upper (f : A → H → ℝ) (s : Set A) (t : Set H)\n    (hne : (Set.image2 f s t).Nonempty) {c : ℝ}\n    (hc : ∀ a ∈ s, ∀ h ∈ t, f a h ≤ c) : sSup (Set.image2 f s t) ≤ c :=\n  csSup_le hne (Set.forall_mem_image2.mpr hc)\ntheorem empty : sSup (∅ : Set ℝ) = 0 := Real.sSup_empty\ntheorem unbounded {s : Set ℝ} (hs : ¬BddAbove s) : sSup s = 0 :=\n  Real.sSup_of_not_bddAbove hs\n#check_failure (inferInstance : CompleteLattice ℝ)\n#print axioms exact_sup\n#print axioms member\n#print axioms upper\n#print axioms empty\n#print axioms unbounded\nend Theta181Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.Θ`\",\n      \"line\": 16,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@sSup : {α : Type u_1} → [self : SupSet α] → Set α → α\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@le_csSup : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\\n  BddAbove s → a ∈ s → a ≤ sSup s\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@csSup_le : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\\n  s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@csSup_le_csSup : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s t : Set α},\\n  BddAbove t → s.Nonempty → s ⊆ t → sSup s ≤ sSup t\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sSup_nonneg : ∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sSup_le : ∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@sSup_image2 : ∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : CompleteLattice α] {f : β → γ → α} {s : Set β}\\n  {t : Set γ}, sSup (Set.image2 f s t) = ⨆ a ∈ s, ⨆ b ∈ t, f a b\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@csSup_image : ∀ {α : Type u_1} {β : Type u_2} [inst : ConditionallyCompleteLattice α] {s : Set β} {f : β → α},\\n  BddAbove (Set.range fun i ↦ f ↑i) → sSup ∅ ≤ ⨆ i, f ↑i → sSup (f '' s) = ⨆ a ∈ s, f a\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"failed to synthesize instance of type class\\n  CompleteLattice ℝ\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 40,\n      \"column\": 17,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Theta181Isolated.exact_sup' does not depend on any axioms\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Theta181Isolated.member' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Theta181Isolated.upper' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Theta181Isolated.empty' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Theta181Isolated.unbounded' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.Θ`",
+          "line": 16,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@sSup : {α : Type u_1} → [self : SupSet α] → Set α → α",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@le_csSup : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\n  BddAbove s → a ∈ s → a ≤ sSup s",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@csSup_le : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\n  s.Nonempty → (∀ b ∈ s, b ≤ a) → sSup s ≤ a",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@csSup_le_csSup : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s t : Set α},\n  BddAbove t → s.Nonempty → s ⊆ t → sSup s ≤ sSup t",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sSup_nonneg : ∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sSup s",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sSup_le : ∀ {s : Set ℝ} {a : ℝ}, (∀ x ∈ s, x ≤ a) → 0 ≤ a → sSup s ≤ a",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@sSup_image2 : ∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : CompleteLattice α] {f : β → γ → α} {s : Set β}\n  {t : Set γ}, sSup (Set.image2 f s t) = ⨆ a ∈ s, ⨆ b ∈ t, f a b",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@csSup_image : ∀ {α : Type u_1} {β : Type u_2} [inst : ConditionallyCompleteLattice α] {s : Set β} {f : β → α},\n  BddAbove (Set.range fun i ↦ f ↑i) → sSup ∅ ≤ ⨆ i, f ↑i → sSup (f '' s) = ⨆ a ∈ s, f a",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "failed to synthesize instance of type class\n  CompleteLattice ℝ\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 40,
+          "column": 17,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Theta181Isolated.exact_sup' does not depend on any axioms",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Theta181Isolated.member' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Theta181Isolated.upper' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Theta181Isolated.empty' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Theta181Isolated.unbounded' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 523
+}
