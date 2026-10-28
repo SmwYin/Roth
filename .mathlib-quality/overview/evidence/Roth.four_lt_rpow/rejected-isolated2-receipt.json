@@ -1,0 +1,310 @@
+{
+  "tool": "lean_run_code",
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.four_lt_rpow\nnamespace Four238Isolated\n#check @Real.lt_rpow_of_log_lt\n#check @Real.lt_rpow_iff_log_lt\n#check @Real.rpow_le_rpow_of_exponent_le\n#check @Real.log_le_log\n#check @Real.quadratic_le_exp_of_nonneg\n#check @Real.le_log_one_add_of_nonneg\n#check @Real.lt_log_one_add_of_pos\n#check @sq_lt_sq₀\n#check @Real.exp_lt_iff_lt_log\n#check @Real.rpow_def_of_pos\n\ntheorem squareTransfer {K : Type*} [CommRing K] [LinearOrder K] [IsStrictOrderedRing K]\n    {a c d L : K} (hd : 0 ≤ d) (hL : 0 < L) (hc : c ≤ d ^ 2 * L)\n    (ha : a ^ 2 < c * L) : a < d * L := by\n  by_contra! h\n  nlinarith only [mul_self_le_mul_self (mul_nonneg hd hL.le) h,\n    mul_le_mul_of_nonneg_right hc hL.le, ha]\n\ntheorem powerTransfer {a c d q r : ℝ} (hd : 0 ≤ d) (hq : 1 < q) (hr : 1 ≤ r)\n    (hc : c ≤ d ^ 2 * Real.log q) (ha : (Real.log a) ^ 2 < c * Real.log q) :\n    a < q ^ (d * r) := by\n  have hL := Real.log_pos hq\n  have hkey := squareTransfer hd hL hc ha\n  apply Real.lt_rpow_of_log_lt (zero_lt_one.trans hq)\n  nlinarith only [hkey, le_mul_of_one_le_right (mul_nonneg hd hL.le) hr]\n\ntheorem sharper {d q r : ℝ} (hd : 0 ≤ d) (hq : 2 ≤ q) (hr : 1 ≤ r)\n    (hc : 4 * Real.log 2 < d ^ 2 * Real.log q) : 4 < q ^ (d * r) := by\n  have hL := Real.log_pos (by linarith : 1 < q)\n  have hlog : Real.log 4 = 2 * Real.log 2 := by\n    rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]\n    norm_num\n  apply powerTransfer hd (by linarith) hr (le_refl (d ^ 2 * Real.log q))\n  have h2 := Real.log_pos (by norm_num : (1 : ℝ) < 2)\n  have hq2 := Real.log_le_log (by norm_num : (0 : ℝ) < 2) hq\n  have hmul := mul_lt_mul_of_pos_right hc hL\n  have hm := mul_le_mul_of_nonneg_left hq2 (by positivity : 0 ≤ 4 * Real.log 2)\n  rw [hlog]\n  nlinarith only [hm, hmul]\n\ntheorem realBase {d q r : ℝ} (hd : 0 ≤ d) (hq : 2 ≤ q) (hr : 1 ≤ r)\n    (hc : 3 ≤ d ^ 2 * Real.log q) : 4 < q ^ (d * r) := by\n  have hlog2 : Real.log 2 < 3 / 4 := by\n    apply (Real.log_lt_iff_lt_exp (by norm_num)).2\n    nlinarith only [Real.quadratic_le_exp_of_nonneg (by norm_num : (0 : ℝ) ≤ 3 / 4)]\n  exact sharper hd hq hr (lt_of_lt_of_le (by linarith only [hlog2]) hc)\n\ntheorem original {d : ℝ} (hd : 0 ≤ d) {q r : ℕ} (hr : 0 < r)\n    (hc : 3 ≤ d ^ 2 * Real.log q) : 4 < (q : ℝ) ^ (d * r) := by\n  have hL : 0 < Real.log q :=\n    pos_of_mul_pos_right (lt_of_lt_of_le (by norm_num) hc) (sq_nonneg d)\n  have hq : 2 ≤ q := by exact_mod_cast (Real.log_pos_iff (by positivity)).1 hL\n  exact realBase hd (by exact_mod_cast hq) (by exact_mod_cast hr) hc\n\ntheorem realDegreeWitness : 4 < (2 : ℝ) ^ (3 * (3 / 2 : ℝ)) := by\n  apply realBase (by norm_num) (by norm_num) (by norm_num)\n  have h := Real.le_log_one_add_of_nonneg (by norm_num : (0 : ℝ) ≤ 1)\n  norm_num at h ⊢\n  linarith\n\ntheorem positiveRealDegreeInsufficient : 0 < (1 / 3 : ℝ) ∧\n    3 ≤ (3 : ℝ) ^ 2 * Real.log (2 : ℕ) ∧ ¬4 < (2 : ℝ) ^ (3 * (1 / 3 : ℝ)) := by\n  have h := Real.le_log_one_add_of_nonneg (by norm_num : (0 : ℝ) ≤ 1)\n  norm_num at h ⊢\n  linarith\n\ntheorem endpoint : (2 : ℝ) ^ ((2 : ℝ) * 1) = 4 := by norm_num\n\ntheorem sharpBoundary : 4 * Real.log 2 = (2 : ℝ) ^ 2 * Real.log 2 ∧\n    ¬4 < (2 : ℝ) ^ ((2 : ℝ) * 1) := by norm_num\n\ntheorem zeroDegree {d q : ℝ} : ¬4 < q ^ (d * 0) := by simp\n\ntheorem zeroDeltaImpossible {q : ℕ} : ¬3 ≤ (0 : ℝ) ^ 2 * Real.log q := by norm_num\n\ntheorem lowBaseImpossible {d : ℝ} {q : ℕ} (hq : q ≤ 1) :\n    ¬3 ≤ d ^ 2 * Real.log q := by\n  interval_cases q <;> norm_num\n\ntheorem negativeDelta : 3 ≤ (-3 : ℝ) ^ 2 * Real.log (2 : ℕ) ∧\n    ¬4 < (2 : ℝ) ^ ((-3 : ℝ) * (1 : ℕ)) := by\n  have h := Real.le_log_one_add_of_nonneg (by norm_num : (0 : ℝ) ≤ 1)\n  norm_num at h ⊢\n  constructor\n  · linarith\n  · norm_num [Real.rpow_neg, Real.rpow_natCast]\n\ntheorem realBaseGuard : 1 < Real.exp (1 / 4) ∧\n    3 ≤ (4 : ℝ) ^ 2 * Real.log (Real.exp (1 / 4)) ∧\n    ¬4 < (Real.exp (1 / 4)) ^ ((4 : ℝ) * 1) := by\n  have h2 := Real.lt_log_one_add_of_pos (by norm_num : (0 : ℝ) < 1)\n  have hlog4 : Real.log 4 = 2 * Real.log 2 := by\n    rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]\n    norm_num\n  have he : Real.exp 1 < 4 := (Real.exp_lt_iff_lt_log (by norm_num)).2 (by\n    norm_num at h2\n    linarith only [h2, hlog4])\n  refine ⟨by simpa using Real.exp_lt_exp.mpr (by norm_num : (0 : ℝ) < 1 / 4), ?_, ?_⟩\n  · norm_num\n  · rw [Real.rpow_def_of_pos (Real.exp_pos _), Real.log_exp]\n    norm_num\n    exact he.le.not_gt\n\ntheorem existingTransport {a q z : ℝ} (hq : 0 < q) (h : Real.log a < z * Real.log q) :\n    a < q ^ z := Real.lt_rpow_of_log_lt hq h\n\ntheorem primitiveProbe {d : ℝ} (hd : 0 ≤ d) {q r : ℕ} (hr : 0 < r)\n    (hc : 3 ≤ d ^ 2 * Real.log q) : 4 < (q : ℝ) ^ (d * r) := by\n  fail_if_success\n    solve | exact Real.lt_rpow_of_log_lt (show (0 : ℝ) < q by positivity) hc\n  exact original hd hr hc\n\n#print axioms squareTransfer\n#print axioms powerTransfer\n#print axioms sharper\n#print axioms realBase\n#print axioms original\n#print axioms realDegreeWitness\n#print axioms positiveRealDegreeInsufficient\n#print axioms endpoint\n#print axioms sharpBoundary\n#print axioms zeroDegree\n#print axioms zeroDeltaImpossible\n#print axioms lowBaseImpossible\n#print axioms negativeDelta\n#print axioms realBaseGuard\n#print axioms existingTransport\n#print axioms primitiveProbe\nend Four238Isolated\n"
+  },
+  "elapsed_ms": 54631,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.four_lt_rpow`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.lt_rpow_of_log_lt : ∀ {x y z : ℝ}, 0 < y → Real.log x < z * Real.log y → x < y ^ z\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.lt_rpow_iff_log_lt : ∀ {x y z : ℝ}, 0 < x → 0 < y → (x < y ^ z ↔ Real.log x < z * Real.log y)\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_le_rpow_of_exponent_le : ∀ {x y z : ℝ}, 1 ≤ x → y ≤ z → x ^ y ≤ x ^ z\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.log_le_log : ∀ {x y : ℝ}, 0 < x → x ≤ y → Real.log x ≤ Real.log y\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.quadratic_le_exp_of_nonneg : ∀ {x : ℝ}, 0 ≤ x → 1 + x + x ^ 2 / 2 ≤ Real.exp x\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.le_log_one_add_of_nonneg : ∀ {x : ℝ}, 0 ≤ x → 2 * x / (x + 2) ≤ Real.log (1 + x)\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.lt_log_one_add_of_pos : ∀ {x : ℝ}, 0 < x → 2 * x / (x + 2) < Real.log (1 + x)\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@sq_lt_sq₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : LinearOrder M₀] [PosMulStrictMono M₀] {a b : M₀}\\n  [MulPosMono M₀], 0 ≤ a → 0 ≤ b → (a ^ 2 < b ^ 2 ↔ a < b)\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Real.exp_lt_iff_lt_log`\",\n      \"line\": 30,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_def_of_pos : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), x ^ y = Real.exp (Real.log x * y)\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Real.exp_lt_iff_lt_log`\",\n      \"line\": 116,\n      \"column\": 32,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Tactic `constructor` failed: target is not an inductive datatype\\n\\nh : 2 / 3 ≤ Real.log 2\\n⊢ 3 ≤ 9 * Real.log 2\",\n      \"line\": 105,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"try 'simp' instead of 'simpa'\\n\\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`\",\n      \"line\": 119,\n      \"column\": 14,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch\\n  LE.le.not_gt (LT.lt.le he)\\nhas type\\n  ¬4 < Real.exp 1\\nbut is expected to have type\\n  Real.exp 1 ≤ 4\",\n      \"line\": 123,\n      \"column\": 5,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.squareTransfer' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 134,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.powerTransfer' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 135,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.sharper' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 136,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.realBase' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 137,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 138,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.realDegreeWitness' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 139,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.positiveRealDegreeInsufficient' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 140,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 141,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.sharpBoundary' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 142,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.zeroDegree' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 143,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.zeroDeltaImpossible' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 144,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.lowBaseImpossible' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 145,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.negativeDelta' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 146,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.realBaseGuard' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 147,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.existingTransport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 148,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Four238Isolated.primitiveProbe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 149,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"this tactic is never executed\\n\\nNote: This linter can be disabled with `set_option linter.unreachableTactic false`\",\n      \"line\": 131,\n      \"column\": 63,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.four_lt_rpow`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.lt_rpow_of_log_lt : ∀ {x y z : ℝ}, 0 < y → Real.log x < z * Real.log y → x < y ^ z",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.lt_rpow_iff_log_lt : ∀ {x y z : ℝ}, 0 < x → 0 < y → (x < y ^ z ↔ Real.log x < z * Real.log y)",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_le_rpow_of_exponent_le : ∀ {x y z : ℝ}, 1 ≤ x → y ≤ z → x ^ y ≤ x ^ z",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.log_le_log : ∀ {x y : ℝ}, 0 < x → x ≤ y → Real.log x ≤ Real.log y",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.quadratic_le_exp_of_nonneg : ∀ {x : ℝ}, 0 ≤ x → 1 + x + x ^ 2 / 2 ≤ Real.exp x",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.le_log_one_add_of_nonneg : ∀ {x : ℝ}, 0 ≤ x → 2 * x / (x + 2) ≤ Real.log (1 + x)",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.lt_log_one_add_of_pos : ∀ {x : ℝ}, 0 < x → 2 * x / (x + 2) < Real.log (1 + x)",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@sq_lt_sq₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : LinearOrder M₀] [PosMulStrictMono M₀] {a b : M₀}\n  [MulPosMono M₀], 0 ≤ a → 0 ≤ b → (a ^ 2 < b ^ 2 ↔ a < b)",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Real.exp_lt_iff_lt_log`",
+          "line": 30,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_def_of_pos : ∀ {x : ℝ}, 0 < x → ∀ (y : ℝ), x ^ y = Real.exp (Real.log x * y)",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Real.exp_lt_iff_lt_log`",
+          "line": 116,
+          "column": 32,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Tactic `constructor` failed: target is not an inductive datatype\n\nh : 2 / 3 ≤ Real.log 2\n⊢ 3 ≤ 9 * Real.log 2",
+          "line": 105,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "try 'simp' instead of 'simpa'\n\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`",
+          "line": 119,
+          "column": 14,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch\n  LE.le.not_gt (LT.lt.le he)\nhas type\n  ¬4 < Real.exp 1\nbut is expected to have type\n  Real.exp 1 ≤ 4",
+          "line": 123,
+          "column": 5,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.squareTransfer' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 134,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.powerTransfer' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 135,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.sharper' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 136,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.realBase' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 137,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 138,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.realDegreeWitness' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 139,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.positiveRealDegreeInsufficient' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 140,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 141,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.sharpBoundary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 142,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.zeroDegree' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 143,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.zeroDeltaImpossible' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 144,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.lowBaseImpossible' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 145,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.negativeDelta' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 146,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.realBaseGuard' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 147,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.existingTransport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 148,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Four238Isolated.primitiveProbe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 149,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "this tactic is never executed\n\nNote: This linter can be disabled with `set_option linter.unreachableTactic false`",
+          "line": 131,
+          "column": 63,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

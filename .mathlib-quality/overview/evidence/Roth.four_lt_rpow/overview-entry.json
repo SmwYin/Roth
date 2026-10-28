@@ -1,0 +1,21 @@
+{
+  "type": "∀ {δ : ℝ}, 0 ≤ δ → ∀ {q₁ r₁ : ℕ}, 0 < r₁ → 3 ≤ δ ^ 2 * Real.log ↑q₁ → 4 < ↑q₁ ^ (δ * ↑r₁)",
+  "kind": "theorem",
+  "what": "Nonnegative δ, positive natural degree r and 3≤δ²logq imply q^(δr)>4.",
+  "how": "Derive q≥2, prove log2<3/4 from a quadratic exponential estimate, compare squares to get log4<δlogq, enlarge by r≥1, then use Real.lt_rpow_of_log_lt.",
+  "hypotheses": [
+    "δ : ℝ",
+    "0≤δ",
+    "q₁ r₁ : ℕ",
+    "0<r₁",
+    "3≤δ²*Real.log q₁"
+  ],
+  "project_dependencies": [],
+  "caller_summary": "Two proof calls: private MainLemma.exists_mem_RSet_le_index_of_log_bound_aux:641 and Main.roth_product_bound_aux:495; direct kernel values2/types0 among exact293; no simp attribute.",
+  "mathlib_api_audit": "Existing Real.lt_rpow_of_log_lt transports a supplied logarithmic bound; existing square-order, log monotonicity and quadratic exponential APIs supply primitives. No exact existing numeric premise bridge verified. All15 searches executed; local index errors and exact? timeout inconclusive.",
+  "moral_duplications": "Private two_lt_rpow_aux shares the square-comparison method with target2. Generic arbitrary-target powerTransfer and ordered-semiring squareTransfer are new verified proofs, not existing mathlib replacement lemmas.",
+  "generalization": "Verified real q≥2, real r≥1; strict4log2<δ²logq sufficient, uniform sharp threshold at q2,δ2,r1. Arbitrary target/threshold square-gap transfer and ordered CommSemiring algebraic kernel compiled. Real q>1 alone, real r>0 alone, and dropping δ sign are refuted; no individual maximality claim.",
+  "missing_api": "Upstream design candidate: numerical square-gap-to-power comparison versus use of existing square/multiplication monotonicity plus normalization. Exact general API choice remains a future taste question.",
+  "junk": "Used in two substantial callers. No verified existing-only ≤3-call replacement; full caller inlining duplicates substantive arithmetic. Retain locally pending API design.",
+  "action": "BORDERLINE-needs-human: completed assessment; retain local helper and consider sharing square comparison with two_lt_rpow_aux. Three concrete future upstream questions in report, no user blocker."
+}
