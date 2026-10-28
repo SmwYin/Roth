@@ -1,0 +1,130 @@
+{
+  "declaration": "Roth.gam",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "11ae36ff7ca64c4ac0cc9fec847929526742f5d6f5488fefb364c1d95c3af5bd",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "GAM230_FULL_TYPE: ℝ → ℕ → ℕ → ℝ",
+        "GAM230_AUDIT: requested=293; unique=293",
+        "GAM230_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "7f6719d2a25e3eee8f4d21dd5fea6bac905188c55523f6a3e9609c8cc9b239c0",
+      "format": "raw",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nnamespace Gam230Isolated\n#check_failure Roth.gam\n#check_failure Roth.lam\n#check @Real.sqrt\n#check @sub_div\n#check @Continuous.sub\n#check @Continuous.div_const\n#check @HSub.hSub\n#check @HDiv.hDiv\n#check @Nat.cast\n#synth Sub ℝ\n#synth Div ℝ\n#synth NatCast ℝ\n#check_failure (inferInstance : CoeFun ℝ (fun _ : ℝ ↦ ℝ → ℝ))\nnoncomputable def formula (δ n m : ℝ) : ℝ := (m - 4 * (1 + 3 * δ) * n * √m) / 2\ndef halfGap {K : Type*} [Field K] (x l : K) : K := (x - l) / 2\ndef algebraic {K : Type*} [Field K] (s : K → K) (δ n m : K) : K :=\n  (m - 4 * (1 + 3 * δ) * n * s m) / 2\ntheorem originalForm (δ : ℝ) (n m : ℕ) :\n    formula δ n m = ((m : ℝ) - 4 * (1 + 3 * δ) * n * √(m : ℝ)) / 2 := rfl\ntheorem abstractBridge (δ n m : ℝ) :\n    formula δ n m = halfGap m (4 * (1 + 3 * δ) * n * √m) := rfl\ntheorem expressionBridge (δ n m : ℝ) : formula δ n m = algebraic Real.sqrt δ n m := rfl\ntheorem normalForm (δ n m : ℝ) : formula δ n m = m / 2 - 2 * (1 + 3 * δ) * n * √m := by\n  dsimp only [formula]\n  ring\ntheorem gapComparison (e x l : ℝ) : e + l / 2 < x / 2 ↔ e < halfGap x l := by\n  dsimp only [halfGap]\n  constructor <;> intro h <;> linarith only [h]\ntheorem arbitraryCutoff {P : ℝ → Prop} {c g : ℝ} (hg : g ≤ c)\n    (hP : ∀ x, x < c → P x) : ∀ x, x < g → P x :=\n  fun x hx ↦ hP x (hx.trans_le hg)\ntheorem continuousDelta (n m : ℝ) : Continuous (fun δ ↦ formula δ n m) := by\n  unfold formula\n  fun_prop\ntheorem deltaMatters : formula 0 1 1 ≠ formula 1 1 1 := by norm_num [formula]\ntheorem degreeMatters : formula 0 1 1 ≠ formula 0 2 1 := by norm_num [formula]\ntheorem dimensionMatters : formula 0 0 0 ≠ formula 0 0 1 := by norm_num [formula]\ntheorem signGuard : formula 0 1 1 < 0 := by norm_num [formula]\ntheorem positiveGap {δ : ℝ} {n m : ℕ}\n    (h : 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2) : 0 < formula δ n m := by\n  dsimp only [formula]\n  linarith only [h]\n#print axioms formula\n#print axioms halfGap\n#print axioms algebraic\n#print axioms originalForm\n#print axioms abstractBridge\n#print axioms expressionBridge\n#print axioms normalForm\n#print axioms gapComparison\n#print axioms arbitraryCutoff\n#print axioms continuousDelta\n#print axioms deltaMatters\n#print axioms degreeMatters\n#print axioms dimensionMatters\n#print axioms signGuard\n#print axioms positiveGap\nend Gam230Isolated\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Gam230Isolated.gapComparison' depends on axioms:",
+        "'Gam230Isolated.signGuard' depends on axioms:",
+        "CoeFun ℝ"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "source_sha256": "53b0c9833f9e6dd2ddd81c53650eeba43f546d304fcd297c3094f15356c0bda1",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "GAM230_INLINE_ALL8_ORIGINAL_SIGNATURES: PASS",
+        "'Gam230MainInline.exists_delta' depends on axioms:"
+      ]
+    },
+    {
+      "label": "project",
+      "source": "project-executed.lean.txt",
+      "receipt": "project-receipt.json",
+      "source_sha256": "bc02f3083cd2b02ec238a8645ca86c3cf826d9752a915c462724da0aed9fed7e",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "GAM230_UNIVERSE_PARAMETERS: []",
+        "GAM230_REAL_FORMULA_BRIDGE: PASS"
+      ]
+    }
+  ],
+  "rejected": [],
+  "warming": [
+    {
+      "source": "original-executed.lean.txt",
+      "receipt": "original-warming-receipt.json",
+      "reason": "Initial partial cold loading, not accepted verification."
+    }
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "_private.Roth.MainLemma.0.Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+    "Roth.main_lemma",
+    "Roth.exists_delta",
+    "_private.Roth.Main.0.Roth.exists_roth_parameters_aux",
+    "_private.Roth.Main.0.Roth.one_lt_roth_eval_bound_aux",
+    "Roth.roth_of_isIntegral"
+  ],
+  "canonical_direct_type_consumers": [
+    "Roth.eta_lt_gam_iff",
+    "_private.Roth.MainLemma.0.Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+    "Roth.main_lemma",
+    "Roth.exists_delta",
+    "_private.Roth.Main.0.Roth.exists_roth_parameters_aux",
+    "_private.Roth.Main.0.Roth.one_lt_roth_eval_bound_aux"
+  ],
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "direct_arithmetic_construction_verified": true,
+    "new_generic_halfGap_definition_is_existing_mathlib": false,
+    "actual_caller_occurrences": 15,
+    "actual_caller_replays": 8,
+    "full_modules_replayed": [
+      "Roth/MainLemma.lean",
+      "Roth/Main.lean"
+    ],
+    "original_signatures_retained_by_defeq": true,
+    "imported_transitive_target_freedom_claimed": false,
+    "global_absence_claimed": false
+  },
+  "file_end_build": {
+    "required": false,
+    "reason": "Not file endpoint; baseline2467 jobs matches all17 inputs freshly. File endpoint228 build already root accepted; next endpoint266."
+  }
+}
