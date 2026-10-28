@@ -1,0 +1,93 @@
+[
+  {
+    "file": "Roth/MainLemma.lean",
+    "line": 180,
+    "name": "Roth.three_small_factors",
+    "short": "three_small_factors",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 210,
+    "source": "theorem three_small_factors {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr₁ : 0 < r₁) {A α : ℝ}\n    (hA : 0 ≤ A) (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log q₁) : (2 : ℝ) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧\n    (1 + A) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧\n    (1 + |α|) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ := by\n  have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m\n  have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (le_add_of_nonneg_right hA)\n  have hlogα : 0 ≤ Real.log (1 + |α|) :=\n    Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))\n  have h1 : 1 ≤ δ ^ 2 * Real.log q₁ := by\n    nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα]\n  have hlog2 : Real.log 2 < 1 := by\n    linarith only [Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)]\n  have hX := (two_lt_rpow_aux hδ0 hr₁ (hlog2.trans_le h1)).le\n  have hδ : 0 < δ := lt_of_le_of_ne hδ0 (by\n    rintro rfl\n    norm_num at h1)\n  -- `t^{m r₁} < mainCoeffBound^δ` as soon as `2 m log t < δ² log q₁`\n  have key (t : ℝ) (h : 2 * m * Real.log t ≤ δ ^ 2 * Real.log q₁) :\n      t ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ := by\n    apply Real.lt_rpow_of_log_lt (y := mainCoeffBound δ q₁ r₁) <|\n      (Real.sqrt_nonneg _).trans_lt (sqrt_lt_floor hX).1\n    rw [Real.log_pow]\n    push_cast\n    nlinarith only [mul_le_mul_of_nonneg_left h (Nat.cast_nonneg r₁),\n      mul_lt_mul_of_pos_left (mul_log_div_two_lt_log_mainCoeffBound hX) hδ]\n  refine ⟨key 2 ?_, key _ ?_, key _ ?_⟩\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα,\n      mul_nonneg hm0 (sub_nonneg.mpr hlog2.le)]\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogα]\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA]",
+    "signature": "theorem three_small_factors {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr₁ : 0 < r₁) {A α : ℝ}\n    (hA : 0 ≤ A) (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log q₁) : (2 : ℝ) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧\n    (1 + A) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧\n    (1 + |α|) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ",
+    "body": "by\n  have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m\n  have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (le_add_of_nonneg_right hA)\n  have hlogα : 0 ≤ Real.log (1 + |α|) :=\n    Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))\n  have h1 : 1 ≤ δ ^ 2 * Real.log q₁ := by\n    nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα]\n  have hlog2 : Real.log 2 < 1 := by\n    linarith only [Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)]\n  have hX := (two_lt_rpow_aux hδ0 hr₁ (hlog2.trans_le h1)).le\n  have hδ : 0 < δ := lt_of_le_of_ne hδ0 (by\n    rintro rfl\n    norm_num at h1)\n  -- `t^{m r₁} < mainCoeffBound^δ` as soon as `2 m log t < δ² log q₁`\n  have key (t : ℝ) (h : 2 * m * Real.log t ≤ δ ^ 2 * Real.log q₁) :\n      t ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ := by\n    apply Real.lt_rpow_of_log_lt (y := mainCoeffBound δ q₁ r₁) <|\n      (Real.sqrt_nonneg _).trans_lt (sqrt_lt_floor hX).1\n    rw [Real.log_pow]\n    push_cast\n    nlinarith only [mul_le_mul_of_nonneg_left h (Nat.cast_nonneg r₁),\n      mul_lt_mul_of_pos_left (mul_log_div_two_lt_log_mainCoeffBound hX) hδ]\n  refine ⟨key 2 ?_, key _ ?_, key _ ?_⟩\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα,\n      mul_nonneg hm0 (sub_nonneg.mpr hlog2.le)]\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogα]\n  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA]",
+    "proof_lines": 27,
+    "sha256": "2d6ff2e02267e6953f39d6a657ff3fb9b264fbc9b0f275431e3799613720a71d",
+    "what": "Three growth factors involving two, the divisor coefficient bound and the algebraic point are smaller than a power of the natural coefficient bound.",
+    "how": "Use two_lt_rpow_aux and mul_log_div_two_lt_log_mainCoeffBound, then compare logarithms in a shared Real.lt_rpow_of_log_lt argument.",
+    "hypotheses": "Nonnegative delta and coefficient bound, positive degree, and the stated combined logarithmic lower bound.",
+    "source_body_refs": [
+      "Roth.mainCoeffBound",
+      "Roth.mul_log_div_two_lt_log_mainCoeffBound",
+      "Roth.sqrt_lt_floor",
+      "Roth.two_lt_rpow_aux"
+    ],
+    "source_type_refs": [
+      "Roth.mainCoeffBound"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.roth_product_bound_aux",
+        "file": "Roth/Main.lean",
+        "line": 481
+      },
+      {
+        "name": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 618
+      },
+      {
+        "name": "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 643
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+    "uses_from_project": [
+      "Roth.mainCoeffBound",
+      "Roth.mul_log_div_two_lt_log_mainCoeffBound",
+      "Roth.sqrt_lt_floor",
+      "Roth.two_lt_rpow_aux"
+    ],
+    "used_by_in_file": [
+      "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+      "Roth.exists_auxiliary_polynomial_of_log_bound_aux"
+    ],
+    "used_by_other_files": [
+      {
+        "name": "Roth.roth_product_bound_aux",
+        "file": "Roth/Main.lean",
+        "line": 481
+      }
+    ],
+    "assignment_offset": 386,
+    "project_body_refs": [
+      "Roth.mainCoeffBound",
+      "Roth.mul_log_div_two_lt_log_mainCoeffBound",
+      "Roth.sqrt_lt_floor",
+      "Roth.two_lt_rpow_aux"
+    ],
+    "project_type_refs": [
+      "Roth.mainCoeffBound"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.roth_product_bound_aux",
+        "file": "Roth/Main.lean",
+        "line": 481
+      },
+      {
+        "name": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 618
+      },
+      {
+        "name": "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 643
+      }
+    ]
+  }
+]

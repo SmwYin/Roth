@@ -1,0 +1,15 @@
+private lemma two_lt_rpow_aux {δ : ℝ} (hδ0 : 0 ≤ δ) {q₁ r₁ : ℕ} (hr₁ : 0 < r₁)
+    (h1 : Real.log 2 < δ ^ 2 * Real.log q₁) : 2 < (q₁ : ℝ) ^ (δ * r₁) := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hL : 0 < Real.log q₁ := pos_of_mul_pos_right (hlog2.trans h1) (sq_nonneg δ)
+  have hq : 2 ≤ q₁ := by exact_mod_cast (Real.log_pos_iff (by positivity)).1 hL
+  have hr : (1 : ℝ) ≤ r₁ := by exact_mod_cast hr₁
+  have hprod : Real.log 2 < δ * Real.log q₁ := by
+    by_contra! h
+    nlinarith only [mul_self_le_mul_self (mul_nonneg hδ0 hL.le) h,
+      mul_lt_mul_of_pos_right h1 hL,
+      mul_le_mul_of_nonneg_left
+        (Real.log_le_log (by norm_num : (0 : ℝ) < 2) (by exact_mod_cast hq : (2 : ℝ) ≤ q₁))
+        hlog2.le]
+  apply Real.lt_rpow_of_log_lt (by positivity)
+  nlinarith only [hprod, le_mul_of_one_le_right (mul_nonneg hδ0 hL.le) hr]
