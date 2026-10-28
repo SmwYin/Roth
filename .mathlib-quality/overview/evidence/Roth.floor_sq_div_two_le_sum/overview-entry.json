@@ -1,0 +1,18 @@
+{
+  "kind": "theorem",
+  "type": "∀ {a : ℝ}, 0 ≤ a → ↑⌊a⌋₊ ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ↑ν)",
+  "what": "A nonnegative real a has triangular tail sum ∑ν≤floor(a)(a−ν) at least floor(a)²/2.",
+  "how": "Cast the natural Gauss sum identity into ℝ, distribute the finite sum, and use floor(a)≤a in nonlinear arithmetic.",
+  "hypotheses": [
+    "a : ℝ",
+    "ha : 0 ≤ a; necessary at negative a under natural-floor convention"
+  ],
+  "project_dependencies": [],
+  "caller_summary": "No explicit source callers; no direct type/value consumers among all293 canonical constants; no simp attribute. Related stronger triangular-sum arithmetic occurs in two private helpers.",
+  "mathlib_api_audit": "All five methods on current/standard/abstract forms. Pinned Gauss sum, finite sum distribution and Nat.floor_le verified. No exact existing replacement or strict three-call existing composition established.",
+  "moral_duplications": "Gauss summation already in Finset.sum_range_id_mul_two/sum_range_id. Nearby mul_div_two_le_sum_max_aux and mul_sq_div_three_le_sum_max_of_pos_aux repeat cast/sum normalization, with different full conclusions.",
+  "generalization": "Verified Field/LinearOrder/IsStrictOrderedRing/FloorSemiring statement; arbitrary n≤a removes floor; stronger division-free n²+n≤2sum works for CommRing/PartialOrder/IsOrderedRing. ha cannot simply be dropped.",
+  "missing_api": "Potential exact affine arithmetic-series normalization or arbitrary natural-cutoff lower-bound API; these are newly proved candidates, not existing hits.",
+  "junk": "Unused within this tracked project; no claim of external deadness. Source faithfully records a local fact from the paper.",
+  "action": "BORDERLINE-needs-human: choose upstream exact sum versus arbitrary-cutoff inequality versus floor corollary; retain project-local or remove unused endpoint if upstream API is not desired. No production edits."
+}

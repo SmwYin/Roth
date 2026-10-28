@@ -1,0 +1,133 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+namespace FloorSum201Isolated
+#check_failure Roth.floor_sq_div_two_le_sum
+#check @Nat.floor_le
+#check @Finset.sum_range_id_mul_two
+#check @Finset.sum_range_id
+#check @Finset.sum_range_sub
+#check @Finset.sum_sub_distrib
+#check @Finset.sum_const
+#check @Finset.card_range
+#check @nsmul_eq_mul
+#check @Nat.cast_sum
+#check @FloorSemiring
+#check @FloorRing
+theorem exactSearchGuard {a : ℝ} (ha : 0 ≤ a) :
+    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by
+  fail_if_success solve | exact?
+  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (⌊a⌋₊ + 1))
+  simp only [Nat.add_sub_cancel] at hsum
+  push_cast at hsum
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  push_cast
+  nlinarith [Nat.floor_le ha]
+#print axioms exactSearchGuard
+-- Exact source proof with scalar mechanically generalized and only natural floor needed.
+theorem genericFloor {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    [FloorSemiring K] {a : K} (ha : 0 ≤ a) :
+    (⌊a⌋₊ : K) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by
+  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (⌊a⌋₊ + 1))
+  simp only [Nat.add_sub_cancel] at hsum
+  push_cast at hsum
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  push_cast
+  nlinarith [Nat.floor_le ha]
+-- The floor interface is stronger than the algebra actually needs: arbitrary natural cutoff.
+theorem cutoff {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {a : K} (n : ℕ) (hn : (n : K) ≤ a) :
+    (n : K) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (n + 1), (a - ν) := by
+  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))
+  simp only [Nat.add_sub_cancel] at hsum
+  push_cast at hsum
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  push_cast
+  nlinarith
+-- A stronger polynomial inequality removes division and all floor structure.
+theorem ringCutoff {K : Type*} [CommRing K] [PartialOrder K] [IsOrderedRing K]
+    {a : K} (n : ℕ) (hn : (n : K) ≤ a) :
+    (n : K) ^ 2 + n ≤ 2 * ∑ ν ∈ Finset.range (n + 1), (a - ν) := by
+  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))
+  simp only [Nat.add_sub_cancel] at hsum
+  push_cast at hsum
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  push_cast
+  have hmul := mul_nonneg
+    (add_nonneg (Nat.cast_nonneg n) zero_le_one) (sub_nonneg.mpr hn)
+  calc
+    (n : K) ^ 2 + n ≤ n ^ 2 + n + ((n + 1) * (a - n) + (n + 1) * (a - n)) :=
+      le_add_of_nonneg_right (add_nonneg hmul hmul)
+    _ = 2 * ((n + 1) * a - ∑ ν ∈ Finset.range (n + 1), (ν : K)) := by
+      linear_combination hsum
+-- Closed arithmetic progression identity: no order or floor required.
+theorem exactSum {K : Type*} [Field K] [CharZero K] (a : K) (n : ℕ) :
+    (∑ ν ∈ Finset.range (n + 1), (a - ν)) = (n + 1) * (a - n / 2) := by
+  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))
+  simp only [Nat.add_sub_cancel] at hsum
+  push_cast at hsum
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  push_cast
+  linear_combination -hsum / 2
+-- The actual ha is necessary for natural-floor convention at negative a.
+theorem nonnegNecessary :
+    ¬ (∀ a : ℝ, (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤
+      ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν)) := by
+  intro h
+  have h' := h (-1)
+  have hf : ⌊(-1 : ℝ)⌋₊ = 0 := Nat.floor_eq_zero.mpr (by norm_num)
+  norm_num [hf] at h'
+-- Compiled bounded closure probes, never a global absence claim.
+theorem closureGuards {a : ℝ} (ha : 0 ≤ a) :
+    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by
+  fail_if_success rfl
+  fail_if_success assumption
+  fail_if_success
+    solve | simp only [Finset.sum_sub_distrib, Finset.sum_const,
+      Finset.card_range, nsmul_eq_mul]
+  exact genericFloor ha
+#print axioms genericFloor
+#print axioms cutoff
+#print axioms ringCutoff
+#print axioms exactSum
+#print axioms nonnegNecessary
+#print axioms closureGuards
+-- The unchanged statement also specializes from FloorRing via its standard natural floor.
+theorem ringFloor {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    [FloorRing K] {a : K} (ha : 0 ≤ a) :
+    (⌊a⌋₊ : K) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) :=
+  genericFloor ha
+-- A targeted existing-rule probe, compiled under fail_if_success/solve.
+theorem genericRouteGuard {a : ℝ} (ha : 0 ≤ a) :
+    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by
+  fail_if_success solve | apply_rules [Nat.floor_le, Finset.sum_le_sum]
+  exact genericFloor ha
+#print axioms ringFloor
+#print axioms genericRouteGuard
+-- Actual specialization bridges, using NEW scratch API, never counted as existing mathlib.
+theorem viaRingCutoff {a : ℝ} (ha : 0 ≤ a) :
+    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by
+  have h := ringCutoff ⌊a⌋₊ (Nat.floor_le ha)
+  nlinarith [Nat.cast_nonneg ⌊a⌋₊]
+theorem viaExactSum {a : ℝ} (ha : 0 ≤ a) :
+    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by
+  rw [exactSum]
+  nlinarith [Nat.floor_le ha]
+#print axioms viaRingCutoff
+#print axioms viaExactSum
+end FloorSum201Isolated

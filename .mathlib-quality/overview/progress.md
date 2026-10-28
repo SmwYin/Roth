@@ -1,9 +1,9 @@
 # Completed-only overview progress
 
-Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
+Status: **in_progress**, 2026-10-28. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 200 / 293 written declarations.**
+**Completed: 201 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -208,8 +208,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 198 | `Roth.index_unique_le_log_div` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.index_unique_le_log_div.md) |
 | 199 | `Roth.Θ_unique_le` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.Θ_unique_le.md) |
 | 200 | `Roth.one_le_lem6M` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.one_le_lem6M.md) |
+| 201 | `Roth.floor_sq_div_two_le_sum` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.floor_sq_div_two_le_sum.md) |
 
-**Next declaration: `Roth.floor_sq_div_two_le_sum`**, `Roth/Theta.lean:289`.
+**Next declaration: `Roth.sq_div_three_lt_floor_sq_div_two`**, `Roth/Theta.lean:300`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

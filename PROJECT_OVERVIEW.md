@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 200/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 201/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 200; remaining: 93.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 60 BORDERLINE-needs-human, 37 SKIP.
+- Completed applicable assessments: 201; remaining: 92.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 61 BORDERLINE-needs-human, 37 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2326,6 +2326,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit body calls: 1; external to file calls: 0; direct kernel value consumers: _private.Roth.Theta.0.Roth.theta_phi_lt_aux; direct kernel type consumers: None; fullcaller experiments: 1; full module replay: True
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.one_le_lem6M.md).
 
+### Completed: `Roth.floor_sq_div_two_le_sum`
+
+- Type: `∀ {a : ℝ}, 0 ≤ a → ↑⌊a⌋₊ ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ↑ν)`
+- What: A nonnegative real a has triangular tail sum ∑ν≤floor(a)(a−ν) at least floor(a)²/2.
+- How: Cast the natural Gauss sum identity into ℝ, distribute the finite sum, and use floor(a)≤a in nonlinear arithmetic.
+- Hypotheses: a : ℝ, ha : 0 ≤ a; necessary at negative a under natural-floor convention
+- Project dependencies: None
+- Caller summary: No explicit source callers; no direct type/value consumers among all293 canonical constants; no simp attribute. Related stronger triangular-sum arithmetic occurs in two private helpers.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.floor_sq_div_two_le_sum.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2752,6 +2762,8 @@ Completed `Roth.Θ_unique_le`: Pinned csSup_le and log/power laws provide generi
 
 Completed `Roth.one_le_lem6M`: Pinned one_le_mul_of_one_le_of_one_le, one_le_pow₀, Nat.factorial_pos and cast laws completely handle elementary arithmetic. List.one_le_prod and Finset.one_le_prod₀ handle the abstract product law. Exact actual formula route needs factor obligations and normalization; no strict≤3 old-form term verified. All15 search cells executed.
 
+Completed `Roth.floor_sq_div_two_le_sum`: All five methods on current/standard/abstract forms. Pinned Gauss sum, finite sum distribution and Nat.floor_le verified. No exact existing replacement or strict three-call existing composition established.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3153,6 +3165,8 @@ Completed `Roth.index_unique_le_log_div`: The helper has a distinct role in the 
 Completed `Roth.Θ_unique_le`: {'other': 'Roth.Θ_le_of_forall_index_le', 'same_statement': False, 'same_proof': False, 'assessment': 'Only the outer supremum step agrees; current theorem must prove its arithmetic pointwise premise.'}, {'other': 'Roth.index_unique_le_log_div', 'same_statement': False, 'same_proof': 'pointwise arithmetic reused', 'assessment': 'One-polynomial logarithmic bound versus extremal-family bound; keep helper factoring.'}, {'other': 'csSup_le', 'same_statement': False, 'same_proof': 'outer order step only', 'assessment': 'Not a full arithmetic replacement.'}
 
 Completed `Roth.one_le_lem6M`: {'other': 'List.one_le_prod', 'same_statement': False, 'same_proof': 'abstract product induction subsumes multiplication stage', 'assessment': 'Actual four factor inequalities must still be established; list normalization is explicit.'}, {'other': 'one_le_mul_of_one_le_of_one_le', 'same_statement': False, 'same_proof': 'three assembly calls', 'assessment': 'Does not include power and factorial premises.'}, {'other': 'Roth.lem6M', 'same_statement': False, 'same_proof': False, 'assessment': 'Parent defines envelope; theorem supplies its lower bound.'}
+
+Completed `Roth.floor_sq_div_two_le_sum`: Gauss summation already in Finset.sum_range_id_mul_two/sum_range_id. Nearby mul_div_two_le_sum_max_aux and mul_sq_div_three_le_sum_max_of_pos_aux repeat cast/sum normalization, with different full conclusions.
 
 ## Part 5: Generalization opportunities
 
@@ -3566,6 +3580,8 @@ Completed `Roth.Θ_unique_le`: Native fullUniqueOnly drops redundant explicit Fi
 
 Completed `Roth.one_le_lem6M`: Expanded formula compiles over Semiring K, PartialOrder K, IsOrderedRing K (genericWeak); initial stronger genericScalar also verified. Actual lem6M remains fixed ℝ interface; altering it is a parent API redesign. Verified exponent-local premise1≤B^l is weaker than1≤B; l0 needs no bound. Uniform omission of hB is false (p=r₁=0,l1,B0).
 
+Completed `Roth.floor_sq_div_two_le_sum`: Verified Field/LinearOrder/IsStrictOrderedRing/FloorSemiring statement; arbitrary n≤a removes floor; stronger division-free n²+n≤2sum works for CommRing/PartialOrder/IsOrderedRing. ha cannot simply be dropped.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3968,6 +3984,8 @@ Completed `Roth.index_unique_le_log_div`: No new primitive is needed for this in
 Completed `Roth.Θ_unique_le`: Upstream decision on coefficient/degree-bounded arithmetic extremal families; independently useful multiplicity-sensitive denominator and leading-coefficient APIs already assessed196/197.
 
 Completed `Roth.one_le_lem6M`: No missing elementary order arithmetic API identified. Open upstream choice is whether a named proof-specific coefficient envelope and its lower-bound certificate belong in Roth auxiliary-polynomial infrastructure.
+
+Completed `Roth.floor_sq_div_two_le_sum`: Potential exact affine arithmetic-series normalization or arbitrary natural-cutoff lower-bound API; these are newly proved candidates, not existing hits.
 
 ## Part 7: Junk / removable
 
@@ -4374,6 +4392,8 @@ Completed `Roth.Θ_unique_le`: Not dead code: two actual private consumers. Shor
 
 Completed `Roth.one_le_lem6M`: Not dead: one actual private consumer theta_phi_lt_aux, used to supply1≤M to Θ estimates. No full inline duplicate found.
 
+Completed `Roth.floor_sq_div_two_le_sum`: Unused within this tracked project; no claim of external deadness. Source faithfully records a local fact from the paper.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4578,6 +4598,7 @@ Completed `Roth.one_le_lem6M`: Not dead: one actual private consumer theta_phi_l
 | 198 | `Roth.index_unique_le_log_div` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.index_unique_le_log_div.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_unique_le_log_div/root-acceptance.json) |
 | 199 | `Roth.Θ_unique_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_unique_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_unique_le/root-acceptance.json) |
 | 200 | `Roth.one_le_lem6M` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.one_le_lem6M.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_le_lem6M/root-acceptance.json) |
+| 201 | `Roth.floor_sq_div_two_le_sum` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.floor_sq_div_two_le_sum.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.floor_sq_div_two_le_sum/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4977,12 +4998,14 @@ Completed `Roth.Θ_unique_le` action: BORDERLINE: retain Roth/Theta.lean endpoin
 
 Completed `Roth.one_le_lem6M` action: BORDERLINE: retain in Roth/Theta.lean beside lem6M until upstream envelope design is settled. If local inlining is chosen, replace sole call866 by unfolding lem6M and the verified four-factor arithmetic proof; complete caller replay already passed.
 
+Completed `Roth.floor_sq_div_two_le_sum` action: BORDERLINE-needs-human: choose upstream exact sum versus arbitrary-cutoff inequality versus floor corollary; retain project-local or remove unused endpoint if upstream API is not desired. No production edits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.floor_sq_div_two_le_sum` next. Supporting identities receive their own applicable checks.
+   `Roth.sq_div_three_lt_floor_sq_div_two` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

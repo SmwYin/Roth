@@ -1,0 +1,141 @@
+{
+  "declaration": "Roth.floor_sq_div_two_le_sum",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "floorsum201-original-executed.lean.txt",
+      "source_sha256": "f2303e384fc6d68a82418ab922f0ee0ae5d0aed72fbb110476c6c2a60b6998d7",
+      "receipt": "floorsum201-original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "'Roth.floor_sq_div_two_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "FLOORSUM201_FULL_TYPE: ∀ {a : ℝ}, 0 ≤ a → ↑⌊a⌋₊ ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ↑ν)",
+        "FLOORSUM201_AUDIT: requested=293; unique=293",
+        "FLOORSUM201_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "raw",
+      "source": "floorsum201-isolated-executed.lean.txt",
+      "source_sha256": "d7e1f03aaa6657bafc0eb7fecf5c45803d0f18e4f69b4ce19b4acc98def60958",
+      "receipt": "floorsum201-isolated-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nnamespace FloorSum201Isolated\n#check_failure Roth.floor_sq_div_two_le_sum\n#check @Nat.floor_le\n#check @Finset.sum_range_id_mul_two\n#check @Finset.sum_range_id\n#check @Finset.sum_range_sub\n#check @Finset.sum_sub_distrib\n#check @Finset.sum_const\n#check @Finset.card_range\n#check @nsmul_eq_mul\n#check @Nat.cast_sum\n#check @FloorSemiring\n#check @FloorRing\n-- Exact source proof with scalar mechanically generalized and only natural floor needed.\ntheorem genericFloor {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {a : K} (ha : 0 ≤ a) :\n    (⌊a⌋₊ : K) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (⌊a⌋₊ + 1))\n  simp only [Nat.add_sub_cancel] at hsum\n  push_cast at hsum\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n  push_cast\n  nlinarith [Nat.floor_le ha]\n-- The floor interface is stronger than the algebra actually needs: arbitrary natural cutoff.\ntheorem cutoff {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    {a : K} (n : ℕ) (hn : (n : K) ≤ a) :\n    (n : K) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (n + 1), (a - ν) := by\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))\n  simp only [Nat.add_sub_cancel] at hsum\n  push_cast at hsum\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n  push_cast\n  nlinarith\n-- A stronger polynomial inequality removes division and all floor structure.\ntheorem ringCutoff {K : Type*} [CommRing K] [PartialOrder K] [IsOrderedRing K]\n    {a : K} (n : ℕ) (hn : (n : K) ≤ a) :\n    (n : K) ^ 2 + n ≤ 2 * ∑ ν ∈ Finset.range (n + 1), (a - ν) := by\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))\n  simp only [Nat.add_sub_cancel] at hsum\n  push_cast at hsum\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n  push_cast\n  have hmul := mul_nonneg\n    (add_nonneg (Nat.cast_nonneg n) zero_le_one) (sub_nonneg.mpr hn)\n  calc\n    (n : K) ^ 2 + n ≤ n ^ 2 + n + ((n + 1) * (a - n) + (n + 1) * (a - n)) :=\n      le_add_of_nonneg_right (add_nonneg hmul hmul)\n    _ = 2 * ((n + 1) * a - ∑ ν ∈ Finset.range (n + 1), (ν : K)) := by\n      linear_combination hsum\n-- Closed arithmetic progression identity: no order or floor required.\ntheorem exactSum {K : Type*} [Field K] [CharZero K] (a : K) (n : ℕ) :\n    (∑ ν ∈ Finset.range (n + 1), (a - ν)) = (n + 1) * (a - n / 2) := by\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))\n  simp only [Nat.add_sub_cancel] at hsum\n  push_cast at hsum\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n  push_cast\n  linear_combination -hsum / 2\n-- The actual ha is necessary for natural-floor convention at negative a.\ntheorem nonnegNecessary :\n    ¬ (∀ a : ℝ, (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤\n      ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν)) := by\n  intro h\n  have h' := h (-1)\n  have hf : ⌊(-1 : ℝ)⌋₊ = 0 := Nat.floor_eq_zero.mpr (by norm_num)\n  norm_num [hf] at h'\n-- Compiled bounded closure probes, never a global absence claim.\ntheorem closureGuards {a : ℝ} (ha : 0 ≤ a) :\n    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by\n  fail_if_success rfl\n  fail_if_success assumption\n  fail_if_success\n    solve | simp only [Finset.sum_sub_distrib, Finset.sum_const,\n      Finset.card_range, nsmul_eq_mul]\n  exact genericFloor ha\n#print axioms genericFloor\n#print axioms cutoff\n#print axioms ringCutoff\n#print axioms exactSum\n#print axioms nonnegNecessary\n#print axioms closureGuards\nend FloorSum201Isolated\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'FloorSum201Isolated.genericFloor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.ringCutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.exactSum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.nonnegNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.closureGuards' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "composition",
+      "format": "raw",
+      "source": "floorsum201-composition-executed.lean.txt",
+      "source_sha256": "9060d1c8a8316dd04c785cc2632e687b99b7e88c2bae07f2b5e71c8f76d2d766",
+      "receipt": "floorsum201-composition-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nnamespace FloorSum201Isolated\n#check_failure Roth.floor_sq_div_two_le_sum\n#check @Nat.floor_le\n#check @Finset.sum_range_id_mul_two\n#check @Finset.sum_range_id\n#check @Finset.sum_range_sub\n#check @Finset.sum_sub_distrib\n#check @Finset.sum_const\n#check @Finset.card_range\n#check @nsmul_eq_mul\n#check @Nat.cast_sum\n#check @FloorSemiring\n#check @FloorRing\ntheorem exactSearchGuard {a : ℝ} (ha : 0 ≤ a) :\n    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by\n  fail_if_success solve | exact?\n  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (⌊a⌋₊ + 1))\n  simp only [Nat.add_sub_cancel] at hsum\n  push_cast at hsum\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n  push_cast\n  nlinarith [Nat.floor_le ha]\n#print axioms exactSearchGuard\n-- Exact source proof with scalar mechanically generalized and only natural floor needed.\ntheorem genericFloor {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {a : K} (ha : 0 ≤ a) :\n    (⌊a⌋₊ : K) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (⌊a⌋₊ + 1))\n  simp only [Nat.add_sub_cancel] at hsum\n  push_cast at hsum\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n  push_cast\n  nlinarith [Nat.floor_le ha]\n-- The floor interface is stronger than the algebra actually needs: arbitrary natural cutoff.\ntheorem cutoff {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    {a : K} (n : ℕ) (hn : (n : K) ≤ a) :\n    (n : K) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (n + 1), (a - ν) := by\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))\n  simp only [Nat.add_sub_cancel] at hsum\n  push_cast at hsum\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n  push_cast\n  nlinarith\n-- A stronger polynomial inequality removes division and all floor structure.\ntheorem ringCutoff {K : Type*} [CommRing K] [PartialOrder K] [IsOrderedRing K]\n    {a : K} (n : ℕ) (hn : (n : K) ≤ a) :\n    (n : K) ^ 2 + n ≤ 2 * ∑ ν ∈ Finset.range (n + 1), (a - ν) := by\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))\n  simp only [Nat.add_sub_cancel] at hsum\n  push_cast at hsum\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n  push_cast\n  have hmul := mul_nonneg\n    (add_nonneg (Nat.cast_nonneg n) zero_le_one) (sub_nonneg.mpr hn)\n  calc\n    (n : K) ^ 2 + n ≤ n ^ 2 + n + ((n + 1) * (a - n) + (n + 1) * (a - n)) :=\n      le_add_of_nonneg_right (add_nonneg hmul hmul)\n    _ = 2 * ((n + 1) * a - ∑ ν ∈ Finset.range (n + 1), (ν : K)) := by\n      linear_combination hsum\n-- Closed arithmetic progression identity: no order or floor required.\ntheorem exactSum {K : Type*} [Field K] [CharZero K] (a : K) (n : ℕ) :\n    (∑ ν ∈ Finset.range (n + 1), (a - ν)) = (n + 1) * (a - n / 2) := by\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))\n  simp only [Nat.add_sub_cancel] at hsum\n  push_cast at hsum\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n  push_cast\n  linear_combination -hsum / 2\n-- The actual ha is necessary for natural-floor convention at negative a.\ntheorem nonnegNecessary :\n    ¬ (∀ a : ℝ, (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤\n      ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν)) := by\n  intro h\n  have h' := h (-1)\n  have hf : ⌊(-1 : ℝ)⌋₊ = 0 := Nat.floor_eq_zero.mpr (by norm_num)\n  norm_num [hf] at h'\n-- Compiled bounded closure probes, never a global absence claim.\ntheorem closureGuards {a : ℝ} (ha : 0 ≤ a) :\n    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by\n  fail_if_success rfl\n  fail_if_success assumption\n  fail_if_success\n    solve | simp only [Finset.sum_sub_distrib, Finset.sum_const,\n      Finset.card_range, nsmul_eq_mul]\n  exact genericFloor ha\n#print axioms genericFloor\n#print axioms cutoff\n#print axioms ringCutoff\n#print axioms exactSum\n#print axioms nonnegNecessary\n#print axioms closureGuards\n-- The unchanged statement also specializes from FloorRing via its standard natural floor.\ntheorem ringFloor {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorRing K] {a : K} (ha : 0 ≤ a) :\n    (⌊a⌋₊ : K) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) :=\n  genericFloor ha\n-- A targeted existing-rule probe, compiled under fail_if_success/solve.\ntheorem genericRouteGuard {a : ℝ} (ha : 0 ≤ a) :\n    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by\n  fail_if_success solve | apply_rules [Nat.floor_le, Finset.sum_le_sum]\n  exact genericFloor ha\n#print axioms ringFloor\n#print axioms genericRouteGuard\n-- Actual specialization bridges, using NEW scratch API, never counted as existing mathlib.\ntheorem viaRingCutoff {a : ℝ} (ha : 0 ≤ a) :\n    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by\n  have h := ringCutoff (K := ℝ) ⌊a⌋₊ (Nat.floor_le ha)\n  nlinarith [Nat.cast_nonneg (α := ℝ) ⌊a⌋₊]\ntheorem viaExactSum {a : ℝ} (ha : 0 ≤ a) :\n    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by\n  rw [exactSum]\n  nlinarith [Nat.floor_le ha]\n#print axioms viaRingCutoff\n#print axioms viaExactSum\nend FloorSum201Isolated\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'FloorSum201Isolated.exactSearchGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.genericFloor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.ringCutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.exactSum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.nonnegNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.closureGuards' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.ringFloor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.genericRouteGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.viaRingCutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Isolated.viaExactSum' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "fullmodule",
+      "format": "disk",
+      "source": "floorsum201-fullmodule-executed.lean.txt",
+      "source_sha256": "695d75f3a6c7b0334cf01e9b8062e768363841535583c833728d6f99f1c4982f",
+      "receipt": "floorsum201-fullmodule-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 343,
+      "required_info": [
+        "'FloorSum201Module.floor_sq_div_two_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorSum201Module.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "floorsum201-isolated-rejected1-executed.lean.txt",
+      "receipt": "floorsum201-isolated-rejected1-receipt.json",
+      "reason": "Initial fail_if_success simp did not assert closure; negative natural floor needed explicit floor_eq_zero; partial-order linear_combination coefficient positivity failed. Recovered sorryAx excluded."
+    },
+    {
+      "source": "floorsum201-isolated-rejected2-executed.lean.txt",
+      "receipt": "floorsum201-isolated-rejected2-receipt.json",
+      "reason": "Wrong equality sign in ringCutoff normalization; recovered sorryAx excluded."
+    },
+    {
+      "source": "floorsum201-composition-rejected1-executed.lean.txt",
+      "receipt": "floorsum201-composition-rejected1-receipt.json",
+      "reason": "Ambiguous scalar in new-helper specialization/cast nonnegative premise; recovered sorryAx excluded."
+    },
+    {
+      "source": "floorsum201-composition-rejected2-executed.lean.txt",
+      "receipt": "floorsum201-composition-rejected2-receipt.json",
+      "reason": "Explicit K on helper alone did not constrain Nat.cast_nonneg inside nlinarith; recovered sorryAx excluded."
+    },
+    {
+      "source": "floorsum201-ring-probe-executed.lean.txt",
+      "receipt": "floorsum201-ring-probe-receipt.json",
+      "reason": "Mechanical CommRing to Ring change failed at linear_combination needing CommSemiring; no mathematical necessity claim for commutativity; recovered sorryAx excluded."
+    }
+  ],
+  "audit": {
+    "source": "floorsum201-original-executed.lean.txt",
+    "receipt": "floorsum201-original-receipt.json",
+    "marker": "FLOORSUM201",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [],
+  "canonical_direct_type_consumers": [],
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "parent_project_helpers_counted_as_mathlib_blocks": false,
+    "actual_caller_replays": 0,
+    "actual_call_occurrences": 0,
+    "caller_replay_na": "No explicit callers or canonical direct consumers; full original module body replayed.",
+    "no_circular_use_of_target_in_new_proof": true,
+    "no_global_absence_claim": true,
+    "full_module_replay": true,
+    "all_actual_floor_and_sum_premises_discharged": true,
+    "exact_search_before_new_helpers": true
+  },
+  "active_virtual_import_count": 18,
+  "active_virtual_extra_import": "Mathlib.Algebra.Order.Archimedean.Real.Basic",
+  "persistent_disk_import_count": 9
+}
