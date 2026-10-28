@@ -1,0 +1,660 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "lean_leanfinder",
+      "args": {
+        "query": "Roth Lemma 6 constant (r+1)^(p*l) l! B^l 2^(p*l*r)",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Behrend.roth_lower_bound\",\n      \"informal_name\": \"Behrend's Lower Bound for Roth Numbers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {N : ℕ}, ↑N * Real.exp (-4 * √(Real.log ↑N)) ≤ ↑(rothNumberNat N)\",\n      \"informal_description\": \"For any natural number $ N $, the Roth number $ \\\\text{rothNumberNat}(N) $ satisfies the inequality $ N \\\\cdot e^{-4 \\\\sqrt{\\\\ln N}} \\\\leq \\\\text{rothNumberNat}(N) $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Behrend\"\n    },\n    {\n      \"formal_name\": \"Behrend.roth_lower_bound_explicit\",\n      \"informal_name\": \"Behrend's Lower Bound for Roth Numbers: $ N e^{-4\\\\sqrt{\\\\ln N}} < \\\\text{rothNumberNat}(N) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {N : ℕ}, 4096 ≤ N → ↑N * Real.exp (-4 * √(Real.log ↑N)) < ↑(rothNumberNat N)\",\n      \"informal_description\": \"For any natural number $ N \\\\geq 4096 $, the Roth number of $ N $, denoted $ \\\\text{rothNumberNat}(N) $, satisfies the inequality $ N \\\\cdot e^{-4\\\\sqrt{\\\\ln N}} < \\\\text{rothNumberNat}(N) $. This provides an explicit lower bound for the maximum size of a subset of $ \\\\{0, 1, \\\\ldots, N-1\\\\} $ containing no three-term arithmetic progression.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Behrend\"\n    },\n    {\n      \"formal_name\": \"rothNumberNat_le\",\n      \"informal_name\": \"Roth Number Upper Bound: $ \\\\text{rothNumberNat}(N) \\\\leq N $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (N : ℕ), rothNumberNat N ≤ N\",\n      \"informal_description\": \"For any natural number $ N $, the Roth number $ \\\\text{rothNumberNat}(N) $, which denotes the maximum size of a subset of $ \\\\{0, 1, \\\\ldots, N-1\\\\} $ containing no three distinct elements forming an arithmetic progression, satisfies $ \\\\text{rothNumberNat}(N) \\\\leq N $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\"\n    },\n    {\n      \"formal_name\": \"cornersTheoremBound\",\n      \"informal_name\": \"Corners Theorem Bound\",\n      \"kind\": \"definition\",\n      \"type\": \"ℝ → ℕ\",\n      \"informal_description\": \"The bound is defined as $\\\\left\\\\lfloor \\\\left(27 \\\\cdot \\\\text{triangleRemovalBound}\\\\left(\\\\frac{\\\\varepsilon}{9}\\\\right)\\\\right)^{-1} \\\\right\\\\rfloor_+ + 1$, where $\\\\varepsilon$ is a positive real parameter. This expression quantifies a threshold in the corners theorem, derived from the triangle removal lemma bound applied to $\\\\varepsilon/9$, scaled by 27, inverted, floored to a natural number, and incremented by 1.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.Corner.Roth\"\n    },\n    {\n      \"formal_name\": \"ThreeAPFree.le_rothNumberNat\",\n      \"informal_name\": \"Three-term AP-free sets have size bounded by the Roth number\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k n : ℕ} (s : Finset ℕ), ThreeAPFree ↑s → (∀ x ∈ s, x < n) → s.card = k → k ≤ rothNumberNat n\",\n      \"informal_description\": \"For any finite three-term arithmetic progression-free subset $ s \\\\subseteq \\\\{0, 1, \\\\ldots, n-1\\\\} $ with cardinality $ k $, it holds that $ k \\\\leq \\\\text{rothNumberNat}(n) $, where $ \\\\text{rothNumberNat}(n) $ denotes the maximum size of such subsets in the interval $ \\\\{0, 1, \\\\ldots, n-1\\\\} $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Behrend.roth_lower_bound",
+              "informal_name": "Behrend's Lower Bound for Roth Numbers",
+              "kind": "theorem",
+              "type": "∀ {N : ℕ}, ↑N * Real.exp (-4 * √(Real.log ↑N)) ≤ ↑(rothNumberNat N)",
+              "informal_description": "For any natural number $ N $, the Roth number $ \\text{rothNumberNat}(N) $ satisfies the inequality $ N \\cdot e^{-4 \\sqrt{\\ln N}} \\leq \\text{rothNumberNat}(N) $.",
+              "path": "Mathlib.Combinatorics.Additive.AP.Three.Behrend"
+            },
+            {
+              "formal_name": "Behrend.roth_lower_bound_explicit",
+              "informal_name": "Behrend's Lower Bound for Roth Numbers: $ N e^{-4\\sqrt{\\ln N}} < \\text{rothNumberNat}(N) $",
+              "kind": "theorem",
+              "type": "∀ {N : ℕ}, 4096 ≤ N → ↑N * Real.exp (-4 * √(Real.log ↑N)) < ↑(rothNumberNat N)",
+              "informal_description": "For any natural number $ N \\geq 4096 $, the Roth number of $ N $, denoted $ \\text{rothNumberNat}(N) $, satisfies the inequality $ N \\cdot e^{-4\\sqrt{\\ln N}} < \\text{rothNumberNat}(N) $. This provides an explicit lower bound for the maximum size of a subset of $ \\{0, 1, \\ldots, N-1\\} $ containing no three-term arithmetic progression.",
+              "path": "Mathlib.Combinatorics.Additive.AP.Three.Behrend"
+            },
+            {
+              "formal_name": "rothNumberNat_le",
+              "informal_name": "Roth Number Upper Bound: $ \\text{rothNumberNat}(N) \\leq N $",
+              "kind": "theorem",
+              "type": "∀ (N : ℕ), rothNumberNat N ≤ N",
+              "informal_description": "For any natural number $ N $, the Roth number $ \\text{rothNumberNat}(N) $, which denotes the maximum size of a subset of $ \\{0, 1, \\ldots, N-1\\} $ containing no three distinct elements forming an arithmetic progression, satisfies $ \\text{rothNumberNat}(N) \\leq N $.",
+              "path": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+            },
+            {
+              "formal_name": "cornersTheoremBound",
+              "informal_name": "Corners Theorem Bound",
+              "kind": "definition",
+              "type": "ℝ → ℕ",
+              "informal_description": "The bound is defined as $\\left\\lfloor \\left(27 \\cdot \\text{triangleRemovalBound}\\left(\\frac{\\varepsilon}{9}\\right)\\right)^{-1} \\right\\rfloor_+ + 1$, where $\\varepsilon$ is a positive real parameter. This expression quantifies a threshold in the corners theorem, derived from the triangle removal lemma bound applied to $\\varepsilon/9$, scaled by 27, inverted, floored to a natural number, and incremented by 1.",
+              "path": "Mathlib.Combinatorics.Additive.Corner.Roth"
+            },
+            {
+              "formal_name": "ThreeAPFree.le_rothNumberNat",
+              "informal_name": "Three-term AP-free sets have size bounded by the Roth number",
+              "kind": "theorem",
+              "type": "∀ {k n : ℕ} (s : Finset ℕ), ThreeAPFree ↑s → (∀ x ∈ s, x < n) → s.card = k → k ≤ rothNumberNat n",
+              "informal_description": "For any finite three-term arithmetic progression-free subset $ s \\subseteq \\{0, 1, \\ldots, n-1\\} $ with cardinality $ k $, it holds that $ k \\leq \\text{rothNumberNat}(n) $, where $ \\text{rothNumberNat}(n) $ denotes the maximum size of such subsets in the interval $ \\{0, 1, \\ldots, n-1\\} $.",
+              "path": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "lean_leansearch",
+      "args": {
+        "query": "Roth Lemma 6 constant (r+1)^(p*l) l! B^l 2^(p*l*r)",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"SzemerediRegularity.a_add_one_le_four_pow_parts_card\",\n      \"module_name\": \"Mathlib.Combinatorics.SimpleGraph.Regularity.Bound\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : DecidableEq α] [inst_1 : Fintype α] {P : Finpartition Finset.univ},\\n  Fintype.card α / P.parts.card - Fintype.card α / SzemerediRegularity.stepBound P.parts.card * 4 ^ P.parts.card + 1 ≤\\n    4 ^ P.parts.card\"\n    },\n    {\n      \"name\": \"addRothNumber\",\n      \"module_name\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_2} → [DecidableEq α] → [AddMonoid α] → Finset α →o ℕ\"\n    },\n    {\n      \"name\": \"Behrend.bound_aux'\",\n      \"module_name\": \"Mathlib.Combinatorics.Additive.AP.Three.Behrend\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n d : ℕ), ↑(d ^ n) / ↑(n * d ^ 2) ≤ ↑(rothNumberNat ((2 * d - 1) ^ n))\"\n    },\n    {\n      \"name\": \"addRothNumber_le\",\n      \"module_name\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} [inst : DecidableEq α] [inst_1 : AddMonoid α] (s : Finset α), addRothNumber s ≤ s.card\"\n    },\n    {\n      \"name\": \"SzemerediRegularity.stepBound\",\n      \"module_name\": \"Mathlib.Combinatorics.SimpleGraph.Regularity.Bound\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → ℕ\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "SzemerediRegularity.a_add_one_le_four_pow_parts_card",
+              "module_name": "Mathlib.Combinatorics.SimpleGraph.Regularity.Bound",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} [inst : DecidableEq α] [inst_1 : Fintype α] {P : Finpartition Finset.univ},\n  Fintype.card α / P.parts.card - Fintype.card α / SzemerediRegularity.stepBound P.parts.card * 4 ^ P.parts.card + 1 ≤\n    4 ^ P.parts.card"
+            },
+            {
+              "name": "addRothNumber",
+              "module_name": "Mathlib.Combinatorics.Additive.AP.Three.Defs",
+              "kind": "definition",
+              "type": "{α : Type u_2} → [DecidableEq α] → [AddMonoid α] → Finset α →o ℕ"
+            },
+            {
+              "name": "Behrend.bound_aux'",
+              "module_name": "Mathlib.Combinatorics.Additive.AP.Three.Behrend",
+              "kind": "theorem",
+              "type": "∀ (n d : ℕ), ↑(d ^ n) / ↑(n * d ^ 2) ≤ ↑(rothNumberNat ((2 * d - 1) ^ n))"
+            },
+            {
+              "name": "addRothNumber_le",
+              "module_name": "Mathlib.Combinatorics.Additive.AP.Three.Defs",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_2} [inst : DecidableEq α] [inst_1 : AddMonoid α] (s : Finset α), addRothNumber s ≤ s.card"
+            },
+            {
+              "name": "SzemerediRegularity.stepBound",
+              "module_name": "Mathlib.Combinatorics.SimpleGraph.Regularity.Bound",
+              "kind": "definition",
+              "type": "ℕ → ℕ"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "lean_leanfinder",
+      "args": {
+        "query": "Roth theorem auxiliary polynomial determinant coefficient bound factorial degree height",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.numBound\",\n      \"informal_name\": \"Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\\\text{Fin}\\\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\\\mathbb{N}$, then adding 1.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.degBound\",\n      \"informal_name\": \"Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\\\text{Fin.val}$ over the multiset $d$ of type $\\\\text{Fin} \\\\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_succ\",\n      \"informal_name\": \"Successor Case of Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n\",\n      \"informal_description\": \"For natural numbers $k, n$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\\\text{numBound}(k, D, n+1) = \\\\text{numBound}(k, D, n) \\\\cdot \\\\text{degBound}(k, D, n) \\\\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+              "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+              "kind": "definition",
+              "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+              "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+              "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+              "kind": "definition",
+              "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+              "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.numBound",
+              "informal_name": "Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts",
+              "kind": "definition",
+              "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+              "informal_description": "A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\text{Fin}\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\mathbb{N}$, then adding 1.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.degBound",
+              "informal_name": "Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements",
+              "kind": "definition",
+              "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+              "informal_description": "The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\text{Fin.val}$ over the multiset $d$ of type $\\text{Fin} \\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.numBound_succ",
+              "informal_name": "Successor Case of Numerical Bound in Chevalley's Theorem",
+              "kind": "theorem",
+              "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n",
+              "informal_description": "For natural numbers $k, n$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\text{numBound}(k, D, n+1) = \\text{numBound}(k, D, n) \\cdot \\text{degBound}(k, D, n) \\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "lean_leansearch",
+      "args": {
+        "query": "Roth theorem auxiliary polynomial determinant coefficient bound factorial degree height",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_bdd_of_roots_le\",\n      \"module_name\": \"Mathlib.Topology.Algebra.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {B : ℝ} {d : ℕ} (f : F →+* K)\\n  {p : Polynomial F},\\n  p.Monic →\\n    (Polynomial.map f p).Splits →\\n      p.natDegree ≤ d →\\n        (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\\n          ∀ (i : ℕ), ‖(Polynomial.map f p).coeff i‖ ≤ max B 1 ^ d * ↑(d.choose (d / 2))\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_le_of_roots_le\",\n      \"module_name\": \"Mathlib.Topology.Algebra.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\\n  (i : ℕ),\\n  p.Monic →\\n    (Polynomial.map f p).Splits →\\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)\"\n    },\n    {\n      \"name\": \"Behrend.bound_aux\",\n      \"module_name\": \"Mathlib.Combinatorics.Additive.AP.Three.Behrend\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n d : ℕ}, d ≠ 0 → 2 ≤ n → ↑d ^ (n - 2) / ↑n ≤ ↑(rothNumberNat ((2 * d - 1) ^ n))\"\n    },\n    {\n      \"name\": \"Behrend.bound_aux'\",\n      \"module_name\": \"Mathlib.Combinatorics.Additive.AP.Three.Behrend\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n d : ℕ), ↑(d ^ n) / ↑(n * d ^ 2) ≤ ↑(rothNumberNat ((2 * d - 1) ^ n))\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Matrix.det_le",
+              "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n"
+            },
+            {
+              "name": "Polynomial.coeff_bdd_of_roots_le",
+              "module_name": "Mathlib.Topology.Algebra.Polynomial",
+              "kind": "theorem",
+              "type": "∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {B : ℝ} {d : ℕ} (f : F →+* K)\n  {p : Polynomial F},\n  p.Monic →\n    (Polynomial.map f p).Splits →\n      p.natDegree ≤ d →\n        (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\n          ∀ (i : ℕ), ‖(Polynomial.map f p).coeff i‖ ≤ max B 1 ^ d * ↑(d.choose (d / 2))"
+            },
+            {
+              "name": "Polynomial.coeff_le_of_roots_le",
+              "module_name": "Mathlib.Topology.Algebra.Polynomial",
+              "kind": "theorem",
+              "type": "∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\n  (i : ℕ),\n  p.Monic →\n    (Polynomial.map f p).Splits →\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)"
+            },
+            {
+              "name": "Behrend.bound_aux",
+              "module_name": "Mathlib.Combinatorics.Additive.AP.Three.Behrend",
+              "kind": "theorem",
+              "type": "∀ {n d : ℕ}, d ≠ 0 → 2 ≤ n → ↑d ^ (n - 2) / ↑n ≤ ↑(rothNumberNat ((2 * d - 1) ^ n))"
+            },
+            {
+              "name": "Behrend.bound_aux'",
+              "module_name": "Mathlib.Combinatorics.Additive.AP.Three.Behrend",
+              "kind": "theorem",
+              "type": "∀ (n d : ℕ), ↑(d ^ n) / ↑(n * d ^ 2) ≤ ↑(rothNumberNat ((2 * d - 1) ^ n))"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "lean_leanfinder",
+      "args": {
+        "query": "natural power factorial product in a semiring",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Nat.cast_factorial\",\n      \"informal_name\": \"Factorial Equals Ascending Pochhammer Polynomial Evaluated at 1\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (S : Type u_1) [inst : Semiring S] (a : ℕ), ↑a.factorial = Polynomial.eval 1 (ascPochhammer S a)\",\n      \"informal_description\": \"For any natural number $a$ and semiring $S$, the factorial of $a$ cast to $S$ is equal to the evaluation of the ascending Pochhammer polynomial of degree $a$ at $1$, i.e., $a! = \\text{eval}_{1}(\\text{ascPochhammer}(a))$.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Pochhammer\"\n    },\n    {\n      \"formal_name\": \"factorial_mul_ascPochhammer\",\n      \"informal_name\": \"Factorial and Ascending Pochhammer Product Identity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (S : Type u_2) [inst : Semiring S] (r n : ℕ),\\n  ↑r.factorial * Polynomial.eval (↑r + 1) (ascPochhammer S n) = ↑(r + n).factorial\",\n      \"informal_description\": \"For any semiring $ S $ and natural numbers $ r, n $, the product of $ r! $ and the evaluation of the ascending Pochhammer polynomial $ \\\\text{ascPochhammer}_n $ at $ r + 1 $ equals $ (r + n)! $. Symbolically, $ r! \\\\cdot \\\\text{ascPochhammer}_n(r + 1) = (r + n)! $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Pochhammer\"\n    },\n    {\n      \"formal_name\": \"ascPochhammer_nat_eq_natCast_descFactorial\",\n      \"informal_name\": \"Evaluation of Ascending Pochhammer Polynomial Equals Descending Factorial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (S : Type u_1) [inst : Semiring S] (a b : ℕ),\\n  Polynomial.eval (↑a) (ascPochhammer S b) = ↑((a + b - 1).descFactorial b)\",\n      \"informal_description\": \"For any semiring $ S $ and natural numbers $ a, b $, evaluating the ascending Pochhammer polynomial $ \\\\text{ascPochhammer}(b) $ at $ a $ (interpreted as an element of $ S $) yields the descending factorial $ (a + b - 1)^{\\\\underline{b}} $, i.e., $ \\\\text{ascPochhammer}(b)(a) = (a + b - 1)(a + b - 2)\\\\cdots(a) $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Pochhammer\"\n    },\n    {\n      \"formal_name\": \"ascPochhammer_eval_one\",\n      \"informal_name\": \"Evaluation of Ascending Pochhammer Polynomial at 1 Yields Factorial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (S : Type u_2) [inst : Semiring S] (n : ℕ), Polynomial.eval 1 (ascPochhammer S n) = ↑n.factorial\",\n      \"informal_description\": \"For any semiring $S$ and natural number $n$, evaluating the ascending Pochhammer polynomial $\\\\text{ascPochhammer}(n)$ at $x = 1$ results in the factorial of $n$ in $S$, i.e., $\\\\text{ascPochhammer}(n)(1) = n!$.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Pochhammer\"\n    },\n    {\n      \"formal_name\": \"Nat.factorial_mul_ascFactorial'\",\n      \"informal_name\": \"Factorial and Rising Factorial Product Identity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n k : ℕ), 0 < n → (n - 1).factorial * n.ascFactorial k = (n + k - 1).factorial\",\n      \"informal_description\": \"For any natural numbers $n$ and $k$ with $n > 0$, the product of $(n - 1)!$ and the rising factorial $n^{(k)}$ equals $(n + k - 1)!$. In symbols, $(n - 1)! \\\\cdot n^{(k)} = (n + k - 1)!$.\",\n      \"path\": \"Mathlib.Data.Nat.Factorial.Basic\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Nat.cast_factorial",
+              "informal_name": "Factorial Equals Ascending Pochhammer Polynomial Evaluated at 1",
+              "kind": "theorem",
+              "type": "∀ (S : Type u_1) [inst : Semiring S] (a : ℕ), ↑a.factorial = Polynomial.eval 1 (ascPochhammer S a)",
+              "informal_description": "For any natural number $a$ and semiring $S$, the factorial of $a$ cast to $S$ is equal to the evaluation of the ascending Pochhammer polynomial of degree $a$ at $1$, i.e., $a! = \text{eval}_{1}(\text{ascPochhammer}(a))$.",
+              "path": "Mathlib.RingTheory.Polynomial.Pochhammer"
+            },
+            {
+              "formal_name": "factorial_mul_ascPochhammer",
+              "informal_name": "Factorial and Ascending Pochhammer Product Identity",
+              "kind": "theorem",
+              "type": "∀ (S : Type u_2) [inst : Semiring S] (r n : ℕ),\n  ↑r.factorial * Polynomial.eval (↑r + 1) (ascPochhammer S n) = ↑(r + n).factorial",
+              "informal_description": "For any semiring $ S $ and natural numbers $ r, n $, the product of $ r! $ and the evaluation of the ascending Pochhammer polynomial $ \\text{ascPochhammer}_n $ at $ r + 1 $ equals $ (r + n)! $. Symbolically, $ r! \\cdot \\text{ascPochhammer}_n(r + 1) = (r + n)! $.",
+              "path": "Mathlib.RingTheory.Polynomial.Pochhammer"
+            },
+            {
+              "formal_name": "ascPochhammer_nat_eq_natCast_descFactorial",
+              "informal_name": "Evaluation of Ascending Pochhammer Polynomial Equals Descending Factorial",
+              "kind": "theorem",
+              "type": "∀ (S : Type u_1) [inst : Semiring S] (a b : ℕ),\n  Polynomial.eval (↑a) (ascPochhammer S b) = ↑((a + b - 1).descFactorial b)",
+              "informal_description": "For any semiring $ S $ and natural numbers $ a, b $, evaluating the ascending Pochhammer polynomial $ \\text{ascPochhammer}(b) $ at $ a $ (interpreted as an element of $ S $) yields the descending factorial $ (a + b - 1)^{\\underline{b}} $, i.e., $ \\text{ascPochhammer}(b)(a) = (a + b - 1)(a + b - 2)\\cdots(a) $.",
+              "path": "Mathlib.RingTheory.Polynomial.Pochhammer"
+            },
+            {
+              "formal_name": "ascPochhammer_eval_one",
+              "informal_name": "Evaluation of Ascending Pochhammer Polynomial at 1 Yields Factorial",
+              "kind": "theorem",
+              "type": "∀ (S : Type u_2) [inst : Semiring S] (n : ℕ), Polynomial.eval 1 (ascPochhammer S n) = ↑n.factorial",
+              "informal_description": "For any semiring $S$ and natural number $n$, evaluating the ascending Pochhammer polynomial $\\text{ascPochhammer}(n)$ at $x = 1$ results in the factorial of $n$ in $S$, i.e., $\\text{ascPochhammer}(n)(1) = n!$.",
+              "path": "Mathlib.RingTheory.Polynomial.Pochhammer"
+            },
+            {
+              "formal_name": "Nat.factorial_mul_ascFactorial'",
+              "informal_name": "Factorial and Rising Factorial Product Identity",
+              "kind": "theorem",
+              "type": "∀ (n k : ℕ), 0 < n → (n - 1).factorial * n.ascFactorial k = (n + k - 1).factorial",
+              "informal_description": "For any natural numbers $n$ and $k$ with $n > 0$, the product of $(n - 1)!$ and the rising factorial $n^{(k)}$ equals $(n + k - 1)!$. In symbols, $(n - 1)! \\cdot n^{(k)} = (n + k - 1)!$.",
+              "path": "Mathlib.Data.Nat.Factorial.Basic"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "lean_leansearch",
+      "args": {
+        "query": "natural power factorial product in a semiring",
+        "num_results": 5
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"DividedPowers.factorial_mul_dpow_eq_pow\",\n      \"module_name\": \"Mathlib.RingTheory.DividedPowers.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} {a : A} (hI : DividedPowers I) {n : ℕ},\\n  a ∈ I → ↑n.factorial * hI.dpow n a = a ^ n\"\n    },\n    {\n      \"name\": \"Semiring.npow\",\n      \"module_name\": \"Mathlib.Algebra.Ring.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u} → [self : Semiring α] → ℕ → α → α\"\n    },\n    {\n      \"name\": \"Finset.prod_Ico_id_eq_factorial\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Intervals\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ), ∏ x ∈ Finset.Ico 1 (n + 1), x = n.factorial\"\n    },\n    {\n      \"name\": \"Nat.ascFactorial_eq_prod_range\",\n      \"module_name\": \"Mathlib.Data.Nat.Factorial.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n k : ℕ), n.ascFactorial k = ∏ i ∈ Finset.range k, (n + i)\"\n    },\n    {\n      \"name\": \"Finset.pow_eq_prod_const\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Group.Finset.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_4} [inst : CommMonoid M] (b : M) (n : ℕ), b ^ n = ∏ _k ∈ Finset.range n, b\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "DividedPowers.factorial_mul_dpow_eq_pow",
+              "module_name": "Mathlib.RingTheory.DividedPowers.Basic",
+              "kind": "theorem",
+              "type": "∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} {a : A} (hI : DividedPowers I) {n : ℕ},\n  a ∈ I → ↑n.factorial * hI.dpow n a = a ^ n"
+            },
+            {
+              "name": "Semiring.npow",
+              "module_name": "Mathlib.Algebra.Ring.Defs",
+              "kind": "definition",
+              "type": "{α : Type u} → [self : Semiring α] → ℕ → α → α"
+            },
+            {
+              "name": "Finset.prod_Ico_id_eq_factorial",
+              "module_name": "Mathlib.Algebra.BigOperators.Intervals",
+              "kind": "theorem",
+              "type": "∀ (n : ℕ), ∏ x ∈ Finset.Ico 1 (n + 1), x = n.factorial"
+            },
+            {
+              "name": "Nat.ascFactorial_eq_prod_range",
+              "module_name": "Mathlib.Data.Nat.Factorial.BigOperators",
+              "kind": "theorem",
+              "type": "∀ (n k : ℕ), n.ascFactorial k = ∏ i ∈ Finset.range k, (n + i)"
+            },
+            {
+              "name": "Finset.pow_eq_prod_const",
+              "module_name": "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+              "kind": "theorem",
+              "type": "∀ {M : Type u_4} [inst : CommMonoid M] (b : M) (n : ℕ), b ^ n = ∏ _k ∈ Finset.range n, b"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "lean_loogle",
+      "args": {
+        "query": "\"lem6M\"",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": []\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": []
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "lean_loogle",
+      "args": {
+        "query": "Nat.factorial, _ * _ ^ _",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Nat.ascFactorial_le_factorial_mul_pow\",\n      \"type\": \" (n k : ℕ) : n.ascFactorial k ≤ k.factorial * n ^ k\",\n      \"module\": \"Mathlib.Data.Nat.Factorial.Basic\"\n    },\n    {\n      \"name\": \"Nat.factorial_mul_pow_sub_le_factorial\",\n      \"type\": \" {n m : ℕ} (hnm : n ≤ m) : n.factorial * n ^ (m - n) ≤ m.factorial\",\n      \"module\": \"Mathlib.Data.Nat.Factorial.Basic\"\n    },\n    {\n      \"name\": \"Nat.factorial_mul_pow_le_factorial\",\n      \"type\": \" {m n : ℕ} : m.factorial * (m + 1) ^ n ≤ (m + n).factorial\",\n      \"module\": \"Mathlib.Data.Nat.Factorial.Basic\"\n    },\n    {\n      \"name\": \"Polynomial.iterate_derivative_eq_factorial_smul_sum\",\n      \"type\": \" {R : Type u} [Semiring R] (p : Polynomial R) (k : ℕ) : (⇑Polynomial.derivative)^[k] p = k.factorial • ∑ x ∈ ((⇑Polynomial.derivative)^[k] p).support, Polynomial.C ((x + k).choose k • p.coeff (x + k)) * Polynomial.X ^ x\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Derivative\"\n    },\n    {\n      \"name\": \"Nat.eventually_mul_pow_lt_factorial_sub\",\n      \"type\": \" (a c d : ℕ) : ∀ᶠ (n : ℕ) in Filter.atTop, a * c ^ n < (n - d).factorial\",\n      \"module\": \"Mathlib.Order.Filter.AtTopBot.Finite\"\n    },\n    {\n      \"name\": \"Nat.superFactorial_two_mul\",\n      \"type\": \" (n : ℕ) : (2 * n).superFactorial = (∏ i ∈ Finset.range n, (2 * i + 1).factorial) ^ 2 * 2 ^ n * n.factorial\",\n      \"module\": \"Mathlib.Data.Nat.Factorial.SuperFactorial\"\n    },\n    {\n      \"name\": \"Nat.superFactorial_four_mul\",\n      \"type\": \" (n : ℕ) : (4 * n).superFactorial = ((∏ i ∈ Finset.range (2 * n), (2 * i + 1).factorial) * 2 ^ n) ^ 2 * (2 * n).factorial\",\n      \"module\": \"Mathlib.Data.Nat.Factorial.SuperFactorial\"\n    },\n    {\n      \"name\": \"hasSum_descFactorial_mul_geometric_of_norm_lt_one'\",\n      \"type\": \" {R : Type u_4} [NormedRing R] [HasSummableGeomSeries R] (j : ℕ) {r : R} (h : ‖r‖ < 1) : HasSum (fun n => ↑(n.descFactorial j) * r ^ n) (↑j.factorial * r ^ j * Ring.inverse (1 - r) ^ (j + 1))\",\n      \"module\": \"Mathlib.Analysis.SpecificLimits.Normed\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Nat.ascFactorial_le_factorial_mul_pow",
+              "type": " (n k : ℕ) : n.ascFactorial k ≤ k.factorial * n ^ k",
+              "module": "Mathlib.Data.Nat.Factorial.Basic"
+            },
+            {
+              "name": "Nat.factorial_mul_pow_sub_le_factorial",
+              "type": " {n m : ℕ} (hnm : n ≤ m) : n.factorial * n ^ (m - n) ≤ m.factorial",
+              "module": "Mathlib.Data.Nat.Factorial.Basic"
+            },
+            {
+              "name": "Nat.factorial_mul_pow_le_factorial",
+              "type": " {m n : ℕ} : m.factorial * (m + 1) ^ n ≤ (m + n).factorial",
+              "module": "Mathlib.Data.Nat.Factorial.Basic"
+            },
+            {
+              "name": "Polynomial.iterate_derivative_eq_factorial_smul_sum",
+              "type": " {R : Type u} [Semiring R] (p : Polynomial R) (k : ℕ) : (⇑Polynomial.derivative)^[k] p = k.factorial • ∑ x ∈ ((⇑Polynomial.derivative)^[k] p).support, Polynomial.C ((x + k).choose k • p.coeff (x + k)) * Polynomial.X ^ x",
+              "module": "Mathlib.Algebra.Polynomial.Derivative"
+            },
+            {
+              "name": "Nat.eventually_mul_pow_lt_factorial_sub",
+              "type": " (a c d : ℕ) : ∀ᶠ (n : ℕ) in Filter.atTop, a * c ^ n < (n - d).factorial",
+              "module": "Mathlib.Order.Filter.AtTopBot.Finite"
+            },
+            {
+              "name": "Nat.superFactorial_two_mul",
+              "type": " (n : ℕ) : (2 * n).superFactorial = (∏ i ∈ Finset.range n, (2 * i + 1).factorial) ^ 2 * 2 ^ n * n.factorial",
+              "module": "Mathlib.Data.Nat.Factorial.SuperFactorial"
+            },
+            {
+              "name": "Nat.superFactorial_four_mul",
+              "type": " (n : ℕ) : (4 * n).superFactorial = ((∏ i ∈ Finset.range (2 * n), (2 * i + 1).factorial) * 2 ^ n) ^ 2 * (2 * n).factorial",
+              "module": "Mathlib.Data.Nat.Factorial.SuperFactorial"
+            },
+            {
+              "name": "hasSum_descFactorial_mul_geometric_of_norm_lt_one'",
+              "type": " {R : Type u_4} [NormedRing R] [HasSummableGeomSeries R] (j : ℕ) {r : R} (h : ‖r‖ < 1) : HasSum (fun n => ↑(n.descFactorial j) * r ^ n) (↑j.factorial * r ^ j * Ring.inverse (1 - r) ^ (j + 1))",
+              "module": "Mathlib.Analysis.SpecificLimits.Normed"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "lean_loogle",
+      "args": {
+        "query": "\"pow_mul\"",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Nat.pow_mul\",\n      \"type\": \" (a m n : ℕ) : a ^ (m * n) = (a ^ m) ^ n\",\n      \"module\": \"Init.Data.Nat.Lemmas\"\n    },\n    {\n      \"name\": \"Nat.pow_mul'\",\n      \"type\": \" (a m n : ℕ) : a ^ (m * n) = (a ^ n) ^ m\",\n      \"module\": \"Init.Data.Nat.Lemmas\"\n    },\n    {\n      \"name\": \"Nat.pow_lt_pow_iff_pow_mul_le_pow\",\n      \"type\": \" {a n m : ℕ} (h : 1 < a) : a ^ n < a ^ m ↔ a ^ n * a ≤ a ^ m\",\n      \"module\": \"Init.Data.Nat.Lemmas\"\n    },\n    {\n      \"name\": \"Int.pow_mul\",\n      \"type\": \" {a : ℤ} {n m : ℕ} : a ^ (n * m) = (a ^ n) ^ m\",\n      \"module\": \"Init.Data.Int.Pow\"\n    },\n    {\n      \"name\": \"Nat.testBit_two_pow_mul\",\n      \"type\": \" {i a j : ℕ} : (2 ^ i * a).testBit j = (decide (j ≥ i) && a.testBit (j - i))\",\n      \"module\": \"Init.Data.Nat.Bitwise.Lemmas\"\n    },\n    {\n      \"name\": \"Nat.testBit_two_pow_mul_add\",\n      \"type\": \" (a : ℕ) {b i : ℕ} (b_lt : b < 2 ^ i) (j : ℕ) : (2 ^ i * a + b).testBit j = if j < i then b.testBit j else a.testBit (j - i)\",\n      \"module\": \"Init.Data.Nat.Bitwise.Lemmas\"\n    },\n    {\n      \"name\": \"BitVec.twoPow_mul_eq_shiftLeft\",\n      \"type\": \" {w : ℕ} (x : BitVec w) (i : ℕ) : BitVec.twoPow w i * x = x <<< i\",\n      \"module\": \"Init.Data.BitVec.Lemmas\"\n    },\n    {\n      \"name\": \"BitVec.twoPow_mul_twoPow_eq\",\n      \"type\": \" {w : ℕ} (i j : ℕ) : BitVec.twoPow w i * BitVec.twoPow w j = BitVec.twoPow w (i + j)\",\n      \"module\": \"Init.Data.BitVec.Lemmas\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Nat.pow_mul",
+              "type": " (a m n : ℕ) : a ^ (m * n) = (a ^ m) ^ n",
+              "module": "Init.Data.Nat.Lemmas"
+            },
+            {
+              "name": "Nat.pow_mul'",
+              "type": " (a m n : ℕ) : a ^ (m * n) = (a ^ n) ^ m",
+              "module": "Init.Data.Nat.Lemmas"
+            },
+            {
+              "name": "Nat.pow_lt_pow_iff_pow_mul_le_pow",
+              "type": " {a n m : ℕ} (h : 1 < a) : a ^ n < a ^ m ↔ a ^ n * a ≤ a ^ m",
+              "module": "Init.Data.Nat.Lemmas"
+            },
+            {
+              "name": "Int.pow_mul",
+              "type": " {a : ℤ} {n m : ℕ} : a ^ (n * m) = (a ^ n) ^ m",
+              "module": "Init.Data.Int.Pow"
+            },
+            {
+              "name": "Nat.testBit_two_pow_mul",
+              "type": " {i a j : ℕ} : (2 ^ i * a).testBit j = (decide (j ≥ i) && a.testBit (j - i))",
+              "module": "Init.Data.Nat.Bitwise.Lemmas"
+            },
+            {
+              "name": "Nat.testBit_two_pow_mul_add",
+              "type": " (a : ℕ) {b i : ℕ} (b_lt : b < 2 ^ i) (j : ℕ) : (2 ^ i * a + b).testBit j = if j < i then b.testBit j else a.testBit (j - i)",
+              "module": "Init.Data.Nat.Bitwise.Lemmas"
+            },
+            {
+              "name": "BitVec.twoPow_mul_eq_shiftLeft",
+              "type": " {w : ℕ} (x : BitVec w) (i : ℕ) : BitVec.twoPow w i * x = x <<< i",
+              "module": "Init.Data.BitVec.Lemmas"
+            },
+            {
+              "name": "BitVec.twoPow_mul_twoPow_eq",
+              "type": " {w : ℕ} (i j : ℕ) : BitVec.twoPow w i * BitVec.twoPow w j = BitVec.twoPow w (i + j)",
+              "module": "Init.Data.BitVec.Lemmas"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "lean_local_search",
+      "args": {
+        "query": "lem6M",
+        "limit": 12,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.lem6M\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/Theta.lean\"\n    },\n    {\n      \"name\": \"Roth.lem6M_lt\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Theta.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Roth.lem6M",
+              "kind": "def",
+              "file": "Roth/Theta.lean"
+            },
+            {
+              "name": "Roth.lem6M_lt",
+              "kind": "theorem",
+              "file": "Roth/Theta.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "lean_local_search",
+      "args": {
+        "query": "factorial",
+        "limit": 12,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Fin.factorial\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Fin/Basic.lean\"\n    },\n    {\n      \"name\": \"Nat.factorial\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Nat/Factorial/Basic.lean\"\n    },\n    {\n      \"name\": \"factorial\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/MathlibTest/superscript.lean\"\n    },\n    {\n      \"name\": \"PDerivHasseExtra.factorial_caller\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    },\n    {\n      \"name\": \"DetChooseRingProbe.factorial_mul_det\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    },\n    {\n      \"name\": \"factorial_smul_hasseDeriv\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/mathlib-hasse-excerpt.lean\"\n    },\n    {\n      \"name\": \"factorial_smul_hasseDeriv\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/mathlib-hasse-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.factorial_smul_hasseDeriv_single\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"Roth.factorial_coefficient_le_two_pow_aux\",\n      \"kind\": \"lemma\",\n      \"file\": \"Roth/Theta.lean\"\n    },\n    {\n      \"name\": \"Nat.factorial_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Nat/Factorial/Basic.lean\"\n    },\n    {\n      \"name\": \"Nat.factorial_lt\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Nat/Factorial/Basic.lean\"\n    },\n    {\n      \"name\": \"Nat.factorial_inj\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Nat/Factorial/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Fin.factorial",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Fin/Basic.lean"
+            },
+            {
+              "name": "Nat.factorial",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Nat/Factorial/Basic.lean"
+            },
+            {
+              "name": "factorial",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/MathlibTest/superscript.lean"
+            },
+            {
+              "name": "PDerivHasseExtra.factorial_caller",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+            },
+            {
+              "name": "DetChooseRingProbe.factorial_mul_det",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+            },
+            {
+              "name": "factorial_smul_hasseDeriv",
+              "kind": "theorem",
+              "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/mathlib-hasse-excerpt.lean"
+            },
+            {
+              "name": "factorial_smul_hasseDeriv",
+              "kind": "theorem",
+              "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/mathlib-hasse-excerpt.lean"
+            },
+            {
+              "name": "MvPolynomial.factorial_smul_hasseDeriv_single",
+              "kind": "theorem",
+              "file": "Roth/HasseDeriv.lean"
+            },
+            {
+              "name": "Roth.factorial_coefficient_le_two_pow_aux",
+              "kind": "lemma",
+              "file": "Roth/Theta.lean"
+            },
+            {
+              "name": "Nat.factorial_le",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Nat/Factorial/Basic.lean"
+            },
+            {
+              "name": "Nat.factorial_lt",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Nat/Factorial/Basic.lean"
+            },
+            {
+              "name": "Nat.factorial_inj",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Nat/Factorial/Basic.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "lean_local_search",
+      "args": {
+        "query": "one_le_mul_of_one_le_of_one_le",
+        "limit": 12,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"one_le_mul_of_one_le_of_one_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/GroupWithZero/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "one_le_mul_of_one_le_of_one_le",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/GroupWithZero/Basic.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]

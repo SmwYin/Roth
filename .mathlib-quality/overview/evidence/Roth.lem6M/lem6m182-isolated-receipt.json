@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\n#check_failure Roth.lem6M\nnamespace Lem6M182Isolated\n-- Representation expansion only, not a proposed upstream definition.\ndef formula (A : Type*) [Semiring A] (p r\u2081 : \u2115) (B : A) (l : \u2115) : A :=\n  ((r\u2081 : A) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r\u2081)\nexample (p r\u2081 : \u2115) (B : \u211d) (l : \u2115) : formula \u211d p r\u2081 B l =\n    ((r\u2081 : \u211d) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r\u2081) := rfl\n#check @Nat.factorial\n#check @pow_mul\n#check @mul_right_comm\n#check @Nat.cast_pow\n#check @one_le_pow\u2080\n#check @one_le_mul_of_one_le_of_one_le\n#check @Nat.factorial_pos\nexample (p r\u2081 l : \u2115) : formula \u211d p r\u2081 1 l =\n    (((r\u2081 + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r\u2081) : \u2115) : \u211d) := by\n  simp only [formula, one_pow, mul_one, Nat.cast_mul, Nat.cast_pow, Nat.cast_add, Nat.cast_one,\n    Nat.cast_ofNat]\n#print axioms formula\nend Lem6M182Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.lem6M`\",\n      \"line\": 16,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Nat.factorial : \u2115 \u2192 \u2115\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@pow_mul : \u2200 {M : Type u_1} [inst : Monoid M] (a : M) (m n : \u2115), a ^ (m * n) = (a ^ m) ^ n\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@mul_right_comm : \u2200 {G : Type u_1} [inst : CommSemigroup G] (a b c : G), a * b * c = a * c * b\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.cast_pow : \u2200 {\u03b1 : Type u_1} [inst : Semiring \u03b1] (m n : \u2115), \u2191(m ^ n) = \u2191m ^ n\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@one_le_pow\u2080 : \u2200 {M\u2080 : Type u_1} [inst : MonoidWithZero M\u2080] [inst_1 : Preorder M\u2080] {a : M\u2080} [ZeroLEOneClass M\u2080]\\n  [PosMulMono M\u2080], 1 \u2264 a \u2192 \u2200 {n : \u2115}, 1 \u2264 a ^ n\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@one_le_mul_of_one_le_of_one_le : \u2200 {M\u2080 : Type u_1} [inst : MonoidWithZero M\u2080] [inst_1 : Preorder M\u2080] {a b : M\u2080}\\n  [ZeroLEOneClass M\u2080] [PosMulMono M\u2080], 1 \u2264 a \u2192 1 \u2264 b \u2192 1 \u2264 a * b\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Nat.factorial_pos : \u2200 (n : \u2115), 0 < n.factorial\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Lem6M182Isolated.formula' depends on axioms: [propext]\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.lem6M`",
+          "line": 16,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Nat.factorial : \u2115 \u2192 \u2115",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@pow_mul : \u2200 {M : Type u_1} [inst : Monoid M] (a : M) (m n : \u2115), a ^ (m * n) = (a ^ m) ^ n",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@mul_right_comm : \u2200 {G : Type u_1} [inst : CommSemigroup G] (a b c : G), a * b * c = a * c * b",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.cast_pow : \u2200 {\u03b1 : Type u_1} [inst : Semiring \u03b1] (m n : \u2115), \u2191(m ^ n) = \u2191m ^ n",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@one_le_pow\u2080 : \u2200 {M\u2080 : Type u_1} [inst : MonoidWithZero M\u2080] [inst_1 : Preorder M\u2080] {a : M\u2080} [ZeroLEOneClass M\u2080]\n  [PosMulMono M\u2080], 1 \u2264 a \u2192 \u2200 {n : \u2115}, 1 \u2264 a ^ n",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@one_le_mul_of_one_le_of_one_le : \u2200 {M\u2080 : Type u_1} [inst : MonoidWithZero M\u2080] [inst_1 : Preorder M\u2080] {a b : M\u2080}\n  [ZeroLEOneClass M\u2080] [PosMulMono M\u2080], 1 \u2264 a \u2192 1 \u2264 b \u2192 1 \u2264 a * b",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Nat.factorial_pos : \u2200 (n : \u2115), 0 < n.factorial",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Lem6M182Isolated.formula' depends on axioms: [propext]",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 275
+}

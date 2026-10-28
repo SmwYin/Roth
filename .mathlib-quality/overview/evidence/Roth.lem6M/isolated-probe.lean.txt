@@ -1,0 +1,20 @@
+#check_failure Roth.lem6M
+namespace Lem6M182Isolated
+-- Representation expansion only, not a proposed upstream definition.
+def formula (A : Type*) [Semiring A] (p r₁ : ℕ) (B : A) (l : ℕ) : A :=
+  ((r₁ : A) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r₁)
+example (p r₁ : ℕ) (B : ℝ) (l : ℕ) : formula ℝ p r₁ B l =
+    ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r₁) := rfl
+#check @Nat.factorial
+#check @pow_mul
+#check @mul_right_comm
+#check @Nat.cast_pow
+#check @one_le_pow₀
+#check @one_le_mul_of_one_le_of_one_le
+#check @Nat.factorial_pos
+example (p r₁ l : ℕ) : formula ℝ p r₁ 1 l =
+    (((r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) : ℕ) : ℝ) := by
+  simp only [formula, one_pow, mul_one, Nat.cast_mul, Nat.cast_pow, Nat.cast_add, Nat.cast_one,
+    Nat.cast_ofNat]
+#print axioms formula
+end Lem6M182Isolated

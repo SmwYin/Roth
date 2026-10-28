@@ -1,0 +1,16 @@
+namespace Lem6M182
+example (p r₁ : ℕ) (B : ℝ) (l : ℕ) : Roth.lem6M p r₁ B l =
+    ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r₁) := rfl
+-- Actual one_le_lem6M caller with the notation inlined, no project theorem used.
+theorem one_le_inline (p r₁ : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) :
+    1 ≤ ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r₁) := by
+  refine one_le_mul_of_one_le_of_one_le
+    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)
+      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))
+  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r₁))
+  · exact_mod_cast Nat.factorial_pos l
+#print axioms one_le_inline
+-- Downstream lemma follows from existing mathlib arithmetic, but is NOT <=3 calls.
+example (p r₁ : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) : 1 ≤ Roth.lem6M p r₁ B l :=
+  one_le_inline p r₁ hB l
+end Lem6M182

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 181/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 182/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 181; remaining: 112.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 39 NO-mathlib-has-it, 53 BORDERLINE-needs-human, 33 SKIP.
+- Completed applicable assessments: 182; remaining: 111.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 39 NO-mathlib-has-it, 54 BORDERLINE-needs-human, 33 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2094,6 +2094,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit external occurrences: 3; external files: Roth/MainLemma.lean; within module callers: 16; within module code occurrences excluding definition: 25; total explicit caller declarations: 19; direct value consumers: Roth.lem6Φ, _private.Roth.Theta.0.Roth.index_separated_mul_le_aux, Roth.index_le_lem6, _private.Roth.Theta.0.Roth.theta_scaled_unique_le_aux, _private.Roth.Theta.0.Roth.theta_prefix_lt_aux, _private.Roth.Theta.0.Roth.theta_lt_base_aux, _private.Roth.Theta.0.Roth.theta_phi_lt_aux, _private.Roth.Theta.0.Roth.theta_lt_succ_aux, _private.Roth.Theta.0.Roth.theta_lt_of_large_delta_aux, Roth.Θ_lt, _private.Roth.MainLemma.0.Roth.theta_lt_eta_of_sq_log_bound_aux, _private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux, Roth.main_lemma; direct type consumers: Roth.index_le_Θ, Roth.Θ_nonneg, Roth.Θ_le_card, Roth.Θ_le_of_forall_index_le, Roth.Θ_mono, Roth.Θ_equiv, Roth.Θ_unique_le, Roth.Θ_option_le, _private.Roth.Theta.0.Roth.theta_scaled_unique_le_aux, _private.Roth.Theta.0.Roth.theta_prefix_lt_aux, _private.Roth.Theta.0.Roth.theta_lt_base_aux, _private.Roth.Theta.0.Roth.theta_phi_lt_aux, _private.Roth.Theta.0.Roth.theta_lt_succ_aux, _private.Roth.Theta.0.Roth.theta_lt_of_large_delta_aux, Roth.Θ_lt, _private.Roth.MainLemma.0.Roth.theta_lt_eta_of_sq_log_bound_aux, _private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux; scope: 293 canonical production declarations only; lexical references are distinct from direct kernel types/values and transitive/simp closure.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.Θ.md).
 
+### Completed: `Roth.lem6M`
+
+- Type: `ℕ → ℕ → ℝ → ℕ → ℝ`
+- What: Auxiliary coefficient envelope M=(r₁+1)^(pl) l! B^l 2^(plr₁) for Roth Lemma6.
+- How: One arithmetic expression using natural casts, powers, factorial and multiplication.
+- Hypotheses: p,r₁,l natural; B arbitrary real; no positivity, finiteness or DecidableEq assumptions.
+- Project dependencies: None
+- Caller summary: Six explicit caller declarations, all Theta; seven direct kernel-value and six direct kernel-type consumers.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.lem6M.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2482,6 +2492,8 @@ Completed `Roth.indexSet`: methods: 5; forms: 3; cells: 15; verified candidates:
 
 Completed `Roth.Θ`: methods: 5; forms: 3; cells: 15; verified candidates: SupSet.sSup, le_csSup, csSup_le, csSup_le_csSup, Real.sSup_nonneg, Real.sSup_le, Real.sSup_empty, Real.sSup_of_not_bddAbove, sSup_image2, csSup_image; limitations: Local symbol index unavailable; online snapshots may differ. Complete-lattice sSup_image2 is not usable directly on real totalized suprema; negative instance guard verifies this.
 
+Completed `Roth.lem6M`: Five methods on current/standard/abstract forms; arithmetic primitives confirmed; no identified existing parameterized bound.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2845,6 +2857,8 @@ Completed `Roth.RSet`: Degree component is the existing restrictSupport carrier.
 Completed `Roth.indexSet`: Exact generic outer binary-image construction already exists., Parent index normalization re-aims to infDegree/Finsupp.weight/aeval, with explicit default0 projection.
 
 Completed `Roth.Θ`: Outer supremum operation is exact existing SupSet.sSup specialization., Parent family is exact Set.image2; full index expansion uses existing infDegree with new finite-support normalization glue.
+
+Completed `Roth.lem6M`: Chosen majorant of determinant coefficient estimate; not Matrix.det_le, whose hypotheses and object differ.
 
 ## Part 5: Generalization opportunities
 
@@ -3220,6 +3234,8 @@ Completed `Roth.indexSet`: status: No mechanically removable class while keeping
 
 Completed `Roth.Θ`: status: No mechanically removable parameter within fixed indexSet interface. Generic outer SupSet already maximally abstract; expanded arbitrary-variable expression without Fintype and its finite specialization actually compile.; rejected: Do not alter full RSet/nonzero/degree/coefficient constraints, coprimality, total q/r zeros, or empty/unbounded real default0; do not apply CompleteLattice-only image2 supremum laws to ℝ.
 
+Completed `Roth.lem6M`: Semiring expression compiles; representation expansion only, not literature-standard replacement or suggested new upstream definition.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3584,6 +3600,8 @@ Completed `Roth.RSet`: Potential generic multivariate naive coefficient-height i
 Completed `Roth.indexSet`: No missing generic image API established; possible arithmetic-height/support laws require separate assessments.
 
 Completed `Roth.Θ`: No missing generic supremum constructor/bound API established. Broader arithmetic-height/index development is a separate assessment.
+
+Completed `Roth.lem6M`: Upstream packaging of auxiliary polynomial height/index infrastructure is a design question; later declarations assessed independently.
 
 ## Part 7: Junk / removable
 
@@ -3952,6 +3970,8 @@ Completed `Roth.indexSet`: Live local semantic alias with4 textual caller declar
 
 Completed `Roth.Θ`: Live semantic local alias,19 explicit callers/28 occurrences,13 direct kernel-value and17 type consumers. Retain locally; no deletion recommended.
 
+Completed `Roth.lem6M`: Retain locally: live semantic API used on19 source lines by six declarations; not dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4137,6 +4157,7 @@ Completed `Roth.Θ`: Live semantic local alias,19 explicit callers/28 occurrence
 | 179 | `Roth.RSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.RSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.RSet/root-acceptance.json) |
 | 180 | `Roth.indexSet` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.indexSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.indexSet/root-acceptance.json) |
 | 181 | `Roth.Θ` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ/root-acceptance.json) |
+| 182 | `Roth.lem6M` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lem6M.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lem6M/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4498,12 +4519,14 @@ Completed `Roth.indexSet` action: verdict: NO-mathlib-has-it; existing declarati
 
 Completed `Roth.Θ` action: verdict: NO-mathlib-has-it; existing declaration: SupSet.sSup; existing path: Mathlib/Order/SetNotation.lean; local destination: Roth/Theta.lean; recommendation: Retain documented local Greek alias; no upstream primitive PR. If eliminating, replace all28 standalone occurrences at19 caller declarations with sSup(indexSet B q r), preserving their exact arguments; source table gives each plan.
 
+Completed `Roth.lem6M` action: Retain locally; BORDERLINE standalone upstream status pending concrete scope decisions.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.lem6M` next. Supporting identities receive their own applicable checks.
+   `Roth.lem6Φ` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
