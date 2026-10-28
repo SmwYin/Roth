@@ -1,0 +1,15 @@
+#check_failure Roth.index_le_Θ
+namespace IndexLeTheta187
+universe u v w
+variable {α : Type u} {β : Type v} {γ : Type w} [ConditionallyCompleteLattice γ]
+variable {f : α → β → γ} {s : Set α} {t : Set β} {a : α} {b : β}
+theorem generic (hs : BddAbove (Set.image2 f s t)) (ha : a ∈ s) (hb : b ∈ t) :
+    f a b ≤ sSup (Set.image2 f s t) :=
+  le_csSup hs (Set.mem_image2_of_mem ha hb)
+theorem member (s : Set γ) (x : γ) (hs : BddAbove s) (hx : x ∈ s) : x ≤ sSup s :=
+  le_csSup hs hx
+#print axioms generic
+#print axioms member
+#check @le_csSup
+#check @Set.mem_image2_of_mem
+end IndexLeTheta187

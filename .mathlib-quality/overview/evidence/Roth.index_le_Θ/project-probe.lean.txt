@@ -1,0 +1,25 @@
+namespace IndexLeTheta187Project
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem bridge (B : ℝ) (q r : σ → ℕ) :
+    Roth.indexSet B q r = Set.image2
+      (fun (R : MvPolynomial σ ℤ) (h : σ → ℤ) ↦
+        Roth.index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r)
+      (Roth.RSet B r) {h | ∀ j, IsCoprime (h j) (q j : ℤ)} := rfl
+theorem replacement {B : ℝ} {q r : σ → ℕ} {R : MvPolynomial σ ℤ}
+    (hR : R ∈ Roth.RSet B r) {h : σ → ℤ}
+    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
+    Roth.index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ Roth.Θ B q r :=
+  le_csSup (Roth.indexSet_bddAbove B q) ⟨R, hR, h, hh, rfl⟩
+theorem image2_replacement {B : ℝ} {q r : σ → ℕ} {R : MvPolynomial σ ℤ}
+    (hR : R ∈ Roth.RSet B r) {h : σ → ℤ}
+    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
+    Roth.index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ Roth.Θ B q r := by
+  change _ ≤ sSup (Roth.indexSet B q r)
+  rw [bridge]
+  exact le_csSup (bridge B q r ▸ Roth.indexSet_bddAbove B q)
+    (Set.mem_image2_of_mem hR hh)
+#print axioms bridge
+#print axioms replacement
+#print axioms image2_replacement
+end IndexLeTheta187Project

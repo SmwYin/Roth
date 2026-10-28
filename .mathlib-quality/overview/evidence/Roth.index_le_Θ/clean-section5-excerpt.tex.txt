@@ -1,0 +1,110 @@
+643: \section{Index across sets of polynomials}
+644: 
+645: Let $m$ be a natural number $m \geq 1$. For positive integers $r_1, \dots, r_m$ and a real number $B \geq 1$ we let
+646: $$
+647: \mathcal R_m = \mathcal R_m (B; r_1, \dots, r_m)
+648: $$
+649: be the set of polynomials $R(x_1, \dots, x_m)$ in the variables $x_1, \dots, x_m$ such that:
+650: \begin{enumerate}
+651:     \item $R$ has integral coefficients and is not identically zero;
+652:     \item $R$ has degree at most $r_j$ in $x_j$ for $1 \leq j \leq m$;
+653:     \item the coefficients of $R$ have absolute values not exceeding $B$.
+654: \end{enumerate}
+655: 
+656: Let $q_1, \dots, q_m$ denote positive integers. We define
+657: $$
+658: \Theta_m(B; q_1, \dots, q_m; r_1, \dots, r_m)
+659: $$
+660: to be the supremum of the numbers
+661: $$
+662: \ind (R; \frac{h_1}{q_1}, \dots, \frac{h_m}{q_m}; r_1, \dots, r_m)
+663: $$
+664: over all $R \in \mathcal R_m(B; r_1, \dots, r_m)$ and integers $h_i$, $1 \leq i \leq m$, with $\gcd(h_i, q_i)=1$.
+665: This supremum is well-defined and satisfies $0\leq\Theta_m\leq m$:
+666: the constant polynomial $1$ with every $h_i=1$ is allowed, and Taylor's theorem gives a nonzero
+667: derivative with $0\leq i_j\leq r_j$, of weight at most $m$.
+668: Also, $\Theta_m$ is nondecreasing in $B$, since increasing $B$ enlarges the
+669: set of allowed polynomials.
+670: 
+671: \begin{lem}\label{roth:lem5}
+672:     Suppose additionally that $q_1>1$. Then we have
+673:     $$
+674:     \Theta_1(B; q_1; r_1) \leq \frac{\log B}{r_1 \log q_1}.
+675:     $$
+676: \end{lem}
+677: \begin{proof}
+678:     Let $R\in\mathcal R_1(B;r_1)$ and $\gcd(h_1,q_1)=1$.
+679:     Let $t\in\N$ be the multiplicity of $h_1/q_1$ as a root of $R$;
+680:     Taylor's theorem gives $\theta=\ind(R;h_1/q_1;r_1)=t/r_1$.
+681:     The polynomial $(q_1x_1-h_1)^t$ is primitive and divides $R$ over $\Q$.
+682:     Gauss's lemma therefore gives a nonzero $Q\in\Z[x_1]$ with
+683:     \[
+684:     R(x_1)=(q_1x_1-h_1)^tQ(x_1).
+685:     \]
+686:     Comparing nonzero leading coefficients yields
+687:     \[
+688:     B\geq|\operatorname{lc}(R)|
+689:        =q_1^t|\operatorname{lc}(Q)|\geq q_1^t.
+690:     \]
+691:     Since $\log q_1>0$ and $r_1>0$, taking logarithms gives
+692:     $\theta\leq\log B/(r_1\log q_1)$. Taking the supremum proves the claim.
+693: \end{proof}
+694: 
+695: \lean{First identify the one-variable index with $t/r_1$, where $t$ is the
+696: natural-number root multiplicity. Use
+697: Gauss's lemma\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Polynomial/GaussLemma.html}}
+698: for the primitive polynomial $(q_1X-h_1)^t$, compare leading coefficients
+699: in $\Z$, and only then cast to $\R$ and take logarithms, using $q_1>1$.
+700: For $\Theta_m$, record nonemptiness and boundedness of the defining family,
+701: together with lemmas for bounding an individual index and monotonicity in
+702: $B$, before using the supremum.}
+703: 
+704: \begin{lem}\label{roth:lem6}
+705:     Let $p \geq 2$ be a positive integer, and let $0 < \delta <1$. Let $r_1, \dots, r_p$ be positive integers satisfying
+706:     $$
+707:     r_p > 10 \delta^{-1}, \quad r_{j-1}/r_j > \delta^{-1}, \text{ for } 2 \leq j \leq p.
+708:     $$
+709:     Also, let $q_1, \dots, q_p$ be positive integers. Then
+710:     \begin{equation}\label{roth:eq13}
+711:     \Theta_p(B; q_1, \dots, q_p; r_1, \dots, r_p) \leq
+712:     2 \max_l (\Phi + \Phi^{1/2}+ \delta^{1/2}),
+713:     \end{equation}
+714:     where the maximum is taken over integers $l$ satisfying
+715:     $$
+716:     1 \leq l \leq r_p +1,
+717:     $$
+718:     and where
+719:     \begin{equation}\label{roth:eq15}
+720:     \Phi = \Theta_1(M; q_p; lr_p) + \Theta_{p-1}(M; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1})
+721:     \end{equation}
+722:     and
+723:     \begin{equation}\label{roth:eq16}
+724:     M= (r_1+1)^{pl} l! B^l 2^{plr_1}.
+725:     \end{equation}
+726: \end{lem}
+727: \begin{proof}
+728:     Let $R\in\mathcal R_p(B;r_1,\dots,r_p)$ and choose integers $h_1,\dots,h_p$ with $\gcd(h_i,q_i)=1$ for every $i$. We need to show that the index
+729:     $$
+730:     \ind(R; \frac{h_1}{q_1}, \dots, \frac{h_p}{q_p}; r_1, \dots, r_p)
+731:     $$
+732:     is bounded by the right hand side of \eqref{roth:eq13}.
+733: 
+734:     The polynomial $R$ satisfies the conditions of Lemma \ref{roth:lem2}, and therefore there is an integer $l$ satisfying $1 \leq l \leq r_p+1$ and a polynomial $F$ as in Lemma \ref{roth:lem2}. By Lemma \ref{roth:lem3} the coefficients of $F$ have absolute value not exceeding
+735:     $$
+736:     ((r_1+1)\cdots (r_p+1))^l l! B^l 2^{(r_1+\cdots+r_p)l} < (r_1+1)^{pl}l! B^l 2^{pr_1 l} = M,
+737:     $$
+738:     as $r_1 > r_2 > \dots > r_p$. Since
+739:     $$
+740:     F = U(x_1, \dots, x_{p-1})V(x_p)
+741:     $$
+742:     and $U,V$ are nonzero integral polynomials in disjoint variables,
+743: each coefficient of $F$ is a unique product of one coefficient from each
+744: factor. Thus $abc(F)=abc(U)abc(V)$, while $abc(U),abc(V)\geq1$, and hence
+745:     $$
+746:     abc(U) < M, \quad abc(V) < M.
+747:     $$
+748: 
+749:     By Lemma \ref{roth:lem2},
+750:     $$
+751:     U \in \mathcal{R}_{p-1}(M; lr_1, \dots, lr_{p-1}).
+752:     $$

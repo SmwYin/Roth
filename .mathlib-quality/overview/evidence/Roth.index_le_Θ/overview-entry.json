@@ -1,0 +1,21 @@
+{
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {B : ℝ} {q r : σ → ℕ} {R : MvPolynomial σ ℤ},\n  R ∈ Roth.RSet B r →\n    ∀ {h : σ → ℤ},\n      (∀ (j : σ), IsCoprime (h j) ↑(q j)) →\n        Roth.index ((map (Int.castRingHom ℝ)) R) (fun (j : σ) ↦ ↑(h j) / ↑(q j)) r ≤ Roth.Θ B q r",
+  "what": "Every admissible polynomial index at a coprime rational point is at most Θ.",
+  "how": "Apply le_csSup with project indexSet_bddAbove and the explicit polynomial/numerator membership witness.",
+  "hypotheses": "Fintype σ; R∈RSet B r; each h j coprime to q j. No DecidableEq, positivity of q or r, or 1≤B.",
+  "project_dependencies": [
+    "Roth.RSet",
+    "Roth.indexSet",
+    "Roth.Θ",
+    "Roth.index",
+    "Roth.indexSet_bddAbove"
+  ],
+  "caller_summary": "Three explicit call occurrences in two declarations: private index_separated_mul_le_aux twice; main_lemma once. Canonical kernel audit: two value consumers, zero type consumers.",
+  "mathlib_api_audit": "Pinned le_csSup exactly supplies the abstract membership-to-supremum law; Set.mem_image2_of_mem independently verifies image2 membership.",
+  "moral_duplications": "Dependent law of parent Θ, already exact SupSet.sSup; re-aim gate applies after independent native law/bridge checks.",
+  "generalization": "Fixed polynomial interface needs Fintype; expanded generic conditionally complete lattice member law is already le_csSup, verified without Roth imports. Verified expanded allow_zero removes the hidden R≠0 conjunct, handling zero via index0=0 and independent Θ_nonneg; this separate real-default extension does not alter original member-law duplication.",
+  "missing_api": "No missing generic supremum law. Substantive arithmetic boundedness remains project API, accepted186 BORDERLINE; it is not a mathlib building block.",
+  "junk": "Useful local helper; not dead. Upstream duplicate of generic supremum API.",
+  "action": "Do not upstream this theorem. Inline le_csSup with explicit project boundedness and membership at all three call occurrences, or retain local helper in Roth/Theta.lean as project ergonomics. No production edits made."
+}
