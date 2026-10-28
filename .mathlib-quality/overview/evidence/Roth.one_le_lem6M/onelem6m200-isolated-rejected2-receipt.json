@@ -1,0 +1,165 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nnamespace OneLem6M200Isolated\n#check_failure Roth.one_le_lem6M\n#check_failure Roth.lem6M\n#check @one_le_mul_of_one_le_of_one_le\n#check @one_le_pow₀\n#check @List.one_le_prod\n#check @Finset.one_le_prod₀\n#check @Nat.factorial_pos\n#check @Nat.cast_le\n-- Formula expanded; no imported Roth endpoint or helper is available.\ntheorem directReal (p r : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)\n      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · exact_mod_cast Nat.factorial_pos l\n-- A true scalar generalization of the expanded expression; parent remains real-valued.\ntheorem genericScalar {K : Type*} [Semiring K] [LinearOrder K] [IsStrictOrderedRing K]\n    (p r : ℕ) {B : K} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : K) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)\n      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · exact_mod_cast Nat.factorial_pos l\n-- Existing abstract list theorem with all actual four factor obligations discharged.\ntheorem listReal (p r : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  have hf : ∀ x ∈ [((r : ℝ) + 1) ^ (p * l), (l.factorial : ℝ),\n      B ^ l, (2 : ℝ) ^ (p * l * r)], 1 ≤ x := by\n    simp only [List.mem_cons, forall_eq_or_imp]\n    exact ⟨one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r)),\n      by exact_mod_cast Nat.factorial_pos l, one_le_pow₀ hB,\n      one_le_pow₀ (by norm_num : (1 : ℝ) ≤ 2), fun h ↦ nomatch h⟩\n  simpa only [List.prod_cons, List.prod_nil, mul_one, mul_assoc] using List.one_le_prod hf\n-- Generic order form already in mathlib; this is a specialization, not new API.\ntheorem abstractProduct {K : Type*} [CommMonoidWithZero K] [PartialOrder K]\n    [ZeroLEOneClass K] [PosMulMono K] {s : List K} (hs : ∀ x ∈ s, 1 ≤ x) :\n    1 ≤ s.prod := List.one_le_prod hs\n-- Hypothesis can be weakened for a particular exponent, but does not disappear uniformly.\ntheorem powerPremise (p r : ℕ) {B : ℝ} (l : ℕ) (hBl : 1 ≤ B ^ l) :\n    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_) hBl)\n    (one_le_pow₀ (by norm_num))\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · exact_mod_cast Nat.factorial_pos l\ntheorem zeroExponent (p r : ℕ) (B : ℝ) :\n    ((r : ℝ) + 1) ^ (p * 0) * (0 : ℕ).factorial * B ^ 0 * 2 ^ (p * 0 * r) = 1 := by\n  simp\ntheorem baseAssumptionNecessary :\n    ¬ (∀ B : ℝ, 1 ≤ ((0 : ℝ) + 1) ^ (0 * 1) * (1 : ℕ).factorial *\n      B ^ 1 * 2 ^ (0 * 1 * 0)) := by\n  intro h\n  have := h 0\n  norm_num at this\n#print axioms directReal\n#print axioms genericScalar\n#print axioms listReal\n#print axioms abstractProduct\n#print axioms powerPremise\n#print axioms zeroExponent\n#print axioms baseAssumptionNecessary\nend OneLem6M200Isolated\n"
+  },
+  "elapsed_ms": 332,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.one_le_lem6M`\",\n      \"line\": 19,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.lem6M`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@one_le_mul_of_one_le_of_one_le : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a b : M₀}\\n  [ZeroLEOneClass M₀] [PosMulMono M₀], 1 ≤ a → 1 ≤ b → 1 ≤ a * b\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@one_le_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a : M₀} [ZeroLEOneClass M₀]\\n  [PosMulMono M₀], 1 ≤ a → ∀ {n : ℕ}, 1 ≤ a ^ n\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@List.one_le_prod : ∀ {R : Type u_1} [inst : CommMonoidWithZero R] [inst_1 : PartialOrder R] [ZeroLEOneClass R]\\n  [PosMulMono R] {s : List R}, (∀ a ∈ s, 1 ≤ a) → 1 ≤ s.prod\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.one_le_prod₀ : ∀ {ι : Type u_1} {R : Type u_2} [inst : CommMonoidWithZero R] [inst_1 : Preorder R]\\n  [ZeroLEOneClass R] [PosMulMono R] {f : ι → R} {s : Finset ι}, (∀ i ∈ s, 1 ≤ f i) → 1 ≤ ∏ i ∈ s, f i\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Nat.factorial_pos : ∀ (n : ℕ), 0 < n.factorial\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.cast_le : ∀ {α : Type u_1} [inst : AddMonoidWithOne α] [inst_1 : PartialOrder α] [AddLeftMono α] [ZeroLEOneClass α]\\n  [CharZero α] {m n : ℕ}, ↑m ≤ ↑n ↔ m ≤ n\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Missing cases:\\n(Real.ofCauchy _)\",\n      \"line\": 52,\n      \"column\": 56,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneLem6M200Isolated.directReal' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 75,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneLem6M200Isolated.genericScalar' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 76,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneLem6M200Isolated.listReal' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 77,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneLem6M200Isolated.abstractProduct' depends on axioms: [propext, Quot.sound]\",\n      \"line\": 78,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneLem6M200Isolated.powerPremise' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 79,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneLem6M200Isolated.zeroExponent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 80,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OneLem6M200Isolated.baseAssumptionNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 81,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.one_le_lem6M`",
+          "line": 19,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.lem6M`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@one_le_mul_of_one_le_of_one_le : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a b : M₀}\n  [ZeroLEOneClass M₀] [PosMulMono M₀], 1 ≤ a → 1 ≤ b → 1 ≤ a * b",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@one_le_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a : M₀} [ZeroLEOneClass M₀]\n  [PosMulMono M₀], 1 ≤ a → ∀ {n : ℕ}, 1 ≤ a ^ n",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@List.one_le_prod : ∀ {R : Type u_1} [inst : CommMonoidWithZero R] [inst_1 : PartialOrder R] [ZeroLEOneClass R]\n  [PosMulMono R] {s : List R}, (∀ a ∈ s, 1 ≤ a) → 1 ≤ s.prod",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.one_le_prod₀ : ∀ {ι : Type u_1} {R : Type u_2} [inst : CommMonoidWithZero R] [inst_1 : Preorder R]\n  [ZeroLEOneClass R] [PosMulMono R] {f : ι → R} {s : Finset ι}, (∀ i ∈ s, 1 ≤ f i) → 1 ≤ ∏ i ∈ s, f i",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Nat.factorial_pos : ∀ (n : ℕ), 0 < n.factorial",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.cast_le : ∀ {α : Type u_1} [inst : AddMonoidWithOne α] [inst_1 : PartialOrder α] [AddLeftMono α] [ZeroLEOneClass α]\n  [CharZero α] {m n : ℕ}, ↑m ≤ ↑n ↔ m ≤ n",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Missing cases:\n(Real.ofCauchy _)",
+          "line": 52,
+          "column": 56,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneLem6M200Isolated.directReal' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 75,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneLem6M200Isolated.genericScalar' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 76,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneLem6M200Isolated.listReal' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 77,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneLem6M200Isolated.abstractProduct' depends on axioms: [propext, Quot.sound]",
+          "line": 78,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneLem6M200Isolated.powerPremise' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 79,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneLem6M200Isolated.zeroExponent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 80,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OneLem6M200Isolated.baseAssumptionNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 81,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

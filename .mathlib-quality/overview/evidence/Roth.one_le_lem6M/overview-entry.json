@@ -1,0 +1,46 @@
+{
+  "declaration": "Roth.one_le_lem6M",
+  "kind": "theorem",
+  "type": "∀ (p r₁ : ℕ) {B : ℝ}, 1 ≤ B → ∀ (l : ℕ), 1 ≤ Roth.lem6M p r₁ B l",
+  "what": "The explicit Lemma6 coefficient envelope M is at least one whenever B is at least one, including zero values of p,r₁,l.",
+  "how": "Unfold lem6M; lower-bound all four factors by one using natural-cast nonnegativity, power monotonicity and factorial positivity; combine with three multiplication lower bounds.",
+  "hypotheses": "p,r₁,l natural, B real, hB:1≤B. No variable-type, Fintype or DecidableEq parameters survive elaboration.",
+  "project_dependencies": [
+    "Roth.lem6M"
+  ],
+  "caller_summary": {
+    "explicit_body_calls": 1,
+    "external_to_file_calls": 0,
+    "direct_kernel_value_consumers": [
+      "_private.Roth.Theta.0.Roth.theta_phi_lt_aux"
+    ],
+    "direct_kernel_type_consumers": [],
+    "fullcaller_experiments": 1,
+    "full_module_replay": true
+  },
+  "mathlib_api_audit": "Pinned one_le_mul_of_one_le_of_one_le, one_le_pow₀, Nat.factorial_pos and cast laws completely handle elementary arithmetic. List.one_le_prod and Finset.one_le_prod₀ handle the abstract product law. Exact actual formula route needs factor obligations and normalization; no strict≤3 old-form term verified. All15 search cells executed.",
+  "moral_duplications": [
+    {
+      "other": "List.one_le_prod",
+      "same_statement": false,
+      "same_proof": "abstract product induction subsumes multiplication stage",
+      "assessment": "Actual four factor inequalities must still be established; list normalization is explicit."
+    },
+    {
+      "other": "one_le_mul_of_one_le_of_one_le",
+      "same_statement": false,
+      "same_proof": "three assembly calls",
+      "assessment": "Does not include power and factorial premises."
+    },
+    {
+      "other": "Roth.lem6M",
+      "same_statement": false,
+      "same_proof": false,
+      "assessment": "Parent defines envelope; theorem supplies its lower bound."
+    }
+  ],
+  "generalization": "Expanded formula compiles over Semiring K, PartialOrder K, IsOrderedRing K (genericWeak); initial stronger genericScalar also verified. Actual lem6M remains fixed ℝ interface; altering it is a parent API redesign. Verified exponent-local premise1≤B^l is weaker than1≤B; l0 needs no bound. Uniform omission of hB is false (p=r₁=0,l1,B0).",
+  "missing_api": "No missing elementary order arithmetic API identified. Open upstream choice is whether a named proof-specific coefficient envelope and its lower-bound certificate belong in Roth auxiliary-polynomial infrastructure.",
+  "junk": "Not dead: one actual private consumer theta_phi_lt_aux, used to supply1≤M to Θ estimates. No full inline duplicate found.",
+  "action": "BORDERLINE: retain in Roth/Theta.lean beside lem6M until upstream envelope design is settled. If local inlining is chosen, replace sole call866 by unfolding lem6M and the verified four-factor arithmetic proof; complete caller replay already passed."
+}

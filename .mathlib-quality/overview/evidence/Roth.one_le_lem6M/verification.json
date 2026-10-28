@@ -1,0 +1,149 @@
+{
+  "declaration": "Roth.one_le_lem6M",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "onelem6m200-original-executed.lean.txt",
+      "source_sha256": "36e04fdb3529d25e388d6b517be80a911621f18d4fcb3c636bf9ca47e399fd7c",
+      "receipt": "onelem6m200-original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "'Roth.one_le_lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "ONELEM6M200_FULL_TYPE:",
+        "ONELEM6M200_AUDIT: requested=293; unique=293",
+        "ONELEM6M200_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "raw",
+      "source": "onelem6m200-isolated-executed.lean.txt",
+      "source_sha256": "a8ac5e63e9c437b64d3ca05cc974031f5e1fff89a65cebd552a3148a89148173",
+      "receipt": "onelem6m200-isolated-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nnamespace OneLem6M200Isolated\n#check_failure Roth.one_le_lem6M\n#check_failure Roth.lem6M\n#check @one_le_mul_of_one_le_of_one_le\n#check @one_le_pow₀\n#check @List.one_le_prod\n#check @Finset.one_le_prod₀\n#check @Nat.factorial_pos\n#check @Nat.cast_le\n-- Formula expanded; no imported Roth endpoint or helper is available.\ntheorem directReal (p r : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)\n      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · exact_mod_cast Nat.factorial_pos l\n-- A true scalar generalization of the expanded expression; parent remains real-valued.\ntheorem genericScalar {K : Type*} [Semiring K] [LinearOrder K] [IsStrictOrderedRing K]\n    (p r : ℕ) {B : K} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : K) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)\n      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · exact_mod_cast Nat.factorial_pos l\n-- Existing abstract list theorem with all actual four factor obligations discharged.\ntheorem listReal (p r : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  have hf : ∀ x ∈ [((r : ℝ) + 1) ^ (p * l), (l.factorial : ℝ),\n      B ^ l, (2 : ℝ) ^ (p * l * r)], 1 ≤ x := by\n    simp only [List.mem_cons, forall_eq_or_imp]\n    exact ⟨one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r)),\n      by exact_mod_cast Nat.factorial_pos l, one_le_pow₀ hB,\n      one_le_pow₀ (by norm_num : (1 : ℝ) ≤ 2), fun _ h ↦ nomatch h⟩\n  simpa only [List.prod_cons, List.prod_nil, mul_one, mul_assoc] using List.one_le_prod hf\n-- Generic order form already in mathlib; this is a specialization, not new API.\ntheorem abstractProduct {K : Type*} [CommMonoidWithZero K] [PartialOrder K]\n    [ZeroLEOneClass K] [PosMulMono K] {s : List K} (hs : ∀ x ∈ s, 1 ≤ x) :\n    1 ≤ s.prod := List.one_le_prod hs\n-- Hypothesis can be weakened for a particular exponent, but does not disappear uniformly.\ntheorem powerPremise (p r : ℕ) {B : ℝ} (l : ℕ) (hBl : 1 ≤ B ^ l) :\n    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_) hBl)\n    (one_le_pow₀ (by norm_num))\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · exact_mod_cast Nat.factorial_pos l\ntheorem zeroExponent (p r : ℕ) (B : ℝ) :\n    ((r : ℝ) + 1) ^ (p * 0) * (0 : ℕ).factorial * B ^ 0 * 2 ^ (p * 0 * r) = 1 := by\n  simp\ntheorem baseAssumptionNecessary :\n    ¬ (∀ B : ℝ, 1 ≤ ((0 : ℝ) + 1) ^ (0 * 1) * (1 : ℕ).factorial *\n      B ^ 1 * 2 ^ (0 * 1 * 0)) := by\n  intro h\n  have := h 0\n  norm_num at this\n#print axioms directReal\n#print axioms genericScalar\n#print axioms listReal\n#print axioms abstractProduct\n#print axioms powerPremise\n#print axioms zeroExponent\n#print axioms baseAssumptionNecessary\nend OneLem6M200Isolated\n"
+      },
+      "native_region_start_line": 18,
+      "required_info": [
+        "'OneLem6M200Isolated.directReal' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'OneLem6M200Isolated.genericScalar' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'OneLem6M200Isolated.listReal' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'OneLem6M200Isolated.abstractProduct' depends on axioms: [propext, Quot.sound]",
+        "'OneLem6M200Isolated.powerPremise' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'OneLem6M200Isolated.zeroExponent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'OneLem6M200Isolated.baseAssumptionNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "weak",
+      "format": "raw",
+      "source": "onelem6m200-weak-executed.lean.txt",
+      "source_sha256": "862c6942cbfb2c96a1bf285b989abb8b925560e4d4bb06d739ac8509b2e644f8",
+      "receipt": "onelem6m200-weak-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nnamespace OneLem6M200Isolated\n#check_failure Roth.one_le_lem6M\n#check_failure Roth.lem6M\n#check @one_le_mul_of_one_le_of_one_le\n#check @one_le_pow₀\n#check @List.one_le_prod\n#check @Finset.one_le_prod₀\n#check @Nat.factorial_pos\n#check @Nat.cast_le\n-- Formula expanded; no imported Roth endpoint or helper is available.\ntheorem directReal (p r : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)\n      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · exact_mod_cast Nat.factorial_pos l\n-- A true scalar generalization of the expanded expression; parent remains real-valued.\ntheorem genericScalar {K : Type*} [Semiring K] [LinearOrder K] [IsStrictOrderedRing K]\n    (p r : ℕ) {B : K} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : K) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)\n      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · exact_mod_cast Nat.factorial_pos l\n-- Existing abstract list theorem with all actual four factor obligations discharged.\ntheorem listReal (p r : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  have hf : ∀ x ∈ [((r : ℝ) + 1) ^ (p * l), (l.factorial : ℝ),\n      B ^ l, (2 : ℝ) ^ (p * l * r)], 1 ≤ x := by\n    simp only [List.mem_cons, forall_eq_or_imp]\n    exact ⟨one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r)),\n      by exact_mod_cast Nat.factorial_pos l, one_le_pow₀ hB,\n      one_le_pow₀ (by norm_num : (1 : ℝ) ≤ 2), fun _ h ↦ nomatch h⟩\n  simpa only [List.prod_cons, List.prod_nil, mul_one, mul_assoc] using List.one_le_prod hf\n-- Generic order form already in mathlib; this is a specialization, not new API.\ntheorem abstractProduct {K : Type*} [CommMonoidWithZero K] [PartialOrder K]\n    [ZeroLEOneClass K] [PosMulMono K] {s : List K} (hs : ∀ x ∈ s, 1 ≤ x) :\n    1 ≤ s.prod := List.one_le_prod hs\n-- Hypothesis can be weakened for a particular exponent, but does not disappear uniformly.\ntheorem powerPremise (p r : ℕ) {B : ℝ} (l : ℕ) (hBl : 1 ≤ B ^ l) :\n    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_) hBl)\n    (one_le_pow₀ (by norm_num))\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · exact_mod_cast Nat.factorial_pos l\ntheorem zeroExponent (p r : ℕ) (B : ℝ) :\n    ((r : ℝ) + 1) ^ (p * 0) * (0 : ℕ).factorial * B ^ 0 * 2 ^ (p * 0 * r) = 1 := by\n  simp\ntheorem baseAssumptionNecessary :\n    ¬ (∀ B : ℝ, 1 ≤ ((0 : ℝ) + 1) ^ (0 * 1) * (1 : ℕ).factorial *\n      B ^ 1 * 2 ^ (0 * 1 * 0)) := by\n  intro h\n  have := h 0\n  norm_num at this\n#print axioms directReal\n#print axioms genericScalar\n#print axioms listReal\n#print axioms abstractProduct\n#print axioms powerPremise\n#print axioms zeroExponent\n#print axioms baseAssumptionNecessary\n-- Weak order, no strictness/linearity/characteristic-zero assumption required.\ntheorem genericWeak {K : Type*} [Semiring K] [PartialOrder K] [IsOrderedRing K]\n    (p r : ℕ) {B : K} (hB : 1 ≤ B) (l : ℕ) :\n    1 ≤ ((r : K) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by\n  refine one_le_mul_of_one_le_of_one_le\n    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)\n      (one_le_pow₀ hB)) (one_le_pow₀ ?_)\n  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))\n  · simpa only [Nat.cast_one] using (Nat.mono_cast (α := K) (Nat.factorial_pos l))\n  · simpa only [one_add_one_eq_two] using\n      (le_add_of_nonneg_right (zero_le_one : (0 : K) ≤ 1) : (1 : K) ≤ 1 + 1)\n#print axioms genericWeak\nend OneLem6M200Isolated\n"
+      },
+      "native_region_start_line": 82,
+      "required_info": [
+        "'OneLem6M200Isolated.genericWeak' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "fullcaller",
+      "format": "disk",
+      "source": "onelem6m200-fullcaller-executed.lean.txt",
+      "source_sha256": "4e092f68c3e4bb3efc6e7e971d9c9c6d684edf938dc89ac72d66a8dd556f4192",
+      "receipt": "onelem6m200-fullcaller-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 343,
+      "required_info": [
+        "'OneLem6M200Project.bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'Roth.OneLem6M200Callers.caller' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "fullmodule",
+      "format": "disk",
+      "source": "onelem6m200-fullmodule-executed.lean.txt",
+      "source_sha256": "6bd03208b35fecc9f075476713a653b924109296a0c4fb50b0417aaf58e3010e",
+      "receipt": "onelem6m200-fullmodule-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 343,
+      "required_info": [
+        "'OneLem6M200Module.one_le_lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'OneLem6M200Module.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "onelem6m200-isolated-rejected1-executed.lean.txt",
+      "receipt": "onelem6m200-isolated-rejected1-receipt.json",
+      "reason": "Residual empty-list implication, untyped numeral; warning unused List.mem_singleton; recovered sorryAx; excluded."
+    },
+    {
+      "source": "onelem6m200-isolated-rejected1-executed.lean.txt",
+      "receipt": "onelem6m200-isolated-rejected-stale-repeat-receipt.json",
+      "reason": "Width guard failed before preparation wrote file, then stale source accidentally rerun. Same rejected source; not evidence."
+    },
+    {
+      "source": "onelem6m200-isolated-rejected2-executed.lean.txt",
+      "receipt": "onelem6m200-isolated-rejected2-receipt.json",
+      "reason": "Residual forall x empty membership implication needs two lambda binders, not one; excluded."
+    },
+    {
+      "source": "onelem6m200-weak-rejected1-executed.lean.txt",
+      "receipt": "onelem6m200-weak-rejected1-receipt.json",
+      "reason": "Untyped zero_le_one stuck metavariable in1≤2; recovered sorryAx excluded."
+    },
+    {
+      "source": "onelem6m200-weak-rejected2-executed.lean.txt",
+      "receipt": "onelem6m200-weak-rejected2-receipt.json",
+      "reason": "Explicit K did not normalize numeral2 to1+1; corrected via one_add_one_eq_two; recovered sorryAx excluded."
+    }
+  ],
+  "audit": {
+    "source": "onelem6m200-original-executed.lean.txt",
+    "receipt": "onelem6m200-original-receipt.json",
+    "marker": "ONELEM6M200",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "_private.Roth.Theta.0.Roth.theta_phi_lt_aux"
+  ],
+  "canonical_direct_type_consumers": [],
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "parent_project_helpers_counted_as_mathlib_blocks": false,
+    "actual_caller_replays": 1,
+    "actual_call_occurrences": 1,
+    "no_circular_use_of_target_in_new_proof": true,
+    "no_global_absence_claim": true,
+    "list_product_full_actual_factor_bindings": true,
+    "direct_route_mul_calls": 3,
+    "direct_route_power_calls": 3,
+    "factorial_and_cast_obligations_additional": true,
+    "abstract_list_route_assumes_factors_only_in_abstract_schema": true,
+    "full_module_replay": true
+  }
+}

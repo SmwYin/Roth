@@ -1,0 +1,93 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+namespace OneLem6M200Isolated
+#check_failure Roth.one_le_lem6M
+#check_failure Roth.lem6M
+#check @one_le_mul_of_one_le_of_one_le
+#check @one_le_pow₀
+#check @List.one_le_prod
+#check @Finset.one_le_prod₀
+#check @Nat.factorial_pos
+#check @Nat.cast_le
+-- Formula expanded; no imported Roth endpoint or helper is available.
+theorem directReal (p r : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) :
+    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by
+  refine one_le_mul_of_one_le_of_one_le
+    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)
+      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))
+  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))
+  · exact_mod_cast Nat.factorial_pos l
+-- A true scalar generalization of the expanded expression; parent remains real-valued.
+theorem genericScalar {K : Type*} [Semiring K] [LinearOrder K] [IsStrictOrderedRing K]
+    (p r : ℕ) {B : K} (hB : 1 ≤ B) (l : ℕ) :
+    1 ≤ ((r : K) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by
+  refine one_le_mul_of_one_le_of_one_le
+    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)
+      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))
+  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))
+  · exact_mod_cast Nat.factorial_pos l
+-- Existing abstract list theorem with all actual four factor obligations discharged.
+theorem listReal (p r : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) :
+    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by
+  have hf : ∀ x ∈ [((r : ℝ) + 1) ^ (p * l), (l.factorial : ℝ),
+      B ^ l, (2 : ℝ) ^ (p * l * r)], 1 ≤ x := by
+    simp only [List.mem_cons, forall_eq_or_imp]
+    exact ⟨one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r)),
+      by exact_mod_cast Nat.factorial_pos l, one_le_pow₀ hB,
+      one_le_pow₀ (by norm_num : (1 : ℝ) ≤ 2), fun _ h ↦ nomatch h⟩
+  simpa only [List.prod_cons, List.prod_nil, mul_one, mul_assoc] using List.one_le_prod hf
+-- Generic order form already in mathlib; this is a specialization, not new API.
+theorem abstractProduct {K : Type*} [CommMonoidWithZero K] [PartialOrder K]
+    [ZeroLEOneClass K] [PosMulMono K] {s : List K} (hs : ∀ x ∈ s, 1 ≤ x) :
+    1 ≤ s.prod := List.one_le_prod hs
+-- Hypothesis can be weakened for a particular exponent, but does not disappear uniformly.
+theorem powerPremise (p r : ℕ) {B : ℝ} (l : ℕ) (hBl : 1 ≤ B ^ l) :
+    1 ≤ ((r : ℝ) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by
+  refine one_le_mul_of_one_le_of_one_le
+    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_) hBl)
+    (one_le_pow₀ (by norm_num))
+  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))
+  · exact_mod_cast Nat.factorial_pos l
+theorem zeroExponent (p r : ℕ) (B : ℝ) :
+    ((r : ℝ) + 1) ^ (p * 0) * (0 : ℕ).factorial * B ^ 0 * 2 ^ (p * 0 * r) = 1 := by
+  simp
+theorem baseAssumptionNecessary :
+    ¬ (∀ B : ℝ, 1 ≤ ((0 : ℝ) + 1) ^ (0 * 1) * (1 : ℕ).factorial *
+      B ^ 1 * 2 ^ (0 * 1 * 0)) := by
+  intro h
+  have := h 0
+  norm_num at this
+#print axioms directReal
+#print axioms genericScalar
+#print axioms listReal
+#print axioms abstractProduct
+#print axioms powerPremise
+#print axioms zeroExponent
+#print axioms baseAssumptionNecessary
+-- Weak order, no strictness/linearity/characteristic-zero assumption required.
+theorem genericWeak {K : Type*} [Semiring K] [PartialOrder K] [IsOrderedRing K]
+    (p r : ℕ) {B : K} (hB : 1 ≤ B) (l : ℕ) :
+    1 ≤ ((r : K) + 1) ^ (p * l) * l.factorial * B ^ l * 2 ^ (p * l * r) := by
+  refine one_le_mul_of_one_le_of_one_le
+    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)
+      (one_le_pow₀ hB)) (one_le_pow₀ ?_)
+  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r))
+  · simpa only [Nat.cast_one] using (Nat.mono_cast (α := K) (Nat.factorial_pos l))
+  · exact le_add_of_nonneg_right (zero_le_one : (0 : K) ≤ 1)
+#print axioms genericWeak
+end OneLem6M200Isolated
