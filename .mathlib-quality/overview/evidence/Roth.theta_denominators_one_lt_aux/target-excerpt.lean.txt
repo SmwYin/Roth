@@ -1,0 +1,6 @@
+private lemma theta_denominators_one_lt_aux {n : ℕ} {r q : Fin (n + 1) → ℕ} (hrlast : 0 < r 0)
+    (hq1 : 0 < Real.log (q 0)) (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))
+    (j : Fin (n + 1)) : 1 < q j := by
+  exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q j))).1
+    (pos_of_mul_pos_right
+      ((mul_pos (by exact_mod_cast hrlast) hq1).trans_le (hqr j)) (Nat.cast_nonneg _))
