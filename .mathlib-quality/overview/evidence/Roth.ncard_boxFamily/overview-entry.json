@@ -1,0 +1,18 @@
+{
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} (r : σ → ℕ) [Finite ↑(Function.support r)] (B : ℕ),\n  (Roth.boxFamily r B).ncard = (B + 1) ^ ∏ᶠ (j : σ), (r j + 1)",
+  "what": "The family of integer polynomials with finitely supported coordinate degree bounds and coefficients in [0,B] has exactly (B+1) raised to the number of admissible monomials elements.",
+  "how": "Transport the coefficient-choice Finset.finsupp through injective ofCoeff, use Finset.card_finsupp and Finsupp.card_Iic, then identify the finite support product with finprod.",
+  "hypotheses": "Arbitrary variable type; natural bounds r and B; only Function.support r must be finite. No positivity, nonempty variable type, or Fintype sigma is needed.",
+  "project_dependencies": [
+    "Roth.boxFamily",
+    "Roth.boxFamily_eq_image_finsupp_aux"
+  ],
+  "caller_summary": "One same-file explicit body caller Roth.exists_ne_modByMonic_eq at MainLemma:359; inlined proof preserves its full signature and exact cardinal inequality. Kernel direct value consumers1, type consumers0; no transitive-independence claim.",
+  "mathlib_api_audit": "Finset.card_finsupp, Finsupp.card_Iic, Nat.card_Iic, Int.card_Icc, Set.ncard_image_of_injective, Set.ncard_coe_finset and finprod transport are genuine mathlib. The semantic representation bridge is project/new proof. External Polynomial.card_eq_of_natDegree_le_of_coeff_le corresponds to pin Polynomial.ncard_boxPoly, a univariate result.",
+  "moral_duplications": "Shares enumeration with boxFamily_finite and exponent count with card_box; neither counts polynomial coefficient assignments. Enumerated count is a short closing simp composition; semantic bridge and finprod transport remain distinct.",
+  "generalization": "Verified new generic semantic family over arbitrary CommSemiring R and r : sigma →₀ Nat, with coordinate-dependent Finset choices t d and 0∈t d only off Finset.Iic r. Original function-r/finite-support/finprod type recovered and caller retained. This changes parent representation, not a mechanical weakening of an Int typeclass.",
+  "missing_api": "Potential semantic coefficient-family representation/counting interface; existing enumerator cardinality APIs already suffice after the new bridge. Exact upstream API packaging remains a future question.",
+  "junk": "Used mathematical count, not dead code. No unconditional removal from the local API is justified. Pure existing <=3-call replacement not established.",
+  "action": "BORDERLINE completed assessment: retain locally; future upstream interface questions in report. If local inlining is selected, use the verified full proof in the sole caller; retain project private bridge. No production changes."
+}

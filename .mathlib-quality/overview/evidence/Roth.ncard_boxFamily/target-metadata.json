@@ -1,0 +1,55 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 311,
+  "name": "Roth.ncard_boxFamily",
+  "short": "ncard_boxFamily",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 318,
+  "source": "theorem ncard_boxFamily {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :\n    (boxFamily r B).ncard = (B + 1) ^ ∏ᶠ j, (r j + 1) := by\n  rw [boxFamily_eq_image_finsupp_aux, Set.ncard_image_of_injective _\n    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp]\n  simp only [Int.card_Icc, sub_zero, Finset.prod_const, Finsupp.card_Iic, Nat.card_Iic]\n  congr 1\n  exact (finprod_eq_prod_of_mulSupport_subset _ fun j hj ↦ by\n    simpa [Finsupp.ofSupportFinite_support, Function.support, Function.mulSupport] using hj).symm",
+  "signature": "theorem ncard_boxFamily {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :\n    (boxFamily r B).ncard = (B + 1) ^ ∏ᶠ j, (r j + 1)",
+  "body": "by\n  rw [boxFamily_eq_image_finsupp_aux, Set.ncard_image_of_injective _\n    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp]\n  simp only [Int.card_Icc, sub_zero, Finset.prod_const, Finsupp.card_Iic, Nat.card_Iic]\n  congr 1\n  exact (finprod_eq_prod_of_mulSupport_subset _ fun j hj ↦ by\n    simpa [Finsupp.ofSupportFinite_support, Function.support, Function.mulSupport] using hj).symm",
+  "proof_lines": 7,
+  "sha256": "8470ec7dbae941f08b8e5afd7979ad136e9afd155dd46811dde6a529d416a9c3",
+  "what": "The box family cardinality is coefficient choices per monomial raised to the box cardinality.",
+  "how": "Use boxFamily_eq_image_finsupp_aux, injectivity of AddMonoidAlgebra.ofCoeff, Finset.card_finsupp and Finsupp.card_Iic; identify the finite product with finprod.",
+  "hypotheses": "Finite support of coordinate bounds; natural coefficient bound.",
+  "source_body_refs": [
+    "Roth.boxFamily_eq_image_finsupp_aux"
+  ],
+  "source_type_refs": [
+    "Roth.boxFamily"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_ne_modByMonic_eq",
+      "file": "Roth/MainLemma.lean",
+      "line": 359
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.boxFamily_eq_image_finsupp_aux"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_ne_modByMonic_eq"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 142,
+  "project_body_refs": [
+    "Roth.boxFamily_eq_image_finsupp_aux"
+  ],
+  "project_type_refs": [
+    "Roth.boxFamily"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_ne_modByMonic_eq",
+      "file": "Roth/MainLemma.lean",
+      "line": 359
+    }
+  ]
+}

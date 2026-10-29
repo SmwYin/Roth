@@ -1,0 +1,8 @@
+theorem ncard_boxFamily {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :
+    (boxFamily r B).ncard = (B + 1) ^ ∏ᶠ j, (r j + 1) := by
+  rw [boxFamily_eq_image_finsupp_aux, Set.ncard_image_of_injective _
+    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp]
+  simp only [Int.card_Icc, sub_zero, Finset.prod_const, Finsupp.card_Iic, Nat.card_Iic]
+  congr 1
+  exact (finprod_eq_prod_of_mulSupport_subset _ fun j hj ↦ by
+    simpa [Finsupp.ofSupportFinite_support, Function.support, Function.mulSupport] using hj).symm

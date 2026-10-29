@@ -1,0 +1,83 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Data.Finsupp.Interval
+
+open MvPolynomial
+namespace Box246Generic
+#check_failure Roth.ncard_boxFamily
+#check @Finset.card_finsupp
+#check @Finsupp.card_Iic
+#check @Nat.card_Iic
+#check @Int.card_Icc
+#check @Set.ncard_image_of_injective
+#check @finprod_eq_prod_of_mulSupport_subset
+#check @AddMonoidAlgebra.ofCoeff_injective
+
+def family {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)
+    (t : (σ →₀ ℕ) → Finset R) : Set (MvPolynomial σ R) :=
+  {P | (∀ j, degreeOf j P ≤ r j) ∧ ∀ d, P.coeff d ∈ t d}
+
+open scoped Classical in
+theorem representation {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)
+    (t : (σ →₀ ℕ) → Finset R) (ht : ∀ d ∉ Finset.Iic r, 0 ∈ t d) :
+    family r t = AddMonoidAlgebra.ofCoeff ''
+      (↑((Finset.Iic r).finsupp t) : Set ((σ →₀ ℕ) →₀ R)) := by
+  classical
+  ext W
+  constructor
+  · intro hW
+    refine ⟨W.coeff, ?_, rfl⟩
+    rw [Finset.mem_coe, Finset.mem_finsupp_iff]
+    refine ⟨fun d hd ↦ ?_, fun d _ ↦ hW.2 d⟩
+    exact Finset.mem_Iic.2 fun j ↦ (monomial_le_degreeOf j hd).trans (hW.1 j)
+  · rintro ⟨c, hc, rfl⟩
+    obtain ⟨hs, hc⟩ := Finset.mem_finsupp_iff.1 hc
+    refine ⟨fun j ↦ degreeOf_le_iff.2 fun d hd ↦ (Finset.mem_Iic.1 (hs hd)) j, fun d ↦ ?_⟩
+    by_cases hd : d ∈ Finset.Iic r
+    · exact hc d hd
+    · simpa only [Finsupp.notMem_support_iff.1 (fun h ↦ hd (hs h))] using ht d hd
+
+open scoped Classical in
+theorem ncard_family {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)
+    (t : (σ →₀ ℕ) → Finset R) (ht : ∀ d ∉ Finset.Iic r, 0 ∈ t d) :
+    (family r t).ncard = ∏ d ∈ Finset.Iic r, (t d).card := by
+  classical
+  rw [representation r t ht, Set.ncard_image_of_injective _
+    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp]
+
+theorem constant_choices {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)
+    (t : Finset R) (ht : 0 ∈ t) :
+    (family r (fun _ ↦ t)).ncard = t.card ^ ∏ j ∈ r.support, (r j + 1) := by
+  classical
+  rw [ncard_family r _ (fun _ _ ↦ ht), Finset.prod_const, Finsupp.card_Iic]
+  simp only [Nat.card_Iic]
+
+theorem abstract_image {α β : Type*} (s : Set α) (f : α → β)
+    (hf : Function.Injective f) : (f '' s).ncard = s.ncard :=
+  Set.ncard_image_of_injective s hf
+
+theorem finite_choices {ι α : Type*} [Zero α] (s : Finset ι) (t : ι → Finset α) :
+    (s.finsupp t).card = ∏ i ∈ s, (t i).card := Finset.card_finsupp s t
+
+#print axioms representation
+#print axioms ncard_family
+#print axioms constant_choices
+#print axioms abstract_image
+#print axioms finite_choices
+end Box246Generic

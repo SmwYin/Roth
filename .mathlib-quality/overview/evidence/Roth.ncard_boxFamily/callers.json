@@ -1,0 +1,19 @@
+{
+  "callers": [
+    {
+      "name": "Roth.exists_ne_modByMonic_eq",
+      "file": "Roth/MainLemma.lean",
+      "line": 359,
+      "end_line": 379,
+      "visibility": "public",
+      "source": "theorem exists_ne_modByMonic_eq {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ)\n    {f : Polynomial ℤ} (hf : f.Monic) (J : Finset (σ →₀ ℕ)) (C : ℕ)\n    (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ C)\n    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ ∏ᶠ j, (r j + 1)) :\n    ∃ W' ∈ boxFamily r B, ∃ W'' ∈ boxFamily r B, W' ≠ W'' ∧\n      ∀ j ∈ J, diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f := by\n  classical\n  let : Fintype (boxFamily r B) := (boxFamily_finite r B).fintype\n  let F (W : boxFamily r B) (p : J × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=\n    ⟨(diag (hasseDeriv p.1.1 W.1) %ₘ f).coeff p.2, abs_le.1 (hC W.1 W.2 p.1.1 p.1.2 p.2.1 p.2.2)⟩\n  obtain ⟨W', W'', hne, h⟩ := Fintype.exists_ne_map_eq_of_card_lt F <| by\n    simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,\n      Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, mul_comm, Set.fintypeCard_eq_ncard,\n      ncard_boxFamily, show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by lia] using\n      (show (2 * C + 1) ^ (f.natDegree * J.card) < (B + 1) ^ ∏ᶠ j, (r j + 1) by\n        exact_mod_cast hcount)\n  refine ⟨W', W'.2, W'', W''.2, Subtype.coe_ne_coe.2 hne, fun j hj ↦ ?_⟩\n  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using\n    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)\n      (g (⟨j, hj⟩, i) : ℤ)) h",
+      "sha256": "ce954bda5fe58acf65591ae7cb1ad09559476bb8b100710eedaa6a3cdc0a081f",
+      "signature": "theorem exists_ne_modByMonic_eq {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ)\n    {f : Polynomial ℤ} (hf : f.Monic) (J : Finset (σ →₀ ℕ)) (C : ℕ)\n    (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ C)\n    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ ∏ᶠ j, (r j + 1)) :\n    ∃ W' ∈ boxFamily r B, ∃ W'' ∈ boxFamily r B, W' ≠ W'' ∧\n      ∀ j ∈ J, diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f",
+      "body": "by\n  classical\n  let : Fintype (boxFamily r B) := (boxFamily_finite r B).fintype\n  let F (W : boxFamily r B) (p : J × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=\n    ⟨(diag (hasseDeriv p.1.1 W.1) %ₘ f).coeff p.2, abs_le.1 (hC W.1 W.2 p.1.1 p.1.2 p.2.1 p.2.2)⟩\n  obtain ⟨W', W'', hne, h⟩ := Fintype.exists_ne_map_eq_of_card_lt F <| by\n    simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,\n      Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, mul_comm, Set.fintypeCard_eq_ncard,\n      ncard_boxFamily, show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by lia] using\n      (show (2 * C + 1) ^ (f.natDegree * J.card) < (B + 1) ^ ∏ᶠ j, (r j + 1) by\n        exact_mod_cast hcount)\n  refine ⟨W', W'.2, W'', W''.2, Subtype.coe_ne_coe.2 hne, fun j hj ↦ ?_⟩\n  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using\n    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)\n      (g (⟨j, hj⟩, i) : ℤ)) h",
+      "occurrences": 1
+    }
+  ],
+  "distinct_declarations": 1,
+  "external_to_file": 0,
+  "executable_occurrences": 1
+}

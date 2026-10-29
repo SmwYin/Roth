@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 245/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 246/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 245; remaining: 48.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 83 BORDERLINE-needs-human, 58 SKIP.
+- Completed applicable assessments: 246; remaining: 47.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 84 BORDERLINE-needs-human, 58 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3015,6 +3015,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit body call in Roth.exists_ne_modByMonic_eq supplies its local Fintype. No external-file callers; exact293 kernel audit confirms one direct value consumer and no direct type consumer.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_finite.md).
 
+### Completed: `Roth.ncard_boxFamily`
+
+- Type: `∀ {σ : Type u_1} (r : σ → ℕ) [Finite ↑(Function.support r)] (B : ℕ),
+  (Roth.boxFamily r B).ncard = (B + 1) ^ ∏ᶠ (j : σ), (r j + 1)`
+- What: The family of integer polynomials with finitely supported coordinate degree bounds and coefficients in [0,B] has exactly (B+1) raised to the number of admissible monomials elements.
+- How: Transport the coefficient-choice Finset.finsupp through injective ofCoeff, use Finset.card_finsupp and Finsupp.card_Iic, then identify the finite support product with finprod.
+- Hypotheses: Arbitrary variable type; natural bounds r and B; only Function.support r must be finite. No positivity, nonempty variable type, or Fintype sigma is needed.
+- Project dependencies: Roth.boxFamily, Roth.boxFamily_eq_image_finsupp_aux
+- Caller summary: One same-file explicit body caller Roth.exists_ne_modByMonic_eq at MainLemma:359; inlined proof preserves its full signature and exact cardinal inequality. Kernel direct value consumers1, type consumers0; no transitive-independence claim.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.ncard_boxFamily.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3531,6 +3542,8 @@ Completed `Roth.boxFamily_eq_image_finsupp_aux`: Map coefficient functions throu
 
 Completed `Roth.boxFamily_finite`: Finset.finsupp, Finset.mem_finsupp_iff, Finset.finite_toSet and Set.Finite.image provide enumeration and image finiteness. Set.Finite.pi' and Set.Finite.of_injOn support a newly proved semantic theorem. The project representation helper is not existing mathlib.
 
+Completed `Roth.ncard_boxFamily`: Finset.card_finsupp, Finsupp.card_Iic, Nat.card_Iic, Int.card_Icc, Set.ncard_image_of_injective, Set.ncard_coe_finset and finprod transport are genuine mathlib. The semantic representation bridge is project/new proof. External Polynomial.card_eq_of_natDegree_le_of_coeff_le corresponds to pin Polynomial.ncard_boxPoly, a univariate result.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4022,6 +4035,8 @@ Completed `Roth.norm_coeff_modByMonic_le`: The private reduction is one step of 
 Completed `Roth.boxFamily_eq_image_finsupp_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.boxFamily_finite`: Shares the coefficient-array representation with Roth.ncard_boxFamily; finiteness and counting are different statements. It is not a duplicate of finite degree-index sets or nonzero bounded families.
+
+Completed `Roth.ncard_boxFamily`: Shares enumeration with boxFamily_finite and exponent count with card_box; neither counts polynomial coefficient assignments. Enumerated count is a short closing simp composition; semantic bridge and finprod transport remain distinct.
 
 ## Part 5: Generalization opportunities
 
@@ -4525,6 +4540,8 @@ Completed `Roth.boxFamily_eq_image_finsupp_aux`: No public generality claim unde
 
 Completed `Roth.boxFamily_finite`: Compiled: arbitrary CommSemiring R, arbitrary finite monomial support, and finite coefficient sets (only on selected monomials). Original recovered with no signature change. Also B=0 permits removal of the support condition; unqualified support removal fails for ℕ variables, r=1, B=1.
 
+Completed `Roth.ncard_boxFamily`: Verified new generic semantic family over arbitrary CommSemiring R and r : sigma →₀ Nat, with coordinate-dependent Finset choices t d and 0∈t d only off Finset.Iic r. Original function-r/finite-support/finprod type recovered and caller retained. This changes parent representation, not a mechanical weakening of an Int typeclass.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5017,6 +5034,8 @@ Completed `Roth.norm_coeff_modByMonic_le`: Quantitative coefficient growth under
 Completed `Roth.boxFamily_eq_image_finsupp_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.boxFamily_finite`: A semantic finite-coefficient/finite-support bridge for MvPolynomial is the candidate API boundary; current Finset.finsupp image machinery already supplies the enumerated form.
+
+Completed `Roth.ncard_boxFamily`: Potential semantic coefficient-family representation/counting interface; existing enumerator cardinality APIs already suffice after the new bridge. Exact upstream API packaging remains a future question.
 
 ## Part 7: Junk / removable
 
@@ -5513,6 +5532,8 @@ Completed `Roth.boxFamily_eq_image_finsupp_aux`: Retain a live private proof int
 
 Completed `Roth.boxFamily_finite`: Used once and successfully inlined in its actual caller with unchanged type, but the inline still uses the project private representation bridge. Do not call it a pure existing-mathlib wrapper or dead code.
 
+Completed `Roth.ncard_boxFamily`: Used mathematical count, not dead code. No unconditional removal from the local API is justified. Pure existing <=3-call replacement not established.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5762,6 +5783,7 @@ Completed `Roth.boxFamily_finite`: Used once and successfully inlined in its act
 | 243 | `Roth.norm_coeff_modByMonic_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.norm_coeff_modByMonic_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.norm_coeff_modByMonic_le/root-acceptance.json) |
 | 244 | `Roth.boxFamily_eq_image_finsupp_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_eq_image_finsupp_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily_eq_image_finsupp_aux/root-acceptance.json) |
 | 245 | `Roth.boxFamily_finite` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_finite.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily_finite/root-acceptance.json) |
+| 246 | `Roth.ncard_boxFamily` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.ncard_boxFamily.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.ncard_boxFamily/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6251,12 +6273,14 @@ Completed `Roth.boxFamily_eq_image_finsupp_aux` action: Keep unchanged; complete
 
 Completed `Roth.boxFamily_finite` action: Retain production unchanged. Consider the three concrete upstream API questions in the full report; if choosing a local cleanup, inline the verified bridge/image proof at Roth.exists_ne_modByMonic_eq.
 
+Completed `Roth.ncard_boxFamily` action: BORDERLINE completed assessment: retain locally; future upstream interface questions in report. If local inlining is selected, use the verified full proof in the sole caller; retain project private bridge. No production changes.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.ncard_boxFamily` next. Supporting identities receive their own applicable checks.
+   `Roth.floor_rpow_count_lt_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

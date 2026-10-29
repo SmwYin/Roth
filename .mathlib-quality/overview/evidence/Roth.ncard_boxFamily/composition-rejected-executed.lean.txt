@@ -1,0 +1,45 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Box246Composition
+open MvPolynomial Roth
+elab "box246Representation" : term =>
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.MainLemma `Roth.boxFamily_eq_image_finsupp_aux)
+
+theorem image_count {σ R : Type*} [CommSemiring R] (s : Finset (σ →₀ ℕ))
+    (t : (σ →₀ ℕ) → Finset R) :
+    (AddMonoidAlgebra.ofCoeff '' (↑(s.finsupp t) : Set ((σ →₀ ℕ) →₀ R))).ncard =
+      ∏ d ∈ s, (t d).card := by
+  simp only [Set.ncard_image_of_injective _ AddMonoidAlgebra.ofCoeff_injective,
+    Set.ncard_coe_finset, Finset.card_finsupp]
+
+theorem simp_original {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :
+    (boxFamily r B).ncard = (B + 1) ^ ∏ᶠ j, (r j + 1) := by
+  classical
+  have hp : (Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))).card =
+      ∏ᶠ j, (r j + 1) := by
+    rw [Finsupp.card_Iic]
+    simp only [Nat.card_Iic]
+    exact (finprod_eq_prod_of_mulSupport_subset _ fun j hj ↦ by
+      simpa [Finsupp.ofSupportFinite_support, Function.support, Function.mulSupport] using hj).symm
+  simp only [box246Representation, Set.ncard_image_of_injective _
+    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp,
+    Int.card_Icc, sub_zero, Finset.prod_const, hp]
+
+#print axioms image_count
+#print axioms simp_original
+end Box246Composition

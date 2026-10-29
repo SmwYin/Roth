@@ -1,0 +1,155 @@
+{
+  "declaration": "Roth.ncard_boxFamily",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "43fcc02ea1ddb835abc57c79d7b76b12dfe8d86e9ff77a1e2f9bc1bd81ecc9f5",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 726,
+      "required_info": [
+        "BOX246_FULL_TYPE:",
+        "BOX246_AUDIT: requested=293; unique=293",
+        "BOX246_AUDIT_PRESENT: present=293; values=293",
+        "'Roth.ncard_boxFamily' depends on axioms:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "4323c4b5e73151e224894e5806d5d27a39a3f3e697d134e635243e4ce2f9dfff",
+      "format": "raw",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Data.Finsupp.Interval\n\nopen MvPolynomial\nnamespace Box246Generic\n#check_failure Roth.ncard_boxFamily\n#check @Finset.card_finsupp\n#check @Finsupp.card_Iic\n#check @Nat.card_Iic\n#check @Int.card_Icc\n#check @Set.ncard_image_of_injective\n#check @finprod_eq_prod_of_mulSupport_subset\n#check @AddMonoidAlgebra.ofCoeff_injective\n\ndef family {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)\n    (t : (σ →₀ ℕ) → Finset R) : Set (MvPolynomial σ R) :=\n  {P | (∀ j, degreeOf j P ≤ r j) ∧ ∀ d, P.coeff d ∈ t d}\n\nopen scoped Classical in\ntheorem representation {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)\n    (t : (σ →₀ ℕ) → Finset R) (ht : ∀ d ∉ Finset.Iic r, 0 ∈ t d) :\n    family r t = AddMonoidAlgebra.ofCoeff ''\n      (↑((Finset.Iic r).finsupp t) : Set ((σ →₀ ℕ) →₀ R)) := by\n  classical\n  ext W\n  constructor\n  · intro hW\n    refine ⟨W.coeff, ?_, rfl⟩\n    rw [Finset.mem_coe, Finset.mem_finsupp_iff]\n    refine ⟨fun d hd ↦ ?_, fun d _ ↦ hW.2 d⟩\n    exact Finset.mem_Iic.2 fun j ↦ (monomial_le_degreeOf j hd).trans (hW.1 j)\n  · rintro ⟨c, hc, rfl⟩\n    obtain ⟨hs, hc⟩ := Finset.mem_finsupp_iff.1 hc\n    refine ⟨fun j ↦ degreeOf_le_iff.2 fun d hd ↦ (Finset.mem_Iic.1 (hs hd)) j, fun d ↦ ?_⟩\n    by_cases hd : d ∈ Finset.Iic r\n    · exact hc d hd\n    · simpa only [Finsupp.notMem_support_iff.1 (fun h ↦ hd (hs h))] using ht d hd\n\nopen scoped Classical in\ntheorem ncard_family {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)\n    (t : (σ →₀ ℕ) → Finset R) (ht : ∀ d ∉ Finset.Iic r, 0 ∈ t d) :\n    (family r t).ncard = ∏ d ∈ Finset.Iic r, (t d).card := by\n  classical\n  rw [representation r t ht, Set.ncard_image_of_injective _\n    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp]\n\ntheorem constant_choices {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)\n    (t : Finset R) (ht : 0 ∈ t) :\n    (family r (fun _ ↦ t)).ncard = t.card ^ ∏ j ∈ r.support, (r j + 1) := by\n  classical\n  rw [ncard_family r _ (fun _ _ ↦ ht), Finset.prod_const, Finsupp.card_Iic]\n  simp only [Nat.card_Iic]\n\ntheorem abstract_image {α β : Type*} (s : Set α) (f : α → β)\n    (hf : Function.Injective f) : (f '' s).ncard = s.ncard :=\n  Set.ncard_image_of_injective s hf\n\ntheorem finite_choices {ι α : Type*} [Zero α] (s : Finset ι) (t : ι → Finset α) :\n    (s.finsupp t).card = ∏ i ∈ s, (t i).card := Finset.card_finsupp s t\n\n#print axioms representation\n#print axioms ncard_family\n#print axioms constant_choices\n#print axioms abstract_image\n#print axioms finite_choices\nend Box246Generic\n"
+      },
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Box246Generic.representation' depends on axioms:",
+        "'Box246Generic.ncard_family' depends on axioms:",
+        "'Box246Generic.constant_choices' depends on axioms:"
+      ]
+    },
+    {
+      "label": "project",
+      "source": "project-executed.lean.txt",
+      "receipt": "project-receipt.json",
+      "source_sha256": "2a8736f5ec48a96e36df23a2dd5d33bf3856ec4c553197c21c1a63b323b08ca1",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Box246Project.ncard_original' depends on axioms:",
+        "'Box246Project.zero_coefficient_bound' depends on axioms:",
+        "'Box246Project.zero_degree' depends on axioms:",
+        "'Box246Project.empty_variables' depends on axioms:",
+        "'Box246Project.infinite_variables_finite_support' depends on axioms:",
+        "'Box246Project.support_needed' depends on axioms:",
+        "'Box246Project.exists_ne_modByMonic_eq' depends on axioms:",
+        "BOX246_TARGET_KERNEL_TYPE: Roth.boxFamily",
+        "BOX246_TARGET_KERNEL_BODY: _private.Roth.MainLemma.0.Roth.boxFamily_eq_image_finsupp_aux",
+        "BOX246_CALLER_INLINE_NO_DIRECT_TARGET: PASS"
+      ]
+    },
+    {
+      "label": "composition",
+      "source": "composition-executed.lean.txt",
+      "receipt": "composition-receipt.json",
+      "source_sha256": "c5d25c0d2c6a14658d3561721d11a752e64de599c9f135ba6cf4a5f2fc591bf8",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Box246Composition.image_count' depends on axioms:",
+        "'Box246Composition.simp_original' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "receipt": "composition-rejected-receipt.json",
+      "source": "composition-rejected-executed.lean.txt",
+      "reason": "Failed elaboration, missing imports/decidability or warning; retained only as rejected evidence."
+    },
+    {
+      "receipt": "composition-rejected2-receipt.json",
+      "source": "composition-rejected2-executed.lean.txt",
+      "reason": "Failed elaboration, missing imports/decidability or warning; retained only as rejected evidence."
+    },
+    {
+      "receipt": "isolated-rejected-receipt.json",
+      "source": "isolated-rejected-executed.lean.txt",
+      "reason": "Failed elaboration, missing imports/decidability or warning; retained only as rejected evidence."
+    },
+    {
+      "receipt": "isolated-rejected2-receipt.json",
+      "source": "isolated-rejected2-executed.lean.txt",
+      "reason": "Failed elaboration, missing imports/decidability or warning; retained only as rejected evidence."
+    },
+    {
+      "receipt": "isolated-rejected3-receipt.json",
+      "source": "isolated-rejected3-executed.lean.txt",
+      "reason": "Failed elaboration, missing imports/decidability or warning; retained only as rejected evidence."
+    },
+    {
+      "receipt": "project-rejected-receipt.json",
+      "source": "project-rejected-executed.lean.txt",
+      "reason": "Failed elaboration, missing imports/decidability or warning; retained only as rejected evidence."
+    }
+  ],
+  "warming": [
+    {
+      "receipt": "original-warming-receipt.json",
+      "source": "original-executed.lean.txt"
+    }
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "Roth.exists_ne_modByMonic_eq"
+  ],
+  "canonical_direct_type_consumers": [],
+  "composition": {
+    "strict_existing_mathlib_composition_verified": false,
+    "new_generic_is_existing_mathlib": false,
+    "abstract_existing_image_law_verified": true,
+    "generic_semiring_finite_coefficients_verified": true,
+    "original_recovery_verified": true,
+    "actual_caller_replays": 1,
+    "full_body_inline_success": true,
+    "inline_private_bridge_retained": true,
+    "direct_target_independence_only": true,
+    "closing_simp_verified": true,
+    "closing_simp_requires_private_bridge_and_new_exponent_proof": true
+  },
+  "generality": {
+    "off_box_zero_only": true,
+    "no_Fintype_sigma_restriction": true,
+    "support_wholesale_removal_refuted": true,
+    "B_zero_no_support": true,
+    "mechanical_Int_typeclass_weakening_claimed": false
+  }
+}

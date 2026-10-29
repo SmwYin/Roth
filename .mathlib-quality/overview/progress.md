@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 245 / 293 written declarations.**
+**Completed: 246 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -253,8 +253,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 243 | `Roth.norm_coeff_modByMonic_le` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.norm_coeff_modByMonic_le.md) |
 | 244 | `Roth.boxFamily_eq_image_finsupp_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.boxFamily_eq_image_finsupp_aux.md) |
 | 245 | `Roth.boxFamily_finite` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.boxFamily_finite.md) |
+| 246 | `Roth.ncard_boxFamily` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.ncard_boxFamily.md) |
 
-**Next declaration: `Roth.ncard_boxFamily`**, `Roth/MainLemma.lean:311`.
+**Next declaration: `Roth.floor_rpow_count_lt_aux`**, `Roth/MainLemma.lean:320`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and
