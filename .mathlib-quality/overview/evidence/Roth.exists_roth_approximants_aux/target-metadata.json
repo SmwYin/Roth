@@ -1,0 +1,58 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 429,
+  "name": "Roth.exists_roth_approximants_aux",
+  "short": "exists_roth_approximants_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 450,
+  "source": "private lemma exists_roth_approximants_aux {α κ : ℝ} (hα : Irrational α) (hκ : 0 < κ)\n    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1)\n    (A : ℝ) : ∃ (h : Fin m → ℤ) (q r : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧\n      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ (∀ j, 0 < r j) ∧ 3 ≤ r (Fin.rev 0) ∧\n      (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i) ∧ (∀ j, r j ≤ r 0) ∧\n      (2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) < δ ^ 2 * Real.log (q 0)) ∧\n      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧\n      ∀ j, (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0)) := by\n  -- the approximants and the degrees\n  obtain ⟨h, q, happ, hcop, hq1, hL, h50⟩ := exists_approximants hα hκ hinf m\n    ((2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|)) / δ ^ 2)\n  obtain ⟨r, hr0, h31a, h31b, h33, h53⟩ := exists_degrees hδ0 hδ1 hq1\n    (fun i j hij ↦ (h50 i j hij).le)\n  have hranti : Antitone r := by\n    obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)\n    refine Fin.antitone_iff_succ_le.2 fun i ↦ ?_\n    exact_mod_cast (le_div_self (Nat.cast_nonneg _) hδ0 hδ1).trans\n      (h31b i.castSucc i.succ rfl).le\n  refine ⟨h, q, r, happ, hcop, hq1, hr0, ?_, fun i j hij ↦ (h31b i j hij).le,\n    fun j ↦ hranti (Fin.zero_le j), (div_lt_iff₀' (by positivity)).1 hL, h33, h53⟩\n  exact_mod_cast (by norm_num : (3 : ℝ) ≤ 10).trans\n    ((le_div_self (by norm_num) hδ0 hδ1).trans (h31a (Fin.rev 0)).le)",
+  "signature": "private lemma exists_roth_approximants_aux {α κ : ℝ} (hα : Irrational α) (hκ : 0 < κ)\n    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1)\n    (A : ℝ) : ∃ (h : Fin m → ℤ) (q r : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧\n      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ (∀ j, 0 < r j) ∧ 3 ≤ r (Fin.rev 0) ∧\n      (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i) ∧ (∀ j, r j ≤ r 0) ∧\n      (2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) < δ ^ 2 * Real.log (q 0)) ∧\n      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧\n      ∀ j, (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0))",
+  "body": "by\n  -- the approximants and the degrees\n  obtain ⟨h, q, happ, hcop, hq1, hL, h50⟩ := exists_approximants hα hκ hinf m\n    ((2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|)) / δ ^ 2)\n  obtain ⟨r, hr0, h31a, h31b, h33, h53⟩ := exists_degrees hδ0 hδ1 hq1\n    (fun i j hij ↦ (h50 i j hij).le)\n  have hranti : Antitone r := by\n    obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)\n    refine Fin.antitone_iff_succ_le.2 fun i ↦ ?_\n    exact_mod_cast (le_div_self (Nat.cast_nonneg _) hδ0 hδ1).trans\n      (h31b i.castSucc i.succ rfl).le\n  refine ⟨h, q, r, happ, hcop, hq1, hr0, ?_, fun i j hij ↦ (h31b i j hij).le,\n    fun j ↦ hranti (Fin.zero_le j), (div_lt_iff₀' (by positivity)).1 hL, h33, h53⟩\n  exact_mod_cast (by norm_num : (3 : ℝ) ≤ 10).trans\n    ((le_div_self (by norm_num) hδ0 hδ1).trans (h31a (Fin.rev 0)).le)",
+  "proof_lines": 15,
+  "sha256": "533507490240cf8021ea272505d62b688432419353cdbb52ca1127a34cd20648",
+  "what": "Choose reduced approximants and positive balanced integer degrees satisfying all proof parameters simultaneously.",
+  "how": "Combine exists_approximants with exists_degrees; use Fin.antitone_iff_succ_le to derive monotonicity and strengthen the final degree bound.",
+  "hypotheses": "Irrational number, positive exponent, infinite approximation set, nonzero dimension and positive delta at most one.",
+  "source_body_refs": [
+    "Roth.exists_approximants",
+    "Roth.exists_degrees"
+  ],
+  "source_type_refs": [
+    "Roth.approxSet"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.roth_of_isIntegral",
+      "file": "Roth/Main.lean",
+      "line": 547
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.exists_approximants",
+    "Roth.exists_degrees"
+  ],
+  "used_by_in_file": [
+    "Roth.roth_of_isIntegral"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 689,
+  "project_body_refs": [
+    "Roth.exists_approximants",
+    "Roth.exists_degrees"
+  ],
+  "project_type_refs": [
+    "Roth.approxSet"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.roth_of_isIntegral",
+      "file": "Roth/Main.lean",
+      "line": 547
+    }
+  ]
+}

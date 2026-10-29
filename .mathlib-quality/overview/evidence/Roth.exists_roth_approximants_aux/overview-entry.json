@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.exists_roth_approximants_aux",
+  "kind": "lemma",
+  "type": "∀ {α κ : ℝ},\n  Irrational α →\n    0 < κ →\n      (Roth.approxSet α κ).Infinite →\n        ∀ (m : ℕ) [inst : NeZero m] {δ : ℝ},\n          0 < δ →\n            δ ≤ 1 →\n              ∀ (A : ℝ),\n                ∃ (h : Fin m → ℤ) (q : Fin m → ℕ) (r : Fin m → ℕ),\n                  (∀ (j : Fin m), (h j, q j) ∈ Roth.approxSet α κ) ∧\n                    (∀ (j : Fin m), IsCoprime (h j) ↑(q j)) ∧\n                      (∀ (j : Fin m), 1 < q j) ∧\n                        (∀ (j : Fin m), 0 < r j) ∧\n                          3 ≤ r (Fin.rev 0) ∧\n                            (∀ (i j : Fin m), ↑i + 1 = ↑j → ↑(r j) / δ ≤ ↑(r i)) ∧\n                              (∀ (j : Fin m), r j ≤ r 0) ∧\n                                2 * ↑m + 1 + 2 * ↑m * Real.log (1 + A) + 2 * ↑m * Real.log (1 + |α|) <\n                                    δ ^ 2 * Real.log ↑(q 0) ∧\n                                  (∀ (j : Fin m), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) ∧\n                                    ∀ (j : Fin m), ↑(r j) * Real.log ↑(q j) < (1 + δ / 10) * (↑(r 0) * Real.log ↑(q 0))",
+  "what": "Packages reduced approximants with rapidly growing denominators and compatible positive antitone degrees, including all ratio and logarithmic bounds used later.",
+  "how": "Combine exists_approximants with exists_degrees; use Fin.antitone_iff_succ_le to derive monotonicity and strengthen the final degree bound.",
+  "hypotheses": "Irrational number, positive exponent, infinite approximation set, nonzero dimension and positive delta at most one. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.approxSet",
+    "Roth.exists_approximants",
+    "Roth.exists_degrees"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Apply exists_approximants at the required logarithmic threshold divided by delta squared and exists_degrees for the rounding construction. Show Antitone r from the adjacent degree ratio and delta<=1 using Fin.antitone_iff_succ_le. Bound every degree by r0, convert the first logarithm inequality by div_lt_iff, and infer the last degree at least3 from its stronger 10/delta lower bound.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
