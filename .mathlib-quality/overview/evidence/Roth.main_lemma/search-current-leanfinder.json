@@ -1,0 +1,84 @@
+{
+  "request": {
+    "query": "Roth main lemma exists nonzero multivariate integer polynomial high index at algebraic real root nonvanishing rational point bounded Hasse derivatives",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.combinatorial_nullstellensatz_exists_eval_nonzero\",\n      \"informal_name\": \"Combinatorial Nullstellensatz: Existence of Non-Vanishing Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (f : MvPolynomial σ R) (t : σ →₀ ℕ),\\n  MvPolynomial.coeff t f ≠ 0 →\\n    f.totalDegree = Finsupp.degree t →\\n      ∀ (S : σ → Finset R), (∀ (i : σ), t i < (S i).card) → ∃ s, (∀ (i : σ), s i ∈ S i) ∧ (MvPolynomial.eval s) f ≠ 0\",\n      \"informal_description\": \"Let $ R $ be an integral domain, $ f $ a multivariate polynomial in $ R[\\\\sigma] $, and $ t $ a monomial with nonzero coefficient in $ f $ such that the total degree of $ f $ equals the degree of $ t $. For any family of finite subsets $ S_i \\\\subseteq R $ indexed by $ \\\\sigma $, if each $ S_i $ has cardinality strictly greater than the exponent of $ t $ in variable $ i $, then there exists an evaluation $ s : \\\\sigma \\\\to R $ with $ s(i) \\\\in S_i $ for all $ i $, such that $ f(s) \\\\neq 0 $. This is the combinatorial Nullstellensatz existence theorem.\",\n      \"path\": \"Mathlib.Combinatorics.Nullstellensatz\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_pos\",\n      \"informal_name\": \"Positivity of Degree Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ), 0 < ChevalleyThm.MvPolynomialC.degBound k D n\",\n      \"informal_description\": \"For any natural number $k$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the degree bound $\\\\text{degBound}\\\\,k\\\\,D\\\\,n$ satisfies $0 < \\\\text{degBound}\\\\,k\\\\,D\\\\,n$ for all $n \\\\in \\\\mathbb{N}$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"Liouville.exists_pos_real_of_irrational_root\",\n      \"informal_name\": \"Liouville's Approximation Theorem for Irrational Roots of Integer Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : ℝ},\\n  Irrational α →\\n    ∀ {f : Polynomial ℤ},\\n      f ≠ 0 →\\n        Polynomial.eval α (Polynomial.map (algebraMap ℤ ℝ) f) = 0 →\\n          ∃ A, 0 < A ∧ ∀ (a : ℤ) (b : ℕ), 1 ≤ (↑b + 1) ^ f.natDegree * (|α - ↑a / (↑b + 1)| * A)\",\n      \"informal_description\": \"Let $\\\\alpha$ be an irrational real number and let $f \\\\in \\\\mathbb{Z}[X]$ be a non-zero polynomial such that $f(\\\\alpha) = 0$. Then there exists a positive real number $A$ such that for all integers $a$ and natural numbers $b$, the inequality $1 \\\\leq A \\\\cdot (b + 1)^{\\\\deg(f)} \\\\cdot |\\\\alpha - \\\\frac{a}{b + 1}|$ holds.\",\n      \"path\": \"Mathlib.NumberTheory.Transcendental.Liouville.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.exists_mem_support_not_dvd_of_forall_totalDegree_le\",\n      \"informal_name\": \"Existence of a Monomial with Non-Divisible Exponent in Polynomial Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k : Type u_1} {K : Type u_2} {ι : Type u_3} [inst : Field k] [inst_1 : Field K] [inst_2 : Algebra k K] (p : ℕ),\\n  Nat.Prime p →\\n    (∀ (s : Finset K), LinearIndepOn k id ↑s → LinearIndepOn k (fun x => x ^ p) ↑s) →\\n      ∀ {a : ι → K} {F : MvPolynomial ι k},\\n        (∀ (F' : MvPolynomial ι k), F' ≠ 0 → (MvPolynomial.aeval a) F' = 0 → F.totalDegree ≤ F'.totalDegree) →\\n          F ≠ 0 → (MvPolynomial.aeval a) F = 0 → ∃ i, ∃ σ ∈ F.support, ¬p ∣ σ i\",\n      \"informal_description\": \"Let $ R $ be a commutative semiring, $ \\\\sigma $ a type of variables, and $ p $ a prime number. If $ F \\\\in R[\\\\sigma] $ is a nonzero multivariate polynomial such that $ F(a) = 0 $ for some assignment $ a : \\\\sigma \\\\to S $ into an $ R $-algebra $ S $, then there exists an index $ i : \\\\sigma $ and a monomial $ \\\\sigma \\\\in \\\\text{support}(F) $ such that $ p $ does not divide the exponent $ \\\\sigma(i) $ of the variable $ i $ in $ \\\\sigma $.\",\n      \"path\": \"Mathlib.FieldTheory.SeparablyGenerated\"\n    },\n    {\n      \"formal_name\": \"one_le_pow_mul_abs_eval_div\",\n      \"informal_name\": \"Lower Bound for Polynomial Evaluation at Rational Points\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial ℤ} {a b : ℤ},\\n  0 < b →\\n    Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f) ≠ 0 →\\n      1 ≤ ↑b ^ f.natDegree * |Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f)|\",\n      \"informal_description\": \"For any linearly ordered field $ K $ with strict ordered ring structure, given a non-zero polynomial $ f \\\\in \\\\mathbb{Z}[X] $, integers $ a, b $ with $ b > 0 $, and assuming $ f\\\\left(\\\\frac{a}{b}\\\\right) \\\\neq 0 $, it holds that $ 1 \\\\leq b^{\\\\deg(f)} \\\\cdot \\\\left| f\\\\left(\\\\frac{a}{b}\\\\right) \\\\right| $, where $ \\\\deg(f) $ denotes the natural degree of $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.DenomsClearable\"\n    },\n    {\n      \"formal_name\": \"LindemannWeierstrass.exp_polynomial_approx\",\n      \"informal_name\": \"Lindemann-Weierstrass Polynomial Approximation for Exponentials of Algebraic Numbers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (f : Polynomial ℤ),\\n  Polynomial.eval 0 f ≠ 0 →\\n    ∃ c,\\n      ∀ p > (Polynomial.eval 0 f).natAbs,\\n        Nat.Prime p →\\n          ∃ n,\\n            ¬↑p ∣ n ∧\\n              ∃ gp,\\n                gp.natDegree ≤ p * f.natDegree - 1 ∧\\n                  ∀ {r : ℂ},\\n                    r ∈ f.aroots ℂ → ‖n • Complex.exp r - p • (Polynomial.aeval r) gp‖ ≤ c ^ p / ↑(p - 1).factorial\",\n      \"informal_description\": \"For any non-zero constant term polynomial $ f \\\\in \\\\mathbb{Z}[X] $, there exists a constant $ c > 0 $ such that for all primes $ p > |f(0)| $, there exists an integer $ n \\\\not\\\\equiv 0 \\\\mod p $ and a polynomial $ g_p \\\\in \\\\mathbb{Z}[X] $ of degree $ \\\\leq p \\\\cdot \\\\deg(f) - 1 $ satisfying: for every complex root $ r $ of $ f $, the inequality $ \\\\|n \\\\cdot e^r - p \\\\cdot \\\\operatorname{aeval}(r, g_p)\\\\| \\\\leq \\\\frac{c^p}{(p-1)!} $ holds, where $ \\\\operatorname{aeval} $ denotes polynomial evaluation in the algebraic structure and $ \\\\|\\\\cdot\\\\| $ is the complex norm.\",\n      \"path\": \"Mathlib.NumberTheory.Transcendental.Lindemann.AnalyticalPart\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_succ\",\n      \"informal_name\": \"Successor Case of Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n\",\n      \"informal_description\": \"For natural numbers $k, n$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\\\text{numBound}(k, D, n+1) = \\\\text{numBound}(k, D, n) \\\\cdot \\\\text{degBound}(k, D, n) \\\\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+          "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+          "kind": "definition",
+          "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+          "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+          "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+        },
+        {
+          "formal_name": "MvPolynomial.combinatorial_nullstellensatz_exists_eval_nonzero",
+          "informal_name": "Combinatorial Nullstellensatz: Existence of Non-Vanishing Evaluation",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (f : MvPolynomial σ R) (t : σ →₀ ℕ),\n  MvPolynomial.coeff t f ≠ 0 →\n    f.totalDegree = Finsupp.degree t →\n      ∀ (S : σ → Finset R), (∀ (i : σ), t i < (S i).card) → ∃ s, (∀ (i : σ), s i ∈ S i) ∧ (MvPolynomial.eval s) f ≠ 0",
+          "informal_description": "Let $ R $ be an integral domain, $ f $ a multivariate polynomial in $ R[\\sigma] $, and $ t $ a monomial with nonzero coefficient in $ f $ such that the total degree of $ f $ equals the degree of $ t $. For any family of finite subsets $ S_i \\subseteq R $ indexed by $ \\sigma $, if each $ S_i $ has cardinality strictly greater than the exponent of $ t $ in variable $ i $, then there exists an evaluation $ s : \\sigma \\to R $ with $ s(i) \\in S_i $ for all $ i $, such that $ f(s) \\neq 0 $. This is the combinatorial Nullstellensatz existence theorem.",
+          "path": "Mathlib.Combinatorics.Nullstellensatz"
+        },
+        {
+          "formal_name": "ChevalleyThm.MvPolynomialC.degBound_pos",
+          "informal_name": "Positivity of Degree Bound in Chevalley's Theorem",
+          "kind": "theorem",
+          "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ), 0 < ChevalleyThm.MvPolynomialC.degBound k D n",
+          "informal_description": "For any natural number $k$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the degree bound $\\text{degBound}\\,k\\,D\\,n$ satisfies $0 < \\text{degBound}\\,k\\,D\\,n$ for all $n \\in \\mathbb{N}$.",
+          "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+        },
+        {
+          "formal_name": "Liouville.exists_pos_real_of_irrational_root",
+          "informal_name": "Liouville's Approximation Theorem for Irrational Roots of Integer Polynomials",
+          "kind": "theorem",
+          "type": "∀ {α : ℝ},\n  Irrational α →\n    ∀ {f : Polynomial ℤ},\n      f ≠ 0 →\n        Polynomial.eval α (Polynomial.map (algebraMap ℤ ℝ) f) = 0 →\n          ∃ A, 0 < A ∧ ∀ (a : ℤ) (b : ℕ), 1 ≤ (↑b + 1) ^ f.natDegree * (|α - ↑a / (↑b + 1)| * A)",
+          "informal_description": "Let $\\alpha$ be an irrational real number and let $f \\in \\mathbb{Z}[X]$ be a non-zero polynomial such that $f(\\alpha) = 0$. Then there exists a positive real number $A$ such that for all integers $a$ and natural numbers $b$, the inequality $1 \\leq A \\cdot (b + 1)^{\\deg(f)} \\cdot |\\alpha - \\frac{a}{b + 1}|$ holds.",
+          "path": "Mathlib.NumberTheory.Transcendental.Liouville.Basic"
+        },
+        {
+          "formal_name": "MvPolynomial.exists_mem_support_not_dvd_of_forall_totalDegree_le",
+          "informal_name": "Existence of a Monomial with Non-Divisible Exponent in Polynomial Support",
+          "kind": "theorem",
+          "type": "∀ {k : Type u_1} {K : Type u_2} {ι : Type u_3} [inst : Field k] [inst_1 : Field K] [inst_2 : Algebra k K] (p : ℕ),\n  Nat.Prime p →\n    (∀ (s : Finset K), LinearIndepOn k id ↑s → LinearIndepOn k (fun x => x ^ p) ↑s) →\n      ∀ {a : ι → K} {F : MvPolynomial ι k},\n        (∀ (F' : MvPolynomial ι k), F' ≠ 0 → (MvPolynomial.aeval a) F' = 0 → F.totalDegree ≤ F'.totalDegree) →\n          F ≠ 0 → (MvPolynomial.aeval a) F = 0 → ∃ i, ∃ σ ∈ F.support, ¬p ∣ σ i",
+          "informal_description": "Let $ R $ be a commutative semiring, $ \\sigma $ a type of variables, and $ p $ a prime number. If $ F \\in R[\\sigma] $ is a nonzero multivariate polynomial such that $ F(a) = 0 $ for some assignment $ a : \\sigma \\to S $ into an $ R $-algebra $ S $, then there exists an index $ i : \\sigma $ and a monomial $ \\sigma \\in \\text{support}(F) $ such that $ p $ does not divide the exponent $ \\sigma(i) $ of the variable $ i $ in $ \\sigma $.",
+          "path": "Mathlib.FieldTheory.SeparablyGenerated"
+        },
+        {
+          "formal_name": "one_le_pow_mul_abs_eval_div",
+          "informal_name": "Lower Bound for Polynomial Evaluation at Rational Points",
+          "kind": "theorem",
+          "type": "∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial ℤ} {a b : ℤ},\n  0 < b →\n    Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f) ≠ 0 →\n      1 ≤ ↑b ^ f.natDegree * |Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f)|",
+          "informal_description": "For any linearly ordered field $ K $ with strict ordered ring structure, given a non-zero polynomial $ f \\in \\mathbb{Z}[X] $, integers $ a, b $ with $ b > 0 $, and assuming $ f\\left(\\frac{a}{b}\\right) \\neq 0 $, it holds that $ 1 \\leq b^{\\deg(f)} \\cdot \\left| f\\left(\\frac{a}{b}\\right) \\right| $, where $ \\deg(f) $ denotes the natural degree of $ f $.",
+          "path": "Mathlib.Algebra.Polynomial.DenomsClearable"
+        },
+        {
+          "formal_name": "LindemannWeierstrass.exp_polynomial_approx",
+          "informal_name": "Lindemann-Weierstrass Polynomial Approximation for Exponentials of Algebraic Numbers",
+          "kind": "theorem",
+          "type": "∀ (f : Polynomial ℤ),\n  Polynomial.eval 0 f ≠ 0 →\n    ∃ c,\n      ∀ p > (Polynomial.eval 0 f).natAbs,\n        Nat.Prime p →\n          ∃ n,\n            ¬↑p ∣ n ∧\n              ∃ gp,\n                gp.natDegree ≤ p * f.natDegree - 1 ∧\n                  ∀ {r : ℂ},\n                    r ∈ f.aroots ℂ → ‖n • Complex.exp r - p • (Polynomial.aeval r) gp‖ ≤ c ^ p / ↑(p - 1).factorial",
+          "informal_description": "For any non-zero constant term polynomial $ f \\in \\mathbb{Z}[X] $, there exists a constant $ c > 0 $ such that for all primes $ p > |f(0)| $, there exists an integer $ n \\not\\equiv 0 \\mod p $ and a polynomial $ g_p \\in \\mathbb{Z}[X] $ of degree $ \\leq p \\cdot \\deg(f) - 1 $ satisfying: for every complex root $ r $ of $ f $, the inequality $ \\|n \\cdot e^r - p \\cdot \\operatorname{aeval}(r, g_p)\\| \\leq \\frac{c^p}{(p-1)!} $ holds, where $ \\operatorname{aeval} $ denotes polynomial evaluation in the algebraic structure and $ \\|\\cdot\\| $ is the complex norm.",
+          "path": "Mathlib.NumberTheory.Transcendental.Lindemann.AnalyticalPart"
+        },
+        {
+          "formal_name": "ChevalleyThm.MvPolynomialC.numBound_succ",
+          "informal_name": "Successor Case of Numerical Bound in Chevalley's Theorem",
+          "kind": "theorem",
+          "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n",
+          "informal_description": "For natural numbers $k, n$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\text{numBound}(k, D, n+1) = \\text{numBound}(k, D, n) \\cdot \\text{degBound}(k, D, n) \\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.",
+          "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 3677
+}

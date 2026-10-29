@@ -1,0 +1,75 @@
+from pathlib import Path
+import json,hashlib
+D=Path(__file__).resolve().parent;R=Path.cwd()
+shared=Path('/private/tmp/roth-overview/current-isolated-prefix.lean.txt').read_text()
+prefix=shared+'import Mathlib.NumberTheory.SiegelsLemma\n';(D/'isolated-prefix19.lean.txt').write_text(prefix)
+(D/'root-prefix-scope-authorization.json').write_text(json.dumps(dict(declaration='Roth.main_lemma',authorized_by='root',scope='declaration266-only isolated19; unchanged shared18 and disk9',additional_import='Mathlib.NumberTheory.SiegelsLemma',root_message='Approved declaration266-only isolated prefix19 = stable18 plus Mathlib.NumberTheory.SiegelsLemma. Enforce19 in candidate validator while shared18 and disk9 remain unchanged.'),indent=2)+'\n')
+code=prefix+'''
+#check_failure Roth.main_lemma
+#check_failure MvPolynomial.taylor
+#check @Int.Matrix.exists_ne_zero_int_vec_norm_le
+#check @Int.Matrix.exists_ne_zero_int_vec_norm_le'
+#check @Fintype.exists_ne_map_eq_of_card_lt
+#check @Polynomial.sum_modByMonic_coeff
+#check @Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero
+namespace Main266Isolated
+open MvPolynomial
+noncomputable def shift {σ : Type*} (x : σ → ℝ) (P : MvPolynomial σ ℝ) :=
+  aeval (fun j ↦ X j + C (x j)) P
+noncomputable def idx {m : ℕ} (P : MvPolynomial (Fin m) ℝ) (x : Fin m → ℝ)
+    (r : Fin m → ℕ) : ℝ :=
+  sInf ((fun d : Fin m →₀ ℕ ↦ ∑ j, (d j : ℝ) / r j) ''
+    ((shift x P).support : Set (Fin m →₀ ℕ)))
+noncomputable def goal {m : ℕ} [NeZero m] (α δ : ℝ) (f : Polynomial ℤ)
+    (r q : Fin m → ℕ) (h : Fin m → ℤ) : Prop :=
+  ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧ (∀ j, degreeOf j Q ≤ r j) ∧
+    ((m : ℝ) - 4 * (1 + 3 * δ) * f.natDegree * √(m : ℝ)) / 2 -
+      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) <
+        idx (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧
+    eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧
+    ∀ i : Fin m →₀ ℕ,
+      |(shift (fun _ ↦ α) (map (Int.castRingHom ℝ) Q)).coeff i| <
+        (⌊(q 0 : ℝ) ^ (δ * r 0)⌋₊ : ℝ) ^ (1 + 3 * δ)
+
+-- These positive existing calls supply only a collision and a small matrix kernel vector.
+theorem collision {S T : Type*} [Fintype S] [Fintype T] (F : S → T)
+    (h : Fintype.card T < Fintype.card S) : ∃ x y, x ≠ y ∧ F x = F y :=
+  Fintype.exists_ne_map_eq_of_card_lt F h
+
+attribute [local instance] Matrix.seminormedAddCommGroup
+theorem kernel {S T : Type*} [Fintype S] [Fintype T] (M : Matrix S T ℤ)
+    (h : Fintype.card S < Fintype.card T) (hS : 0 < Fintype.card S) :
+    ∃ t : T → ℤ, t ≠ 0 ∧ M.mulVec t = 0 ∧
+      ‖t‖ ≤ ((Fintype.card T : ℝ) * max 1 ‖M‖) ^
+        ((Fintype.card S : ℝ) / (Fintype.card T - Fintype.card S : ℝ)) :=
+  Int.Matrix.exists_ne_zero_int_vec_norm_le M h hS
+
+-- Retain the full original assumptions while testing actual candidate terms against the goal.
+theorem candidate_mismatch {α : ℝ} {f : Polynomial ℤ} (_hf : f.Monic)
+    (_hfα : Polynomial.aeval α f = 0) {A : ℝ} (_hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)
+    {m : ℕ} [NeZero m] {δ : ℝ} (_hδ0 : 0 ≤ δ) (_hδm : δ ≤ 1 / m)
+    {r : Fin m → ℕ} (_hrlast : 3 ≤ r (Fin.rev 0))
+    (_h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)
+    {q : Fin m → ℕ}
+    (_h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log (q 0))
+    (_h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))
+    {h : Fin m → ℤ} (_hh : ∀ j, IsCoprime (h j) (q j : ℤ))
+    (witness : goal α δ f r q h) : goal α δ f r q h := by
+  fail_if_success exact Int.Matrix.exists_ne_zero_int_vec_norm_le
+  fail_if_success exact Int.Matrix.exists_ne_zero_int_vec_norm_le'
+  fail_if_success exact Fintype.exists_ne_map_eq_of_card_lt
+  fail_if_success exact Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero
+  fail_if_success
+    clear witness
+    exact?
+  exact witness
+#print axioms collision
+#print axioms kernel
+#print axioms candidate_mismatch
+end Main266Isolated
+'''
+# Witness argument is explicit: this checks candidate mismatch only, not an independent proof.
+assert max(map(len,code.splitlines()))<=100
+(D/'isolated-executed.lean.txt').write_text(code)
+print(code)

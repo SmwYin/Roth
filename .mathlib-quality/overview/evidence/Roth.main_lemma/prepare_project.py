@@ -1,0 +1,108 @@
+from pathlib import Path
+D=Path(__file__).resolve().parent;R=Path.cwd()
+s=(R/'Roth/MainLemma.lean').read_text();stmt=s[s.index('theorem main_lemma'):s.index(' := by',s.index('theorem main_lemma'))]
+base=(D/'disk-prefix.lean.txt').read_text()
+code=base+'''
+namespace Main266Project
+open Roth MvPolynomial
+open Lean Elab Term in
+elab "construct266" : term =>
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux)
+open Lean Elab Term in
+elab "bound266" : term =>
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_eval_iterated_hasseDeriv_lt_aux)
+open Lean Elab Term in
+elab "select266" : term =>
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_hasseDeriv_index_eval_bound_aux)
+open Lean Elab Term in
+elab "theta266" : term =>
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.MainLemma `Roth.theta_lt_eta_of_sq_log_bound_aux)
+
+theorem numerical_envelope {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)
+    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)
+    {m : ℕ} (hm : 0 < m) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {s B : ℕ}
+    (hB : 0 < B) (hs : ∑ j, r j ≤ s) {β c X E : ℝ}
+    (h2 : (2 : ℝ) ^ s < β) (hAβ : (1 + A) ^ s ≤ β)
+    (hαβ : (1 + |α|) ^ s ≤ β) (hpow : (B : ℝ) * β ^ 3 ≤ (B : ℝ) ^ c)
+    (hBX : (B : ℝ) ≤ X) {q : Fin m → ℕ} (hΘ : Θ X q r < E)
+    {h : Fin m → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
+    ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧ (∀ j, degreeOf j Q ≤ r j) ∧
+      ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2 - E <
+        index (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧
+      eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧
+      ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α)
+        (hasseDeriv i (map (Int.castRingHom ℝ) Q))| < β * (β * B) * β := by
+  obtain ⟨P, hP, hγ⟩ := construct266 hf hfα hA hm r hr hB hs hAβ hpow
+  have hPX : P ∈ RSet X r := ⟨hP.1, hP.2.1, fun d ↦ (hP.2.2 d).trans hBX⟩
+  exact select266 hP.1 hP.2.1
+    (bound266 hP.2.1 (Nat.cast_pos.2 hB) hs h2 hαβ hP.2.2) hγ
+    ((index_le_Θ hPX hh).trans_lt hΘ)
+
+'''+stmt.replace('theorem main_lemma','theorem old_recovery')+''' := by
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)
+  have hm : 0 < m + 1 := Nat.succ_pos m
+  have hA0 : 0 ≤ A := (abs_nonneg _).trans (hA 0)
+  have hL : 2 * ((m + 1 : ℕ) : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0) := by
+    have hlogA := mul_nonneg (by positivity : (0 : ℝ) ≤ 2 * ((m + 1 : ℕ) : ℝ))
+      (Real.log_nonneg (le_add_of_nonneg_right hA0))
+    have hlogα := mul_nonneg (by positivity : (0 : ℝ) ≤ 2 * ((m + 1 : ℕ) : ℝ))
+      (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α)))
+    linarith only [h32, hlogA, hlogα]
+  have hδ : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by
+    simpa [← he] using ((by positivity : 0 < 2 * ((m + 1 : ℕ) : ℝ) + 1).trans_le hL)
+  have hmR : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ) := by exact_mod_cast hm
+  have hδ1 : δ ≤ 1 := hδm.trans ((div_le_one (by positivity)).2 hmR)
+  have hanti : Antitone r := Fin.antitone_iff_succ_le.2 fun i ↦ by
+    exact_mod_cast (le_div_self (Nat.cast_nonneg _) hδ hδ1).trans
+      (h31b i.castSucc i.succ rfl)
+  have hr : ∀ j, 0 < r j := fun j ↦ (by decide : 0 < 3).trans_le
+    (hrlast.trans (hanti (by simpa using Fin.le_last j)))
+  have hs : ∑ j, r j ≤ (m + 1) * r 0 := by
+    simpa using Finset.sum_le_card_nsmul Finset.univ r (r 0)
+      (fun j _ ↦ hanti (Fin.zero_le j))
+  let B := mainCoeffBound δ (q 0) (r 0)
+  let β : ℝ := (B : ℝ) ^ δ
+  obtain ⟨h2, hAβ, hαβ⟩ := three_small_factors hδ0 (hr 0) hA0 h32
+  have h3 : 3 ≤ δ ^ 2 * Real.log (q 0) := by linarith only [hL, hmR]
+  have hB : 0 < B := Nat.floor_pos.2 <|
+    (by norm_num : (1 : ℝ) ≤ 4).trans (four_lt_rpow hδ0 (hr 0) h3).le
+  have hpow : (B : ℝ) * β ^ 3 = (B : ℝ) ^ (1 + 3 * δ) := by
+    rw [Real.rpow_add_of_nonneg (by positivity) zero_le_one (by positivity), Real.rpow_one,
+      ← Real.rpow_mul_natCast (by positivity)]
+    simp [mul_comm]
+  have hΘ := theta266 hδ0 ((le_div_iff₀ (by positivity)).1 hδm) hrlast h31b hL h33
+  obtain ⟨Q, hQ, hd, hi, he, hb⟩ := numerical_envelope hf hfα hA hm r hr hB hs
+    h2 hAβ.le hαβ.le hpow.le (Nat.floor_le (by positivity)) hΘ hh
+  refine ⟨Q, hQ, hd, ?_, he, fun i ↦ (hb i).trans_eq ?_⟩
+  · simpa only [gam, lam] using hi
+  · calc β * (β * (B : ℝ)) * β = B * β ^ 3 := by ring
+         _ = (B : ℝ) ^ (1 + 3 * δ) := hpow
+
+example : @Roth.main_lemma = @old_recovery := rfl
+#print axioms numerical_envelope
+#print axioms old_recovery
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let mut todo := [`Roth.main_lemma]
+  let mut seen : List Lean.Name := []
+  while !todo.isEmpty do
+    let n := todo.head!
+    todo := todo.tail!
+    if !seen.contains n then
+      seen := n :: seen
+      let ci ← Lean.getConstInfo n
+      let deps := (ci.value? (allowOpaque := true)).map (·.getUsedConstants.toList)
+      let project := deps.getD [] |>.filter (fun c ↦
+        c.toString.startsWith "Roth." || c.toString.startsWith "_private.Roth.")
+      Lean.logInfo m!"MAIN266_PROJECT_BODY_EDGE: {n} -> {project}"
+      todo := project ++ todo
+  Lean.logInfo "MAIN266_PROJECT: semantic numerical envelope and exact original recovery"
+end Main266Project
+'''
+print([(i,len(l),l)for i,l in enumerate(code.splitlines(),1)if len(l)>100]);assert max(map(len,code.splitlines()))<=100
+(D/'project-executed.lean.txt').write_text(code)
+(R/'.lake/roth-overview-session/GenWronskianChecks.lean').write_text(code)
+print("Prepared",len(code.splitlines()),"lines; width",max(map(len,code.splitlines())))

@@ -1,0 +1,56 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Main266Representation
+open Roth MvPolynomial
+noncomputable def shift {σ : Type*} (x : σ → ℝ) (P : MvPolynomial σ ℝ) :=
+  aeval (fun j ↦ X j + C (x j)) P
+noncomputable def idx {m : ℕ} (P : MvPolynomial (Fin m) ℝ) (x : Fin m → ℝ)
+    (r : Fin m → ℕ) : ℝ :=
+  sInf ((fun d : Fin m →₀ ℕ ↦ ∑ j, (d j : ℝ) / r j) ''
+    ((shift x P).support : Set (Fin m →₀ ℕ)))
+noncomputable def goal {m : ℕ} [NeZero m] (α δ : ℝ) (f : Polynomial ℤ)
+    (r q : Fin m → ℕ) (h : Fin m → ℤ) : Prop :=
+  ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧ (∀ j, degreeOf j Q ≤ r j) ∧
+    ((m : ℝ) - 4 * (1 + 3 * δ) * f.natDegree * √(m : ℝ)) / 2 -
+      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) <
+        idx (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧
+    eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧
+    ∀ i : Fin m →₀ ℕ,
+      |(shift (fun _ ↦ α) (map (Int.castRingHom ℝ) Q)).coeff i| <
+        (⌊(q 0 : ℝ) ^ (δ * r 0)⌋₊ : ℝ) ^ (1 + 3 * δ)
+
+
+theorem shift_eq {σ : Type*} (x : σ → ℝ) (P : MvPolynomial σ ℝ) :
+    shift x P = MvPolynomial.taylor x P := rfl
+theorem idx_eq {m : ℕ} (P : MvPolynomial (Fin m) ℝ) (x : Fin m → ℝ)
+    (r : Fin m → ℕ) : idx P x r = Roth.index P x r := rfl
+theorem coeff_shift {σ : Type*} (x : σ → ℝ) (P : MvPolynomial σ ℝ) (i : σ →₀ ℕ) :
+    (shift x P).coeff i = eval x (hasseDeriv i P) := MvPolynomial.coeff_taylor x i P
+theorem goal_eq {m : ℕ} [NeZero m] (α δ : ℝ) (f : Polynomial ℤ)
+    (r q : Fin m → ℕ) (h : Fin m → ℤ) : goal α δ f r q h ↔
+    ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧
+      (∀ j, degreeOf j Q ≤ r j) ∧
+      gam δ f.natDegree m - eta δ m < index (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧
+      eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧
+      ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i (map (Int.castRingHom ℝ) Q))| <
+        (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by
+  simp only [goal, idx_eq, coeff_shift, gam, lam, eta, mainCoeffBound]
+#print axioms shift_eq
+#print axioms idx_eq
+#print axioms coeff_shift
+#print axioms goal_eq
+end Main266Representation

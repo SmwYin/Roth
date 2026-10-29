@@ -1,0 +1,219 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.SiegelsLemma\n\n#check_failure Roth.main_lemma\n#check_failure MvPolynomial.taylor\n#check @Int.Matrix.exists_ne_zero_int_vec_norm_le\n#check @Int.Matrix.exists_ne_zero_int_vec_norm_le'\n#check @Fintype.exists_ne_map_eq_of_card_lt\n#check @Polynomial.sum_modByMonic_coeff\n#check @Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero\nnamespace Main266Isolated\nopen MvPolynomial\nnoncomputable def shift {σ : Type*} (x : σ → ℝ) (P : MvPolynomial σ ℝ) :=\n  aeval (fun j ↦ X j + C (x j)) P\nnoncomputable def idx {m : ℕ} (P : MvPolynomial (Fin m) ℝ) (x : Fin m → ℝ)\n    (r : Fin m → ℕ) : ℝ :=\n  sInf ((fun d : Fin m →₀ ℕ ↦ ∑ j, (d j : ℝ) / r j) ''\n    ((shift x P).support : Set (Fin m →₀ ℕ)))\nnoncomputable def goal {m : ℕ} [NeZero m] (α δ : ℝ) (f : Polynomial ℤ)\n    (r q : Fin m → ℕ) (h : Fin m → ℤ) : Prop :=\n  ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧ (∀ j, degreeOf j Q ≤ r j) ∧\n    ((m : ℝ) - 4 * (1 + 3 * δ) * f.natDegree * √(m : ℝ)) / 2 -\n      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) <\n        idx (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧\n    eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧\n    ∀ i : Fin m →₀ ℕ,\n      |coeff i (shift (fun _ ↦ α) (map (Int.castRingHom ℝ) Q))| <\n        (⌊(q 0 : ℝ) ^ (δ * r 0)⌋₊ : ℝ) ^ (1 + 3 * δ)\n\n-- These positive existing calls supply only a collision and a small matrix kernel vector.\ntheorem collision {S T : Type*} [Fintype S] [Fintype T] (F : S → T)\n    (h : Fintype.card T < Fintype.card S) : ∃ x y, x ≠ y ∧ F x = F y :=\n  Fintype.exists_ne_map_eq_of_card_lt F h\n\ntheorem kernel {S T : Type*} [Fintype S] [Fintype T] (M : Matrix S T ℤ)\n    (h : Fintype.card S < Fintype.card T) (hS : 0 < Fintype.card S) :=\n  Int.Matrix.exists_ne_zero_int_vec_norm_le M h hS\n\n-- Retain the full original assumptions while testing actual candidate terms against the goal.\ntheorem candidate_mismatch {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)\n    {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m)\n    {r : Fin m → ℕ} (hrlast : 3 ≤ r (Fin.rev 0))\n    (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)\n    {q : Fin m → ℕ}\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0))\n    (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))\n    {h : Fin m → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ))\n    (witness : goal α δ f r q h) : goal α δ f r q h := by\n  fail_if_success exact Int.Matrix.exists_ne_zero_int_vec_norm_le\n  fail_if_success exact Int.Matrix.exists_ne_zero_int_vec_norm_le'\n  fail_if_success exact Fintype.exists_ne_map_eq_of_card_lt\n  fail_if_success exact Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero\n  clear hf hfα hA hδ0 hδm hrlast h31b h32 h33 hh\n  exact witness\n#print axioms collision\n#print axioms kernel\n#print axioms candidate_mismatch\nend Main266Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.main_lemma`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Int.Matrix.exists_ne_zero_int_vec_norm_le : ∀ {α : Type u_1} {β : Type u_2} [inst : Fintype α] [inst_1 : Fintype β]\\n  (A : Matrix α β ℤ),\\n  Fintype.card α < Fintype.card β →\\n    0 < Fintype.card α →\\n      ∃ t,\\n        t ≠ 0 ∧\\n          A.mulVec t = 0 ∧\\n            ‖t‖ ≤ (↑(Fintype.card β) * max 1 ‖A‖) ^ (↑(Fintype.card α) / (↑(Fintype.card β) - ↑(Fintype.card α)))\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Int.Matrix.exists_ne_zero_int_vec_norm_le' : ∀ {α : Type u_1} {β : Type u_2} [inst : Fintype α] [inst_1 : Fintype β]\\n  (A : Matrix α β ℤ),\\n  Fintype.card α < Fintype.card β →\\n    0 < Fintype.card α →\\n      A ≠ 0 →\\n        ∃ t,\\n          t ≠ 0 ∧\\n            A.mulVec t = 0 ∧\\n              ‖t‖ ≤ (↑(Fintype.card β) * ‖A‖) ^ (↑(Fintype.card α) / (↑(Fintype.card β) - ↑(Fintype.card α)))\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Fintype.exists_ne_map_eq_of_card_lt : ∀ {α : Type u_1} {β : Type u_2} [inst : Fintype α] [inst_1 : Fintype β]\\n  (f : α → β), Fintype.card β < Fintype.card α → ∃ x y, x ≠ y ∧ f x = f y\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.sum_modByMonic_coeff : ∀ {R : Type u_1} [inst : Ring R] {p q : Polynomial R},\\n  q.Monic → ∀ {n : ℕ}, q.degree ≤ ↑n → ∑ i, (Polynomial.monomial ↑i) ((p %ₘ q).coeff ↑i) = p %ₘ q\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero : ∀ {R : Type u_1} {B : Type u_2} [inst : CommSemiring R]\\n  [inst_1 : Semiring B] [inst_2 : Algebra R B] {p q : Polynomial R} {x : B},\\n  p ∣ q → (Polynomial.aeval x) p = 0 → (Polynomial.aeval x) q = 0\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown identifier `coeff`\",\n      \"line\": 44,\n      \"column\": 8,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unexpected token ':='; expected ':'\",\n      \"line\": 53,\n      \"column\": 68,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Main266Isolated.collision' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 74,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Main266Isolated.kernel' does not depend on any axioms\",\n      \"line\": 75,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Main266Isolated.candidate_mismatch' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 76,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hf` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hf\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 57,\n      \"column\": 56,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hfα` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hfα\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 58,\n      \"column\": 6,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hA` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hA\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 58,\n      \"column\": 47,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hδ0` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hδ0\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 59,\n      \"column\": 33,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hδm` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hδm\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 59,\n      \"column\": 47,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hrlast` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hrlast\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 60,\n      \"column\": 22,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `h31b` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _h31b\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 61,\n      \"column\": 6,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `h32` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _h32\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 63,\n      \"column\": 6,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `h33` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _h33\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 65,\n      \"column\": 6,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hh` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hh\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 66,\n      \"column\": 22,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.main_lemma`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Int.Matrix.exists_ne_zero_int_vec_norm_le : ∀ {α : Type u_1} {β : Type u_2} [inst : Fintype α] [inst_1 : Fintype β]\n  (A : Matrix α β ℤ),\n  Fintype.card α < Fintype.card β →\n    0 < Fintype.card α →\n      ∃ t,\n        t ≠ 0 ∧\n          A.mulVec t = 0 ∧\n            ‖t‖ ≤ (↑(Fintype.card β) * max 1 ‖A‖) ^ (↑(Fintype.card α) / (↑(Fintype.card β) - ↑(Fintype.card α)))",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Int.Matrix.exists_ne_zero_int_vec_norm_le' : ∀ {α : Type u_1} {β : Type u_2} [inst : Fintype α] [inst_1 : Fintype β]\n  (A : Matrix α β ℤ),\n  Fintype.card α < Fintype.card β →\n    0 < Fintype.card α →\n      A ≠ 0 →\n        ∃ t,\n          t ≠ 0 ∧\n            A.mulVec t = 0 ∧\n              ‖t‖ ≤ (↑(Fintype.card β) * ‖A‖) ^ (↑(Fintype.card α) / (↑(Fintype.card β) - ↑(Fintype.card α)))",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Fintype.exists_ne_map_eq_of_card_lt : ∀ {α : Type u_1} {β : Type u_2} [inst : Fintype α] [inst_1 : Fintype β]\n  (f : α → β), Fintype.card β < Fintype.card α → ∃ x y, x ≠ y ∧ f x = f y",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.sum_modByMonic_coeff : ∀ {R : Type u_1} [inst : Ring R] {p q : Polynomial R},\n  q.Monic → ∀ {n : ℕ}, q.degree ≤ ↑n → ∑ i, (Polynomial.monomial ↑i) ((p %ₘ q).coeff ↑i) = p %ₘ q",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero : ∀ {R : Type u_1} {B : Type u_2} [inst : CommSemiring R]\n  [inst_1 : Semiring B] [inst_2 : Algebra R B] {p q : Polynomial R} {x : B},\n  p ∣ q → (Polynomial.aeval x) p = 0 → (Polynomial.aeval x) q = 0",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown identifier `coeff`",
+          "line": 44,
+          "column": 8,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unexpected token ':='; expected ':'",
+          "line": 53,
+          "column": 68,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Main266Isolated.collision' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 74,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Main266Isolated.kernel' does not depend on any axioms",
+          "line": 75,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Main266Isolated.candidate_mismatch' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 76,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hf` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hf\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 57,
+          "column": 56,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hfα` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hfα\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 58,
+          "column": 6,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hA` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hA\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 58,
+          "column": 47,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hδ0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hδ0\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 59,
+          "column": 33,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hδm` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hδm\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 59,
+          "column": 47,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hrlast` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hrlast\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 60,
+          "column": 22,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `h31b` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h31b\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 61,
+          "column": 6,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `h32` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h32\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 63,
+          "column": 6,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `h33` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h33\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 65,
+          "column": 6,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hh` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hh\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 66,
+          "column": 22,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 99162
+}

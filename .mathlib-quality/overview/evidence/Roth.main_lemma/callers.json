@@ -1,0 +1,80 @@
+{
+  "total_actual_proof_uses": 1,
+  "external_to_file_uses": 1,
+  "external_to_file_files": 1,
+  "callers": [
+    {
+      "file": "Roth/Main.lean",
+      "line": 453,
+      "name": "Roth.one_lt_roth_eval_bound_aux",
+      "short": "one_lt_roth_eval_bound_aux",
+      "kind": "lemma",
+      "visibility": "private",
+      "end_line": 478,
+      "source": "private lemma one_lt_roth_eval_bound_aux {α κ : ℝ} {f : Polynomial ℤ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} [NeZero m]\n    {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m) {r : Fin m → ℕ} (hr0 : ∀ j, 0 < r j)\n    (hrlast : 3 ≤ r (Fin.rev 0)) (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)\n    {q : Fin m → ℕ} (hq0 : ∀ j, 0 < q j) (hκ0 : 0 ≤ κ) {h : Fin m → ℤ}\n    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ) (hcop : ∀ j, IsCoprime (h j) (q j : ℤ))\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :\n    1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) *\n      (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) *\n      (q 0 : ℝ) ^ (-(r 0 : ℝ) * (gam δ f.natDegree m - eta δ m) * κ)) := by\n  -- Lemma 9\n  obtain ⟨Q, -, hQd, hidx_strict, hne, hC⟩ :=\n    main_lemma hf hfα hA hδ0 hδm hrlast h31b h32 h33 hcop\n  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq0 j\n  -- the upper bound\n  have hdmap : ∀ j, degreeOf j (map (Int.castRingHom ℝ) Q) ≤ r j := fun j ↦ by\n    rw [degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective, ← degreeOf_eq_sup]\n    exact hQd j\n  have hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j := fun j ↦ by\n    have hrj : (0 : ℝ) < r j := by exact_mod_cast hr0 j\n    rw [Real.rpow_le_iff_le_log (hqR 0) (hqR j), div_mul_eq_mul_div, div_le_iff₀ hrj]\n    linarith [h33 j]\n  exact (one_le_prod_pow_mul_abs_eval Q hQd h hq0 hne).trans_lt\n    (mul_lt_mul_of_pos_left (abs_eval_lt_of_le_index hdmap hidx_strict.le hq0 hκ0 happ hqr hC)\n      (Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _))",
+      "signature": "private lemma one_lt_roth_eval_bound_aux {α κ : ℝ} {f : Polynomial ℤ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} [NeZero m]\n    {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m) {r : Fin m → ℕ} (hr0 : ∀ j, 0 < r j)\n    (hrlast : 3 ≤ r (Fin.rev 0)) (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)\n    {q : Fin m → ℕ} (hq0 : ∀ j, 0 < q j) (hκ0 : 0 ≤ κ) {h : Fin m → ℤ}\n    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ) (hcop : ∀ j, IsCoprime (h j) (q j : ℤ))\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :\n    1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) *\n      (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) *\n      (q 0 : ℝ) ^ (-(r 0 : ℝ) * (gam δ f.natDegree m - eta δ m) * κ))",
+      "body": "by\n  -- Lemma 9\n  obtain ⟨Q, -, hQd, hidx_strict, hne, hC⟩ :=\n    main_lemma hf hfα hA hδ0 hδm hrlast h31b h32 h33 hcop\n  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq0 j\n  -- the upper bound\n  have hdmap : ∀ j, degreeOf j (map (Int.castRingHom ℝ) Q) ≤ r j := fun j ↦ by\n    rw [degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective, ← degreeOf_eq_sup]\n    exact hQd j\n  have hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j := fun j ↦ by\n    have hrj : (0 : ℝ) < r j := by exact_mod_cast hr0 j\n    rw [Real.rpow_le_iff_le_log (hqR 0) (hqR j), div_mul_eq_mul_div, div_le_iff₀ hrj]\n    linarith [h33 j]\n  exact (one_le_prod_pow_mul_abs_eval Q hQd h hq0 hne).trans_lt\n    (mul_lt_mul_of_pos_left (abs_eval_lt_of_le_index hdmap hidx_strict.le hq0 hκ0 happ hqr hC)\n      (Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _))",
+      "proof_lines": 16,
+      "sha256": "a8cabe752ac98e56012eadf9cd5e067b49a6ac830289693d45cd21409e867e36",
+      "what": "The auxiliary polynomial's nonzero rational value gives a strict lower bound on the explicit Taylor upper-bound expression.",
+      "how": "Apply main_lemma, derive denominator-growth powers via Real.rpow_le_iff_le_log, then combine one_le_prod_pow_mul_abs_eval with abs_eval_lt_of_le_index.",
+      "hypotheses": "Monic integer equation, coefficient bounds, positive degrees/denominators, small delta, coprime approximants, nonnegative exponent and numerical parameter bounds.",
+      "source_body_refs": [
+        "Roth.abs_eval_lt_of_le_index",
+        "Roth.main_lemma",
+        "Roth.one_le_prod_pow_mul_abs_eval"
+      ],
+      "source_type_refs": [
+        "Roth.eta",
+        "Roth.gam",
+        "Roth.mainCoeffBound"
+      ],
+      "source_callers": [
+        {
+          "name": "Roth.roth_of_isIntegral",
+          "file": "Roth/Main.lean",
+          "line": 547
+        }
+      ],
+      "notes": [],
+      "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+      "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+      "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+      "uses_from_project": [
+        "Roth.abs_eval_lt_of_le_index",
+        "Roth.main_lemma",
+        "Roth.one_le_prod_pow_mul_abs_eval"
+      ],
+      "used_by_in_file": [
+        "Roth.roth_of_isIntegral"
+      ],
+      "used_by_other_files": [],
+      "assignment_offset": 892,
+      "project_body_refs": [
+        "Roth.abs_eval_lt_of_le_index",
+        "Roth.main_lemma",
+        "Roth.one_le_prod_pow_mul_abs_eval"
+      ],
+      "project_type_refs": [
+        "Roth.eta",
+        "Roth.gam",
+        "Roth.mainCoeffBound"
+      ],
+      "project_callers": [
+        {
+          "name": "Roth.roth_of_isIntegral",
+          "file": "Roth/Main.lean",
+          "line": 547
+        }
+      ],
+      "call_line": 466
+    }
+  ],
+  "full_module": "source-Main.lean.txt",
+  "inlined_module": "inline-executed.lean.txt",
+  "signatures_verified": [
+    "private Roth.one_lt_roth_eval_bound_aux",
+    "Roth.roth_of_isIntegral"
+  ],
+  "direct_target_remaining": false
+}

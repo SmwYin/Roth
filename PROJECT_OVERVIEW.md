@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 265/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 266/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 265; remaining: 28.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 70 SKIP.
+- Completed applicable assessments: 266; remaining: 27.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 70 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3361,6 +3361,41 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_auxiliary_polynomial_with_index_gap_aux.md).
 
+### Completed: `Roth.main_lemma`
+
+- Type: `∀ {α : ℝ} {f : Polynomial ℤ},
+  f.Monic →
+    (Polynomial.aeval α) f = 0 →
+      ∀ {A : ℝ},
+        (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →
+          ∀ {m : ℕ} [inst : NeZero m] {δ : ℝ},
+            0 ≤ δ →
+              δ ≤ 1 / ↑m →
+                ∀ {r : Fin m → ℕ},
+                  3 ≤ r (Fin.rev 0) →
+                    (∀ (i j : Fin m), ↑i + 1 = ↑j → ↑(r j) / δ ≤ ↑(r i)) →
+                      ∀ {q : Fin m → ℕ},
+                        2 * ↑m + 1 + 2 * ↑m * Real.log (1 + A) + 2 * ↑m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log ↑(q 0) →
+                          (∀ (j : Fin m), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →
+                            ∀ {h : Fin m → ℤ},
+                              (∀ (j : Fin m), IsCoprime (h j) ↑(q j)) →
+                                ∃ (Q : MvPolynomial (Fin m) ℤ),
+                                  Q ≠ 0 ∧
+                                    (∀ (j : Fin m), degreeOf j Q ≤ r j) ∧
+                                      Roth.gam δ f.natDegree m - Roth.eta δ m <
+                                          Roth.index ((map (Int.castRingHom ℝ)) Q) (fun (x : Fin m) ↦ α) r ∧
+                                        (eval fun (j : Fin m) ↦ ↑(h j) / ↑(q j)) ((map (Int.castRingHom ℝ)) Q) ≠ 0 ∧
+                                          ∀ (i : Fin m →₀ ℕ),
+                                            |(eval fun (x : Fin m) ↦ α)
+                                                  ((hasseDeriv i) ((map (Int.castRingHom ℝ)) Q))| <
+                                              ↑(Roth.mainCoeffBound δ (q 0) (r 0)) ^ (1 + 3 * δ)`
+- What: Roth Lemma9: constructs a nonzero integer box polynomial with strict index above gamma-eta at the diagonal algebraic point, nonzero value at a coprime rational tuple, and a uniform bound on all diagonal Hasse derivatives. The current weak hypotheses do not claim gamma-eta>0.
+- How: Pigeonhole bounded remainder observations yields a sharp-B nonzero difference with high algebraic index; the project uniform Theta bound gives low rational index; a Hasse derivative below an intermediate cutoff preserves degree, nonzero rational value, the strict algebraic index gap and all derivative bounds.
+- Hypotheses: Real root of any monic integer polynomial; coefficient bound A, Nonzero dimension m;0<=delta<=1/m;last degree>=3;consecutive ratio bound, Weak square-log threshold and balanced denominator-degree logarithms, Integer numerator/natural denominator tuple with coordinatewise coprimality
+- Project dependencies: MvPolynomial.hasseDeriv, Roth.index, Roth.RSet, Roth.Θ, Roth.index_le_Θ, Roth.gam, Roth.eta, Roth.mainCoeffBound, Roth.exists_hasseDeriv_index_eval_bound_aux, Roth.exists_auxiliary_polynomial_with_index_gap_aux
+- Caller summary: One actual call: private Roth.one_lt_roth_eval_bound_aux at Main466; consumes index via .le at477, nonvanishing and derivative bound; full module inlining passes with original signatures.
+- Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/Roth.main_lemma.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3917,6 +3952,8 @@ Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: Write the nonzero dimension m
 
 Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: Expose m=n+1 and infer delta>0 from the square-log threshold. The delta<=1/m and adjacent ratio bounds make the degree vector antitone using Fin.antitone_iff_succ_le; this bounds the degree sum by m*r0 and propagates positivity from the last degree. Invoke exists_auxiliary_polynomial_of_log_bound_aux and theta_lt_eta_of_sq_log_bound_aux, then linarith combines gamma<=index with Theta<eta. The sole main_lemma caller uses this strict gap to choose an intermediate cutoff before applying exists_hasseDeriv_index_eval_bound_aux. This helper does not yet guarantee rational-point nonvanishing of the final derivative.
 
+Completed `Roth.main_lemma`: Existing Siegel small-kernel vector, finite pigeonhole, monic remainder reconstruction and root evaluation are genuine pinned building blocks. None establishes the joint quantitative polynomial/index/nonvanishing statement; isolated19 candidate probes and exact semantic representation bridge archived.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4448,6 +4485,8 @@ Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: The structural re
 Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.main_lemma`: Private construction/selector lemmas factor the proof; they are not duplicates of the complete named lemma or existing mathlib. New numerical_envelope exposes semantic budgets and recovers old statement exactly.
 
 ## Part 5: Generalization opportunities
 
@@ -4992,6 +5031,8 @@ Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: No public generality claim un
 
 Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.main_lemma`: Retain full named quantitative statement. Scratch numerical_envelope independently varies B,beta,c,X,E under mathematical admissibility conditions and recovers all original hypotheses/conclusions; it is complementary internal API, not a replacement for deriving Theta<eta from numerical hypotheses. Arbitrary finite ordered variables require explicit reindexing; complex/absolute-valued-field versions require index/analytic API transport, not an unchecked hypothesis drop.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5524,6 +5565,8 @@ Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: No new primitive 
 Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.main_lemma`: Quantitative bounded-coefficient high-index auxiliary polynomial plus derivative selection at a prescribed rational tuple; reusable Hasse/index, remainder-height and evaluation-height support can precede the Roth feature.
 
 ## Part 7: Junk / removable
 
@@ -6060,6 +6103,8 @@ Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: Retain a live private proof i
 
 Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.main_lemma`: Keep named main theorem. One caller and short orchestration proof do not make its mathematical construction junk; actual inlining still invokes substantial project-only lemmas.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6329,6 +6374,7 @@ Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: Retain a live p
 | 263 | `Roth.exists_auxiliary_polynomial_of_log_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_auxiliary_polynomial_of_log_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_auxiliary_polynomial_of_log_bound_aux/root-acceptance.json) |
 | 264 | `Roth.theta_lt_eta_of_sq_log_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_eta_of_sq_log_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_lt_eta_of_sq_log_bound_aux/root-acceptance.json) |
 | 265 | `Roth.exists_auxiliary_polynomial_with_index_gap_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_auxiliary_polynomial_with_index_gap_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_auxiliary_polynomial_with_index_gap_aux/root-acceptance.json) |
+| 266 | `Roth.main_lemma` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/Roth.main_lemma.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.main_lemma/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6858,12 +6904,14 @@ Completed `Roth.theta_lt_eta_of_sq_log_bound_aux` action: Keep unchanged; comple
 
 Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.main_lemma` action: Prepare Mathlib/NumberTheory/DiophantineApproximation/Roth.lean with a descriptive exists_auxiliary_polynomial name, retaining this full mathematical statement and private construction chain. Stage accepted Hasse/index/height prerequisites, run /generalise Roth.main_lemma and /cleanup Roth/MainLemma.lean Roth.main_lemma; select reviewer from recorded relevant commits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.main_lemma` next. Supporting identities receive their own applicable checks.
+   `Roth.approxSet` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,139 @@
+{
+  "declaration": "Roth.main_lemma",
+  "canonical_index": 266,
+  "completed": true,
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "246a8fa5b69fe8d6a71147a70ee5809b041093aeeff3c6a055f25e5bccc800a4",
+      "receipt": "original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 726,
+      "required_info": [
+        "MAIN266_FULL_TYPE:",
+        "MAIN266_AUDIT: requested=293; unique=293",
+        "MAIN266_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "project",
+      "format": "disk",
+      "source": "project-executed.lean.txt",
+      "source_sha256": "a925b28613fa7894c193922599ba10d84fed5bf25862784b8434853c2dd163e0",
+      "receipt": "project-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 108,
+      "required_info": [
+        "Main266Project.numerical_envelope",
+        "Main266Project.old_recovery",
+        "MAIN266_PROJECT:"
+      ]
+    },
+    {
+      "label": "inline",
+      "format": "disk",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "4cc3971acca335f1e615ac4f6e12ef5575b426e8c5bab7a6bf167e1218e6d4f5",
+      "receipt": "inline-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 588,
+      "required_info": [
+        "MAIN266_INLINE: full actual caller body inlined; original signatures retained"
+      ]
+    },
+    {
+      "label": "representation",
+      "format": "disk",
+      "source": "representation-executed.lean.txt",
+      "source_sha256": "1202926c459f440b077bee3ecf219b6beb5657853d1c6f58ec58d7ff7ed1ad37",
+      "receipt": "representation-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 52,
+      "required_info": [
+        "Main266Representation.goal_eq"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "eb4348012a3f0fd5f007d57d3e979e338607434fb1cf37c9fbe583576e8b20ee",
+      "receipt": "isolated-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.SiegelsLemma\n\n#check_failure Roth.main_lemma\n#check_failure MvPolynomial.taylor\n#check @Int.Matrix.exists_ne_zero_int_vec_norm_le\n#check @Int.Matrix.exists_ne_zero_int_vec_norm_le'\n#check @Fintype.exists_ne_map_eq_of_card_lt\n#check @Polynomial.sum_modByMonic_coeff\n#check @Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero\nnamespace Main266Isolated\nopen MvPolynomial\nnoncomputable def shift {σ : Type*} (x : σ → ℝ) (P : MvPolynomial σ ℝ) :=\n  aeval (fun j ↦ X j + C (x j)) P\nnoncomputable def idx {m : ℕ} (P : MvPolynomial (Fin m) ℝ) (x : Fin m → ℝ)\n    (r : Fin m → ℕ) : ℝ :=\n  sInf ((fun d : Fin m →₀ ℕ ↦ ∑ j, (d j : ℝ) / r j) ''\n    ((shift x P).support : Set (Fin m →₀ ℕ)))\nnoncomputable def goal {m : ℕ} [NeZero m] (α δ : ℝ) (f : Polynomial ℤ)\n    (r q : Fin m → ℕ) (h : Fin m → ℤ) : Prop :=\n  ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧ (∀ j, degreeOf j Q ≤ r j) ∧\n    ((m : ℝ) - 4 * (1 + 3 * δ) * f.natDegree * √(m : ℝ)) / 2 -\n      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) <\n        idx (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧\n    eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧\n    ∀ i : Fin m →₀ ℕ,\n      |(shift (fun _ ↦ α) (map (Int.castRingHom ℝ) Q)).coeff i| <\n        (⌊(q 0 : ℝ) ^ (δ * r 0)⌋₊ : ℝ) ^ (1 + 3 * δ)\n\n-- These positive existing calls supply only a collision and a small matrix kernel vector.\ntheorem collision {S T : Type*} [Fintype S] [Fintype T] (F : S → T)\n    (h : Fintype.card T < Fintype.card S) : ∃ x y, x ≠ y ∧ F x = F y :=\n  Fintype.exists_ne_map_eq_of_card_lt F h\n\nattribute [local instance] Matrix.seminormedAddCommGroup\ntheorem kernel {S T : Type*} [Fintype S] [Fintype T] (M : Matrix S T ℤ)\n    (h : Fintype.card S < Fintype.card T) (hS : 0 < Fintype.card S) :\n    ∃ t : T → ℤ, t ≠ 0 ∧ M.mulVec t = 0 ∧\n      ‖t‖ ≤ ((Fintype.card T : ℝ) * max 1 ‖M‖) ^\n        ((Fintype.card S : ℝ) / (Fintype.card T - Fintype.card S : ℝ)) :=\n  Int.Matrix.exists_ne_zero_int_vec_norm_le M h hS\n\n-- Retain the full original assumptions while testing actual candidate terms against the goal.\ntheorem candidate_mismatch {α : ℝ} {f : Polynomial ℤ} (_hf : f.Monic)\n    (_hfα : Polynomial.aeval α f = 0) {A : ℝ} (_hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)\n    {m : ℕ} [NeZero m] {δ : ℝ} (_hδ0 : 0 ≤ δ) (_hδm : δ ≤ 1 / m)\n    {r : Fin m → ℕ} (_hrlast : 3 ≤ r (Fin.rev 0))\n    (_h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)\n    {q : Fin m → ℕ}\n    (_h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0))\n    (_h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))\n    {h : Fin m → ℤ} (_hh : ∀ j, IsCoprime (h j) (q j : ℤ))\n    (witness : goal α δ f r q h) : goal α δ f r q h := by\n  fail_if_success exact Int.Matrix.exists_ne_zero_int_vec_norm_le\n  fail_if_success exact Int.Matrix.exists_ne_zero_int_vec_norm_le'\n  fail_if_success exact Fintype.exists_ne_map_eq_of_card_lt\n  fail_if_success exact Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero\n  fail_if_success\n    clear witness\n    exact?\n  exact witness\n#print axioms collision\n#print axioms kernel\n#print axioms candidate_mismatch\nend Main266Isolated\n"
+      },
+      "native_region_start_line": 21,
+      "required_info": [
+        "Int.Matrix.exists_ne_zero_int_vec_norm_le",
+        "Main266Isolated.kernel",
+        "Main266Isolated.candidate_mismatch"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "project-rejected1-executed.lean.txt",
+      "receipt": "project-attempt1-receipt.json",
+      "reason": "Fin successor inference failed; recovered sorryAx rejected in full"
+    },
+    {
+      "source": "project-rejected2-executed.lean.txt",
+      "receipt": "project-rejected2-receipt.json",
+      "reason": "Unused simp argument warning; rejected"
+    },
+    {
+      "source": "inline-rejected1-executed.lean.txt",
+      "receipt": "inline-rejected1-receipt.json",
+      "reason": "Missing explicit expected existential type; recovered sorryAx rejected"
+    },
+    {
+      "source": "isolated-rejected1-executed.lean.txt",
+      "receipt": "isolated-rejected1-receipt.json",
+      "reason": "Unqualified coeff and missing theorem type; recovered sorryAx rejected"
+    },
+    {
+      "source": "isolated-rejected2-executed.lean.txt",
+      "receipt": "isolated-rejected2-receipt.json",
+      "reason": "Proposition-valued def warning; rejected"
+    }
+  ],
+  "warming_receipts": [
+    "original-warming-receipt.json"
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "source_pins": "inputs.json",
+  "canonical": "canonical-consumers.json",
+  "full_actual_callers": {
+    "count": 1,
+    "full_module_replayed": true,
+    "original_signatures_verified": 2
+  },
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "363a6821de56e15a68978bcfef1f74e28eb837482667eba3b9ef498e98cea593",
+    "isolated_prefix19_sha256": "701f08d8d4ca01974f0df9b9ed87a9711c821ca27bdb80fc4f610e223079a902",
+    "isolated_imports": 19,
+    "additional_import_authorization": "root-prefix-scope-authorization.json"
+  },
+  "file_end_build": "file-end-build.json",
+  "printer_elision_disclosed": true
+}

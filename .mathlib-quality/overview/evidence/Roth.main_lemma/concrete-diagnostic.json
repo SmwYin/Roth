@@ -1,0 +1,26 @@
+{
+  "target": "Roth.main_lemma",
+  "lexical_body": "\n  obtain ⟨W, hW, hgap, hbound⟩ := exists_auxiliary_polynomial_with_index_gap_aux hf hfα hA hδ0 hδm\n    hrlast h31b h32 h33\n  let c := (index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r -\n    (gam δ f.natDegree m - eta δ m) + Θ ((q 0 : ℝ) ^ (δ * r 0)) q r) / 2\n  simpa only [add_sub_cancel_right] using\n    exists_hasseDeriv_index_eval_bound_aux hW.1 hW.2.1 hbound\n      (γ := gam δ f.natDegree m - eta δ m + c) (c := c)\n      (z := fun j ↦ (h j : ℝ) / q j)\n      (by\n        dsimp only [c]\n        linarith only [hgap])\n      (by\n        dsimp only [c]\n        linarith only [hgap, index_le_Θ hW hh])",
+  "named_tokens": [
+    "gam",
+    "eta",
+    "mainCoeffBound",
+    "Θ"
+  ],
+  "diagnostic": "Short wrapper uses index gap and derivative selector, but called full construction depends on coefficient box, monic remainder, lattice count, power/log growth and arithmetic Theta bound. No named witness disappears after a single unfolding. Numerical-envelope extraction is newly proved project content, not existing mathlib.",
+  "semantic_parameters": [
+    "B:positive integer coefficient budget",
+    "β:common analytic factor",
+    "c:remainder exponent",
+    "X:outer RSet budget",
+    "E:strict uniform index cutoff"
+  ],
+  "old_recovery": "Main266Project.old_recovery; all original hypotheses and conclusions retained; final equality example is type compatibility by proof irrelevance, not identity of proof construction.",
+  "unsupported_generalizations_rejected": [
+    "arbitrary constants without admissibility inequalities",
+    "drop monicity because evaluation-at-root helper alone does not need it",
+    "replace integer lattice with arbitrary ring",
+    "infer gamma-eta>0 from current weak hypotheses",
+    "unrestricted arbitrary finite variables without chosen ordered enumeration and endpoint/adjacency transport"
+  ]
+}
