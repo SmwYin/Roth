@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 272/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 273/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 272; remaining: 21.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 28 YES-but-generalise-first, 46 NO-mathlib-has-it, 94 BORDERLINE-needs-human, 70 SKIP.
+- Completed applicable assessments: 273; remaining: 20.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 28 YES-but-generalise-first, 46 NO-mathlib-has-it, 94 BORDERLINE-needs-human, 71 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3463,6 +3463,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: lexical target occurrences: {'file': 'Roth/Main.lean', 'line': 142, 'role': 'declaration'}, {'file': 'Roth/Main.lean', 'line': 416, 'role': 'single proof call in private exists_roth_parameters_aux'}; direct written call count: 1; external to file count: 0; direct kernel value consumers: _private.Roth.Main.0.Roth.exists_roth_parameters_aux; direct kernel type consumers: None; simp member: False; transitive canonical consumers: _private.Roth.Main.0.Roth.exists_roth_parameters_aux, Roth.roth_of_isIntegral, Roth.roth, Roth.roth_rat, LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth; scope: 293 tracked canonical source declarations; type/value edges followed only through project/scratch constants for noncircularity and project constants for original transitive audit. Does not claim arbitrary external library or all generated helper constants are enumerated.; inline derivations: No second complete degree-padding derivation found in fresh source inventory. Other monic/root uses in MainLemma concern a supplied f and different statements.; refactor: Only direct call is Main416. Inline witness extraction and multiply by X^2 there, as full caller replay verifies. roth_of_isIntegral and subsequent theorems retain signatures and use the reconstructed private parameter lemma; they are transitive consumers, not direct target calls.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_monic_aeval_eq_zero.md).
 
+### Completed: `Roth.approxSet_num_den_mem_aux`
+
+- Type: `∀ {α κ : ℝ},
+  0 ≤ κ → ∀ {h : ℤ} {q : ℕ}, (h, q) ∈ Roth.approxSet α κ → ((↑h / ↑q).num, (↑h / ↑q).den) ∈ Roth.approxSet α κ`
+- What: Reducing a rational approximation to its canonical numerator and denominator preserves membership in approxSet for nonnegative approximation exponent.
+- How: Use Rat.den_dvd to bound its reduced denominator and monotonicity of the nonnegative-exponent reciprocal power; Rat.cast_def identifies its value.
+- Hypotheses: Nonnegative exponent and an approximation pair with positive denominator. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.approxSet
+- Caller summary: 1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.approxSet_num_den_mem_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4033,6 +4044,8 @@ Completed `Roth.reduction`: Existing LiouvilleWith.nat_mul/mul_rat and frequentl
 
 Completed `Roth.exists_monic_aeval_eq_zero`: building blocks: Polynomial.Monic.mul, Polynomial.monic_X_pow, map_mul, Polynomial.aeval_def, zero_mul, Polynomial.natDegree_mul_X_pow, Polynomial.Monic.ne_zero; exact existing full result located: False
 
+Completed `Roth.approxSet_num_den_mem_aux`: Rat.den_dvd gives the reduced positive denominator at most the original q. Rat.cast_def rewrites the value without changing it, and nonnegative-exponent monotonicity makes the reciprocal error tolerance no smaller at the reduced denominator. The sole exists_reduced_approx caller uses the result to force bounded reduced representatives under its contradiction hypothesis; finite fibers then handle arbitrary unreduced pairs.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4578,6 +4591,8 @@ Completed `Roth.eventually_div_rpow_lt`: Internal calculation in LiouvilleWith.f
 Completed `Roth.reduction`: Powergap and integral scalar prerequisites are existing project abstractions, not duplicate reductions. exists_reduced_approx uses rational reduction/fiber finiteness; this theorem uses injective numerator scaling and finite subtraction, a different map.
 
 Completed `Roth.exists_monic_aeval_eq_zero`: IsIntegral is the standard monic-annihilator existential without degree padding; irrational-root degree bound needs an extra irrationality premise and cannot replace this theorem. No second project padding theorem found.
+
+Completed `Roth.approxSet_num_den_mem_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -5136,6 +5151,8 @@ Completed `Roth.reduction`: verified: True; proposed type: ∀ {α : ℝ}, Irrat
 
 Completed `Roth.exists_monic_aeval_eq_zero`: verified: True; proposed type: ∀ {R A : Type*} [CommRing R] [Nontrivial R] [Ring A] [Algebra R A] {a : A}, IsIntegral R a → ∀ N : ℕ, ∃ g : Polynomial R, g.Monic ∧ Polynomial.aeval a g = 0 ∧ N ≤ g.natDegree; source: isolated3-executed.lean.txt; receipt: isolated3-receipt.json; semiring: Witness-level version uses CommSemiring R, Nontrivial R, Semiring A, Algebra R A; no Nontrivial A required.
 
+Completed `Roth.approxSet_num_den_mem_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5682,6 +5699,8 @@ Completed `Roth.eventually_div_rpow_lt`: Exported eventual inequality comparing 
 Completed `Roth.reduction`: Potential fixed-unit pair scaling/threshold API or explicit bridge to LiouvilleWith. Whether to introduce a second approximation representation upstream is unresolved design, not unfinished proof verification.
 
 Completed `Roth.exists_monic_aeval_eq_zero`: Possible arbitrary-cutoff monic-annihilator existence API; packaging choice remains a future upstream question.
+
+Completed `Roth.approxSet_num_den_mem_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -6232,6 +6251,8 @@ Completed `Roth.reduction`: Used once in the main theorem; meaningful source-lev
 
 Completed `Roth.exists_monic_aeval_eq_zero`: Used by one private helper and transitively by Roth/LeanEval. Not dead code; local visibility or inlining is viable.
 
+Completed `Roth.approxSet_num_den_mem_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6508,6 +6529,7 @@ Completed `Roth.exists_monic_aeval_eq_zero`: Used by one private helper and tran
 | 270 | `Roth.eventually_div_rpow_lt` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.eventually_div_rpow_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eventually_div_rpow_lt/root-acceptance.json) |
 | 271 | `Roth.reduction` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.reduction.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.reduction/root-acceptance.json) |
 | 272 | `Roth.exists_monic_aeval_eq_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_monic_aeval_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_monic_aeval_eq_zero/root-acceptance.json) |
+| 273 | `Roth.approxSet_num_den_mem_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet_num_den_mem_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet_num_den_mem_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7051,12 +7073,14 @@ Completed `Roth.reduction` action: Keep project-local pending three concrete ups
 
 Completed `Roth.exists_monic_aeval_eq_zero` action: Keep production unchanged for this assessment. Resolve the three concrete API questions before upstreaming; verified local inline alternative is available.
 
+Completed `Roth.approxSet_num_den_mem_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.approxSet_num_den_mem_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_reduced_approx` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

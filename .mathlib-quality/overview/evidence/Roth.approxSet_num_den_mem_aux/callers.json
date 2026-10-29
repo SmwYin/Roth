@@ -1,0 +1,66 @@
+[
+  {
+    "file": "Roth/Main.lean",
+    "line": 164,
+    "name": "Roth.exists_reduced_approx",
+    "short": "exists_reduced_approx",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 189,
+    "source": "theorem exists_reduced_approx {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : 0 < κ)\n    (hinf : (approxSet α κ).Infinite) (Q₀ : ℕ) : ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧\n    IsCoprime hq.1 (hq.2 : ℤ) := by\n  by_contra! hcon\n  set ρ : ℤ × ℕ → ℚ := fun hq ↦ (hq.1 : ℚ) / hq.2\n  have hV : (ρ '' approxSet α κ).Finite := by\n    refine ((approxSet_den_le_finite α κ Q₀).image ρ).subset ?_\n    rintro _ ⟨hq, hmem, rfl⟩\n    -- the reduced form of a solution is a reduced solution\n    have hm : ((ρ hq).num, (ρ hq).den) ∈ approxSet α κ :=\n      approxSet_num_den_mem_aux hκ.le hmem\n    refine ⟨((ρ hq).num, (ρ hq).den), ⟨hm, ?_⟩, ?_⟩\n    · by_contra! hc\n      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (ρ hq).reduced)\n    · exact Rat.num_div_den (ρ hq)\n  have hfib : ∀ x ∈ ρ '' approxSet α κ, {hq ∈ approxSet α κ | ρ hq = x}.Finite := by\n    intro x _\n    obtain ⟨N, hN⟩ := eventually_div_rpow_lt (M := 1 / |α - (x : ℝ)|) hκ\n    refine (approxSet_den_le_finite α κ N).subset ?_\n    rintro ⟨h, q⟩ ⟨hm, hρx⟩\n    refine ⟨hm, le_of_not_gt fun hq ↦ ?_⟩\n    have hbound := hN q hq\n    rw [Real.rpow_zero, div_one, div_right_comm,\n      div_lt_iff₀ (abs_pos.2 (sub_ne_zero.2 (hα.ne_rat x))), one_mul] at hbound\n    exact not_lt_of_gt hbound <| by simpa [← hρx, ρ] using hm.2\n  exact hinf (Set.Finite.of_finite_fibers ρ hV hfib)",
+    "signature": "theorem exists_reduced_approx {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : 0 < κ)\n    (hinf : (approxSet α κ).Infinite) (Q₀ : ℕ) : ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧\n    IsCoprime hq.1 (hq.2 : ℤ)",
+    "body": "by\n  by_contra! hcon\n  set ρ : ℤ × ℕ → ℚ := fun hq ↦ (hq.1 : ℚ) / hq.2\n  have hV : (ρ '' approxSet α κ).Finite := by\n    refine ((approxSet_den_le_finite α κ Q₀).image ρ).subset ?_\n    rintro _ ⟨hq, hmem, rfl⟩\n    -- the reduced form of a solution is a reduced solution\n    have hm : ((ρ hq).num, (ρ hq).den) ∈ approxSet α κ :=\n      approxSet_num_den_mem_aux hκ.le hmem\n    refine ⟨((ρ hq).num, (ρ hq).den), ⟨hm, ?_⟩, ?_⟩\n    · by_contra! hc\n      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (ρ hq).reduced)\n    · exact Rat.num_div_den (ρ hq)\n  have hfib : ∀ x ∈ ρ '' approxSet α κ, {hq ∈ approxSet α κ | ρ hq = x}.Finite := by\n    intro x _\n    obtain ⟨N, hN⟩ := eventually_div_rpow_lt (M := 1 / |α - (x : ℝ)|) hκ\n    refine (approxSet_den_le_finite α κ N).subset ?_\n    rintro ⟨h, q⟩ ⟨hm, hρx⟩\n    refine ⟨hm, le_of_not_gt fun hq ↦ ?_⟩\n    have hbound := hN q hq\n    rw [Real.rpow_zero, div_one, div_right_comm,\n      div_lt_iff₀ (abs_pos.2 (sub_ne_zero.2 (hα.ne_rat x))), one_mul] at hbound\n    exact not_lt_of_gt hbound <| by simpa [← hρx, ρ] using hm.2\n  exact hinf (Set.Finite.of_finite_fibers ρ hV hfib)",
+    "proof_lines": 24,
+    "sha256": "13acdf6c5d185bff4156fbeffaf6b55e2e2a1f04c9e366fb323fb1409516b1f2",
+    "what": "Infinitely many approximations to an irrational number yield coprime approximations above every denominator cutoff.",
+    "how": "Assume bounded reduced denominators, use approxSet_num_den_mem_aux to make the rational image finite, bound each fiber by eventually_div_rpow_lt and conclude using Set.Finite.of_finite_fibers.",
+    "hypotheses": "Irrational real number, positive exponent and infinite approximation set.",
+    "source_body_refs": [
+      "Roth.approxSet",
+      "Roth.approxSet_den_le_finite",
+      "Roth.approxSet_num_den_mem_aux",
+      "Roth.eventually_div_rpow_lt"
+    ],
+    "source_type_refs": [
+      "Roth.approxSet"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.exists_approximants",
+        "file": "Roth/Main.lean",
+        "line": 256
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+    "uses_from_project": [
+      "Roth.approxSet",
+      "Roth.approxSet_den_le_finite",
+      "Roth.approxSet_num_den_mem_aux",
+      "Roth.eventually_div_rpow_lt"
+    ],
+    "used_by_in_file": [
+      "Roth.exists_approximants"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 192,
+    "project_body_refs": [
+      "Roth.approxSet",
+      "Roth.approxSet_den_le_finite",
+      "Roth.approxSet_num_den_mem_aux",
+      "Roth.eventually_div_rpow_lt"
+    ],
+    "project_type_refs": [
+      "Roth.approxSet"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.exists_approximants",
+        "file": "Roth/Main.lean",
+        "line": 256
+      }
+    ]
+  }
+]
