@@ -1,0 +1,18 @@
+private lemma boxFamily_eq_image_finsupp_aux {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)]
+    (B : ℕ) : boxFamily r B = AddMonoidAlgebra.ofCoeff ''
+      (↑((Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))).finsupp
+        fun _ ↦ Finset.Icc (0 : ℤ) B) : Set ((σ →₀ ℕ) →₀ ℤ)) := by
+  classical
+  ext W
+  constructor
+  · intro hW
+    refine ⟨W.coeff, ?_, rfl⟩
+    rw [Finset.mem_coe, Finset.mem_finsupp_iff]
+    refine ⟨fun d hd ↦ ?_, fun d _ ↦ Finset.mem_Icc.2 (hW.2 d)⟩
+    exact Finset.mem_Iic.2 fun j ↦ (monomial_le_degreeOf j hd).trans (hW.1 j)
+  · rintro ⟨c, hc, rfl⟩
+    obtain ⟨hs, hc⟩ := Finset.mem_finsupp_iff.1 hc
+    refine ⟨fun j ↦ degreeOf_le_iff.2 fun d hd ↦ (Finset.mem_Iic.1 (hs hd)) j, fun d ↦ ?_⟩
+    by_cases hd : d ∈ Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))
+    · exact Finset.mem_Icc.1 (hc d hd)
+    · simp [Finsupp.notMem_support_iff.1 (fun h ↦ hd (hs h))]
