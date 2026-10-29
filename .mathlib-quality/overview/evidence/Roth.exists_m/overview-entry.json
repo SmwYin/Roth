@@ -1,0 +1,52 @@
+{
+  "kind": "theorem",
+  "type": "∀ {n : ℕ} {κ : ℝ},\n  2 < κ → ∃ (m : ℕ), 16 * n ^ 2 < m ∧ 4 * ↑n * √↑m < ↑m ∧ 2 * ↑m / (↑m - 4 * ↑n * √↑m) < κ",
+  "what": "Chooses a natural dimension m satisfying a large-square bound, a positive denominator bound and exponent quotient<κ for any n, including0.",
+  "how": "Choose natural s beyond ceiling4κn/(κ−2) plus4n+1, setm=s²; square-root cancellation and positive-denominator multiplication prove the three inequalities.",
+  "hypotheses": [
+    "n:ℕ arbitrary, including0",
+    "κ:ℝ with2<κ"
+  ],
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit": 1,
+    "names": [
+      "Roth.exists_roth_parameters_aux"
+    ],
+    "transitive_project": [
+      "Roth.exists_roth_parameters_aux",
+      "Roth.roth_of_isIntegral",
+      "Roth.roth",
+      "Roth.roth_rat",
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth"
+    ],
+    "type_consumers": [],
+    "documentation": 2
+  },
+  "mathlib_api_audit": "Existing Archimedean exists_nat_gt/Nat.le_ceil, Real.sqrt_sq and order/division lemmas are useful building blocks; no exact or≤3-call full simultaneous replacement verified.",
+  "moral_duplications": "Shares small-parameter selection theme with exists_delta/exists_delta_bound, but chooses natural dimension at infinity rather than a realδ near0; no duplicate conclusion.",
+  "generalization": {
+    "verified": true,
+    "status": "Verified semantic parameter widening; no claim that literature standardizes this exact generic API",
+    "proposed_type": "∀ {a b κ : ℝ}, b < κ → ∃ m : ℕ, a ^ 2 < (m : ℝ) ∧ a * √(m : ℝ) < m ∧ b * m / (m - a * √(m : ℝ)) < κ",
+    "current_type": "∀ {n : ℕ} {κ : ℝ},\n  2 < κ → ∃ (m : ℕ), 16 * n ^ 2 < m ∧ 4 * ↑n * √↑m < ↑m ∧ 2 * ↑m / (↑m - 4 * ↑n * √↑m) < κ",
+    "old_recovery": "a=4*n,b=2, natural first bound recovered by nlinarith + exact_mod_cast; original full type retained",
+    "nonnegative_real_size": "generic-executed verifies a≥0; signed-executed removes this assumption with |a| bound",
+    "arbitrary_coefficient": "signed coefficient theorem takes arbitrary real c,t,b,κ; positive c and nonnegative t are included",
+    "hypothesis_drop": "κ>2 cannot weaken to κ≥2 uniformly: n=0,κ=2 no witness certified",
+    "threshold_caution": "b<κ is sufficient; not claimed necessary for every fixed signed a,b",
+    "representation": "ℝ fixed by Real.sqrt; abstract Archimedean simultaneous-bound lemma checked separately, not a fake ordered-semiring sqrt theorem",
+    "limit": "Limit-to-b is a conceptual alternative; no full limit-to-b replacement claimed or used. Existing tendsto_sqrt_atTop and bounded-div-atTop cover pieces, not simultaneous quantitative conclusion."
+  },
+  "missing_api": "Possible reusable generic scalar dimension selector, own signed-a,b proof verified; upstream home/publicness remains design question.",
+  "junk": "Used once directly and by5canonical transitive consumers; substantive proof, no dead-code/wrapper conclusion.",
+  "action": {
+    "verdict": "BORDERLINE-needs-human",
+    "questions": [
+      "Should a generic natural-dimension selection theorem for a²<m and b*m/(m-a*sqrt m)<κ be public mathlib API, or stay local to a Roth proof until a second independent consumer exists?",
+      "If upstream, should the primary interface retain the explicitly derived middle inequality, or expose only the square bound and quotient bound with a separate square-root bridge?",
+      "Should such a reusable theorem live near real square-root inequalities or in a Roth/Diophantine approximation development, given the absence of an established standalone name?"
+    ],
+    "next": "Keep existing project theorem for now; decide upstream public interface before any contribution. Assessment complete, no user blocker or production edit."
+  }
+}

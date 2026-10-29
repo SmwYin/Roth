@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 274 / 293 written declarations.**
+**Completed: 275 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -282,8 +282,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 272 | `Roth.exists_monic_aeval_eq_zero` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.exists_monic_aeval_eq_zero.md) |
 | 273 | `Roth.approxSet_num_den_mem_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.approxSet_num_den_mem_aux.md) |
 | 274 | `Roth.exists_reduced_approx` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.exists_reduced_approx.md) |
+| 275 | `Roth.exists_m` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.exists_m.md) |
 
-**Next declaration: `Roth.exists_m`**, `Roth/Main.lean:196`.
+**Next declaration: `Roth.exists_delta`**, `Roth/Main.lean:227`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

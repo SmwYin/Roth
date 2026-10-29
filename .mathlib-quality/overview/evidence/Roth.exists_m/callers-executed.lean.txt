@@ -1,0 +1,61 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Dimension275Caller
+open Roth
+theorem replay {α κ : ℝ} (hint : IsIntegral ℤ α) (hκ : 2 < κ) :
+    ∃ (f : Polynomial ℤ) (A : ℝ) (m : ℕ) (δ : ℝ), f.Monic ∧ Polynomial.aeval α f = 0 ∧ 1 ≤ A ∧
+      (∀ i, |(f.coeff i : ℝ)| ≤ A) ∧ 2 ≤ m ∧ 0 < δ ∧ δ < 1 / m ∧
+      eta δ m + 2 * (1 + 3 * δ) * f.natDegree * √(m : ℝ) < m / 2 ∧
+      (m : ℝ) * (1 + 4 * δ) / (gam δ f.natDegree m - eta δ m) < κ := by
+  have dimension_choice {n : ℕ} {κ : ℝ} (hκ : 2 < κ) :
+      ∃ m : ℕ, 16 * n ^ 2 < m ∧ 4 * n * √(m : ℝ) < m ∧
+        2 * m / (m - 4 * n * √(m : ℝ)) < κ := by
+    let s := ⌈4 * κ * n / (κ - 2)⌉₊ + 4 * n + 1
+    have hs4 : 4 * n < s := by
+      dsimp [s]
+      lia
+    have hs4R : (4 * n : ℝ) < s := by exact_mod_cast hs4
+    have hspos : (0 : ℝ) < s := (mul_nonneg (by norm_num) (Nat.cast_nonneg n)).trans_lt hs4R
+    have hkey : 4 * κ * n < (s : ℝ) * (κ - 2) := by
+      apply (div_lt_iff₀ (sub_pos.mpr hκ)).mp
+      refine (Nat.le_ceil _).trans_lt ?_
+      exact_mod_cast (show ⌈4 * κ * n / (κ - 2)⌉₊ < s by
+        dsimp [s]
+        lia)
+    have hmul : 4 * n * (s : ℝ) < (s : ℝ) ^ 2 := by
+      simpa only [pow_two] using mul_lt_mul_of_pos_right hs4R hspos
+    refine ⟨s ^ 2, ?_, ?_, ?_⟩
+    · simpa only [mul_pow, show (4 : ℕ) ^ 2 = 16 from rfl] using
+        Nat.pow_lt_pow_left hs4 (by decide : 2 ≠ 0)
+    · simpa only [Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg s)] using hmul
+    · push_cast
+      rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff₀ (sub_pos.mpr hmul)]
+      nlinarith only [mul_lt_mul_of_pos_right hkey hspos]
+  obtain ⟨f, hf, hfα, hdeg⟩ := exists_monic_aeval_eq_zero hint
+  -- a bound for the coefficients of `f`
+  let A : ℝ := 1 + ∑ i ∈ f.support, |(f.coeff i : ℝ)|
+  -- choice of `m` and `δ`
+  obtain ⟨m, hm, -, h47'⟩ := dimension_choice (n := f.natDegree) hκ
+  obtain ⟨δ, hδ0, hδm, h30, h49⟩ := exists_delta hm h47'
+  refine ⟨f, A, m, δ, hf, hfα, ?_, ?_, ?_, hδ0, hδm, h30, h49⟩
+  · exact le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ ↦ abs_nonneg _)
+  · intro i
+    exact (Finsupp.single_eval_le_sum f.toFinsupp.coeff (g := fun z : ℤ ↦ |(z : ℝ)|)
+      (by simp) (fun _ ↦ abs_nonneg _) i).trans (le_add_of_nonneg_left zero_le_one)
+  · nlinarith only [hm, hdeg]
+end Dimension275Caller
+#print axioms Dimension275Caller.replay

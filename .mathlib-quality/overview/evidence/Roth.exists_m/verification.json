@@ -1,0 +1,174 @@
+{
+  "declaration": "Roth.exists_m",
+  "canonical_index": 275,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "native_executor": "root exclusive; worker prepared exact sources and inspected complete raw returned results",
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "a08eef8cffd34599ab85c29a91249b84147b2e220a18d5e5740f8b529a1df7f3",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "DIMENSION275_FULL_TYPE:",
+        "DIM275_AUDIT: requested=293; unique=293",
+        "DIMENSION275_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 3453
+    },
+    {
+      "label": "callers",
+      "source": "callers-executed.lean.txt",
+      "receipt": "callers-receipt.json",
+      "source_sha256": "fcba56a5d34f495f466e8cd66fefd4814311aca1fc9deba7e86dec78ab4cc292",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Dimension275Caller.replay' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 2653
+    },
+    {
+      "label": "consumers",
+      "source": "consumer-scope2-executed.lean.txt",
+      "receipt": "consumers2-receipt.json",
+      "source_sha256": "d62ec41a41d87197bb753b7d3e20bf356bc890fc071a30bd30bedd8a86681bf6",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "DIMENSION275_PROJECT_CLOSURE:",
+        "DIMENSION275_TRANSITIVE_PROJECT_CONSUMER:",
+        "DIMENSION275_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "axiom_print_required": false,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 2771
+    },
+    {
+      "label": "generic",
+      "source": "generic-executed.lean.txt",
+      "receipt": "generic-receipt.json",
+      "source_sha256": "a0eec70012463cdac5956f3456509998a4f13876728c5ae8cb82393fa9854092",
+      "format": "run_code",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Dimension275.generic' depends on axioms:",
+        "'Dimension275.recovered' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_m\nnamespace Dimension275\n-- This is a NEW proof from existing mathlib building blocks, not an existing theorem.\ntheorem generic {a b κ : ℝ} (ha : 0 ≤ a) (hκ : b < κ) :\n    ∃ m : ℕ, a ^ 2 < m ∧ a * √(m : ℝ) < m ∧\n      b * m / (m - a * √(m : ℝ)) < κ := by\n  obtain ⟨s, hs⟩ := exists_nat_gt (max a (κ * a / (κ - b)))\n  have hsa : a < (s : ℝ) := (le_max_left _ _).trans_lt hs\n  have hspos : (0 : ℝ) < s := ha.trans_lt hsa\n  have hkey : κ * a < (s : ℝ) * (κ - b) :=\n    (div_lt_iff₀ (sub_pos.mpr hκ)).mp ((le_max_right _ _).trans_lt hs)\n  have hmul : a * (s : ℝ) < (s : ℝ) ^ 2 := by\n    simpa only [pow_two] using mul_lt_mul_of_pos_right hsa hspos\n  refine ⟨s ^ 2, ?_, ?_, ?_⟩\n  · push_cast\n    nlinarith only [sq_nonneg ((s : ℝ) - a), hsa, ha, hspos]\n  · simpa only [Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg s)] using hmul\n  · push_cast\n    rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff₀ (sub_pos.mpr hmul)]\n    nlinarith only [mul_lt_mul_of_pos_right hkey hspos]\n\ntheorem coefficient {t c b κ : ℝ} (ht : 0 ≤ t) (hc : 0 < c) (hκ : b < κ) :\n    ∃ m : ℕ, (c * t) ^ 2 < m ∧ c * t * √(m : ℝ) < m ∧\n      b * m / (m - c * t * √(m : ℝ)) < κ :=\n  generic (mul_nonneg hc.le ht) hκ\n\ntheorem recovered {n : ℕ} {κ : ℝ} (hκ : 2 < κ) :\n    ∃ m : ℕ, 16 * n ^ 2 < m ∧ 4 * n * √(m : ℝ) < m ∧\n      2 * m / (m - 4 * n * √(m : ℝ)) < κ := by\n  obtain ⟨m, hm, hs, hq⟩ := generic (a := 4 * n) (by positivity) hκ\n  refine ⟨m, ?_, hs, hq⟩\n  have hm' : (16 : ℝ) * (n : ℝ) ^ 2 < m := by nlinarith only [hm]\n  exact_mod_cast hm'\n\n-- No n>0 is introduced: the generic theorem and recovery include the zero size.\nexample {κ : ℝ} (hκ : 2 < κ) : ∃ m : ℕ, 0 < m ∧\n    4 * (0 : ℕ) * √(m : ℝ) < m ∧\n    2 * m / (m - 4 * (0 : ℕ) * √(m : ℝ)) < κ := by\n  simpa using (recovered (n := 0) hκ)\n\n-- The strict exponent gap cannot simply be removed/weakened to 2≤κ.\ntheorem sharp_gap : ¬ ∃ m : ℕ, 16 * (0 : ℕ) ^ 2 < m ∧\n    4 * (0 : ℕ) * √(m : ℝ) < m ∧\n    2 * m / (m - 4 * (0 : ℕ) * √(m : ℝ)) < (2 : ℝ) := by\n  rintro ⟨m, hm, _, hq⟩\n  have hm0 : (m : ℝ) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt (by simpa using hm) : m ≠ 0)\n  norm_num [mul_div_cancel_right₀ _ hm0] at hq\n\n#check @exists_nat_gt\n#check @Nat.le_ceil\n#check @Real.sqrt_sq\n#check @mul_lt_mul_of_pos_right\n#check @div_lt_iff₀\n#print axioms Dimension275.generic\n#print axioms Dimension275.coefficient\n#print axioms Dimension275.recovered\n#print axioms Dimension275.sharp_gap\nend Dimension275\n"
+      },
+      "elapsed_ms": 101182
+    },
+    {
+      "label": "signed",
+      "source": "signed-executed.lean.txt",
+      "receipt": "signed-receipt.json",
+      "source_sha256": "4fc04190fe0bf8cb0fbaaf6ba9ee05b2d03557ae4edc89108852f48eef12178a",
+      "format": "run_code",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Dimension275Signed.generic' depends on axioms:",
+        "'Dimension275Signed.recovered' depends on axioms:",
+        "'Dimension275Signed.sharp_gap' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_m\nnamespace Dimension275Signed\n-- This is a NEW proof from existing mathlib building blocks, not an existing theorem.\ntheorem generic {a b κ : ℝ} (hκ : b < κ) :\n    ∃ m : ℕ, a ^ 2 < m ∧ a * √(m : ℝ) < m ∧\n      b * m / (m - a * √(m : ℝ)) < κ := by\n  fail_if_success exact?\n  obtain ⟨s, hs⟩ := exists_nat_gt (max |a| (κ * a / (κ - b)))\n  have hsabs : |a| < (s : ℝ) := (le_max_left _ _).trans_lt hs\n  have hsa : a < (s : ℝ) := (le_abs_self a).trans_lt hsabs\n  have hspos : (0 : ℝ) < s := (abs_nonneg a).trans_lt hsabs\n  have hkey : κ * a < (s : ℝ) * (κ - b) :=\n    (div_lt_iff₀ (sub_pos.mpr hκ)).mp ((le_max_right _ _).trans_lt hs)\n  have hmul : a * (s : ℝ) < (s : ℝ) ^ 2 := by\n    simpa only [pow_two] using mul_lt_mul_of_pos_right hsa hspos\n  refine ⟨s ^ 2, ?_, ?_, ?_⟩\n  · push_cast\n    nlinarith only [mul_pos (sub_pos.mpr hsabs)\n      (add_pos_of_pos_of_nonneg hspos (abs_nonneg a)), sq_abs a]\n  · simpa only [Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg s)] using hmul\n  · push_cast\n    rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff₀ (sub_pos.mpr hmul)]\n    nlinarith only [mul_lt_mul_of_pos_right hkey hspos]\n\ntheorem coefficient {t c b κ : ℝ} (hκ : b < κ) :\n    ∃ m : ℕ, (c * t) ^ 2 < m ∧ c * t * √(m : ℝ) < m ∧\n      b * m / (m - c * t * √(m : ℝ)) < κ :=\n  generic hκ\n\ntheorem recovered {n : ℕ} {κ : ℝ} (hκ : 2 < κ) :\n    ∃ m : ℕ, 16 * n ^ 2 < m ∧ 4 * n * √(m : ℝ) < m ∧\n      2 * m / (m - 4 * n * √(m : ℝ)) < κ := by\n  obtain ⟨m, hm, hs, hq⟩ := generic (a := 4 * n) hκ\n  refine ⟨m, ?_, hs, hq⟩\n  have hm' : (16 : ℝ) * (n : ℝ) ^ 2 < m := by nlinarith only [hm]\n  exact_mod_cast hm'\n\n-- No n>0 is introduced: the generic theorem and recovery include the zero size.\nexample {κ : ℝ} (hκ : 2 < κ) : ∃ m : ℕ, 0 < m ∧\n    4 * (0 : ℕ) * √(m : ℝ) < m ∧\n    2 * m / (m - 4 * (0 : ℕ) * √(m : ℝ)) < κ := by\n  simpa using (recovered (n := 0) hκ)\n\n-- The strict exponent gap cannot simply be removed/weakened to 2≤κ.\ntheorem sharp_gap : ¬ ∃ m : ℕ, 16 * (0 : ℕ) ^ 2 < m ∧\n    4 * (0 : ℕ) * √(m : ℝ) < m ∧\n    2 * m / (m - 4 * (0 : ℕ) * √(m : ℝ)) < (2 : ℝ) := by\n  rintro ⟨m, hm, _, hq⟩\n  have hm0 : (m : ℝ) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt (by simpa using hm) : m ≠ 0)\n  norm_num [mul_div_cancel_right₀ _ hm0] at hq\n\n#check @exists_nat_gt\n#check @Nat.le_ceil\n#check @Real.sqrt_sq\n#check @mul_lt_mul_of_pos_right\n#check @div_lt_iff₀\n#print axioms Dimension275Signed.generic\n#print axioms Dimension275Signed.coefficient\n#print axioms Dimension275Signed.recovered\n#print axioms Dimension275Signed.sharp_gap\nend Dimension275Signed\n"
+      },
+      "elapsed_ms": 2570
+    },
+    {
+      "label": "composition",
+      "source": "composition2-executed.lean.txt",
+      "receipt": "composition2-receipt.json",
+      "source_sha256": "2d9979f120ac10e8aa98831166a7406e2ed6b860b625ca075415bbcd6677e8a1",
+      "format": "run_code",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Dimension275Composition.checked' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_m\nnamespace Dimension275Composition\ntheorem checked {n : ℕ} {κ : ℝ} (hκ : 2 < κ) :\n    ∃ m : ℕ, 16 * n ^ 2 < m ∧ 4 * n * √(m : ℝ) < m ∧\n      2 * m / (m - 4 * n * √(m : ℝ)) < κ := by\n  fail_if_success exact?\n  fail_if_success simp\n  fail_if_success aesop\n  let s := ⌈4 * κ * n / (κ - 2)⌉₊ + 4 * n + 1\n  have hs4 : 4 * n < s := by\n    dsimp [s]\n    lia\n  have hs4R : (4 * n : ℝ) < s := by exact_mod_cast hs4\n  have hspos : (0 : ℝ) < s := (mul_nonneg (by norm_num) (Nat.cast_nonneg n)).trans_lt hs4R\n  have hkey : 4 * κ * n < (s : ℝ) * (κ - 2) := by\n    apply (div_lt_iff₀ (sub_pos.mpr hκ)).mp\n    refine (Nat.le_ceil _).trans_lt ?_\n    exact_mod_cast (show ⌈4 * κ * n / (κ - 2)⌉₊ < s by\n      dsimp [s]\n      lia)\n  have hmul : 4 * n * (s : ℝ) < (s : ℝ) ^ 2 := by\n    simpa only [pow_two] using mul_lt_mul_of_pos_right hs4R hspos\n  refine ⟨s ^ 2, ?_, ?_, ?_⟩\n  · simpa only [mul_pow, show (4 : ℕ) ^ 2 = 16 from rfl] using\n      Nat.pow_lt_pow_left hs4 (by decide : 2 ≠ 0)\n  · simpa only [Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg s)] using hmul\n  · push_cast\n    rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff₀ (sub_pos.mpr hmul)]\n    nlinarith only [mul_lt_mul_of_pos_right hkey hspos]\n\n#print axioms Dimension275Composition.checked\nend Dimension275Composition\n"
+      },
+      "elapsed_ms": 3503
+    },
+    {
+      "label": "shape",
+      "source": "shape-executed.lean.txt",
+      "receipt": "shape-receipt.json",
+      "source_sha256": "4713b3529c23cddcc0c7ce7da91ef3dc606d58899a311d456deeb29f3b8675f2",
+      "format": "run_code",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Dimension275Shape.middle' depends on axioms:",
+        "Real.tendsto_sqrt_atTop :"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_m\nnamespace Dimension275Shape\n-- The middle quantitative requirement is implied by the first, not an independent input.\ntheorem middle {n m : ℕ} (hm : 16 * n ^ 2 < m) :\n    4 * n * √(m : ℝ) < m := by\n  have hmR0 : (16 : ℝ) * (n : ℝ) ^ 2 < m := by exact_mod_cast hm\n  have hmR : (4 * (n : ℝ)) ^ 2 < m := by nlinarith only [hmR0]\n  have hs : 4 * (n : ℝ) < √(m : ℝ) := (Real.lt_sqrt (by positivity)).2 hmR\n  have hs0 : 0 < √(m : ℝ) := (by positivity : (0 : ℝ) ≤ 4 * n).trans_lt hs\n  simpa only [← pow_two, Real.sq_sqrt (Nat.cast_nonneg m)] using\n    mul_lt_mul_of_pos_right hs hs0\n\n-- Abstract representation probe: arbitrary Archimedean ordered semiring bounds,\n-- without claiming Real.sqrt itself is defined on that weaker hierarchy.\nexample {R : Type*} [Semiring R] [LinearOrder R] [IsStrictOrderedRing R] [Archimedean R]\n    (a b : R) : ∃ n : ℕ, a < n ∧ b < n := by\n  obtain ⟨n, hn⟩ := exists_nat_gt (max a b)\n  exact ⟨n, (le_max_left _ _).trans_lt hn, (le_max_right _ _).trans_lt hn⟩\n\n#check @Real.tendsto_sqrt_atTop\n#check @tendsto_bdd_div_atTop_nhds_zero\n#check @Real.lt_sqrt\n#print axioms Dimension275Shape.middle\nend Dimension275Shape\n"
+      },
+      "elapsed_ms": 797
+    },
+    {
+      "label": "replacementcaller",
+      "source": "replacement-caller-executed.lean.txt",
+      "receipt": "replacement-caller-receipt.json",
+      "source_sha256": "3c840d7f0792ed226e4b138a99e80ed5a91df3cb355bea8a11c1149be8f43018",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Dimension275ReplacementCaller.replay' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 1759
+    }
+  ],
+  "other_executions": [
+    {
+      "source": "composition-executed.lean.txt",
+      "receipt": "composition-receipt.json",
+      "source_sha256": "0e2d3b0b00ec35d957a0e7f30fda1780e935c7f8891bb9a1c3255d3137a0374e",
+      "status": "rejected"
+    },
+    {
+      "source": "consumer-scope-executed.lean.txt",
+      "receipt": "consumers-receipt.json",
+      "source_sha256": "a5759f179066bd6dd93ab1518bafd49812795fa2aad68b08911803a2688d4df4",
+      "status": "rejected"
+    }
+  ],
+  "attempt_accounting": {
+    "native_executions": 10,
+    "accepted": 8,
+    "rejected": 2
+  },
+  "build_gate": "Reused clean2467job baseline with17freshmatching hashes; no file-boundary build due at275; next289"
+}

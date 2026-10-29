@@ -1,0 +1,74 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_m\nnamespace Dimension275Composition\ntheorem checked {n : \u2115} {\u03ba : \u211d} (h\u03ba : 2 < \u03ba) :\n    \u2203 m : \u2115, 16 * n ^ 2 < m \u2227 4 * n * \u221a(m : \u211d) < m \u2227\n      2 * m / (m - 4 * n * \u221a(m : \u211d)) < \u03ba := by\n  fail_if_success exact?\n  fail_if_success simp\n  fail_if_success aesop\n    let s := \u23084 * \u03ba * n / (\u03ba - 2)\u2309\u208a + 4 * n + 1\n    have hs4 : 4 * n < s := by\n      dsimp [s]\n      lia\n    have hs4R : (4 * n : \u211d) < s := by exact_mod_cast hs4\n    have hspos : (0 : \u211d) < s := (mul_nonneg (by norm_num) (Nat.cast_nonneg n)).trans_lt hs4R\n    have hkey : 4 * \u03ba * n < (s : \u211d) * (\u03ba - 2) := by\n      apply (div_lt_iff\u2080 (sub_pos.mpr h\u03ba)).mp\n      refine (Nat.le_ceil _).trans_lt ?_\n      exact_mod_cast (show \u23084 * \u03ba * n / (\u03ba - 2)\u2309\u208a < s by\n        dsimp [s]\n        lia)\n    have hmul : 4 * n * (s : \u211d) < (s : \u211d) ^ 2 := by\n      simpa only [pow_two] using mul_lt_mul_of_pos_right hs4R hspos\n    refine \u27e8s ^ 2, ?_, ?_, ?_\u27e9\n    \u00b7 simpa only [mul_pow, show (4 : \u2115) ^ 2 = 16 from rfl] using\n        Nat.pow_lt_pow_left hs4 (by decide : 2 \u2260 0)\n    \u00b7 simpa only [Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg s)] using hmul\n    \u00b7 push_cast\n      rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff\u2080 (sub_pos.mpr hmul)]\n      nlinarith only [mul_lt_mul_of_pos_right hkey hspos]\n\n#print axioms Dimension275Composition.checked\nend Dimension275Composition\n"
+  },
+  "elapsed_ms": 10397,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "composition01",
+      "operation": "run_code",
+      "source": "composition-executed.lean.txt",
+      "source_sha256": "0e2d3b0b00ec35d957a0e7f30fda1780e935c7f8891bb9a1c3255d3137a0374e",
+      "receipt": "composition-receipt.json",
+      "original_audit": false,
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.exists_m/root-requests/composition01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.exists_m/composition-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_m`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unexpected token 'let'; expected command\",\n      \"line\": 28,\n      \"column\": 5,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\nn : \u2115\\n\u03ba : \u211d\\nh\u03ba : 2 < \u03ba\\n\u22a2 \u2203 m, 16 * n ^ 2 < m \u2227 4 * \u2191n * \u221a\u2191m < \u2191m \u2227 2 * \u2191m / (\u2191m - 4 * \u2191n * \u221a\u2191m) < \u03ba\",\n      \"line\": 24,\n      \"column\": 45,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Dimension275Composition.checked' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 50,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_m`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unexpected token 'let'; expected command",
+          "line": 28,
+          "column": 5,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\nn : \u2115\n\u03ba : \u211d\nh\u03ba : 2 < \u03ba\n\u22a2 \u2203 m, 16 * n ^ 2 < m \u2227 4 * \u2191n * \u221a\u2191m < \u2191m \u2227 2 * \u2191m / (\u2191m - 4 * \u2191n * \u221a\u2191m) < \u03ba",
+          "line": 24,
+          "column": 45,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Dimension275Composition.checked' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 50,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

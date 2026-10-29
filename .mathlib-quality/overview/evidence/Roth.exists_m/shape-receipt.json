@@ -1,0 +1,80 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_m\nnamespace Dimension275Shape\n-- The middle quantitative requirement is implied by the first, not an independent input.\ntheorem middle {n m : \u2115} (hm : 16 * n ^ 2 < m) :\n    4 * n * \u221a(m : \u211d) < m := by\n  have hmR0 : (16 : \u211d) * (n : \u211d) ^ 2 < m := by exact_mod_cast hm\n  have hmR : (4 * (n : \u211d)) ^ 2 < m := by nlinarith only [hmR0]\n  have hs : 4 * (n : \u211d) < \u221a(m : \u211d) := (Real.lt_sqrt (by positivity)).2 hmR\n  have hs0 : 0 < \u221a(m : \u211d) := (by positivity : (0 : \u211d) \u2264 4 * n).trans_lt hs\n  simpa only [\u2190 pow_two, Real.sq_sqrt (Nat.cast_nonneg m)] using\n    mul_lt_mul_of_pos_right hs hs0\n\n-- Abstract representation probe: arbitrary Archimedean ordered semiring bounds,\n-- without claiming Real.sqrt itself is defined on that weaker hierarchy.\nexample {R : Type*} [Semiring R] [LinearOrder R] [IsStrictOrderedRing R] [Archimedean R]\n    (a b : R) : \u2203 n : \u2115, a < n \u2227 b < n := by\n  obtain \u27e8n, hn\u27e9 := exists_nat_gt (max a b)\n  exact \u27e8n, (le_max_left _ _).trans_lt hn, (le_max_right _ _).trans_lt hn\u27e9\n\n#check @Real.tendsto_sqrt_atTop\n#check @tendsto_bdd_div_atTop_nhds_zero\n#check @Real.lt_sqrt\n#print axioms Dimension275Shape.middle\nend Dimension275Shape\n"
+  },
+  "elapsed_ms": 797,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "shape01",
+      "operation": "run_code",
+      "source": "shape-executed.lean.txt",
+      "source_sha256": "4713b3529c23cddcc0c7ce7da91ef3dc606d58899a311d456deeb29f3b8675f2",
+      "receipt": "shape-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.exists_m/root-requests/shape01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.exists_m/shape-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_m`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.tendsto_sqrt_atTop : Filter.Tendsto (fun x \u21a6 \u221ax) Filter.atTop Filter.atTop\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@tendsto_bdd_div_atTop_nhds_zero : \u2200 {\ud835\udd5c : Type u_1} {\u03b1 : Type u_2} [inst : Field \ud835\udd5c] [inst_1 : LinearOrder \ud835\udd5c]\\n  [IsStrictOrderedRing \ud835\udd5c] [inst_3 : TopologicalSpace \ud835\udd5c] [OrderTopology \ud835\udd5c] {l : Filter \u03b1} {f g : \u03b1 \u2192 \ud835\udd5c} {b B : \ud835\udd5c},\\n  (\u2200\u1da0 (x : \u03b1) in l, b \u2264 f x) \u2192\\n    (\u2200\u1da0 (x : \u03b1) in l, f x \u2264 B) \u2192 Filter.Tendsto g l Filter.atTop \u2192 Filter.Tendsto (fun x \u21a6 f x / g x) l (nhds 0)\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.lt_sqrt : \u2200 {x y : \u211d}, 0 \u2264 x \u2192 (x < \u221ay \u2194 x ^ 2 < y)\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Dimension275Shape.middle' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_m`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.tendsto_sqrt_atTop : Filter.Tendsto (fun x \u21a6 \u221ax) Filter.atTop Filter.atTop",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@tendsto_bdd_div_atTop_nhds_zero : \u2200 {\ud835\udd5c : Type u_1} {\u03b1 : Type u_2} [inst : Field \ud835\udd5c] [inst_1 : LinearOrder \ud835\udd5c]\n  [IsStrictOrderedRing \ud835\udd5c] [inst_3 : TopologicalSpace \ud835\udd5c] [OrderTopology \ud835\udd5c] {l : Filter \u03b1} {f g : \u03b1 \u2192 \ud835\udd5c} {b B : \ud835\udd5c},\n  (\u2200\u1da0 (x : \u03b1) in l, b \u2264 f x) \u2192\n    (\u2200\u1da0 (x : \u03b1) in l, f x \u2264 B) \u2192 Filter.Tendsto g l Filter.atTop \u2192 Filter.Tendsto (fun x \u21a6 f x / g x) l (nhds 0)",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.lt_sqrt : \u2200 {x y : \u211d}, 0 \u2264 x \u2192 (x < \u221ay \u2194 x ^ 2 < y)",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Dimension275Shape.middle' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

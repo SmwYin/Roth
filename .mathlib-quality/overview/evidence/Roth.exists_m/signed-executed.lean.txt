@@ -1,0 +1,80 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.exists_m
+namespace Dimension275Signed
+-- This is a NEW proof from existing mathlib building blocks, not an existing theorem.
+theorem generic {a b κ : ℝ} (hκ : b < κ) :
+    ∃ m : ℕ, a ^ 2 < m ∧ a * √(m : ℝ) < m ∧
+      b * m / (m - a * √(m : ℝ)) < κ := by
+  fail_if_success exact?
+  obtain ⟨s, hs⟩ := exists_nat_gt (max |a| (κ * a / (κ - b)))
+  have hsabs : |a| < (s : ℝ) := (le_max_left _ _).trans_lt hs
+  have hsa : a < (s : ℝ) := (le_abs_self a).trans_lt hsabs
+  have hspos : (0 : ℝ) < s := (abs_nonneg a).trans_lt hsabs
+  have hkey : κ * a < (s : ℝ) * (κ - b) :=
+    (div_lt_iff₀ (sub_pos.mpr hκ)).mp ((le_max_right _ _).trans_lt hs)
+  have hmul : a * (s : ℝ) < (s : ℝ) ^ 2 := by
+    simpa only [pow_two] using mul_lt_mul_of_pos_right hsa hspos
+  refine ⟨s ^ 2, ?_, ?_, ?_⟩
+  · push_cast
+    nlinarith only [mul_pos (sub_pos.mpr hsabs)
+      (add_pos_of_pos_of_nonneg hspos (abs_nonneg a)), sq_abs a]
+  · simpa only [Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg s)] using hmul
+  · push_cast
+    rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff₀ (sub_pos.mpr hmul)]
+    nlinarith only [mul_lt_mul_of_pos_right hkey hspos]
+
+theorem coefficient {t c b κ : ℝ} (hκ : b < κ) :
+    ∃ m : ℕ, (c * t) ^ 2 < m ∧ c * t * √(m : ℝ) < m ∧
+      b * m / (m - c * t * √(m : ℝ)) < κ :=
+  generic hκ
+
+theorem recovered {n : ℕ} {κ : ℝ} (hκ : 2 < κ) :
+    ∃ m : ℕ, 16 * n ^ 2 < m ∧ 4 * n * √(m : ℝ) < m ∧
+      2 * m / (m - 4 * n * √(m : ℝ)) < κ := by
+  obtain ⟨m, hm, hs, hq⟩ := generic (a := 4 * n) hκ
+  refine ⟨m, ?_, hs, hq⟩
+  have hm' : (16 : ℝ) * (n : ℝ) ^ 2 < m := by nlinarith only [hm]
+  exact_mod_cast hm'
+
+-- No n>0 is introduced: the generic theorem and recovery include the zero size.
+example {κ : ℝ} (hκ : 2 < κ) : ∃ m : ℕ, 0 < m ∧
+    4 * (0 : ℕ) * √(m : ℝ) < m ∧
+    2 * m / (m - 4 * (0 : ℕ) * √(m : ℝ)) < κ := by
+  simpa using (recovered (n := 0) hκ)
+
+-- The strict exponent gap cannot simply be removed/weakened to 2≤κ.
+theorem sharp_gap : ¬ ∃ m : ℕ, 16 * (0 : ℕ) ^ 2 < m ∧
+    4 * (0 : ℕ) * √(m : ℝ) < m ∧
+    2 * m / (m - 4 * (0 : ℕ) * √(m : ℝ)) < (2 : ℝ) := by
+  rintro ⟨m, hm, _, hq⟩
+  have hm0 : (m : ℝ) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt (by simpa using hm) : m ≠ 0)
+  norm_num [mul_div_cancel_right₀ _ hm0] at hq
+
+#check @exists_nat_gt
+#check @Nat.le_ceil
+#check @Real.sqrt_sq
+#check @mul_lt_mul_of_pos_right
+#check @div_lt_iff₀
+#print axioms Dimension275Signed.generic
+#print axioms Dimension275Signed.coefficient
+#print axioms Dimension275Signed.recovered
+#print axioms Dimension275Signed.sharp_gap
+end Dimension275Signed
