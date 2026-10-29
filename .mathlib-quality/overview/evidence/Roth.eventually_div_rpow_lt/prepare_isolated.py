@@ -1,0 +1,89 @@
+from pathlib import Path
+import json,hashlib
+D=Path(__file__).resolve().parent
+prefix=(D/'isolated-prefix.lean.txt').read_text()+'import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n'
+code='''
+#check_failure Roth.eventually_div_rpow_lt
+open Filter
+open scoped Topology
+namespace Decay270Generic
+#check @tendsto_rpow_atTop
+#check @Filter.eventually_atTop
+#check @Real.rpow_sub
+#check @LiouvilleWith.frequently_lt_rpow_neg
+#check @LiouvilleWith.nat_mul
+#check @LiouvilleWith.exists_pos
+#check @LiouvilleWith.mono
+
+theorem eventual_filter {α : Type*} {l : Filter α} {f : α → ℝ}
+    (hf : Tendsto f l atTop) {M C κ κ' : ℝ} (hκ : κ' < κ) (hC : 0 < C) :
+    ∀ᶠ x in l, M / f x ^ κ < C / f x ^ κ' := by
+  filter_upwards [hf.eventually_gt_atTop 0,
+    ((tendsto_rpow_atTop (sub_pos.2 hκ)).comp hf).eventually_gt_atTop (M / C)]
+    with x hx hb
+  have hp := Real.rpow_pos_of_pos hx κ
+  have hp' := Real.rpow_pos_of_pos hx κ'
+  have hm : M < C * (f x ^ κ / f x ^ κ') := by
+    simpa only [Real.rpow_sub hx, mul_comm] using (div_lt_iff₀ hC).1 hb
+  rw [← mul_div_assoc] at hm
+  exact (div_lt_div_iff₀ hp hp').2 ((lt_div_iff₀ hp').1 hm)
+
+theorem eventual_real {M C κ κ' : ℝ} (hκ : κ' < κ) (hC : 0 < C) :
+    ∀ᶠ x : ℝ in atTop, M / x ^ κ < C / x ^ κ' :=
+  eventual_filter tendsto_id hκ hC
+
+theorem threshold {M C κ κ' : ℝ} (hκ : κ' < κ) (hC : 0 < C) :
+    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < C / (q : ℝ) ^ κ' := by
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1
+    (eventual_filter tendsto_natCast_atTop_atTop hκ hC)
+  exact ⟨N, fun q hq ↦ hN q hq.le⟩
+
+theorem recovery {M κ κ' : ℝ} (hκ : κ' < κ) :
+    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' :=
+  threshold hκ zero_lt_one
+
+theorem nonpositive {M C κ κ' x : ℝ} (hM : M ≤ 0) (hC : 0 < C) (hx : 0 < x) :
+    M / x ^ κ < C / x ^ κ' :=
+  (div_nonpos_of_nonpos_of_nonneg hM (Real.rpow_nonneg hx.le _)).trans_lt
+    (div_pos hC (Real.rpow_pos_of_pos hx _))
+
+theorem equal_exponents {M C κ x : ℝ} (h : M < C) (hx : 0 < x) :
+    M / x ^ κ < C / x ^ κ := div_lt_div_of_pos_right h (Real.rpow_pos_of_pos hx _)
+
+theorem equal_guard {M C κ x : ℝ} (hx : 0 < x) :
+    (M / x ^ κ < C / x ^ κ ↔ M < C) :=
+  div_lt_div_iff_of_pos_right (Real.rpow_pos_of_pos hx _)
+
+example : ¬ (∃ Q : ℕ, ∀ q : ℕ, Q < q →
+    (1 : ℝ) / (q : ℝ) ^ (0 : ℝ) < 1 / (q : ℝ) ^ (0 : ℝ)) := by
+  simp
+example : ∃ Q : ℕ, ∀ q : ℕ, Q < q →
+    (-7 : ℝ) / (q : ℝ) ^ (-3 : ℝ) < 1 / (q : ℝ) ^ (-2 : ℝ) := by
+  exact ⟨0, fun q hq ↦ nonpositive (by norm_num) zero_lt_one (by exact_mod_cast hq)⟩
+example : ∃ Q : ℕ, ∀ q : ℕ, Q < q →
+    (9 : ℝ) / (q : ℝ) ^ (-2 : ℝ) < 3 / (q : ℝ) ^ (-3 : ℝ) :=
+  threshold (by norm_num) (by norm_num)
+
+example {M κ κ' : ℝ} (hκ : κ' < κ) :
+    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' := by
+  fail_if_success exact tendsto_rpow_atTop (sub_pos.2 hκ)
+  fail_if_success simp
+  exact recovery hκ
+
+example {p q x : ℝ} (h : LiouvilleWith p x) (hpq : q < p) :
+    ∃ᶠ n : ℕ in atTop, ∃ m : ℤ, x ≠ m / n ∧ |x - m / n| < n ^ (-q) :=
+  h.frequently_lt_rpow_neg hpq
+example {p x : ℝ} {n : ℕ} (h : LiouvilleWith p x) (hn : n ≠ 0) :
+    LiouvilleWith p ((n : ℝ) * x) := h.nat_mul hn
+example : LiouvilleWith 1 (0 : ℝ) := liouvilleWith_one 0
+#print axioms eventual_filter
+#print axioms threshold
+#print axioms recovery
+#print axioms nonpositive
+#print axioms equal_guard
+end Decay270Generic
+'''
+s=prefix+code;(D/'isolated-executed.lean.txt').write_text(s)
+r=dict(id='isolated01',operation='run_code',source='isolated-executed.lean.txt',source_sha256=hashlib.sha256(s.encode()).hexdigest(),receipt='isolated-receipt.json',arguments={})
+(D/'root-requests/isolated01.json').write_text(json.dumps(r,indent=2)+'\n')
+print('Prepared isolated01 stable18 plus authorized Asymptotics+LiouvilleWith; max width',max(map(len,s.splitlines())))

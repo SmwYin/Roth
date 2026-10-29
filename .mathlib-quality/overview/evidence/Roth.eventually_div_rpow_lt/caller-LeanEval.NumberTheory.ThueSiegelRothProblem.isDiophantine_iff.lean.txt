@@ -1,0 +1,15 @@
+theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :
+    IsDiophantine x ↔ ∀ {κ : ℝ}, (Roth.approxSet x κ).Infinite → κ ≤ 2 := by
+  refine ⟨fun h κ hinf ↦ le_of_not_gt fun hκ ↦ ?_, fun h ε hε ↦ ?_⟩
+  · obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)
+    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (M := 1 / C)
+      (by linarith : 2 + (κ - 2) / 2 < κ)
+    obtain ⟨⟨p, q⟩, hpq, hq⟩ :=
+      (hinf.sdiff (Roth.approxSet_den_le_finite x κ Q)).nonempty
+    have hgap : 1 / (q : ℝ) ^ κ < C / (q : ℝ) ^ (2 + (κ - 2) / 2) := by
+      simpa [div_eq_mul_inv, ← mul_assoc, hC.ne'] using
+        mul_lt_mul_of_pos_left (hQ q (lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩)) hC
+    exact (hpq.2.trans hgap).not_gt (by simpa using hbound p q (by exact_mod_cast hpq.1))
+  · apply exists_pos_div_rpow_lt_aux hx
+    exact Set.not_infinite.mp fun hinf ↦
+      (by linarith : ¬ (2 + ε ≤ 2)) (h hinf)

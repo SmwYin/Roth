@@ -1,0 +1,72 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 103,
+  "name": "Roth.eventually_div_rpow_lt",
+  "short": "eventually_div_rpow_lt",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 110,
+  "source": "theorem eventually_div_rpow_lt {M κ κ' : ℝ} (hκ : κ' < κ) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' := by\n  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1\n    (((tendsto_rpow_atTop (sub_pos.2 hκ)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)\n  refine ⟨N, fun q hq ↦ ?_⟩\n  have hq0 : (0 : ℝ) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq\n  rw [div_lt_iff₀ (Real.rpow_pos_of_pos hq0 κ), one_div_mul_eq_div, ← Real.rpow_sub hq0]\n  exact hN q hq.le",
+  "signature": "theorem eventually_div_rpow_lt {M κ κ' : ℝ} (hκ : κ' < κ) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ'",
+  "body": "by\n  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1\n    (((tendsto_rpow_atTop (sub_pos.2 hκ)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)\n  refine ⟨N, fun q hq ↦ ?_⟩\n  have hq0 : (0 : ℝ) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq\n  rw [div_lt_iff₀ (Real.rpow_pos_of_pos hq0 κ), one_div_mul_eq_div, ← Real.rpow_sub hq0]\n  exact hN q hq.le",
+  "proof_lines": 7,
+  "sha256": "932b6bbffca7c6d45b3ed998a3dee40953074dd6064406d96acf0607851fb62e",
+  "what": "A fixed real multiplicative factor is absorbed by a strict exponent gap at sufficiently large natural denominators.",
+  "how": "Use tendsto_rpow_atTop composed with tendsto_natCast_atTop_atTop and rewrite the comparison using Real.rpow_sub.",
+  "hypotheses": "Strict inequality between the two real exponents; factor may be arbitrary.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+      "file": "Roth/LeanEval.lean",
+      "line": 42
+    },
+    {
+      "name": "Roth.reduction",
+      "file": "Roth/Main.lean",
+      "line": 118
+    },
+    {
+      "name": "Roth.exists_reduced_approx",
+      "file": "Roth/Main.lean",
+      "line": 164
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.reduction",
+    "Roth.exists_reduced_approx"
+  ],
+  "used_by_other_files": [
+    {
+      "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+      "file": "Roth/LeanEval.lean",
+      "line": 42
+    }
+  ],
+  "assignment_offset": 127,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+      "file": "Roth/LeanEval.lean",
+      "line": 42
+    },
+    {
+      "name": "Roth.reduction",
+      "file": "Roth/Main.lean",
+      "line": 118
+    },
+    {
+      "name": "Roth.exists_reduced_approx",
+      "file": "Roth/Main.lean",
+      "line": 164
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "type": "∀ {M κ κ' : ℝ}, κ' < κ → ∃ (Q₀ : ℕ), ∀ (q : ℕ), Q₀ < q → M / ↑q ^ κ < 1 / ↑q ^ κ'",
+  "kind": "theorem",
+  "what": "A fixed real amplitude is eventually absorbed by a strict real exponent gap on natural denominators.",
+  "how": "Compose real-power divergence with natural casts, extract a tail, then normalize using positivity and rpow_sub.",
+  "hypotheses": [
+    "κprime < κ; M arbitrary real; exponents arbitrary real"
+  ],
+  "project_dependencies": [],
+  "caller_summary": "3 direct callers: reduction, exists_reduced_approx, LeanEval.isDiophantine_iff; 9 transitive consumers; not simp.",
+  "mathlib_api_audit": "Existing Filter/Tendsto/rpow ingredients; LiouvilleWith has related internal absorption but no demonstrated exported exact comparison replacement.",
+  "moral_duplications": "Internal calculation in LiouvilleWith.frequently_lt_rpow_neg uses same exponent-gap absorption; not identical exported theorem.",
+  "generalization": {
+    "proposed_type": "∀ {α : Type*} {l : Filter α} {f : α → ℝ}, Filter.Tendsto f l Filter.atTop → ∀ {M C κ κ' : ℝ}, κ' < κ → 0 < C → ∀ᶠ x in l, M / f x ^ κ < C / f x ^ κ'",
+    "verified": true,
+    "source": "isolated3-executed.lean.txt",
+    "recovery": "Decay270Generic.threshold hκ zero_lt_one",
+    "axes": [
+      "arbitrary positive RHS amplitude C",
+      "arbitrary cofinal real input along any filter"
+    ]
+  },
+  "missing_api": "Exported eventual inequality comparing arbitrary amplitudes across real exponent gaps at infinity.",
+  "junk": "Used analytic helper, no deletion justified as ≤3-existing-call wrapper.",
+  "action": "YES-but-generalise-first: standalone power-asymptotics API PR; use verified generic signature, natural threshold corollary, all 3 full callers retained."
+}

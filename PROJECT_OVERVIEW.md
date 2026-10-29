@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 269/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 270/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 269; remaining: 24.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 27 YES-but-generalise-first, 46 NO-mathlib-has-it, 92 BORDERLINE-needs-human, 70 SKIP.
+- Completed applicable assessments: 270; remaining: 23.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 28 YES-but-generalise-first, 46 NO-mathlib-has-it, 92 BORDERLINE-needs-human, 70 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3426,6 +3426,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Four lexical uses in three full callers: reduction once, exists_reduced_approx twice, LeanEval.isDiophantine_iff once. All3 are direct kernel-value consumers; no direct kernel-type consumer. Both literal-local-proof and generalized replacement retain all original signatures.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.approxSet_den_le_finite.md).
 
+### Completed: `Roth.eventually_div_rpow_lt`
+
+- Type: `∀ {M κ κ' : ℝ}, κ' < κ → ∃ (Q₀ : ℕ), ∀ (q : ℕ), Q₀ < q → M / ↑q ^ κ < 1 / ↑q ^ κ'`
+- What: A fixed real amplitude is eventually absorbed by a strict real exponent gap on natural denominators.
+- How: Compose real-power divergence with natural casts, extract a tail, then normalize using positivity and rpow_sub.
+- Hypotheses: κprime < κ; M arbitrary real; exponents arbitrary real
+- Project dependencies: None
+- Caller summary: 3 direct callers: reduction, exists_reduced_approx, LeanEval.isDiophantine_iff; 9 transitive consumers; not simp.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.eventually_div_rpow_lt.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3990,6 +4000,8 @@ Completed `Roth.exists_nat_mul_isIntegral`: NO-mathlib-has-it: IsAlgebraic.exist
 
 Completed `Roth.approxSet_den_le_finite`: Existing finite intervals, finite unions/products and finite-fiber criterion verified. Rat.finite_rat_abs_sub_lt_one_div_den_sq concerns reduced rational targets, rational center and exponent2, not these supplied pairs. Neither that result nor of_finite_fibers directly replaces this arithmetic bridge.
 
+Completed `Roth.eventually_div_rpow_lt`: Existing Filter/Tendsto/rpow ingredients; LiouvilleWith has related internal absorption but no demonstrated exported exact comparison replacement.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4529,6 +4541,8 @@ Completed `Roth.approxSet`: Related to reduced rational-height conditions in rot
 Completed `Roth.exists_nat_mul_isIntegral`: Separation.exists_nat_smul_eq_map clears rational polynomial coefficients and is not the same theorem: integral scaled root additionally requires monic normalization.
 
 Completed `Roth.approxSet_den_le_finite`: Comparable finite-fiber reasoning inside exists_reduced_approx additionally needs irrationality and positive-exponent decay to bound unreduced representations of a fixed rational. These are distinct facts.
+
+Completed `Roth.eventually_div_rpow_lt`: Internal calculation in LiouvilleWith.frequently_lt_rpow_neg uses same exponent-gap absorption; not identical exported theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -5081,6 +5095,8 @@ Completed `Roth.exists_nat_mul_isIntegral`: Verified {A : Type*} [Ring A] {x : A
 
 Completed `Roth.approxSet_den_le_finite`: Freshly compiled arbitrary real radius ψ:ℕ→ℝ bounded-denominator theorem, credited267newproof template, exact current statement specialization. New finite-radius integer tubes over arbitrary finite index sets work over [Ring K] [LinearOrder K] [IsStrictOrderedRing K] [FloorRing K]; closed endpoints and signed radii allowed. No unverified relaxation claimed.
 
+Completed `Roth.eventually_div_rpow_lt`: proposed type: ∀ {α : Type*} {l : Filter α} {f : α → ℝ}, Filter.Tendsto f l Filter.atTop → ∀ {M C κ κ' : ℝ}, κ' < κ → 0 < C → ∀ᶠ x in l, M / f x ^ κ < C / f x ^ κ'; verified: True; source: isolated3-executed.lean.txt; recovery: Decay270Generic.threshold hκ zero_lt_one; axes: arbitrary positive RHS amplitude C, arbitrary cofinal real input along any filter
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5621,6 +5637,8 @@ Completed `Roth.approxSet`: Choose a primary named approximation family and expo
 Completed `Roth.exists_nat_mul_isIntegral`: No mathematical gap for the real result: stronger existing nonzeroNat integral-closure existence and normalized denominator API verified. Do not propose the scratch RingA sign lemma as already existing; it is a newly verified generic proof.
 
 Completed `Roth.approxSet_den_le_finite`: Potential upstream choice between arbitrary-ψ approximation slices and a general finite integer-cast tube lemma. Finite image/fibers already exists; arithmetic interval transport remains real proof.
+
+Completed `Roth.eventually_div_rpow_lt`: Exported eventual inequality comparing arbitrary amplitudes across real exponent gaps at infinity.
 
 ## Part 7: Junk / removable
 
@@ -6165,6 +6183,8 @@ Completed `Roth.exists_nat_mul_isIntegral`: Used in the Roth reduction, mathemat
 
 Completed `Roth.approxSet_den_le_finite`: Used by the reduction and reduced-approximant extraction and LeanEval equivalence; meaningful local API, not dead code or an established<=3call wrapper.
 
+Completed `Roth.eventually_div_rpow_lt`: Used analytic helper, no deletion justified as ≤3-existing-call wrapper.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6438,6 +6458,7 @@ Completed `Roth.approxSet_den_le_finite`: Used by the reduction and reduced-appr
 | 267 | `Roth.approxSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet/root-acceptance.json) |
 | 268 | `Roth.exists_nat_mul_isIntegral` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_nat_mul_isIntegral.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_nat_mul_isIntegral/root-acceptance.json) |
 | 269 | `Roth.approxSet_den_le_finite` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet_den_le_finite.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet_den_le_finite/root-acceptance.json) |
+| 270 | `Roth.eventually_div_rpow_lt` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.eventually_div_rpow_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eventually_div_rpow_lt/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6975,12 +6996,14 @@ Completed `Roth.exists_nat_mul_isIntegral` action: Do not upstream this real wra
 
 Completed `Roth.approxSet_den_le_finite` action: BORDERLINE-needs-human: retain local helper. Three concrete future upstream API questions decide whether to add an arbitrary-ψ slice companion to an approximation family, a generic finite-tube theorem, or keep this arithmetic packaging local. All assessment checks complete; no pending user blocker.
 
+Completed `Roth.eventually_div_rpow_lt` action: YES-but-generalise-first: standalone power-asymptotics API PR; use verified generic signature, natural threshold corollary, all 3 full callers retained.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.eventually_div_rpow_lt` next. Supporting identities receive their own applicable checks.
+   `Roth.reduction` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

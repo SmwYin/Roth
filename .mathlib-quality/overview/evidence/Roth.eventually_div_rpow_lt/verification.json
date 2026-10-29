@@ -1,0 +1,161 @@
+{
+  "declaration": "Roth.eventually_div_rpow_lt",
+  "canonical_index": 270,
+  "completed": true,
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "79e9a98e87ca6c06444c7d9376d2675b4e01499688dfcefbe59a18e8bbafa4da",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "DECAY270_FULL_TYPE:",
+        "DECAY270_AUDIT: requested=293; unique=293",
+        "DECAY270_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated3-executed.lean.txt",
+      "source_sha256": "f95439da6899f075571e11e3ef6fbe91ed9d6b6d4e785d414dbebb0ee5607903",
+      "receipt": "isolated3-receipt.json",
+      "format": "isolated",
+      "native_region_start_line": 21,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.eventually_div_rpow_lt\nopen Filter\nopen scoped Topology\nnamespace Decay270Generic\n#check @tendsto_rpow_atTop\n#check @Filter.eventually_atTop\n#check @Real.rpow_sub\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#check @LiouvilleWith.nat_mul\n#check @LiouvilleWith.exists_pos\n#check @LiouvilleWith.mono\n\ntheorem eventual_filter {α : Type*} {l : Filter α} {f : α → ℝ}\n    (hf : Tendsto f l atTop) {M C κ κ' : ℝ} (hκ : κ' < κ) (hC : 0 < C) :\n    ∀ᶠ x in l, M / f x ^ κ < C / f x ^ κ' := by\n  filter_upwards [hf.eventually_gt_atTop 0,\n    ((tendsto_rpow_atTop (sub_pos.2 hκ)).comp hf).eventually_gt_atTop (M / C)]\n    with x hx hb\n  have hp := Real.rpow_pos_of_pos hx κ\n  have hp' := Real.rpow_pos_of_pos hx κ'\n  have hm : M < C * (f x ^ κ / f x ^ κ') := by\n    simpa only [Function.comp_apply, Real.rpow_sub hx, mul_comm] using (div_lt_iff₀ hC).1 hb\n  rw [← mul_div_assoc] at hm\n  exact (div_lt_div_iff₀ hp hp').2 ((lt_div_iff₀ hp').1 hm)\n\ntheorem eventual_real {M C κ κ' : ℝ} (hκ : κ' < κ) (hC : 0 < C) :\n    ∀ᶠ x : ℝ in atTop, M / x ^ κ < C / x ^ κ' :=\n  eventual_filter tendsto_id hκ hC\n\ntheorem threshold {M C κ κ' : ℝ} (hκ : κ' < κ) (hC : 0 < C) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < C / (q : ℝ) ^ κ' := by\n  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1\n    (eventual_filter tendsto_natCast_atTop_atTop hκ hC)\n  exact ⟨N, fun q hq ↦ hN q hq.le⟩\n\ntheorem recovery {M κ κ' : ℝ} (hκ : κ' < κ) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' :=\n  threshold hκ zero_lt_one\n\ntheorem nonpositive {M C κ κ' x : ℝ} (hM : M ≤ 0) (hC : 0 < C) (hx : 0 < x) :\n    M / x ^ κ < C / x ^ κ' :=\n  (div_nonpos_of_nonpos_of_nonneg hM (Real.rpow_nonneg hx.le _)).trans_lt\n    (div_pos hC (Real.rpow_pos_of_pos hx _))\n\ntheorem equal_exponents {M C κ x : ℝ} (h : M < C) (hx : 0 < x) :\n    M / x ^ κ < C / x ^ κ := div_lt_div_of_pos_right h (Real.rpow_pos_of_pos hx _)\n\ntheorem equal_guard {M C κ x : ℝ} (hx : 0 < x) :\n    (M / x ^ κ < C / x ^ κ ↔ M < C) :=\n  div_lt_div_iff_of_pos_right (Real.rpow_pos_of_pos hx _)\n\nexample : ¬ (∃ Q : ℕ, ∀ q : ℕ, Q < q →\n    (1 : ℝ) / (q : ℝ) ^ (0 : ℝ) < 1 / (q : ℝ) ^ (0 : ℝ)) := by\n  rintro ⟨Q, hQ⟩\n  have h := hQ (Q + 1) (Nat.lt_succ_self Q)\n  simp only [Real.rpow_zero, div_one, lt_self_iff_false] at h\nexample : ∃ Q : ℕ, ∀ q : ℕ, Q < q →\n    (-7 : ℝ) / (q : ℝ) ^ (-3 : ℝ) < 1 / (q : ℝ) ^ (-2 : ℝ) := by\n  exact ⟨0, fun q hq ↦ nonpositive (by norm_num) zero_lt_one (by exact_mod_cast hq)⟩\nexample : ∃ Q : ℕ, ∀ q : ℕ, Q < q →\n    (9 : ℝ) / (q : ℝ) ^ (-2 : ℝ) < 3 / (q : ℝ) ^ (-3 : ℝ) :=\n  threshold (by norm_num) (by norm_num)\n\nexample {M κ κ' : ℝ} (hκ : κ' < κ) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' := by\n  fail_if_success exact tendsto_rpow_atTop (sub_pos.2 hκ)\n  fail_if_success solve | simp\n  exact recovery hκ\n\nexample {p q x : ℝ} (h : LiouvilleWith p x) (hpq : q < p) :\n    ∃ᶠ n : ℕ in atTop, ∃ m : ℤ, x ≠ m / n ∧ |x - m / n| < n ^ (-q) :=\n  h.frequently_lt_rpow_neg hpq\nexample {p x : ℝ} {n : ℕ} (h : LiouvilleWith p x) (hn : n ≠ 0) :\n    LiouvilleWith p ((n : ℝ) * x) := h.nat_mul hn\nexample : LiouvilleWith 1 (0 : ℝ) := liouvilleWith_one 0\n#print axioms eventual_filter\n#print axioms threshold\n#print axioms recovery\n#print axioms nonpositive\n#print axioms equal_guard\nend Decay270Generic\n"
+      },
+      "required_info": [
+        "'Decay270Generic.eventual_filter' depends on axioms:",
+        "'Decay270Generic.threshold' depends on axioms:",
+        "'Decay270Generic.equal_guard' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline2-executed.lean.txt",
+      "source_sha256": "d9d913107515f4c8e20be3706a3d8adbf3320d112fbf88e4821aaa1650de8d52",
+      "receipt": "inline2-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "DECAY270_INLINE_CLOSURE_NO_TARGET: Decay270Literal.reduction",
+        "DECAY270_INLINE_CLOSURE_NO_TARGET: Decay270Literal.exists_reduced_approx",
+        "DECAY270_INLINE_CLOSURE_NO_TARGET: Decay270Literal.isDiophantine_iff",
+        "DECAY270_INLINE_CLOSURE_NO_TARGET: Decay270Generic.reduction",
+        "DECAY270_INLINE_CLOSURE_NO_TARGET: Decay270Generic.exists_reduced_approx",
+        "DECAY270_INLINE_CLOSURE_NO_TARGET: Decay270Generic.isDiophantine_iff"
+      ]
+    },
+    {
+      "label": "scope",
+      "source": "scope3-executed.lean.txt",
+      "source_sha256": "f1ba759e16758a656758d000acb1d081cd0eb70cbc02bbdfb1cc3198f1b26956",
+      "receipt": "scope3-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "DECAY270_SIMP_MEMBER: false",
+        "DECAY270_PROJECT_CLOSURE: [Roth.eventually_div_rpow_lt]",
+        "DECAY270_SCOPE_COMPLETE"
+      ]
+    },
+    {
+      "label": "supplement",
+      "source": "supplement3-executed.lean.txt",
+      "source_sha256": "322a2eda865dc2d08ab1dc9358d80ce930b5bfbb07e6b893a3e36162a91bcb26",
+      "receipt": "supplement3-receipt.json",
+      "format": "isolated",
+      "native_region_start_line": 21,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.eventually_div_rpow_lt\nopen Filter\nopen scoped Topology\nnamespace Decay270Absence\nexample {M κ κ' : ℝ} (hκ : κ' < κ) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' := by\n  fail_if_success solve | exact?\n  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1\n    (((tendsto_rpow_atTop (sub_pos.2 hκ)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)\n  refine ⟨N, fun q hq ↦ ?_⟩\n  have hq0 : (0 : ℝ) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq\n  rw [div_lt_iff₀ (Real.rpow_pos_of_pos hq0 κ), one_div_mul_eq_div, ← Real.rpow_sub hq0]\n  exact hN q hq.le\nend Decay270Absence\nnamespace Decay270Generic\n#check @tendsto_rpow_atTop\n#check @Filter.eventually_atTop\n#check @Real.rpow_sub\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#check @LiouvilleWith.nat_mul\n#check @LiouvilleWith.exists_pos\n#check @LiouvilleWith.mono\n\ntheorem eventual_filter {α : Type*} {l : Filter α} {f : α → ℝ}\n    (hf : Tendsto f l atTop) {M C κ κ' : ℝ} (hκ : κ' < κ) (hC : 0 < C) :\n    ∀ᶠ x in l, M / f x ^ κ < C / f x ^ κ' := by\n  filter_upwards [hf.eventually_gt_atTop 0,\n    ((tendsto_rpow_atTop (sub_pos.2 hκ)).comp hf).eventually_gt_atTop (M / C)]\n    with x hx hb\n  have hp := Real.rpow_pos_of_pos hx κ\n  have hp' := Real.rpow_pos_of_pos hx κ'\n  have hm : M < C * (f x ^ κ / f x ^ κ') := by\n    simpa only [Function.comp_apply, Real.rpow_sub hx, mul_comm] using (div_lt_iff₀ hC).1 hb\n  rw [← mul_div_assoc] at hm\n  exact (div_lt_div_iff₀ hp hp').2 ((lt_div_iff₀ hp').1 hm)\n\ntheorem eventual_real {M C κ κ' : ℝ} (hκ : κ' < κ) (hC : 0 < C) :\n    ∀ᶠ x : ℝ in atTop, M / x ^ κ < C / x ^ κ' :=\n  eventual_filter tendsto_id hκ hC\n\ntheorem threshold {M C κ κ' : ℝ} (hκ : κ' < κ) (hC : 0 < C) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < C / (q : ℝ) ^ κ' := by\n  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1\n    (eventual_filter tendsto_natCast_atTop_atTop hκ hC)\n  exact ⟨N, fun q hq ↦ hN q hq.le⟩\n\ntheorem recovery {M κ κ' : ℝ} (hκ : κ' < κ) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' :=\n  threshold hκ zero_lt_one\n\n\nexample {κ κ' : ℝ} :\n    (∀ M : ℝ, ∃ Q : ℕ, ∀ q : ℕ, Q < q →\n      M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ') ↔ κ' < κ := by\n  constructor\n  · intro h\n    by_contra! hκ\n    obtain ⟨Q, hQ⟩ := h 1\n    have hx : (0 : ℝ) < (Q + 2 : ℕ) := by positivity\n    have hx1 : (1 : ℝ) ≤ (Q + 2 : ℕ) := by exact_mod_cast (by omega : 1 ≤ Q + 2)\n    have hpow := Real.rpow_le_rpow_of_exponent_le hx1 hκ\n    exact not_lt_of_ge (one_div_le_one_div_of_le (Real.rpow_pos_of_pos hx κ) hpow)\n      (hQ (Q + 2) (by omega))\n  · intro hκ M\n    exact recovery hκ\n\nexample : ¬ ((1 : ℝ) / (0 : ℝ) ^ (2 : ℝ) < 1 / (0 : ℝ) ^ (1 : ℝ)) := by\n  norm_num\nexample : ¬ ((0 : ℝ) / (2 : ℝ) ^ (0 : ℝ) < 0 / (2 : ℝ) ^ (0 : ℝ)) := by\n  norm_num\n\n#print axioms eventual_filter\n#print axioms recovery\nend Decay270Generic\n"
+      },
+      "required_info": [
+        "'Decay270Generic.eventual_filter' depends on axioms:",
+        "'Decay270Generic.recovery' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "5a228389e47d4b9c86afb421a01626f0453c21fbbea40a9ae28df8f12cd222c4",
+      "receipt": "isolated-receipt.json",
+      "reason": "three source/probe errors; recovered sorryAx"
+    },
+    {
+      "source": "isolated2-executed.lean.txt",
+      "source_sha256": "d0bd41d66b2c04b73fa48b01bf4d616d6989665a6980ee4971aabeb164e6cde1",
+      "receipt": "isolated2-receipt.json",
+      "reason": "unnecessarySimpa warning"
+    },
+    {
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "dedb4bd051ffdf7e251183c84611c6b1c4ca9f1f3c47a28445ea98a0a0cbf0a5",
+      "receipt": "inline-receipt.json",
+      "reason": "generic normalization error; recovered sorryAx"
+    },
+    {
+      "source": "scope-executed.lean.txt",
+      "source_sha256": "0adc5b4d1a162687844c3938db0133d74de87efe8cd58d899c27dcc8535a9df5",
+      "receipt": "scope-receipt.json",
+      "reason": "CoreM lift mismatch"
+    },
+    {
+      "source": "scope2-executed.lean.txt",
+      "source_sha256": "9b7411d533e604eeb4a8680f9c28bf39261bd46a47f72ace3344d51d339e2892",
+      "receipt": "scope2-receipt.json",
+      "reason": "empty-line style warning"
+    },
+    {
+      "source": "supplement-executed.lean.txt",
+      "source_sha256": "3ef28953f29afe0149447c7a5009ecb4a054f66e0c47c0e641dbb5cd4a98350f",
+      "receipt": "supplement-receipt.json",
+      "reason": "exact? found own new recovery; not existing mathlib"
+    },
+    {
+      "source": "supplement2-executed.lean.txt",
+      "source_sha256": "d9ede310343610e0a90d3d833465b981b8a8a63117c63953bff65de17563e8b7",
+      "receipt": "supplement2-receipt.json",
+      "reason": "apply? suggestions/progress not reliable negative closing semantics"
+    }
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "executor": "root via prepared exact source/hash requests; worker inspected full raw returned receipts",
+  "attempt_accounting": {
+    "native_executions": 12,
+    "accepted_sources": 5,
+    "rejected_sources": 7,
+    "all_raw_responses_archived": true
+  },
+  "original_replay_scope": "Exact target only; no helpers; basename replay; original proposition type agreement natively",
+  "no_file_end_build_due": true,
+  "next_file_end_canonical_index": 289,
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "363a6821de56e15a68978bcfef1f74e28eb837482667eba3b9ef498e98cea593",
+    "isolated_extra_modules": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics",
+      "Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith"
+    ],
+    "authorization": "import-authorization.json"
+  }
+}

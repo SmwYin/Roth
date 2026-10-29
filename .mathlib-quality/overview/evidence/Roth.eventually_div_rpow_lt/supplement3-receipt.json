@@ -1,0 +1,125 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.eventually_div_rpow_lt\nopen Filter\nopen scoped Topology\nnamespace Decay270Absence\nexample {M \u03ba \u03ba' : \u211d} (h\u03ba : \u03ba' < \u03ba) :\n    \u2203 Q\u2080 : \u2115, \u2200 q : \u2115, Q\u2080 < q \u2192 M / (q : \u211d) ^ \u03ba < 1 / (q : \u211d) ^ \u03ba' := by\n  fail_if_success solve | exact?\n  obtain \u27e8N, hN\u27e9 := Filter.eventually_atTop.1\n    (((tendsto_rpow_atTop (sub_pos.2 h\u03ba)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)\n  refine \u27e8N, fun q hq \u21a6 ?_\u27e9\n  have hq0 : (0 : \u211d) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq\n  rw [div_lt_iff\u2080 (Real.rpow_pos_of_pos hq0 \u03ba), one_div_mul_eq_div, \u2190 Real.rpow_sub hq0]\n  exact hN q hq.le\nend Decay270Absence\nnamespace Decay270Generic\n#check @tendsto_rpow_atTop\n#check @Filter.eventually_atTop\n#check @Real.rpow_sub\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#check @LiouvilleWith.nat_mul\n#check @LiouvilleWith.exists_pos\n#check @LiouvilleWith.mono\n\ntheorem eventual_filter {\u03b1 : Type*} {l : Filter \u03b1} {f : \u03b1 \u2192 \u211d}\n    (hf : Tendsto f l atTop) {M C \u03ba \u03ba' : \u211d} (h\u03ba : \u03ba' < \u03ba) (hC : 0 < C) :\n    \u2200\u1da0 x in l, M / f x ^ \u03ba < C / f x ^ \u03ba' := by\n  filter_upwards [hf.eventually_gt_atTop 0,\n    ((tendsto_rpow_atTop (sub_pos.2 h\u03ba)).comp hf).eventually_gt_atTop (M / C)]\n    with x hx hb\n  have hp := Real.rpow_pos_of_pos hx \u03ba\n  have hp' := Real.rpow_pos_of_pos hx \u03ba'\n  have hm : M < C * (f x ^ \u03ba / f x ^ \u03ba') := by\n    simpa only [Function.comp_apply, Real.rpow_sub hx, mul_comm] using (div_lt_iff\u2080 hC).1 hb\n  rw [\u2190 mul_div_assoc] at hm\n  exact (div_lt_div_iff\u2080 hp hp').2 ((lt_div_iff\u2080 hp').1 hm)\n\ntheorem eventual_real {M C \u03ba \u03ba' : \u211d} (h\u03ba : \u03ba' < \u03ba) (hC : 0 < C) :\n    \u2200\u1da0 x : \u211d in atTop, M / x ^ \u03ba < C / x ^ \u03ba' :=\n  eventual_filter tendsto_id h\u03ba hC\n\ntheorem threshold {M C \u03ba \u03ba' : \u211d} (h\u03ba : \u03ba' < \u03ba) (hC : 0 < C) :\n    \u2203 Q\u2080 : \u2115, \u2200 q : \u2115, Q\u2080 < q \u2192 M / (q : \u211d) ^ \u03ba < C / (q : \u211d) ^ \u03ba' := by\n  obtain \u27e8N, hN\u27e9 := Filter.eventually_atTop.1\n    (eventual_filter tendsto_natCast_atTop_atTop h\u03ba hC)\n  exact \u27e8N, fun q hq \u21a6 hN q hq.le\u27e9\n\ntheorem recovery {M \u03ba \u03ba' : \u211d} (h\u03ba : \u03ba' < \u03ba) :\n    \u2203 Q\u2080 : \u2115, \u2200 q : \u2115, Q\u2080 < q \u2192 M / (q : \u211d) ^ \u03ba < 1 / (q : \u211d) ^ \u03ba' :=\n  threshold h\u03ba zero_lt_one\n\n\nexample {\u03ba \u03ba' : \u211d} :\n    (\u2200 M : \u211d, \u2203 Q : \u2115, \u2200 q : \u2115, Q < q \u2192\n      M / (q : \u211d) ^ \u03ba < 1 / (q : \u211d) ^ \u03ba') \u2194 \u03ba' < \u03ba := by\n  constructor\n  \u00b7 intro h\n    by_contra! h\u03ba\n    obtain \u27e8Q, hQ\u27e9 := h 1\n    have hx : (0 : \u211d) < (Q + 2 : \u2115) := by positivity\n    have hx1 : (1 : \u211d) \u2264 (Q + 2 : \u2115) := by exact_mod_cast (by omega : 1 \u2264 Q + 2)\n    have hpow := Real.rpow_le_rpow_of_exponent_le hx1 h\u03ba\n    exact not_lt_of_ge (one_div_le_one_div_of_le (Real.rpow_pos_of_pos hx \u03ba) hpow)\n      (hQ (Q + 2) (by omega))\n  \u00b7 intro h\u03ba M\n    exact recovery h\u03ba\n\nexample : \u00ac ((1 : \u211d) / (0 : \u211d) ^ (2 : \u211d) < 1 / (0 : \u211d) ^ (1 : \u211d)) := by\n  norm_num\nexample : \u00ac ((0 : \u211d) / (2 : \u211d) ^ (0 : \u211d) < 0 / (2 : \u211d) ^ (0 : \u211d)) := by\n  norm_num\n\n#print axioms eventual_filter\n#print axioms recovery\nend Decay270Generic\n"
+  },
+  "elapsed_ms": 3015,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "supplement03",
+      "operation": "run_code",
+      "source": "supplement3-executed.lean.txt",
+      "source_sha256": "322a2eda865dc2d08ab1dc9358d80ce930b5bfbb07e6b893a3e36162a91bcb26",
+      "receipt": "supplement3-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.eventually_div_rpow_lt/root-requests/supplement03.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.eventually_div_rpow_lt/supplement3-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.eventually_div_rpow_lt`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@tendsto_rpow_atTop : \u2200 {y : \u211d}, 0 < y \u2192 Tendsto (fun x \u21a6 x ^ y) atTop atTop\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@eventually_atTop : \u2200 {\u03b1 : Type u_1} [inst : Preorder \u03b1] [IsDirectedOrder \u03b1] {p : \u03b1 \u2192 Prop} [Nonempty \u03b1],\\n  (\u2200\u1da0 (x : \u03b1) in atTop, p x) \u2194 \u2203 a, \u2200 (b : \u03b1), a \u2264 b \u2192 p b\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_sub : \u2200 {x : \u211d}, 0 < x \u2192 \u2200 (y z : \u211d), x ^ (y - z) = x ^ y / x ^ z\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.nat_mul : \u2200 {p x : \u211d} {n : \u2115}, LiouvilleWith p x \u2192 n \u2260 0 \u2192 LiouvilleWith p (\u2191n * x)\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.exists_pos : \u2200 {p x : \u211d},\\n  LiouvilleWith p x \u2192 \u2203 C, \u2203 (_ : 0 < C), \u2203\u1da0 (n : \u2115) in atTop, 1 \u2264 n \u2227 \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < C / \u2191n ^ p\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.mono : \u2200 {p q x : \u211d}, LiouvilleWith p x \u2192 q \u2264 p \u2192 LiouvilleWith q x\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Decay270Generic.eventual_filter' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 93,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Decay270Generic.recovery' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 94,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.eventually_div_rpow_lt`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@tendsto_rpow_atTop : \u2200 {y : \u211d}, 0 < y \u2192 Tendsto (fun x \u21a6 x ^ y) atTop atTop",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@eventually_atTop : \u2200 {\u03b1 : Type u_1} [inst : Preorder \u03b1] [IsDirectedOrder \u03b1] {p : \u03b1 \u2192 Prop} [Nonempty \u03b1],\n  (\u2200\u1da0 (x : \u03b1) in atTop, p x) \u2194 \u2203 a, \u2200 (b : \u03b1), a \u2264 b \u2192 p b",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_sub : \u2200 {x : \u211d}, 0 < x \u2192 \u2200 (y z : \u211d), x ^ (y - z) = x ^ y / x ^ z",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.nat_mul : \u2200 {p x : \u211d} {n : \u2115}, LiouvilleWith p x \u2192 n \u2260 0 \u2192 LiouvilleWith p (\u2191n * x)",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.exists_pos : \u2200 {p x : \u211d},\n  LiouvilleWith p x \u2192 \u2203 C, \u2203 (_ : 0 < C), \u2203\u1da0 (n : \u2115) in atTop, 1 \u2264 n \u2227 \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < C / \u2191n ^ p",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.mono : \u2200 {p q x : \u211d}, LiouvilleWith p x \u2192 q \u2264 p \u2192 LiouvilleWith q x",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Decay270Generic.eventual_filter' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 93,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Decay270Generic.recovery' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 94,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

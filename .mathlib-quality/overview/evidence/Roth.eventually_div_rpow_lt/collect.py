@@ -1,0 +1,30 @@
+from pathlib import Path
+import json,hashlib,subprocess,re
+D=Path(__file__).resolve().parent;R=Path.cwd();N='Roth.eventually_div_rpow_lt'
+def put(n,x):(D/n).write_text(json.dumps(x,indent=2,ensure_ascii=False)+'\n')
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+# Fresh source hashes and exact local literature excerpt, not prior-target credit.
+loc=R/'.mathlib-quality/references/clean.tex';(D/'local-excerpt.tex.txt').write_text('\n'.join(loc.read_text().splitlines()[1166:1194])+'\n')
+put('optional-math-opinion.json',dict(status='n/a',reason='ask_chatgpt_math unavailable; no second-opinion claim'))
+put('import-authorization.json',json.load(open('/private/tmp/roth-overview/native-prefix-authorizations.json'))[N])
+put('preparation-checks.json',dict(original_preexecution=dict(exit_code=0,exact293=True,source_sha256=sha(D/'original-executed.lean.txt')),native_queried_after_preparation_failure=False,non_native_collection_error=dict(error='progress entries key did not exist; corrected to completed_declarations',affected_proofs=False)))
+rows=[]
+for f in ['current','standard','abstract']:
+ for method in ['leanfinder','loogle','leansearch','rg','local_search']:
+  q=json.load(open(D/('search-'+f+'-'+method+'.json')));z=q['result'];sc=z.get('structuredContent',{})
+  rows.append(dict(form=f,method=method,receipt='search-'+f+'-'+method+'.json',request=q['request'],index=sc.get('index'),status='executed',conclusion='local index error is not absence'if method=='local_search'else'building blocks/partial matches; no exact exported absorption replacement established'))
+put('formal-search-matrix.json',rows)
+q=json.load(open(D/'original-receipt.json'));z=q['result']['structuredContent']['result'];msgs=[x['message']for x in z['items']]
+put('native-type.json',dict(type=next(x.split(': ',1)[1]for x in msgs if x.startswith('DECAY270_FULL_TYPE:')),full_type=True,full_written_source_body=True,printer_elision=any('characters elided' in x for x in msgs),full_kernel_printer_body=False,receipt='original-receipt.json',replay_scope='Exact target only; no private-helper closure needed; theorem type agreement via Subsingleton.elim, not proof construction identity'))
+put('canonical-consumers.json',dict(requested=293,unique=293,present=293,values=293,direct_value=[x.split(': ',1)[1]for x in msgs if x.startswith('DECAY270_DIRECT_CONSUMER:')],direct_type=[x.split(': ',1)[1]for x in msgs if x.startswith('DECAY270_DIRECT_TYPE_CONSUMER:')]))
+put('dependencies.json',dict(source_body=[],canonical_body=[],canonical_type=[],transitive_project_dependencies=[],reason='Theorem is built solely from real power, cast, order, and Filter APIs.'))
+for fname in ['web-batch0.json','web-batch3.json','web-batch6.json']:
+ q=json.load(open(D/fname));q['locators']=[x for x in q.pop('hits')if len(x['title'])>6 and not any(t in x['title'] for t in ['\\','{','}',']','$$'])][:12]
+ h,b=q.pop('returned_response_sha256_and_bytes');q['response']=dict(sha256=h,bytes=int(b),status=q.pop('returned_response_status',q.pop('response_status','returned')));put(fname,q)
+# Complete fullfile reading archives are exact17 controlled source copies.
+put('source-reading.json',dict(files=[dict(path='Roth/'+m+'.lean',archive='source-'+m+'.lean.txt',sha256=sha(D/('source-'+m+'.lean.txt')),read_entire_file=True)for m in ['Main','LeanEval']],caller_signatures_retained=True,private_helpers_copied=['Roth.approxSet_num_den_mem_aux','LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux'],original_replay_substitutions=['namespace Decay270Original; open Roth','target basename eventually_div_rpow_lt renamed replay only outside canonical array']))
+put('instructions-read.json',dict(skills=['/Users/ramin/.codex/skills/mathlib-quality/SKILL.md','/Users/ramin/.codex/skills/lean4/SKILL.md'],commands=['overview.md','mathlibable.md'],references=['mathlib-search.md','mathlibable-verdicts.md','generalisation-patterns.md','mathlib-review-stages.md'],contract='/private/tmp/roth-overview/WORKER_CONTRACT.md',overrides=['ROOT_NATIVE_EXECUTOR_ADDENDUM.md','MINIMAL_ORIGINAL_REPLAY_ADDENDUM.md'],native_executor='root exclusively',no_subagents=True))
+put('concrete-diagnostic.json',dict(named_objects=['Real.rpow','Nat.cast'],proof_diagnostic='Real.rpow appears in limit and algebraic normalization; Nat.cast only supplies an unbounded positive real input via tendsto_natCast_atTop_atTop. No special Roth object appears.',abstract_filter_generalization=True,original_recovery='threshold hκ zero_lt_one',own_new_generic_proof=True,existing_mathlib_replacement=False,false_generalization_rejected=['drop strict gap uniformly in arbitrary M','allow q=0 without eventual positivity','change Real.rpow to a generic field power without new API','identify LiouvilleWith with fixed-constant approxSet or uniform IsDiophantine']))
+put('composition.json',dict(conclusion='NOT-COMPOSABLE',attempts=[dict(api=['tendsto_rpow_atTop','Filter.Tendsto.comp','Filter.Tendsto.eventually_gt_atTop'],result='eventual bound on q^(κ-κprime), not desired fractions or natural threshold; positivity and rpow_sub algebra remain'),dict(api=['LiouvilleWith.frequently_lt_rpow_neg'],result='compiled higher-level consequence under LiouvilleWith; cannot supply arbitrary M/q comparison without inventing unrelated x/numerator premise'),dict(api=['simp','exact?','apply?'],result='direct closing probes isolated before own generic definitions; see supplement accepted receipt')],own_generic_not_existing_mathlib=True,old_form_requires_real_proof=True,cost_based=False))
+put('inline-audit.json',dict(source='inline2-executed.lean.txt',receipt='inline2-receipt.json',full_bodies=6,original_signature_checks=6,routes=['literal original proof locally inlined','own arbitrary-filter C-positive theorem with natural recovery'],source_callers=3,external_to_declaring_file_callers=1,closure_scope='transitive project/scratch value constants; rejects target and its generated aux names',not_existing_mathlib_replacement=True))
+print('collected search, original kernel, source/literature controls and phase artifacts')
