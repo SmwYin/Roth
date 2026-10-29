@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 250/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 251/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 250; remaining: 43.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 87 BORDERLINE-needs-human, 59 SKIP.
+- Completed applicable assessments: 251; remaining: 42.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 88 BORDERLINE-needs-human, 59 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3075,6 +3075,20 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One actual proof caller, the private exists_mem_RSet_le_index_aux in MainLemma at560; no external-to-file uses or direct type consumers. Full caller inlining retains its signature and continuation.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sub_mem_RSet.md).
 
+### Completed: `Roth.eval_hasseDeriv_sub_eq_zero`
+
+- Type: `∀ {σ : Type u_1} {S : Type u_2} [inst : CommRing S] {f : Polynomial ℤ} {α : S},
+  (Polynomial.aeval α) f = 0 →
+    ∀ {W' W'' : MvPolynomial σ ℤ} {j : σ →₀ ℕ},
+      Roth.diag ((hasseDeriv j) W') %ₘ f = Roth.diag ((hasseDeriv j) W'') %ₘ f →
+        (eval fun (x : σ) ↦ α) ((hasseDeriv j) ((map (Int.castRingHom S)) (W' - W''))) = 0`
+- What: If selected diagonal Hasse derivatives of two integer polynomials have equal remainders modulo f, their mapped difference has that Hasse derivative vanishing at every constant point given by a root of f.
+- How: Equal remainders make the diagonal derivative difference divisible by f using dvd_modByMonic_iff_dvd and sub_modByMonic. Evaluation kills this multiple by aeval_eq_zero_of_dvd_aeval_eq_zero; Hasse coefficient transport and evaluation composition identify the multivariate value.
+- Hypotheses: Arbitrary variable type and commutative target ring S, arbitrary f over integers and root alpha, two arbitrary polynomials and a finite multiindex with equal diagonal remainders. No monicity, finite variable, characteristic, nontriviality or degree assumptions.
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.hasseDeriv_map, Roth.diag, Roth.diag_sub
+- Caller summary: One actual private proof caller at MainLemma567; full module inlining retains caller signature and downstream main_lemma, with no target constant in the inlined caller value. Zero external-to-file uses/direct type consumers.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3601,6 +3615,8 @@ Completed `Roth.exists_ne_modByMonic_eq`: Existing finite-map collision and low-
 
 Completed `Roth.sub_mem_RSet`: Existing degreeOf_sub_le, coeff_sub, sub_ne_zero and generated ordered-group abs_sub_le_of_nonneg_of_le/abs_sub_le_of_le_of_le cover the leaves. No verified exact whole-tuple replacement.
 
+Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Existing eval₂_modByMonic_eq_self_of_root needs no monicity at this pin; aeval_eq_zero_of_dvd_aeval_eq_zero, dvd_modByMonic_iff_dvd and sub_modByMonic supply scalar leaves. Hasse transport is project API, not existing mathlib.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4102,6 +4118,8 @@ Completed `Roth.pigeonhole_count`: {'other': 'Roth.floor_rpow_count_lt_aux', 'sa
 Completed `Roth.exists_ne_modByMonic_eq`: Generic collision duplicates Fintype pigeonhole only after a substantive polynomial encoding and project box cardinality bridge; pigeonhole_count supplies the budget and ncard_boxFamily supplies source size, neither is the same theorem.
 
 Completed `Roth.sub_mem_RSet`: Only scalar/degree/nonzero leaves coincide with existing mathlib theorems. The complete membership tuple is not identical to any one of them; a new scratch generic interval helper is a specialization route, not existing API.
+
+Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Equal-remainder evaluation is a short chain of existing polynomial evaluation laws, but the full mapped-Hasse-diagonal conclusion requires coefficient/evaluation normalization. Parent diag is one-call aeval; diag_sub is map_sub; Hasse and its transport were accepted YES separately. No verdict inherited.
 
 ## Part 5: Generalization opportunities
 
@@ -4616,6 +4634,8 @@ Completed `Roth.exists_ne_modByMonic_eq`: STRICTLY NARROWER THAN STANDARD: delet
 
 Completed `Roth.sub_mem_RSet`: Verified ordered commutative ring interval endpoints yield diameter ub-lb, with original integer/RSet specialization preserving B. A size/set diameter helper supports semantic coefficient ranges. Parent-family representation changes are a separate API decision.
 
+Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Verified arbitrary CommRing coefficient R and algebra target S with the same Hasse/diagonal semantics. A separately proved generic AddGroup observation D into Polynomial R and RingHom e killing f works over arbitrary rings, with exact original recovery checked. Root and remainder equality are both necessary.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5118,6 +5138,8 @@ Completed `Roth.pigeonhole_count`: Possible arbitrary strict-base/exponent-budge
 Completed `Roth.exists_ne_modByMonic_eq`: Potential finite-alphabet polynomial-observation collision bridge, with finite/infinite source handling. Both outer pigeonhole principles and low-degree monic reconstruction already exist; finite support is not a missing mathematical prerequisite.
 
 Completed `Roth.sub_mem_RSet`: Possible combined coefficient-family subtraction inclusion with degree bounds; three concrete future upstream design questions in report.
+
+Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Upstream design decision between a generic equal-remainder evaluation companion, a reusable diagonal-evaluation bridge, and retaining the full Hasse corollary locally; three concrete future questions in report.
 
 ## Part 7: Junk / removable
 
@@ -5624,6 +5646,8 @@ Completed `Roth.exists_ne_modByMonic_eq`: Used once in the central auxiliary-pol
 
 Completed `Roth.sub_mem_RSet`: Used by one actual caller and transitively main_lemma; not dead code. Optional local inlining compiled, but the full tuple is not a ≤3 existing-call wrapper.
 
+Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Not dead code: one direct caller and the main-lemma continuation. Full inlining compiles but does not establish a ≤3 existing-call replacement for the entire theorem.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5878,6 +5902,7 @@ Completed `Roth.sub_mem_RSet`: Used by one actual caller and transitively main_l
 | 248 | `Roth.pigeonhole_count` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.pigeonhole_count.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.pigeonhole_count/root-acceptance.json) |
 | 249 | `Roth.exists_ne_modByMonic_eq` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_ne_modByMonic_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_ne_modByMonic_eq/root-acceptance.json) |
 | 250 | `Roth.sub_mem_RSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sub_mem_RSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sub_mem_RSet/root-acceptance.json) |
+| 251 | `Roth.eval_hasseDeriv_sub_eq_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eval_hasseDeriv_sub_eq_zero/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6377,12 +6402,14 @@ Completed `Roth.exists_ne_modByMonic_eq` action: Recommend dropping the finite-s
 
 Completed `Roth.sub_mem_RSet` action: BORDERLINE-needs-human: retain local in MainLemma; decide coefficient-family API and whether nonzero is separate before any upstream proposal. Future questions do not block this completed read-only assessment.
 
+Completed `Roth.eval_hasseDeriv_sub_eq_zero` action: BORDERLINE-needs-human: retain local in MainLemma; consider scalar equal-remainder evaluation and coefficient-independent diagonal transport API before upstreaming a Hasse-specific corollary. Completed assessment; future API questions are not blockers.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.eval_hasseDeriv_sub_eq_zero` next. Supporting identities receive their own applicable checks.
+   `Roth.le_index_of_forall_eval_eq_zero` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

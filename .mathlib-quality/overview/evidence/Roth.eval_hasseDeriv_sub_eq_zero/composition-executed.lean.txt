@@ -1,0 +1,76 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Vanish251Project
+open Roth MvPolynomial
+variable {R S A : Type*}
+theorem observe [Ring R] [Ring S] [AddGroup A] (D : A →+ Polynomial R)
+    (e : Polynomial R →+* S) {f : Polynomial R} (hf : e f = 0) {p q : A}
+    (h : D p %ₘ f = D q %ₘ f) : e (D (p - q)) = 0 := by
+  have hr (a : Polynomial R) : e (a %ₘ f) = e a := by
+    rw [Polynomial.modByMonic_eq_sub_mul_div, map_sub, map_mul, hf, zero_mul, sub_zero]
+  rw [map_sub, map_sub, sub_eq_zero, ← hr (D p), ← hr (D q), h]
+theorem recovery {σ : Type*} {S : Type*} [CommRing S] {f : Polynomial ℤ} {α : S}
+    (hfα : Polynomial.aeval α f = 0) {W' W'' : MvPolynomial σ ℤ} {j : σ →₀ ℕ}
+    (h : diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f) :
+    eval (fun _ ↦ α) (hasseDeriv j (map (Int.castRingHom S) (W' - W''))) = 0 := by
+  let D : MvPolynomial σ ℤ →+ Polynomial ℤ :=
+    (aeval (fun _ ↦ Polynomial.X)).toAddMonoidHom.comp (hasseDeriv j).toAddMonoidHom
+  have he := observe D (Polynomial.aeval α).toRingHom hfα h
+  simpa [D, hasseDeriv_map, eval_map, ← algebraMap_int_eq, ← aeval_def,
+    MvPolynomial.comp_aeval_apply, Polynomial.aeval_X] using he
+
+theorem root_needed :
+    diag (hasseDeriv (0 : Unit →₀ ℕ) (1 : MvPolynomial Unit ℤ)) %ₘ 1 =
+      diag (hasseDeriv (0 : Unit →₀ ℕ) (0 : MvPolynomial Unit ℤ)) %ₘ 1 ∧
+    eval (fun _ : Unit ↦ (0 : ℤ))
+      (hasseDeriv 0 (map (Int.castRingHom ℤ) ((1 : MvPolynomial Unit ℤ) - 0))) ≠ 0 := by
+  simp
+theorem equality_needed : Polynomial.aeval (0 : ℤ) (Polynomial.X : Polynomial ℤ) = 0 ∧
+    eval (fun _ : Unit ↦ (0 : ℤ))
+      (hasseDeriv 0 (map (Int.castRingHom ℤ) ((1 : MvPolynomial Unit ℤ) - 0))) ≠ 0 := by
+  simp
+
+open Polynomial in
+theorem eval_eq_of_mod_eq [CommRing R] [CommRing S] (g : R →+* S) (x : S)
+    {f p q : Polynomial R} (hf : eval₂ g x f = 0) (h : p %ₘ f = q %ₘ f) :
+    eval₂ g x p = eval₂ g x q := by
+  exact (eval₂_modByMonic_eq_self_of_root (p := p) hf).symm.trans
+    ((congrArg (eval₂ g x) h).trans (eval₂_modByMonic_eq_self_of_root (p := q) hf))
+
+theorem generalized {σ R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
+    {f : Polynomial R} {α : S} (hfα : Polynomial.aeval α f = 0)
+    {W' W'' : MvPolynomial σ R} {j : σ →₀ ℕ}
+    (h : aeval (fun _ ↦ Polynomial.X) (hasseDeriv j W') %ₘ f =
+      aeval (fun _ ↦ Polynomial.X) (hasseDeriv j W'') %ₘ f) :
+    eval (fun _ ↦ α) (hasseDeriv j (map (algebraMap R S) (W' - W''))) = 0 := by
+  let D : MvPolynomial σ R →+ Polynomial R :=
+    (aeval (fun _ ↦ Polynomial.X)).toAddMonoidHom.comp (hasseDeriv j).toAddMonoidHom
+  have he := observe D (Polynomial.aeval α).toRingHom hfα h
+  simpa [D, hasseDeriv_map, eval_map, ← aeval_def,
+    MvPolynomial.comp_aeval_apply, Polynomial.aeval_X] using he
+theorem direct {σ : Type*} {S : Type*} [CommRing S] {f : Polynomial ℤ} {α : S}
+    (hfα : Polynomial.aeval α f = 0) {W' W'' : MvPolynomial σ ℤ} {j : σ →₀ ℕ}
+    (h : diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f) :
+    eval (fun _ ↦ α) (hasseDeriv j (map (Int.castRingHom S) (W' - W''))) = 0 := by
+  have hv := eval_eq_of_mod_eq (Int.castRingHom S) α hfα h
+  change Polynomial.aeval α (diag (hasseDeriv j W')) =
+    Polynomial.aeval α (diag (hasseDeriv j W'')) at hv
+  simpa [hasseDeriv_map, eval_map, ← algebraMap_int_eq, ← aeval_def, diag,
+    MvPolynomial.comp_aeval_apply, Polynomial.aeval_X] using sub_eq_zero.mpr hv
+end Vanish251Project
+#print axioms Vanish251Project.generalized
+#print axioms Vanish251Project.direct

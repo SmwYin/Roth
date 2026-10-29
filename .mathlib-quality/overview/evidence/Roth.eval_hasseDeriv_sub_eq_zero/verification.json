@@ -1,0 +1,139 @@
+{
+  "declaration": "Roth.eval_hasseDeriv_sub_eq_zero",
+  "canonical_index": 251,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "1f3e158d67d23cae29d46260c3b6012dfbec283640d9e5c23967b27888a8d262",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "VANISH251_SIGNATURE_IDENTICAL",
+        "VANISH251_AUDIT: requested=293; unique=293",
+        "VANISH251_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "run_code",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "92bd0657f038b7a814df1f42be21ff73279cfa6d23eabeae3e0dbd89c2ef4afa",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.eval_hasseDeriv_sub_eq_zero\n#check_failure MvPolynomial.hasseDeriv\n#check @Polynomial.eval₂_modByMonic_eq_self_of_root\n#check @Polynomial.dvd_modByMonic_iff_dvd\n#check @Polynomial.sub_modByMonic\n#check @Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero\n#check @MvPolynomial.comp_aeval_apply\nnamespace Vanish251Isolated\nopen Polynomial\nvariable {R S A : Type*}\ntheorem eval_eq_of_mod_eq [CommRing R] [CommRing S] (g : R →+* S) (x : S)\n    {f p q : Polynomial R} (hf : eval₂ g x f = 0) (h : p %ₘ f = q %ₘ f) :\n    eval₂ g x p = eval₂ g x q := by\n  exact (eval₂_modByMonic_eq_self_of_root (p := p) hf).symm.trans\n    ((congrArg (eval₂ g x) h).trans (eval₂_modByMonic_eq_self_of_root (p := q) hf))\ntheorem observe [Ring R] [Ring S] [AddGroup A] (D : A →+ Polynomial R)\n    (e : Polynomial R →+* S) {f : Polynomial R} (hf : e f = 0) {p q : A}\n    (h : D p %ₘ f = D q %ₘ f) : e (D (p - q)) = 0 := by\n  have hr (a : Polynomial R) : e (a %ₘ f) = e a := by\n    rw [Polynomial.modByMonic_eq_sub_mul_div, map_sub, map_mul, hf, zero_mul, sub_zero]\n  rw [map_sub, map_sub, sub_eq_zero, ← hr (D p), ← hr (D q), h]\ntheorem divisibility [CommRing R] {f p q : Polynomial R} (h : p %ₘ f = q %ₘ f) :\n    f ∣ p - q := by\n  apply Polynomial.dvd_modByMonic_iff_dvd.mp\n  simp only [Polynomial.sub_modByMonic, h, sub_self, dvd_zero]\ntheorem root_needed : (1 : Polynomial ℤ) %ₘ 1 = 0 %ₘ 1 ∧\n    Polynomial.eval (0 : ℤ) ((1 : Polynomial ℤ) - 0) ≠ 0 := by simp\ntheorem equality_needed : Polynomial.eval (0 : ℤ) (Polynomial.X : Polynomial ℤ) = 0 ∧\n    (1 : Polynomial ℤ) %ₘ Polynomial.X ≠ 0 %ₘ Polynomial.X ∧\n    Polynomial.eval (0 : ℤ) ((1 : Polynomial ℤ) - 0) ≠ 0 := by simp [Polynomial.modByMonic_X]\nend Vanish251Isolated\n#print axioms Vanish251Isolated.eval_eq_of_mod_eq\n#print axioms Vanish251Isolated.observe\n#print axioms Vanish251Isolated.divisibility\n#print axioms Vanish251Isolated.root_needed\n#print axioms Vanish251Isolated.equality_needed\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "Vanish251Isolated.eval_eq_of_mod_eq",
+        "Vanish251Isolated.observe",
+        "Vanish251Isolated.divisibility",
+        "Vanish251Isolated.root_needed",
+        "Vanish251Isolated.equality_needed"
+      ]
+    },
+    {
+      "label": "recovery",
+      "format": "disk",
+      "source": "recovery-executed.lean.txt",
+      "receipt": "recovery-receipt.json",
+      "source_sha256": "4347d3d9c98225a44c08386ac0a516c6f0a5168138bbb92437887283427abe39",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "VANISH251_RECOVERY_SIGNATURE_IDENTICAL"
+      ]
+    },
+    {
+      "label": "inline",
+      "format": "disk",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "source_sha256": "8cd076a755da97f812a40cb31f7e07cc712236253bf785c41d6b21fe1c78f3d0",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "VANISH251_INLINE_SIGNATURE_IDENTICAL",
+        "VANISH251_INLINE_NO_TARGET"
+      ]
+    },
+    {
+      "label": "metadata",
+      "format": "disk",
+      "source": "metadata-executed.lean.txt",
+      "receipt": "metadata-receipt.json",
+      "source_sha256": "827dd9cae07d7219ec1094aef480755508648700b98768546d83e5951d5de8dc",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "VANISH251_TYPE_CONSTANTS:",
+        "VANISH251_BODY_CONSTANTS:"
+      ]
+    },
+    {
+      "label": "composition",
+      "format": "disk",
+      "source": "composition-executed.lean.txt",
+      "receipt": "composition-receipt.json",
+      "source_sha256": "0494bc284cb0cdcba38a78b66f02731a0b027f1e80a65b7336e4af9fc4cf4f50",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "Vanish251Project.generalized",
+        "Vanish251Project.direct"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "composition-rejected-executed.lean.txt",
+      "receipt": "composition-rejected-receipt.json",
+      "format": "disk"
+    },
+    {
+      "source": "isolated-rejected-executed.lean.txt",
+      "receipt": "isolated-rejected-receipt.json",
+      "format": "run_code"
+    },
+    {
+      "source": "recovery-rejected-executed.lean.txt",
+      "receipt": "recovery-rejected-receipt.json",
+      "format": "disk"
+    }
+  ],
+  "warming": [],
+  "full_actual_callers": {
+    "count": 1,
+    "original_signatures_verified": 1,
+    "complete_original_module_inline": true,
+    "target_absent_from_new_caller": true
+  },
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "fad927215a124d6928eaf99af55185c1261bcc2a834a2c2fcbda3946fa3ceafc",
+    "production_sources_unchanged": true,
+    "extra_isolated_imports": 0,
+    "shared_import_count": 18,
+    "disk_import_count": 9,
+    "file_end_build": "Not required at251; accepted228 file-end build reused; next266."
+  }
+}

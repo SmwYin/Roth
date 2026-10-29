@@ -1,0 +1,129 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.eval_hasseDeriv_sub_eq_zero\n#check_failure MvPolynomial.hasseDeriv\n#check @Polynomial.eval₂_modByMonic_eq_self_of_root\n#check @Polynomial.dvd_modByMonic_iff_dvd\n#check @Polynomial.sub_modByMonic\n#check @Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero\n#check @MvPolynomial.comp_aeval_apply\nnamespace Vanish251Isolated\nopen Polynomial\nvariable {R S A : Type*}\ntheorem eval_eq_of_mod_eq [CommRing R] [CommRing S] (g : R →+* S) (x : S)\n    {f p q : Polynomial R} (hf : eval₂ g x f = 0) (h : p %ₘ f = q %ₘ f) :\n    eval₂ g x p = eval₂ g x q := by\n  exact (eval₂_modByMonic_eq_self_of_root (p := p) hf).symm.trans\n    ((congrArg (eval₂ g x) h).trans (eval₂_modByMonic_eq_self_of_root (p := q) hf))\ntheorem observe [Ring R] [Ring S] [AddGroup A] (D : A →+ Polynomial R)\n    (e : Polynomial R →+* S) {f : Polynomial R} (hf : e f = 0) {p q : A}\n    (h : D p %ₘ f = D q %ₘ f) : e (D (p - q)) = 0 := by\n  have hr (a : Polynomial R) : e (a %ₘ f) = e a := by\n    rw [Polynomial.modByMonic_eq_sub_mul_div, map_sub, map_mul, hf, zero_mul, sub_zero]\n  rw [map_sub, map_sub, sub_eq_zero, ← hr (D p), ← hr (D q), h]\ntheorem divisibility [CommRing R] {f p q : Polynomial R} (h : p %ₘ f = q %ₘ f) :\n    f ∣ p - q := by\n  apply Polynomial.dvd_modByMonic_iff_dvd.mp\n  simp only [Polynomial.sub_modByMonic, h, sub_self, dvd_zero]\ntheorem root_needed : (1 : Polynomial ℤ) %ₘ 1 = 0 %ₘ 1 ∧\n    Polynomial.eval (0 : ℤ) ((1 : Polynomial ℤ) - 0) ≠ 0 := by simp\ntheorem equality_needed : Polynomial.eval (0 : ℤ) (Polynomial.X : Polynomial ℤ) = 0 ∧\n    (1 : Polynomial ℤ) %ₘ Polynomial.X ≠ 0 %ₘ Polynomial.X ∧\n    Polynomial.eval (0 : ℤ) ((1 : Polynomial ℤ) - 0) ≠ 0 := by simp [Polynomial.modByMonic_X]\nend Vanish251Isolated\n#print axioms Vanish251Isolated.eval_eq_of_mod_eq\n#print axioms Vanish251Isolated.observe\n#print axioms Vanish251Isolated.divisibility\n#print axioms Vanish251Isolated.root_needed\n#print axioms Vanish251Isolated.equality_needed\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.eval_hasseDeriv_sub_eq_zero`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.eval₂_modByMonic_eq_self_of_root : ∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [inst_1 : CommRing S]\\n  {f : R →+* S} {p q : Polynomial R} {x : S},\\n  Polynomial.eval₂ f x q = 0 → Polynomial.eval₂ f x (p %ₘ q) = Polynomial.eval₂ f x p\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.dvd_modByMonic_iff_dvd : ∀ {R : Type u_1} [inst : Ring R] {p q : Polynomial R}, q ∣ p %ₘ q ↔ q ∣ p\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.sub_modByMonic : ∀ {R : Type u_1} [inst : CommRing R] (p₁ p₂ q : Polynomial R),\\n  (p₁ - p₂) %ₘ q = p₁ %ₘ q - p₂ %ₘ q\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero : ∀ {R : Type u_1} {B : Type u_2} [inst : CommSemiring R]\\n  [inst_1 : Semiring B] [inst_2 : Algebra R B] {p q : Polynomial R} {x : B},\\n  p ∣ q → (Polynomial.aeval x) p = 0 → (Polynomial.aeval x) q = 0\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.comp_aeval_apply : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_4} [inst_3 : CommSemiring B]\\n  [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.aeval f) p) = (MvPolynomial.aeval fun i ↦ φ (f i)) p\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Vanish251Isolated.eval_eq_of_mod_eq' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 51,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Vanish251Isolated.observe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 52,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Vanish251Isolated.divisibility' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 53,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Vanish251Isolated.root_needed' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 54,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Vanish251Isolated.equality_needed' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 55,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.eval_hasseDeriv_sub_eq_zero`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.eval₂_modByMonic_eq_self_of_root : ∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [inst_1 : CommRing S]\n  {f : R →+* S} {p q : Polynomial R} {x : S},\n  Polynomial.eval₂ f x q = 0 → Polynomial.eval₂ f x (p %ₘ q) = Polynomial.eval₂ f x p",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.dvd_modByMonic_iff_dvd : ∀ {R : Type u_1} [inst : Ring R] {p q : Polynomial R}, q ∣ p %ₘ q ↔ q ∣ p",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.sub_modByMonic : ∀ {R : Type u_1} [inst : CommRing R] (p₁ p₂ q : Polynomial R),\n  (p₁ - p₂) %ₘ q = p₁ %ₘ q - p₂ %ₘ q",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero : ∀ {R : Type u_1} {B : Type u_2} [inst : CommSemiring R]\n  [inst_1 : Semiring B] [inst_2 : Algebra R B] {p q : Polynomial R} {x : B},\n  p ∣ q → (Polynomial.aeval x) p = 0 → (Polynomial.aeval x) q = 0",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.comp_aeval_apply : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_4} [inst_3 : CommSemiring B]\n  [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.aeval f) p) = (MvPolynomial.aeval fun i ↦ φ (f i)) p",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Vanish251Isolated.eval_eq_of_mod_eq' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 51,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Vanish251Isolated.observe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 52,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Vanish251Isolated.divisibility' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 53,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Vanish251Isolated.root_needed' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 54,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Vanish251Isolated.equality_needed' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 55,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1159
+}

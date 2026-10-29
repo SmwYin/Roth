@@ -1,0 +1,55 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.eval_hasseDeriv_sub_eq_zero
+#check_failure MvPolynomial.hasseDeriv
+#check @Polynomial.eval₂_modByMonic_eq_self_of_root
+#check @Polynomial.dvd_modByMonic_iff_dvd
+#check @Polynomial.sub_modByMonic
+#check @Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero
+#check @MvPolynomial.comp_aeval_apply
+namespace Vanish251Isolated
+open Polynomial
+variable {R S A : Type*}
+theorem eval_eq_of_mod_eq [CommRing R] [CommRing S] (g : R →+* S) (x : S)
+    {f p q : Polynomial R} (hf : eval₂ g x f = 0) (h : p %ₘ f = q %ₘ f) :
+    eval₂ g x p = eval₂ g x q := by
+  exact (eval₂_modByMonic_eq_self_of_root (p := p) hf).symm.trans
+    ((congrArg (eval₂ g x) h).trans (eval₂_modByMonic_eq_self_of_root (p := q) hf))
+theorem observe [Ring R] [Ring S] [AddGroup A] (D : A →+ Polynomial R)
+    (e : Polynomial R →+* S) {f : Polynomial R} (hf : e f = 0) {p q : A}
+    (h : D p %ₘ f = D q %ₘ f) : e (D (p - q)) = 0 := by
+  have hr (a : Polynomial R) : e (a %ₘ f) = e a := by
+    rw [Polynomial.modByMonic_eq_sub_mul_div, map_sub, map_mul, hf, zero_mul, sub_zero]
+  rw [map_sub, map_sub, sub_eq_zero, ← hr (D p), ← hr (D q), h]
+theorem divisibility [CommRing R] {f p q : Polynomial R} (h : p %ₘ f = q %ₘ f) :
+    f ∣ p - q := by
+  apply Polynomial.dvd_modByMonic_iff_dvd.mp
+  simp only [Polynomial.sub_modByMonic, h, sub_self, dvd_zero]
+theorem root_needed : (1 : Polynomial ℤ) %ₘ 1 = 0 %ₘ 1 ∧
+    Polynomial.eval (0 : ℤ) ((1 : Polynomial ℤ) - 0) ≠ 0 := by simp
+theorem equality_needed : Polynomial.eval (0 : ℤ) (Polynomial.X : Polynomial ℤ) = 0 ∧
+    (1 : Polynomial ℤ) %ₘ Polynomial.X ≠ 0 %ₘ Polynomial.X ∧
+    Polynomial.eval (0 : ℤ) ((1 : Polynomial ℤ) - 0) ≠ 0 := by simp [Polynomial.modByMonic_X]
+end Vanish251Isolated
+#print axioms Vanish251Isolated.eval_eq_of_mod_eq
+#print axioms Vanish251Isolated.observe
+#print axioms Vanish251Isolated.divisibility
+#print axioms Vanish251Isolated.root_needed
+#print axioms Vanish251Isolated.equality_needed

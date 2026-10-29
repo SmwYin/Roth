@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 250 / 293 written declarations.**
+**Completed: 251 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -258,8 +258,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 248 | `Roth.pigeonhole_count` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.pigeonhole_count.md) |
 | 249 | `Roth.exists_ne_modByMonic_eq` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.exists_ne_modByMonic_eq.md) |
 | 250 | `Roth.sub_mem_RSet` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.sub_mem_RSet.md) |
+| 251 | `Roth.eval_hasseDeriv_sub_eq_zero` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md) |
 
-**Next declaration: `Roth.eval_hasseDeriv_sub_eq_zero`**, `Roth/MainLemma.lean:402`.
+**Next declaration: `Roth.le_index_of_forall_eval_eq_zero`**, `Roth/MainLemma.lean:419`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

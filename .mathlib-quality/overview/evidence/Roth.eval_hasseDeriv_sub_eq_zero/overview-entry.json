@@ -1,0 +1,20 @@
+{
+  "type": "∀ {σ : Type u_1} {S : Type u_2} [inst : CommRing S] {f : Polynomial ℤ} {α : S},\n  (Polynomial.aeval α) f = 0 →\n    ∀ {W' W'' : MvPolynomial σ ℤ} {j : σ →₀ ℕ},\n      Roth.diag ((hasseDeriv j) W') %ₘ f = Roth.diag ((hasseDeriv j) W'') %ₘ f →\n        (eval fun (x : σ) ↦ α) ((hasseDeriv j) ((map (Int.castRingHom S)) (W' - W''))) = 0",
+  "kind": "theorem",
+  "what": "If selected diagonal Hasse derivatives of two integer polynomials have equal remainders modulo f, their mapped difference has that Hasse derivative vanishing at every constant point given by a root of f.",
+  "how": "Equal remainders make the diagonal derivative difference divisible by f using dvd_modByMonic_iff_dvd and sub_modByMonic. Evaluation kills this multiple by aeval_eq_zero_of_dvd_aeval_eq_zero; Hasse coefficient transport and evaluation composition identify the multivariate value.",
+  "hypotheses": "Arbitrary variable type and commutative target ring S, arbitrary f over integers and root alpha, two arbitrary polynomials and a finite multiindex with equal diagonal remainders. No monicity, finite variable, characteristic, nontriviality or degree assumptions.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.diag",
+    "Roth.diag_sub"
+  ],
+  "caller_summary": "One actual private proof caller at MainLemma567; full module inlining retains caller signature and downstream main_lemma, with no target constant in the inlined caller value. Zero external-to-file uses/direct type consumers.",
+  "mathlib_api_audit": "Existing eval₂_modByMonic_eq_self_of_root needs no monicity at this pin; aeval_eq_zero_of_dvd_aeval_eq_zero, dvd_modByMonic_iff_dvd and sub_modByMonic supply scalar leaves. Hasse transport is project API, not existing mathlib.",
+  "moral_duplications": "Equal-remainder evaluation is a short chain of existing polynomial evaluation laws, but the full mapped-Hasse-diagonal conclusion requires coefficient/evaluation normalization. Parent diag is one-call aeval; diag_sub is map_sub; Hasse and its transport were accepted YES separately. No verdict inherited.",
+  "generalization": "Verified arbitrary CommRing coefficient R and algebra target S with the same Hasse/diagonal semantics. A separately proved generic AddGroup observation D into Polynomial R and RingHom e killing f works over arbitrary rings, with exact original recovery checked. Root and remainder equality are both necessary.",
+  "missing_api": "Upstream design decision between a generic equal-remainder evaluation companion, a reusable diagonal-evaluation bridge, and retaining the full Hasse corollary locally; three concrete future questions in report.",
+  "junk": "Not dead code: one direct caller and the main-lemma continuation. Full inlining compiles but does not establish a ≤3 existing-call replacement for the entire theorem.",
+  "action": "BORDERLINE-needs-human: retain local in MainLemma; consider scalar equal-remainder evaluation and coefficient-independent diagonal transport API before upstreaming a Hasse-specific corollary. Completed assessment; future API questions are not blockers."
+}
