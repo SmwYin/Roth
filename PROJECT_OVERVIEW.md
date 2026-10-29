@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 289/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 290/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 289; remaining: 4.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 34 YES-but-generalise-first, 46 NO-mathlib-has-it, 98 BORDERLINE-needs-human, 77 SKIP.
+- Completed applicable assessments: 290; remaining: 3.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 34 YES-but-generalise-first, 46 NO-mathlib-has-it, 99 BORDERLINE-needs-human, 77 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3771,6 +3771,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: No lexical proof/type callers and no canonical293 direct kernel consumers. Intended named public endpoint; retain in the Roth contribution package rather than deleting as dead code.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.roth_rat.md).
 
+### Completed: `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine`
+
+- Type: `ℝ → Prop`
+- What: Uniform positive strict rational-approximation lower bound at every exponent2+epsilon; includes exact approximants and therefore implies irrationality.
+- How: Quantified arithmetic predicate; no proof. Native generic bridge uses bounded-denominator finiteness, positive finite minimum and exponent-gap absorption.
+- Hypotheses: x : ℝ; no algebraicity or external irrationality assumption
+- Project dependencies: None
+- Caller summary: explicit callers: {'name': 'LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff', 'file': 'Roth/LeanEval.lean', 'line': 42, 'kind': 'statement and proof', 'internal_use_count': 1, 'inline_derivation_grep': False, 'action': 'Preserve reference signature; full definition body can unfold mechanically, but keep benchmark API anchor.'}, {'name': 'LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth', 'file': 'Roth/LeanEval.lean', 'line': 61, 'kind': 'statement and proof', 'internal_use_count': 1, 'inline_derivation_grep': False, 'action': 'Preserve reference signature; full definition body can unfold mechanically, but keep benchmark API anchor.'}; explicit proof callers: {'name': 'LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff', 'file': 'Roth/LeanEval.lean', 'line': 42, 'kind': 'statement and proof', 'internal_use_count': 1, 'inline_derivation_grep': False, 'action': 'Preserve reference signature; full definition body can unfold mechanically, but keep benchmark API anchor.'}, {'name': 'LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth', 'file': 'Roth/LeanEval.lean', 'line': 61, 'kind': 'statement and proof', 'internal_use_count': 1, 'inline_derivation_grep': False, 'action': 'Preserve reference signature; full definition body can unfold mechanically, but keep benchmark API anchor.'}; direct type consumers: LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff, LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth; direct body consumers: LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff, LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth; simp consumers: None; transitive scope: Canonical293 audit direct type/value consumers; not a claim to enumerate all elaborator/simp closures.; full replay: callers-executed.lean.txt; namespace substitution: LeanEval.NumberTheory.ThueSiegelRothProblem -> Diophantine290Callers; complete original module remainder unchanged
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4375,6 +4385,8 @@ Completed `Roth.roth`: All15 search cells executed; local current/standard error
 
 Completed `Roth.roth_rat`: Pinned Rat rational-center finiteness and Real exponent2 Infinite iff Irrational support dropping the irrationality binder; they do not prove the algebraic Roth exponent bound. Filter.eventually_cofinite gives the finite-exception interface.
 
+Completed `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine`: closest: LiouvilleWith; exact replacement: False; warning: Must retain irrationality conjunct; rational cutoff family holds while IsDiophantine fails.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4954,6 +4966,8 @@ Completed `Roth.roth_of_isIntegral`: Roth.roth is reduction-based algebraic exte
 Completed `Roth.roth`: Integral Roth is the proof core, general algebraic endpoint adds substantive scaling/exponent-loss transport; rational-value and uniform lower-bound endpoints are equivalent formulations for irrational α through genuine bridges.
 
 Completed `Roth.roth_rat`: Same Roth theorem endpoint as Roth.roth with distinct representation semantics; pair irrationality remains necessary. LeanEval uniform strict constant bound is distinct.
+
+Completed `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine`: Related to Roth.approxSet infinitude cutoff through a substantive bridge, not defeq.
 
 ## Part 5: Generalization opportunities
 
@@ -5585,6 +5599,8 @@ Completed `Roth.roth`: verified: True; reason: MODERN-IDIOM; proposed type: ∀ 
 
 Completed `Roth.roth_rat`: proposed type: ∀ {α : ℝ}, IsAlgebraic ℚ α → ∀ {κ : ℝ}, {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite → κ ≤ 2; drop: Irrational α; verified: True; evidence: general02-receipt.json; scope: Compiled implication from the exact original endpoint schema hR; original hR separately re-elaborated and type-agreed. No extra axiom introduced.; modern: Equivalent finite rational bad-set or cofinite non-strict lower-bound form verified in modern01; not a uniform strict positive-C bound.; constant: Verified C≤1 extension in edges01. C>1/existential coefficient variant assessed but not claimed compiled.
 
+Completed `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine`: proposed type: (t x : ℝ) → Prop; proposed body: ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧ ∀ p q : ℤ, 0 < q → C / (q : ℝ) ^ (t + ε) < |x - (p : ℝ) / q|; modern type: UniformBound t x ↔ Irrational x ∧ ∀ {p : ℝ}, LiouvilleWith p x → p ≤ t; verified: True; consequences: cutoff_mono, add_rat_iff, mul_rat_iff; recovery: UniformBound 2 is definitionally the complete original formula
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -6165,6 +6181,8 @@ Completed `Roth.roth_of_isIntegral`: New exponent-family LiouvilleWith bridge an
 Completed `Roth.roth`: Sharp exponent2 exclusion for algebraic real LiouvilleWith values, New bounded-denominator/frequently transport and exponent-family equivalence, Staged auxiliary polynomial/Hasse/Taylor/index/Roth-main-lemma prerequisites
 
 Completed `Roth.roth_rat`: Algebraic real exponent-two Roth theorem is the substantive missing API; add the all-algebraic rational endpoint as a corollary of the coherent theorem package, using existing rational-center finiteness.
+
+Completed `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine`: Uniform-bound iff irrationality-conjoined LiouvilleWith exponent cutoff; scratch proof new, not existing mathlib.
 
 ## Part 7: Junk / removable
 
@@ -6749,6 +6767,8 @@ Completed `Roth.roth`: Keep the named BIG endpoint; four-line assembly and two c
 
 Completed `Roth.roth_rat`: No removal: zero internal consumers does not make the explicitly documented public rational endpoint dead. Avoid separate upstream PR for the five-line conversion alone.
 
+Completed `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine`: Keep stable LeanEval compatibility predicate; two actual consumers.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -7042,6 +7062,7 @@ Completed `Roth.roth_rat`: No removal: zero internal consumers does not make the
 | 287 | `Roth.roth_of_isIntegral` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.roth_of_isIntegral.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.roth_of_isIntegral/root-acceptance.json) |
 | 288 | `Roth.roth` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.roth.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.roth/root-acceptance.json) |
 | 289 | `Roth.roth_rat` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.roth_rat.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.roth_rat/root-acceptance.json) |
+| 290 | `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine.md) · [Acceptance](.mathlib-quality/overview/evidence/LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7619,12 +7640,14 @@ Completed `Roth.roth` action: Expose the verified algebraic LiouvilleWith expone
 
 Completed `Roth.roth_rat` action: Generalise away hα, retain original-signature recovery, supply finite/cofinite variants, group with accepted Roth theorem candidates. Proposed Mathlib/NumberTheory/DiophantineApproximation/Roth.lean; run /generalise and /cleanup before PR.
 
+Completed `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine` action: BORDERLINE: resolve3 concrete upstream API questions; keep production unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine` next. Supporting identities receive their own applicable checks.
+   `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

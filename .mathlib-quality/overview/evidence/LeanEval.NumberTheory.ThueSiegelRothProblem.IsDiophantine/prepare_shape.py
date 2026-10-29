@@ -1,0 +1,80 @@
+from pathlib import Path
+import hashlib,json
+D=Path(__file__).resolve().parent
+code=(D/'disk-prefix.lean.txt').read_text()+'''
+namespace Diophantine290Shape
+open Real
+abbrev U := LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine
+lemma natural_den (x : ℝ) : U x ↔
+    ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
+      ∀ p : ℤ, ∀ q : ℕ, 0 < q → C / (q : ℝ) ^ (2 + ε) < |x - (p : ℝ) / q| := by
+  constructor
+  · intro h ε hε
+    obtain ⟨C, hC, hb⟩ := h ε hε
+    exact ⟨C, hC, fun p q hq ↦ by simpa using hb p q (by exact_mod_cast hq)⟩
+  · intro h ε hε
+    obtain ⟨C, hC, hb⟩ := h ε hε
+    refine ⟨C, hC, fun p q hq ↦ ?_⟩
+    lift q to ℕ using hq.le
+    simpa using hb p q (by exact_mod_cast hq)
+lemma weak_bound (x : ℝ) : U x ↔
+    ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
+      ∀ p q : ℤ, 0 < q → C / (q : ℝ) ^ (2 + ε) ≤ |x - (p : ℝ) / q| := by
+  constructor
+  · intro h ε hε
+    obtain ⟨C, hC, hb⟩ := h ε hε
+    exact ⟨C, hC, fun p q hq ↦ (hb p q hq).le⟩
+  · intro h ε hε
+    obtain ⟨C, hC, hb⟩ := h ε hε
+    refine ⟨C / 2, by positivity, fun p q hq ↦ ?_⟩
+    exact (div_lt_div_of_pos_right (half_lt_self hC)
+      (rpow_pos_of_pos (by exact_mod_cast hq) _)).trans_le (hb p q hq)
+lemma signed_den (x : ℝ) : U x ↔
+    ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
+      ∀ p q : ℤ, q ≠ 0 → C / |(q : ℝ)| ^ (2 + ε) < |x - (p : ℝ) / q| := by
+  constructor
+  · intro h ε hε
+    obtain ⟨C, hC, hb⟩ := h ε hε
+    refine ⟨C, hC, fun p q hq ↦ ?_⟩
+    rcases lt_or_gt_of_ne hq with hneg | hpos
+    · have hh := hb (-p) (-q) (neg_pos.mpr hneg)
+      simpa only [Int.cast_neg, neg_div_neg_eq, abs_of_neg (by exact_mod_cast hneg)] using hh
+    · simpa only [abs_of_pos (by exact_mod_cast hpos)] using hb p q hpos
+  · intro h ε hε
+    obtain ⟨C, hC, hb⟩ := h ε hε
+    exact ⟨C, hC, fun p q hq ↦ by
+      simpa only [abs_of_pos (by exact_mod_cast hq)] using hb p q hq.ne'⟩
+lemma rational_den (x : ℝ) : U x ↔
+    ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
+      ∀ r : ℚ, C / (r.den : ℝ) ^ (2 + ε) < |x - (r : ℝ)| := by
+  rw [natural_den]
+  constructor
+  · intro h ε hε
+    obtain ⟨C, hC, hb⟩ := h ε hε
+    refine ⟨C, hC, fun r ↦ ?_⟩
+    simpa only [← Rat.cast_def] using hb r.num r.den r.den_pos
+  · intro h ε hε
+    obtain ⟨C, hC, hb⟩ := h ε hε
+    refine ⟨C, hC, fun p q hq ↦ ?_⟩
+    let r : ℚ := (p : ℚ) / q
+    have hd : r.den ≤ q := Nat.le_of_dvd hq <| Int.natCast_dvd_natCast.1 <| by
+      simpa [r, Rat.divInt_eq_div] using Rat.den_dvd p q
+    have hpow : (r.den : ℝ) ^ (2 + ε) ≤ (q : ℝ) ^ (2 + ε) := by
+      gcongr
+    have hh := (div_le_div_of_nonneg_left hC.le (by positivity) hpow).trans_lt (hb r)
+    simpa only [r, Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast] using hh
+example : U = (fun x : ℝ ↦ ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
+    ∀ p q : ℤ, 0 < q → C / (q : ℝ) ^ (2 + ε) < |x - (p : ℝ) / q|) := rfl
+example (x : ℝ) : True := by
+  fail_if_success exact inferInstanceAs (U x)
+  trivial
+#print axioms Diophantine290Shape.natural_den
+#print axioms Diophantine290Shape.weak_bound
+#print axioms Diophantine290Shape.signed_den
+#print axioms Diophantine290Shape.rational_den
+end Diophantine290Shape
+'''
+assert max(map(len,code.splitlines()))<=100,max(map(len,code.splitlines()))
+(D/'shape-executed.lean.txt').write_text(code)
+(D/'root-requests/shape01.json').write_text(json.dumps(dict(id='shape01',operation='diagnostics',source='shape-executed.lean.txt',source_sha256=hashlib.sha256(code.encode()).hexdigest(),receipt='shape01-receipt.json',arguments=dict(file_path='.lake/roth-overview-session/GenWronskianChecks.lean',timeout_s=45)),indent=2)+'\n')
+print('Prepared shape01 native natural/signed/rational/non-strict exact bridges')

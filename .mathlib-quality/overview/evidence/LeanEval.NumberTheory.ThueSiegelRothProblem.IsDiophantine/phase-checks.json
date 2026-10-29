@@ -1,0 +1,141 @@
+{
+  "modern9": [
+    [
+      "Typeclasses",
+      "no",
+      "A real-number property is not an ambient structure; no instance should register arithmetic truth."
+    ],
+    [
+      "Filters",
+      "yes",
+      "LiouvilleWith uses frequently atTop; retain Irrational x in the equivalence. Enables existing mono/add_rat_iff/mul_rat_iff."
+    ],
+    [
+      "Universal property",
+      "no",
+      "No constructed object or universal mapping problem."
+    ],
+    [
+      "Bundled substructure",
+      "no",
+      "The satisfying set is not shown closed under addition/multiplication; no justified Subring bundle."
+    ],
+    [
+      "Hierarchy weakening",
+      "no",
+      "The predicate uses real rpow and real rational approximation, not just field axioms; generic valued-field replacement changes the problem."
+    ],
+    [
+      "Higher categories",
+      "no",
+      "No categorical data or coherence."
+    ],
+    [
+      "Concrete index",
+      "yes",
+      "Positive integer denominators may be natural; nonzero signed denominators require absolute value. Parameter t in the cutoff enables monotonicity."
+    ],
+    [
+      "Concrete-via-abstract",
+      "yes",
+      "Definition body uses numeral2 once, in 2+epsilon; replacing with t is mechanically well-formed. UniformBound.cutoff_mono supplies concrete consequence and t=2 recovers original."
+    ],
+    [
+      "False-generalization guard",
+      "reject unguarded proposal",
+      "Irrationality is essential: rational0 fails uniform bound but satisfies forall p LiouvilleWith p 0 -> p<=2. Also p<=1 LiouvilleWith holds for all reals. Badly approximable at exponent2 is stronger."
+    ]
+  ],
+  "proofstrategy5": [
+    [
+      "Topology neighborhoods",
+      "no",
+      "Definition, no topology proof; filter expression is compared natively."
+    ],
+    [
+      "Algebra elements",
+      "no",
+      "No ideal/submodule argument."
+    ],
+    [
+      "Analysis sequences",
+      "yes",
+      "Frequency of denominators is natural for exponent cutoffs; requires finite-small-denominator bridge to full uniform bound."
+    ],
+    [
+      "Category construction",
+      "no",
+      "No universal property."
+    ],
+    [
+      "Missing helpers",
+      "yes",
+      "General uniform-bound iff irrationality-plus-LiouvilleWith cutoff, finite exceptional approximation minimum and rational-affine transport are natural bridge API; present scratch proofs are new content."
+    ]
+  ],
+  "infrastructure_risks": [
+    [
+      "Typeclass diamond",
+      "none",
+      "Plain Prop-valued def; registers no class or instance."
+    ],
+    [
+      "Reducibility leak",
+      "low",
+      "Ordinary semireducible def; rfl unfolds the quantifier formula, natively checked; no reducible attribute or computational reduction."
+    ],
+    [
+      "Non-canonical unfolding",
+      "low",
+      "Named benchmark predicate unfolds intentionally in proofs; no simp attribute forces unexpected orientation."
+    ],
+    [
+      "Instance priority collision",
+      "none",
+      "No instance or priority."
+    ],
+    [
+      "Universe polymorphism",
+      "none",
+      "The full type is Real -> Prop; fixed real semantics are intentional, no universe parameter to constrain."
+    ],
+    [
+      "Coercion ambiguity",
+      "low",
+      "Integer-to-real casts explicit; denominator representation bridges natively check natural/rational casts; no new coercion."
+    ]
+  ],
+  "statement_shape3": [
+    [
+      "Normal form",
+      "RESTATEMENT-CHOICE",
+      "Uniform positive bound, rational-denominator bound, and irrationality-plus-cutoff are compared. Existing LiouvilleWith is API-rich but not the full predicate; no existing exact canonical bound predicate found."
+    ],
+    [
+      "Syntactic generality",
+      "VERIFIED-ALTERNATIVES",
+      "Natural-positive denominators, signed nonzero absolute denominators, strict/nonstrict via halving and reduced rational-denominator forms tested natively."
+    ],
+    [
+      "Superfluous arguments",
+      "NONE",
+      "Only explicit input is x:Real; epsilon positivity and q positivity are quantified defining conditions, not discardable external hypotheses. No algebraicity assumption occurs."
+    ]
+  ],
+  "one_line": {
+    "physical_body_lines": 2,
+    "semantic_one_line": true,
+    "avoid_defeq_abuse": false,
+    "avoid_diamonds": false,
+    "semantic_api_exemption": true,
+    "consumers": [
+      "isDiophantine_iff",
+      "thueSiegelRoth"
+    ],
+    "conclusion": "ONE-LINER WITH-EXEMPTION"
+  },
+  "size": "BIG: named Diophantine semantic concept",
+  "generality": "No ambient hypothesis to weaken. Parameterization is verified design alternative, requiring API decision rather than automatic production change.",
+  "proofstrategy_verdict": "REFACTOR-RECOMMENDED for upstream bridge API; definition itself has no proof",
+  "statement_shape_verdict": "RESTATE-BEFORE-SHIP upstream API choice; preserve reference LeanEval declaration"
+}

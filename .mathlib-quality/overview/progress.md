@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 289 / 293 written declarations.**
+**Completed: 290 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -297,8 +297,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 287 | `Roth.roth_of_isIntegral` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.roth_of_isIntegral.md) |
 | 288 | `Roth.roth` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.roth.md) |
 | 289 | `Roth.roth_rat` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.roth_rat.md) |
+| 290 | `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine.md) |
 
-**Next declaration: `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine`**, `Roth/LeanEval.lean:16`.
+**Next declaration: `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux`**, `Roth/LeanEval.lean:20`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and
