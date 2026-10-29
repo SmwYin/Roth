@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 62,
+  "name": "Roth.exists_nat_mul_isIntegral",
+  "short": "exists_nat_mul_isIntegral",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 66,
+  "source": "theorem exists_nat_mul_isIntegral {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by\n  obtain ⟨y, hy, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_integral_multiple\n  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩\n  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign",
+  "signature": "theorem exists_nat_mul_isIntegral {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α)",
+  "body": "by\n  obtain ⟨y, hy, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_integral_multiple\n  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩\n  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign",
+  "proof_lines": 4,
+  "sha256": "f9e149b829a79d17ae213b870c54df9c19ac5c3c61dd7d04b5deba44c8b524ca",
+  "what": "A real algebraic number has a positive natural multiple that is an algebraic integer.",
+  "how": "Apply IsFractionRing.isAlgebraic_iff and exists_integral_multiple, then remove the sign using Int.sign_mul_self.",
+  "hypotheses": "Real number algebraic over the rationals.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.reduction",
+      "file": "Roth/Main.lean",
+      "line": 118
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.reduction"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 115,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.reduction",
+      "file": "Roth/Main.lean",
+      "line": 118
+    }
+  ]
+}

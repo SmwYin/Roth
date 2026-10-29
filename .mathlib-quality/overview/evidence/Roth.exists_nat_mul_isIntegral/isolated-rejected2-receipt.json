@@ -1,0 +1,247 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.RingTheory.Algebraic.Denominator\n\n#check_failure Roth.exists_nat_mul_isIntegral\n#check @IsFractionRing.isAlgebraic_iff\n#check @IsAlgebraic.exists_integral_multiple\n#check @IsAlgebraic.exists_nsmul_eq\n#check @IsIntegral.zsmul\n#check @Int.natAbs_pos\n#check @Int.sign_mul_self\n#check @Algebra.natDenominator\n#check @Algebra.natDenominator_dvd_iff\n#check @Algebra.isIntegral_natDenominator_smul\n#check @IsAlgebraic.natDenominator_ne_zero\nnamespace NatIntegral268\nuniverse u v w\n-- Existing generic infrastructure, without any GCD or domain assumption.\ntheorem generic_ring {R : Type u} {A : Type v} [CommRing R] [Ring A] [Algebra R A]\n    {x : A} (h : IsAlgebraic R x) : ∃ r : R, r ≠ 0 ∧ IsIntegral R (r • x) :=\n  h.exists_integral_multiple\n-- Domain fraction field bridge; neither GCD nor principal ideals are needed.\ntheorem fraction_ring {R : Type u} {K : Type v} {A : Type w} [CommRing R] [IsDomain R]\n    [Field K] [CommRing A] [Algebra R K] [IsFractionRing R K] [Algebra R A] [Algebra K A]\n    [IsScalarTower R K A] {x : A} (h : IsAlgebraic K x) :\n    ∃ r : R, r ≠ 0 ∧ IsIntegral R (r • x) :=\n  ((IsFractionRing.isAlgebraic_iff R K A).2 h).exists_integral_multiple\n-- Natural multiplier, independent of order, topology, or a rational algebra structure.\ntheorem nat_ring {A : Type u} [CommRing A] {x : A} (h : IsAlgebraic ℤ x) :\n    ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ (n • x) :=\n  ⟨Algebra.natDenominator x, Nat.pos_of_ne_zero h.natDenominator_ne_zero,\n    Algebra.isIntegral_natDenominator_smul x⟩\ntheorem nat_rat_algebra {A : Type u} [CommRing A] [Algebra ℚ A] {x : A}\n    (h : IsAlgebraic ℚ x) : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x) := by\n  obtain ⟨n, hn, hi⟩ := nat_ring ((IsFractionRing.isAlgebraic_iff ℤ ℚ A).2 h)\n  exact ⟨n, hn, (nsmul_eq_mul n x) ▸ hi⟩\n-- Exact old form, direct existing API, no project constant or newly proved helper.\ntheorem old_direct {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) :=\n  ⟨Algebra.natDenominator α,\n    Nat.pos_of_ne_zero ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).natDenominator_ne_zero,\n    (nsmul_eq_mul _ α) ▸ Algebra.isIntegral_natDenominator_smul α⟩\n-- Stronger existing bundled integral-closure result and explicit old specialization.\ntheorem closure_route {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by\n  obtain ⟨M, s, hM, hs⟩ :=\n    ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_nsmul_eq (integralClosure ℤ ℝ)\n  refine ⟨M, Nat.pos_of_ne_zero hM, ?_⟩\n  have hi : IsIntegral ℤ (M • α) := by\n    rw [hs]\n    exact integralClosure.isIntegral s\n  simpa only [nsmul_eq_mul] using hi\n-- The old sign normalization survives without real ordering or commutativity.\ntheorem nat_noncomm {A : Type u} [Ring A] {x : A} (h : IsAlgebraic ℤ x) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : A) * x) := by\n  obtain ⟨y, hy, hint⟩ := h.exists_integral_multiple\n  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩\n  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign\n-- The algebraicity hypothesis is mathematically necessary.\ntheorem converse {A : Type u} [CommRing A] [Algebra ℚ A] {x : A}\n    (h : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x)) : IsAlgebraic ℚ x := by\n  obtain ⟨n, hn, hi⟩ := h\n  apply (IsFractionRing.isAlgebraic_iff ℤ ℚ A).1\n  exact IsAlgebraic.of_smul_isIntegral (y := (n : ℤ))\n    (by simpa only [isNilpotent_iff_eq_zero, Int.natCast_eq_zero] using hn.ne')\n    (by simpa only [Algebra.smul_def, map_natCast] using hi)\ntheorem nat_iff {A : Type u} [CommRing A] [Algebra ℚ A] {x : A} :\n    IsAlgebraic ℚ x ↔ ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x) :=\n  ⟨nat_rat_algebra, converse⟩\ntheorem original_specialization {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := nat_rat_algebra hα\ntheorem zero_endpoint : ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * 0) := by\n  refine ⟨1, Nat.zero_lt_one, ?_⟩\n  simpa only [mul_zero] using (isIntegral_zero : IsIntegral ℤ (0 : ℝ))\ntheorem rational_endpoint (q : ℚ) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * (q : ℝ)) :=\n  old_direct (isAlgebraic_algebraMap q)\n-- n=0 would make the conclusion vacuous for every element.\ntheorem zero_multiplier_vacuous (x : ℝ) : IsIntegral ℤ ((0 : ℝ) * x) := by\n  simpa only [zero_mul] using (isIntegral_zero : IsIntegral ℤ (0 : ℝ))\nend NatIntegral268\n#print axioms NatIntegral268.generic_ring\n#print axioms NatIntegral268.fraction_ring\n#print axioms NatIntegral268.nat_ring\n#print axioms NatIntegral268.nat_rat_algebra\n#print axioms NatIntegral268.old_direct\n#print axioms NatIntegral268.closure_route\n#print axioms NatIntegral268.nat_noncomm\n#print axioms NatIntegral268.converse\n#print axioms NatIntegral268.nat_iff\n#print axioms NatIntegral268.original_specialization\n#print axioms NatIntegral268.zero_endpoint\n#print axioms NatIntegral268.rational_endpoint\n#print axioms NatIntegral268.zero_multiplier_vacuous\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_nat_mul_isIntegral`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"IsFractionRing.isAlgebraic_iff : ∀ (A : Type u_1) (K : Type u_2) (C : Type u_3) [inst : CommRing A] [IsDomain A]\\n  [inst_2 : Field K] [inst_3 : Algebra A K] [IsFractionRing A K] [inst_5 : CommRing C] [inst_6 : Algebra A C]\\n  [inst_7 : Algebra K C] [IsScalarTower A K C] {x : C}, IsAlgebraic A x ↔ IsAlgebraic K x\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsAlgebraic.exists_integral_multiple : ∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R] [inst_1 : Ring A]\\n  [inst_2 : Algebra R A] {z : A}, IsAlgebraic R z → ∃ y, y ≠ 0 ∧ IsIntegral R (y • z)\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"IsAlgebraic.exists_nsmul_eq : ∀ (S : Type u_1) [inst : CommRing S] {K : Type u_2} [inst_1 : CommRing K]\\n  [inst_2 : Algebra S K] [IsIntegralClosure S ℤ K] {x : K}, IsAlgebraic ℤ x → ∃ m s, m ≠ 0 ∧ m • x = (algebraMap S K) s\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsIntegral.zsmul : ∀ {R : Type u_1} {B : Type u_2} [inst : CommRing R] [inst_1 : Ring B] [inst_2 : Algebra R B]\\n  {x : B}, IsIntegral R x → ∀ (n : ℤ), IsIntegral R (n • x)\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Int.natAbs_pos : ∀ {a : ℤ}, 0 < a.natAbs ↔ a ≠ 0\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Int.sign_mul_self : ∀ (i : ℤ), i.sign * i = ↑i.natAbs\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Algebra.natDenominator : {S : Type u_1} → [CommRing S] → S → ℕ\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Algebra.natDenominator_dvd_iff : ∀ {S : Type u_1} [inst : CommRing S] {n : ℕ} {x : S},\\n  Algebra.natDenominator x ∣ n ↔ IsIntegral ℤ (n • x)\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Algebra.isIntegral_natDenominator_smul : ∀ {S : Type u_1} [inst : CommRing S] (x : S),\\n  IsIntegral ℤ (Algebra.natDenominator x • x)\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsAlgebraic.natDenominator_ne_zero : ∀ {S : Type u_1} [inst : CommRing S] {x : S},\\n  IsAlgebraic ℤ x → Algebra.natDenominator x ≠ 0\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch\\n  integralClosure.isIntegral s\\nhas type\\n  IsIntegral ℤ s\\nbut is expected to have type\\n  IsIntegral ℤ ((algebraMap ↥(integralClosure ℤ ℝ) ℝ) s)\",\n      \"line\": 67,\n      \"column\": 5,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.generic_ring' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 98,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.fraction_ring' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 99,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.nat_ring' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 100,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.nat_rat_algebra' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 101,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.old_direct' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 102,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.closure_route' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 103,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.nat_noncomm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 104,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.converse' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 105,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.nat_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 106,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.original_specialization' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 107,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.zero_endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 108,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.rational_endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 109,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NatIntegral268.zero_multiplier_vacuous' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 110,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_nat_mul_isIntegral`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "IsFractionRing.isAlgebraic_iff : ∀ (A : Type u_1) (K : Type u_2) (C : Type u_3) [inst : CommRing A] [IsDomain A]\n  [inst_2 : Field K] [inst_3 : Algebra A K] [IsFractionRing A K] [inst_5 : CommRing C] [inst_6 : Algebra A C]\n  [inst_7 : Algebra K C] [IsScalarTower A K C] {x : C}, IsAlgebraic A x ↔ IsAlgebraic K x",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsAlgebraic.exists_integral_multiple : ∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R] [inst_1 : Ring A]\n  [inst_2 : Algebra R A] {z : A}, IsAlgebraic R z → ∃ y, y ≠ 0 ∧ IsIntegral R (y • z)",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "IsAlgebraic.exists_nsmul_eq : ∀ (S : Type u_1) [inst : CommRing S] {K : Type u_2} [inst_1 : CommRing K]\n  [inst_2 : Algebra S K] [IsIntegralClosure S ℤ K] {x : K}, IsAlgebraic ℤ x → ∃ m s, m ≠ 0 ∧ m • x = (algebraMap S K) s",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsIntegral.zsmul : ∀ {R : Type u_1} {B : Type u_2} [inst : CommRing R] [inst_1 : Ring B] [inst_2 : Algebra R B]\n  {x : B}, IsIntegral R x → ∀ (n : ℤ), IsIntegral R (n • x)",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Int.natAbs_pos : ∀ {a : ℤ}, 0 < a.natAbs ↔ a ≠ 0",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Int.sign_mul_self : ∀ (i : ℤ), i.sign * i = ↑i.natAbs",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Algebra.natDenominator : {S : Type u_1} → [CommRing S] → S → ℕ",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Algebra.natDenominator_dvd_iff : ∀ {S : Type u_1} [inst : CommRing S] {n : ℕ} {x : S},\n  Algebra.natDenominator x ∣ n ↔ IsIntegral ℤ (n • x)",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Algebra.isIntegral_natDenominator_smul : ∀ {S : Type u_1} [inst : CommRing S] (x : S),\n  IsIntegral ℤ (Algebra.natDenominator x • x)",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsAlgebraic.natDenominator_ne_zero : ∀ {S : Type u_1} [inst : CommRing S] {x : S},\n  IsAlgebraic ℤ x → Algebra.natDenominator x ≠ 0",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch\n  integralClosure.isIntegral s\nhas type\n  IsIntegral ℤ s\nbut is expected to have type\n  IsIntegral ℤ ((algebraMap ↥(integralClosure ℤ ℝ) ℝ) s)",
+          "line": 67,
+          "column": 5,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.generic_ring' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 98,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.fraction_ring' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 99,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.nat_ring' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 100,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.nat_rat_algebra' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 101,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.old_direct' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 102,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.closure_route' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 103,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.nat_noncomm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 104,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.converse' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 105,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.nat_iff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 106,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.original_specialization' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 107,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.zero_endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 108,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.rational_endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 109,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NatIntegral268.zero_multiplier_vacuous' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 110,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 340,
+  "provenance": "Exact replay of the second rejected source after failed original receipt capture; this receipt is the replay, not the lost first response."
+}

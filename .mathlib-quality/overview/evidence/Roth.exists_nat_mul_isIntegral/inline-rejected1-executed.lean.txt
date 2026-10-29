@@ -1,0 +1,100 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+namespace NatIntegral268Inline
+open Roth
+theorem manual_reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)
+    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧
+    (approxSet α' κ').Infinite := by
+  obtain ⟨y, hy, hint⟩ :=
+    ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 halg).exists_integral_multiple
+  let M := y.natAbs
+  have hM0 : 0 < M := Int.natAbs_pos.2 hy
+  have hMint : IsIntegral ℤ ((M : ℝ) * α) := by
+    simpa [M, zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self]
+      using hint.zsmul y.sign
+  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)
+  refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩
+  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image
+    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap
+      Function.injective_id).injOn).mono ?_
+  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩
+  refine ⟨hq0, ?_⟩
+  dsimp only [Prod.map, id]
+  push_cast
+  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]
+  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by
+        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
+    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
+theorem closure_reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)
+    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧
+    (approxSet α' κ').Infinite := by
+  obtain ⟨M, s, hM, hs⟩ :=
+    ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 halg).exists_nsmul_eq (integralClosure ℤ ℝ)
+  have hM0 : 0 < M := Nat.pos_of_ne_zero hM
+  have hMint : IsIntegral ℤ ((M : ℝ) * α) := by
+    have hi : IsIntegral ℤ (M • α) := by
+      rw [hs]
+      exact s.property
+    simpa only [nsmul_eq_mul] using hi
+  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)
+  refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩
+  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image
+    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap
+      Function.injective_id).injOn).mono ?_
+  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩
+  refine ⟨hq0, ?_⟩
+  dsimp only [Prod.map, id]
+  push_cast
+  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]
+  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by
+        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
+    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
+example : @Roth.reduction = @manual_reduction := Subsingleton.elim _ _
+example : @Roth.reduction = @closure_reduction := Subsingleton.elim _ _
+end NatIntegral268Inline
+#print axioms NatIntegral268Inline.manual_reduction
+#print axioms NatIntegral268Inline.closure_reduction
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let ci ← Lean.getConstInfo `Roth.exists_nat_mul_isIntegral
+  let some val := ci.value? (allowOpaque := true) | throwError "NAT268_NO_BODY"
+  Lean.logInfo m!"NAT268_BODY_CONSTANTS_OPAQUE: {val.getUsedConstants.toList}"
+  let env ← Lean.getEnv
+  let names := #[`Roth.exists_nat_mul_isIntegral, `NatIntegral268Inline.manual_reduction,
+    `NatIntegral268Inline.closure_reduction]
+  for n in names do
+    let ci ← Lean.getConstInfo n
+    let some val := ci.value? (allowOpaque := true) | throwError "NAT268_NO_VALUE: {n}"
+    unless (ci.type.getUsedConstants.all fun c ↦
+        !c.toString.startsWith "NatIntegral268Original.") do
+      throwError "NAT268_BAD_CONTEXT"
+    Lean.logInfo m!"NAT268_INLINE_BODY: {n}: {val.getUsedConstants.toList}"
+    let info ← Lean.Meta.ppExpr ci.type
+    Lean.logInfo m!"NAT268_INLINE_TYPE: {n}: {info}"
+  let mut todo : List Lean.Name := val.getUsedConstants.toList.filter fun n ↦
+    n.toString.startsWith "Roth."
+  let mut seen : List Lean.Name := []
+  while !todo.isEmpty do
+    let n := todo.head!
+    todo := todo.tail!
+    if !seen.contains n then
+      seen := n :: seen
+      if let some ci := env.find? n then
+        let deps := ci.type.getUsedConstants.toList ++
+          (ci.value? (allowOpaque := true)).map (·.getUsedConstants.toList) |>.getD []
+        todo := deps ++ todo
+  for n in seen do
+    if n.toString.startsWith "Roth." then
+      Lean.logInfo m!"NAT268_TRANSITIVE_PROJECT: {n}"

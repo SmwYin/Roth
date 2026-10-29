@@ -1,0 +1,148 @@
+{
+  "declaration": "Roth.exists_nat_mul_isIntegral",
+  "canonical_index": 268,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "5336fe0570fa8931ee3c50b5bb7d61ad8b2a7f93feeeefa6857158af5f42d520",
+      "native_region_start_line": 558,
+      "required_info": [
+        "NAT268_FULL_TYPE:",
+        "NAT268_AUDIT: requested=293; unique=293",
+        "NAT268_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      }
+    },
+    {
+      "label": "isolated-firstclean",
+      "format": "run_code",
+      "source": "isolated-firstclean-executed.lean.txt",
+      "receipt": "isolated-firstclean-receipt.json",
+      "source_sha256": "f1a977f2a7ff7ee30b14a4bd4180b39516611670cd84e542dfc28b58ea27cc53",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'NatIntegral268.old_direct' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.RingTheory.Algebraic.Denominator\n\n#check_failure Roth.exists_nat_mul_isIntegral\n#check @IsFractionRing.isAlgebraic_iff\n#check @IsAlgebraic.exists_integral_multiple\n#check @IsAlgebraic.exists_nsmul_eq\n#check @IsIntegral.zsmul\n#check @Int.natAbs_pos\n#check @Int.sign_mul_self\n#check @Algebra.natDenominator\n#check @Algebra.natDenominator_dvd_iff\n#check @Algebra.isIntegral_natDenominator_smul\n#check @IsAlgebraic.natDenominator_ne_zero\nnamespace NatIntegral268\nuniverse u v w\n-- Existing generic infrastructure, without any GCD or domain assumption.\ntheorem generic_ring {R : Type u} {A : Type v} [CommRing R] [Ring A] [Algebra R A]\n    {x : A} (h : IsAlgebraic R x) : ∃ r : R, r ≠ 0 ∧ IsIntegral R (r • x) :=\n  h.exists_integral_multiple\n-- Domain fraction field bridge; neither GCD nor principal ideals are needed.\ntheorem fraction_ring {R : Type u} {K : Type v} {A : Type w} [CommRing R] [IsDomain R]\n    [Field K] [CommRing A] [Algebra R K] [IsFractionRing R K] [Algebra R A] [Algebra K A]\n    [IsScalarTower R K A] {x : A} (h : IsAlgebraic K x) :\n    ∃ r : R, r ≠ 0 ∧ IsIntegral R (r • x) :=\n  ((IsFractionRing.isAlgebraic_iff R K A).2 h).exists_integral_multiple\n-- Natural multiplier, independent of order, topology, or a rational algebra structure.\ntheorem nat_ring {A : Type u} [CommRing A] {x : A} (h : IsAlgebraic ℤ x) :\n    ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ (n • x) :=\n  ⟨Algebra.natDenominator x, Nat.pos_of_ne_zero h.natDenominator_ne_zero,\n    Algebra.isIntegral_natDenominator_smul x⟩\ntheorem nat_rat_algebra {A : Type u} [CommRing A] [Algebra ℚ A] {x : A}\n    (h : IsAlgebraic ℚ x) : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x) := by\n  obtain ⟨n, hn, hi⟩ := nat_ring ((IsFractionRing.isAlgebraic_iff ℤ ℚ A).2 h)\n  exact ⟨n, hn, (nsmul_eq_mul n x) ▸ hi⟩\n-- Exact old form, direct existing API, no project constant or newly proved helper.\ntheorem old_direct {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) :=\n  ⟨Algebra.natDenominator α,\n    Nat.pos_of_ne_zero ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).natDenominator_ne_zero,\n    (nsmul_eq_mul _ α) ▸ Algebra.isIntegral_natDenominator_smul α⟩\n-- Stronger existing bundled integral-closure result and explicit old specialization.\ntheorem closure_route {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by\n  obtain ⟨M, s, hM, hs⟩ :=\n    ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_nsmul_eq (integralClosure ℤ ℝ)\n  refine ⟨M, Nat.pos_of_ne_zero hM, ?_⟩\n  have hi : IsIntegral ℤ (M • α) := by\n    rw [hs]\n    exact s.property\n  simpa only [nsmul_eq_mul] using hi\n-- The old sign normalization survives without real ordering or commutativity.\ntheorem nat_noncomm {A : Type u} [Ring A] {x : A} (h : IsAlgebraic ℤ x) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : A) * x) := by\n  obtain ⟨y, hy, hint⟩ := h.exists_integral_multiple\n  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩\n  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign\n-- The algebraicity hypothesis is mathematically necessary.\ntheorem converse {A : Type u} [CommRing A] [Algebra ℚ A] {x : A}\n    (h : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x)) : IsAlgebraic ℚ x := by\n  obtain ⟨n, hn, hi⟩ := h\n  apply (IsFractionRing.isAlgebraic_iff ℤ ℚ A).1\n  exact IsAlgebraic.of_smul_isIntegral (y := (n : ℤ))\n    (by simpa only [isNilpotent_iff_eq_zero, Int.natCast_eq_zero] using hn.ne')\n    (by simpa only [Algebra.smul_def, map_natCast] using hi)\ntheorem nat_iff {A : Type u} [CommRing A] [Algebra ℚ A] {x : A} :\n    IsAlgebraic ℚ x ↔ ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x) :=\n  ⟨nat_rat_algebra, converse⟩\ntheorem original_specialization {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := nat_rat_algebra hα\ntheorem zero_endpoint : ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * 0) := by\n  refine ⟨1, Nat.zero_lt_one, ?_⟩\n  simpa only [mul_zero] using (isIntegral_zero : IsIntegral ℤ (0 : ℝ))\ntheorem rational_endpoint (q : ℚ) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * (q : ℝ)) :=\n  old_direct (isAlgebraic_algebraMap q)\n-- n=0 would make the conclusion vacuous for every element.\ntheorem zero_multiplier_vacuous (x : ℝ) : IsIntegral ℤ ((0 : ℝ) * x) := by\n  simpa only [zero_mul] using (isIntegral_zero : IsIntegral ℤ (0 : ℝ))\nend NatIntegral268\n#print axioms NatIntegral268.generic_ring\n#print axioms NatIntegral268.fraction_ring\n#print axioms NatIntegral268.nat_ring\n#print axioms NatIntegral268.nat_rat_algebra\n#print axioms NatIntegral268.old_direct\n#print axioms NatIntegral268.closure_route\n#print axioms NatIntegral268.nat_noncomm\n#print axioms NatIntegral268.converse\n#print axioms NatIntegral268.nat_iff\n#print axioms NatIntegral268.original_specialization\n#print axioms NatIntegral268.zero_endpoint\n#print axioms NatIntegral268.rational_endpoint\n#print axioms NatIntegral268.zero_multiplier_vacuous\n"
+      }
+    },
+    {
+      "label": "isolated",
+      "format": "run_code",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "0c9b32df4d5f450fcd637a8d7a32b224c7c7b7a36b2efa3754a71481e5a49bb8",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'NatIntegral268.old_direct' depends on axioms:",
+        "'NatIntegral268.nat_noncomm' depends on axioms:",
+        "'NatIntegral268.converse' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.RingTheory.Algebraic.Denominator\n\n#check_failure Roth.exists_nat_mul_isIntegral\n#check @IsFractionRing.isAlgebraic_iff\n#check @IsAlgebraic.exists_integral_multiple\n#check @IsAlgebraic.exists_nsmul_eq\n#check @IsIntegral.zsmul\n#check @Int.natAbs_pos\n#check @Int.sign_mul_self\n#check @Algebra.natDenominator\n#check @Algebra.natDenominator_dvd_iff\n#check @Algebra.isIntegral_natDenominator_smul\n#check @IsAlgebraic.natDenominator_ne_zero\nnamespace NatIntegral268\nuniverse u v w\n-- Existing generic infrastructure, without any GCD or domain assumption.\ntheorem generic_ring {R : Type u} {A : Type v} [CommRing R] [Ring A] [Algebra R A]\n    {x : A} (h : IsAlgebraic R x) : ∃ r : R, r ≠ 0 ∧ IsIntegral R (r • x) :=\n  h.exists_integral_multiple\n-- Domain fraction field bridge; neither GCD nor principal ideals are needed.\ntheorem fraction_ring {R : Type u} {K : Type v} {A : Type w} [CommRing R] [IsDomain R]\n    [Field K] [CommRing A] [Algebra R K] [IsFractionRing R K] [Algebra R A] [Algebra K A]\n    [IsScalarTower R K A] {x : A} (h : IsAlgebraic K x) :\n    ∃ r : R, r ≠ 0 ∧ IsIntegral R (r • x) :=\n  ((IsFractionRing.isAlgebraic_iff R K A).2 h).exists_integral_multiple\n-- Natural multiplier, independent of order, topology, or a rational algebra structure.\ntheorem nat_ring {A : Type u} [CommRing A] {x : A} (h : IsAlgebraic ℤ x) :\n    ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ (n • x) :=\n  ⟨Algebra.natDenominator x, Nat.pos_of_ne_zero h.natDenominator_ne_zero,\n    Algebra.isIntegral_natDenominator_smul x⟩\ntheorem nat_rat_algebra {A : Type u} [CommRing A] [Algebra ℚ A] {x : A}\n    (h : IsAlgebraic ℚ x) : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x) := by\n  obtain ⟨n, hn, hi⟩ := nat_ring ((IsFractionRing.isAlgebraic_iff ℤ ℚ A).2 h)\n  exact ⟨n, hn, (nsmul_eq_mul n x) ▸ hi⟩\n-- Exact old form, direct existing API, no project constant or newly proved helper.\ntheorem old_direct {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) :=\n  ⟨Algebra.natDenominator α,\n    Nat.pos_of_ne_zero ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).natDenominator_ne_zero,\n    (nsmul_eq_mul _ α) ▸ Algebra.isIntegral_natDenominator_smul α⟩\n-- Stronger existing bundled integral-closure result and explicit old specialization.\ntheorem closure_route {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by\n  obtain ⟨M, s, hM, hs⟩ :=\n    ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_nsmul_eq (integralClosure ℤ ℝ)\n  refine ⟨M, Nat.pos_of_ne_zero hM, ?_⟩\n  have hi : IsIntegral ℤ (M • α) := by\n    rw [hs]\n    exact s.property\n  simpa only [nsmul_eq_mul] using hi\n-- The old sign normalization survives without real ordering or commutativity.\ntheorem nat_noncomm {A : Type u} [Ring A] {x : A} (h : IsAlgebraic ℤ x) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : A) * x) := by\n  obtain ⟨y, hy, hint⟩ := h.exists_integral_multiple\n  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩\n  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign\n-- The algebraicity hypothesis is mathematically necessary.\ntheorem converse {A : Type u} [CommRing A] [Algebra ℚ A] {x : A}\n    (h : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x)) : IsAlgebraic ℚ x := by\n  obtain ⟨n, hn, hi⟩ := h\n  apply (IsFractionRing.isAlgebraic_iff ℤ ℚ A).1\n  exact IsAlgebraic.of_smul_isIntegral (y := (n : ℤ))\n    (by simpa only [isNilpotent_iff_eq_zero, Int.natCast_eq_zero] using hn.ne')\n    (by simpa only [Algebra.smul_def, map_natCast] using hi)\ntheorem nat_iff {A : Type u} [CommRing A] [Algebra ℚ A] {x : A} :\n    IsAlgebraic ℚ x ↔ ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x) :=\n  ⟨nat_rat_algebra, converse⟩\ntheorem original_specialization {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := nat_rat_algebra hα\ntheorem original_noncomm_specialization {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) :=\n  nat_noncomm ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα)\ntheorem zero_endpoint : ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * 0) := by\n  refine ⟨1, Nat.zero_lt_one, ?_⟩\n  simpa only [mul_zero] using (isIntegral_zero : IsIntegral ℤ (0 : ℝ))\ntheorem rational_endpoint (q : ℚ) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * (q : ℝ)) :=\n  old_direct (isAlgebraic_algebraMap q)\n-- n=0 would make the conclusion vacuous for every element.\ntheorem zero_multiplier_vacuous (x : ℝ) : IsIntegral ℤ ((0 : ℝ) * x) := by\n  simpa only [zero_mul] using (isIntegral_zero : IsIntegral ℤ (0 : ℝ))\nend NatIntegral268\n#print axioms NatIntegral268.generic_ring\n#print axioms NatIntegral268.fraction_ring\n#print axioms NatIntegral268.nat_ring\n#print axioms NatIntegral268.nat_rat_algebra\n#print axioms NatIntegral268.old_direct\n#print axioms NatIntegral268.closure_route\n#print axioms NatIntegral268.nat_noncomm\n#print axioms NatIntegral268.converse\n#print axioms NatIntegral268.nat_iff\n#print axioms NatIntegral268.original_specialization\n#print axioms NatIntegral268.original_noncomm_specialization\n#print axioms NatIntegral268.zero_endpoint\n#print axioms NatIntegral268.rational_endpoint\n#print axioms NatIntegral268.zero_multiplier_vacuous\n#check @NatIntegral268.nat_noncomm\n#check @NatIntegral268.fraction_ring\n"
+      }
+    },
+    {
+      "label": "inline",
+      "format": "disk",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "source_sha256": "79c2613b85399be018a1e28caf742210d201762dfeee615d9c806d1fbc521fa5",
+      "native_region_start_line": 68,
+      "required_info": [
+        "'NatIntegral268Inline.manual_reduction' depends on axioms:",
+        "'NatIntegral268Inline.closure_reduction' depends on axioms:",
+        "NAT268_BODY_CONSTANTS_OPAQUE:"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      }
+    },
+    {
+      "label": "supplement",
+      "format": "run_code",
+      "source": "supplement-executed.lean.txt",
+      "receipt": "supplement-receipt.json",
+      "source_sha256": "75c417c7473d7766f73725b5d3e9b52bb64e4e2a1c8fd78280a3769b1d2eb31d",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'NatIntegral268Supplement.denominator_normal_form' depends on axioms:",
+        "'NatIntegral268Supplement.no_unconditional_nat' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.RingTheory.Algebraic.Denominator\n\n#check_failure Roth.exists_nat_mul_isIntegral\nnamespace NatIntegral268Supplement\n-- Existing canonical denominator law, stronger than mere existence.\ntheorem denominator_normal_form {A : Type*} [CommRing A] (x : A) (n : ℕ) :\n    Algebra.natDenominator x ∣ n ↔ IsIntegral ℤ (n • x) :=\n  Algebra.natDenominator_dvd_iff\n-- A scalar denominator of a polynomial is not a proof its root is integral.\n-- Removing algebraicity from integral-multiple existence is false already for Z[X].\ntheorem no_unconditional_nat :\n    ¬ (∀ x : Polynomial ℤ, ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : Polynomial ℤ) * x)) := by\n  intro hall\n  obtain ⟨n, hn, hi⟩ := hall Polynomial.X\n  apply Polynomial.transcendental_X ℤ\n  exact IsAlgebraic.of_smul_isIntegral (y := (n : ℤ))\n    (by simpa only [isNilpotent_iff_eq_zero, Int.natCast_eq_zero] using hn.ne')\n    (by simpa only [Algebra.smul_def, map_natCast] using hi)\nend NatIntegral268Supplement\n#print axioms NatIntegral268Supplement.denominator_normal_form\n#print axioms NatIntegral268Supplement.no_unconditional_nat\n"
+      }
+    },
+    {
+      "label": "scope",
+      "format": "disk",
+      "source": "scope-executed.lean.txt",
+      "receipt": "scope-receipt.json",
+      "source_sha256": "dc7f443f2da82c03b5d5f10b634fe3b901df9ac5f10e266a2545916c623c200e",
+      "native_region_start_line": 68,
+      "required_info": [
+        "NAT268_DIRECT_PROJECT_TYPE: []",
+        "NAT268_INLINE_NO_TARGET: NatIntegral268Inline.manual_reduction",
+        "NAT268_INLINE_NO_TARGET: NatIntegral268Inline.closure_reduction"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      }
+    }
+  ],
+  "rejected": [
+    {
+      "label": "isolated-rejected1",
+      "source": "isolated-rejected1-executed.lean.txt",
+      "receipt": "isolated-rejected1-receipt.json"
+    },
+    {
+      "label": "isolated-rejected2",
+      "source": "isolated-rejected2-executed.lean.txt",
+      "receipt": "isolated-rejected2-receipt.json"
+    },
+    {
+      "label": "inline-rejected1",
+      "source": "inline-rejected1-executed.lean.txt",
+      "receipt": "inline-rejected1-receipt.json"
+    }
+  ],
+  "attempt_accounting": {
+    "native_executions": 10,
+    "distinct_sources": 9,
+    "accepted_sources": 6,
+    "rejected_sources": 3,
+    "rejected_executions": 4,
+    "archived_actual_raw_responses": 9,
+    "missing_original_failed_response": 1,
+    "limitation": "Second rejected source initial return failed receipt encoding capture. Exact same source was separately reexecuted; rejected2 receipt is the new replay response, not recovered original. Complete returned original remained in conversation. No accepted evidence missing."
+  },
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "363a6821de56e15a68978bcfef1f74e28eb837482667eba3b9ef498e98cea593",
+    "isolated19_sha256": "9133f4703ea68aa2eb5389e914855fd0f88903f9684f9ebce4ebb435ac55d733",
+    "no_production_edits": true,
+    "no_pin_edits": true,
+    "no_git_edits": true,
+    "no_resource_raises": true
+  },
+  "no_file_end_build_due": true,
+  "next_file_end_canonical_index": 289,
+  "accepted_previous_file_end": "Theta canonical228 fullbuild accepted; no new file-end due at268"
+}

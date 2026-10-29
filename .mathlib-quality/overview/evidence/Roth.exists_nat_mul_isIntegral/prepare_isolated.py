@@ -1,0 +1,92 @@
+from pathlib import Path
+import re,json,hashlib
+D=Path(__file__).resolve().parent
+p=(D/'isolated-prefix.lean.txt').read_text();p+='import Mathlib.RingTheory.Algebraic.Denominator\n';(D/'isolated-prefix19.lean.txt').write_text(p)
+(D/'root-prefix-scope-authorization.json').write_text(json.dumps(dict(authorized_by='root',scope='canonical268 ONLY',authorization='unchanged stable18 + Mathlib.RingTheory.Algebraic.Denominator; disk9 unchanged',prefix_sha256=hashlib.sha256(p.encode()).hexdigest()),indent=2))
+f=Path('.lake/packages/mathlib/Mathlib/RingTheory/Algebraic/Denominator.lean');(D/'mathlib-Denominator.lean.txt').write_bytes(f.read_bytes());xs=json.loads((D/'mathlib-inputs.json').read_text());xs=[x for x in xs if x['path']!='Mathlib/RingTheory/Algebraic/Denominator.lean'];xs.append(dict(path='Mathlib/RingTheory/Algebraic/Denominator.lean',archive='mathlib-Denominator.lean.txt',sha256=hashlib.sha256(f.read_bytes()).hexdigest(),bytes=f.stat().st_size));(D/'mathlib-inputs.json').write_text(json.dumps(xs,indent=2))
+body='''
+#check_failure Roth.exists_nat_mul_isIntegral
+#check @IsFractionRing.isAlgebraic_iff
+#check @IsAlgebraic.exists_integral_multiple
+#check @IsAlgebraic.exists_nsmul_eq
+#check @IsIntegral.zsmul
+#check @Int.natAbs_pos
+#check @Int.sign_mul_self
+#check @Algebra.natDenominator
+#check @Algebra.natDenominator_dvd_iff
+#check @Algebra.isIntegral_natDenominator_smul
+#check @IsAlgebraic.natDenominator_ne_zero
+namespace NatIntegral268
+universe u v w
+-- Existing generic infrastructure, without any GCD or domain assumption.
+theorem generic_ring {R : Type u} {A : Type v} [CommRing R] [Ring A] [Algebra R A]
+    {x : A} (h : IsAlgebraic R x) : ∃ r : R, r ≠ 0 ∧ IsIntegral R (r • x) :=
+  h.exists_integral_multiple
+-- Domain fraction field bridge; neither GCD nor principal ideals are needed.
+theorem fraction_ring {R : Type u} {K : Type v} {A : Type w} [CommRing R] [IsDomain R]
+    [Field K] [CommRing A] [Algebra R K] [IsFractionRing R K] [Algebra R A] [Algebra K A]
+    [IsScalarTower R K A] {x : A} (h : IsAlgebraic K x) :
+    ∃ r : R, r ≠ 0 ∧ IsIntegral R (r • x) :=
+  ((IsFractionRing.isAlgebraic_iff R K A).2 h).exists_integral_multiple
+-- Natural multiplier, independent of order, topology, or a rational algebra structure.
+theorem nat_ring {A : Type u} [CommRing A] {x : A} (h : IsAlgebraic ℤ x) :
+    ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ (n • x) :=
+  ⟨Algebra.natDenominator x, Nat.pos_of_ne_zero h.natDenominator_ne_zero,
+    Algebra.isIntegral_natDenominator_smul x⟩
+theorem nat_rat_algebra {A : Type u} [CommRing A] [Algebra ℚ A] {x : A}
+    (h : IsAlgebraic ℚ x) : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x) := by
+  obtain ⟨n, hn, hi⟩ := nat_ring ((IsFractionRing.isAlgebraic_iff ℤ ℚ A).2 h)
+  exact ⟨n, hn, (nsmul_eq_mul n x) ▸ hi⟩
+-- Exact old form, direct existing API, no project constant or newly proved helper.
+theorem old_direct {α : ℝ} (hα : IsAlgebraic ℚ α) :
+    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) :=
+  ⟨Algebra.natDenominator α,
+    Nat.pos_of_ne_zero ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).natDenominator_ne_zero,
+    (nsmul_eq_mul _ α) ▸ Algebra.isIntegral_natDenominator_smul α⟩
+-- Stronger existing bundled integral-closure result and explicit old specialization.
+theorem closure_route {α : ℝ} (hα : IsAlgebraic ℚ α) :
+    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by
+  obtain ⟨M, s, hM, hs⟩ :=
+    ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_nsmul_eq (integralClosure ℤ ℝ)
+  refine ⟨M, Nat.pos_of_ne_zero hM, ?_⟩
+  have hi : IsIntegral ℤ (M • α) := by
+    rw [hs]
+    exact s.property
+  simpa only [nsmul_eq_mul] using hi
+-- The old sign normalization survives without real ordering or commutativity.
+theorem nat_noncomm {A : Type u} [Ring A] {x : A} (h : IsAlgebraic ℤ x) :
+    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : A) * x) := by
+  obtain ⟨y, hy, hint⟩ := h.exists_integral_multiple
+  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩
+  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign
+-- The algebraicity hypothesis is mathematically necessary.
+theorem converse {A : Type u} [CommRing A] [Algebra ℚ A] {x : A}
+    (h : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x)) : IsAlgebraic ℚ x := by
+  obtain ⟨n, hn, hi⟩ := h
+  apply (IsFractionRing.isAlgebraic_iff ℤ ℚ A).1
+  exact IsAlgebraic.of_smul_isIntegral (y := (n : ℤ))
+    (by simpa only [isNilpotent_iff_eq_zero, Int.natCast_eq_zero] using hn.ne')
+    (by simpa only [Algebra.smul_def, map_natCast] using hi)
+theorem nat_iff {A : Type u} [CommRing A] [Algebra ℚ A] {x : A} :
+    IsAlgebraic ℚ x ↔ ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : A) * x) :=
+  ⟨nat_rat_algebra, converse⟩
+theorem original_specialization {α : ℝ} (hα : IsAlgebraic ℚ α) :
+    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := nat_rat_algebra hα
+theorem original_noncomm_specialization {α : ℝ} (hα : IsAlgebraic ℚ α) :
+    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) :=
+  nat_noncomm ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα)
+theorem zero_endpoint : ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * 0) := by
+  refine ⟨1, Nat.zero_lt_one, ?_⟩
+  simpa only [mul_zero] using (isIntegral_zero : IsIntegral ℤ (0 : ℝ))
+theorem rational_endpoint (q : ℚ) :
+    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * (q : ℝ)) :=
+  old_direct (isAlgebraic_algebraMap q)
+-- n=0 would make the conclusion vacuous for every element.
+theorem zero_multiplier_vacuous (x : ℝ) : IsIntegral ℤ ((0 : ℝ) * x) := by
+  simpa only [zero_mul] using (isIntegral_zero : IsIntegral ℤ (0 : ℝ))
+end NatIntegral268
+'''
+checks='\n'.join('#print axioms NatIntegral268.'+n for n in re.findall(r'^theorem (\w+)',body,re.M))
+full=p+body+checks+'\n#check @NatIntegral268.nat_noncomm\n#check @NatIntegral268.fraction_ring\n';assert max(map(len,full.splitlines()))<=100
+(D/'isolated-executed.lean.txt').write_text(full)
+print('Prepared isolated19',len(full.splitlines()),'lines')

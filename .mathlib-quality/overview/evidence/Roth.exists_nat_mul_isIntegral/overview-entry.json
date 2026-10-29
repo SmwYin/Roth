@@ -1,0 +1,15 @@
+{
+  "type": "∀ {α : ℝ}, IsAlgebraic ℚ α → ∃ (M : ℕ), 0 < M ∧ IsIntegral ℤ (↑M * α)",
+  "kind": "theorem",
+  "what": "Every real number algebraic over Q has a positive natural multiple integral over Z, including0 and rational numbers.",
+  "how": "Transfer Q algebraicity to Z, choose a nonzero integral scalar multiple, replace its sign using natAbs. Existing exists_nsmul_eq and canonical natDenominator provide stronger direct APIs.",
+  "hypotheses": "Only IsAlgebraic Q alpha; no irrationality, nonzero alpha, order or topology is mathematically necessary.",
+  "project_dependencies": [],
+  "caller_summary": "One lexical and canonical direct value caller: Roth.reduction at Main118 (use121); no external-file caller or direct type consumer. Full original caller inlined successfully via sign and integralClosure routes.",
+  "mathlib_api_audit": "NO-mathlib-has-it: IsAlgebraic.exists_nsmul_eq in Algebraic/Integral207–214 plus verified integralClosure property bridge; canonical natDenominator/isIntegral_natDenominator_smul/natDenominator_ne_zero in Algebraic/Denominator supply normalized witness.",
+  "moral_duplications": "Separation.exists_nat_smul_eq_map clears rational polynomial coefficients and is not the same theorem: integral scaled root additionally requires monic normalization.",
+  "generalization": "Verified {A : Type*} [Ring A] {x : A} (h : IsAlgebraic ℤ x) : ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : A) * x). Also arbitrary domain R/fraction field K/commutative K-algebra A yields ∃ r:R,r≠0 ∧ IsIntegral R (r•x), already existing infrastructure; no GCD needed. PositiveNat does not generalize to arbitrary base R.",
+  "missing_api": "No mathematical gap for the real result: stronger existing nonzeroNat integral-closure existence and normalized denominator API verified. Do not propose the scratch RingA sign lemma as already existing; it is a newly verified generic proof.",
+  "junk": "Used in the Roth reduction, mathematically meaningful; redundant upstream wrapper, not dead code.",
+  "action": "Do not upstream this real wrapper. On an authorized cleanup delete it and replace the first obtain in Roth.reduction by the checked exists_nsmul_eq integralClosure block (no extra imports), or import Algebraic.Denominator and use its canonical witness. Retain project-local Main helper only if pedagogical correspondence is desired. Production unchanged."
+}

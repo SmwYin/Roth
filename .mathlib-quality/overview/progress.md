@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 267 / 293 written declarations.**
+**Completed: 268 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -275,8 +275,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 265 | `Roth.exists_auxiliary_polynomial_with_index_gap_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.exists_auxiliary_polynomial_with_index_gap_aux.md) |
 | 266 | `Roth.main_lemma` | full-mathlibable; accepted complete | YES-add-as-is | [Detailed report](mathlibable/Roth.main_lemma.md) |
 | 267 | `Roth.approxSet` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.approxSet.md) |
+| 268 | `Roth.exists_nat_mul_isIntegral` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.exists_nat_mul_isIntegral.md) |
 
-**Next declaration: `Roth.exists_nat_mul_isIntegral`**, `Roth/Main.lean:62`.
+**Next declaration: `Roth.approxSet_den_le_finite`**, `Roth/Main.lean:73`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

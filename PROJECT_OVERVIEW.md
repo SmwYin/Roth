@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 267/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 268/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 267; remaining: 26.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 91 BORDERLINE-needs-human, 70 SKIP.
+- Completed applicable assessments: 268; remaining: 25.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 27 YES-but-generalise-first, 46 NO-mathlib-has-it, 91 BORDERLINE-needs-human, 70 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3406,6 +3406,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Ten source-explicit declarations (eight Main, two LeanEval); twelve canonical direct kernel-value consumers and ten direct type consumers. Full module inlining and twelve original-signature equalities verified.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.approxSet.md).
 
+### Completed: `Roth.exists_nat_mul_isIntegral`
+
+- Type: `∀ {α : ℝ}, IsAlgebraic ℚ α → ∃ (M : ℕ), 0 < M ∧ IsIntegral ℤ (↑M * α)`
+- What: Every real number algebraic over Q has a positive natural multiple integral over Z, including0 and rational numbers.
+- How: Transfer Q algebraicity to Z, choose a nonzero integral scalar multiple, replace its sign using natAbs. Existing exists_nsmul_eq and canonical natDenominator provide stronger direct APIs.
+- Hypotheses: Only IsAlgebraic Q alpha; no irrationality, nonzero alpha, order or topology is mathematically necessary.
+- Project dependencies: None
+- Caller summary: One lexical and canonical direct value caller: Roth.reduction at Main118 (use121); no external-file caller or direct type consumer. Full original caller inlined successfully via sign and integralClosure routes.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_nat_mul_isIntegral.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3966,6 +3976,8 @@ Completed `Roth.main_lemma`: Existing Siegel small-kernel vector, finite pigeonh
 
 Completed `Roth.approxSet`: Pinned DiophantineApproximation.Basic supplies reduced rational exponent2 results; LiouvilleWith is an existential-C frequent-witness endpoint with exact-equality exclusion. New image/fiber and arbitrary-error/filter bridges verify the relationships; neither is an exact replacement for fixed1 unreduced pair membership.
 
+Completed `Roth.exists_nat_mul_isIntegral`: NO-mathlib-has-it: IsAlgebraic.exists_nsmul_eq in Algebraic/Integral207–214 plus verified integralClosure property bridge; canonical natDenominator/isIntegral_natDenominator_smul/natDenominator_ne_zero in Algebraic/Denominator supply normalized witness.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4501,6 +4513,8 @@ Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: The structural 
 Completed `Roth.main_lemma`: Private construction/selector lemmas factor the proof; they are not duplicates of the complete named lemma or existing mathlib. New numerical_envelope exposes semantic budgets and recovers old statement exactly.
 
 Completed `Roth.approxSet`: Related to reduced rational-height conditions in roth_rat and uniform lower-bound IsDiophantine, with different representation/quantification. No exact bypassing duplicate was found.
+
+Completed `Roth.exists_nat_mul_isIntegral`: Separation.exists_nat_smul_eq_map clears rational polynomial coefficients and is not the same theorem: integral scaled root additionally requires monic normalization.
 
 ## Part 5: Generalization opportunities
 
@@ -5049,6 +5063,8 @@ Completed `Roth.main_lemma`: Retain full named quantitative statement. Scratch n
 
 Completed `Roth.approxSet`: Verified arbitrary error-function approxWith and coefficient approxC family with exact C1 recovery, nonpositive-C emptiness, C monotonicity and actual C1/C2 distinction. Arbitrary ψ bounded-slice/filter proofs compile mathlib-only. Rational image equality needs κ≥0; finite fibers and pair/rational infinitude equivalence need irrationality and κ>0.
 
+Completed `Roth.exists_nat_mul_isIntegral`: Verified {A : Type*} [Ring A] {x : A} (h : IsAlgebraic ℤ x) : ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : A) * x). Also arbitrary domain R/fraction field K/commutative K-algebra A yields ∃ r:R,r≠0 ∧ IsIntegral R (r•x), already existing infrastructure; no GCD needed. PositiveNat does not generalize to arbitrary base R.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5585,6 +5601,8 @@ Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: No new primitiv
 Completed `Roth.main_lemma`: Quantitative bounded-coefficient high-index auxiliary polynomial plus derivative selection at a prescribed rational tuple; reusable Hasse/index, remainder-height and evaluation-height support can precede the Roth feature.
 
 Completed `Roth.approxSet`: Choose a primary named approximation family and expose finite slices, reduced rational image/fiber conversions and frequent-witness/LiouvilleWith bridges together.
+
+Completed `Roth.exists_nat_mul_isIntegral`: No mathematical gap for the real result: stronger existing nonzeroNat integral-closure existence and normalized denominator API verified. Do not propose the scratch RingA sign lemma as already existing; it is a newly verified generic proof.
 
 ## Part 7: Junk / removable
 
@@ -6125,6 +6143,8 @@ Completed `Roth.main_lemma`: Keep named main theorem. One caller and short orche
 
 Completed `Roth.approxSet`: Not junk: stable semantic family shared by ten explicit callers. Literal inlining works but does not eliminate the mathematical need to preserve supplied denominator information.
 
+Completed `Roth.exists_nat_mul_isIntegral`: Used in the Roth reduction, mathematically meaningful; redundant upstream wrapper, not dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6396,6 +6416,7 @@ Completed `Roth.approxSet`: Not junk: stable semantic family shared by ten expli
 | 265 | `Roth.exists_auxiliary_polynomial_with_index_gap_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_auxiliary_polynomial_with_index_gap_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_auxiliary_polynomial_with_index_gap_aux/root-acceptance.json) |
 | 266 | `Roth.main_lemma` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/Roth.main_lemma.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.main_lemma/root-acceptance.json) |
 | 267 | `Roth.approxSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet/root-acceptance.json) |
+| 268 | `Roth.exists_nat_mul_isIntegral` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_nat_mul_isIntegral.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_nat_mul_isIntegral/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6929,12 +6950,14 @@ Completed `Roth.main_lemma` action: Prepare Mathlib/NumberTheory/DiophantineAppr
 
 Completed `Roth.approxSet` action: BORDERLINE-needs-human: retain project-local approxSet; decide whether upstream should center a ψ pair family, reduced rational-height family or combined bridge layer. Three concrete future design questions are in the completed report.
 
+Completed `Roth.exists_nat_mul_isIntegral` action: Do not upstream this real wrapper. On an authorized cleanup delete it and replace the first obtain in Roth.reduction by the checked exists_nsmul_eq integralClosure block (no extra imports), or import Algebraic.Denominator and use its canonical witness. Retain project-local Main helper only if pedagogical correspondence is desired. Production unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_nat_mul_isIntegral` next. Supporting identities receive their own applicable checks.
+   `Roth.approxSet_den_le_finite` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
