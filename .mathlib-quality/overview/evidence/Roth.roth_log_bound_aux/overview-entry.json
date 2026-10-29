@@ -1,0 +1,16 @@
+{
+  "declaration": "Roth.roth_log_bound_aux",
+  "kind": "lemma",
+  "type": "∀ {m : ℕ} [inst : NeZero m],\n  2 ≤ m →\n    ∀ {δ G κ B : ℝ},\n      δ ≤ 1 →\n        ∀ {q r : Fin m → ℕ},\n          (∀ (j : Fin m), 1 < q j) →\n            (∀ (j : Fin m), ↑(r j) * Real.log ↑(q j) < (1 + δ / 10) * (↑(r 0) * Real.log ↑(q 0))) →\n              0 < B →\n                B ≤ ↑(q 0) ^ (δ * ↑(r 0)) →\n                  ∏ j : Fin m, (↑(r j) + 1) < B ^ δ →\n                    1 <\n                        (∏ j : Fin m, ↑(q j) ^ r j) *\n                          ((∏ j : Fin m, (↑(r j) + 1)) * B ^ (1 + 3 * δ) * ↑(q 0) ^ (-↑(r 0) * G * κ)) →\n                      G * κ < ↑m * (1 + 4 * δ)",
+  "what": "From the strict scalar evaluation product bound and balanced denominator logarithms, deduces G*kappa<m*(1+4delta).",
+  "how": "Use Real.log_mul, Real.log_prod and Real.log_rpow, bound the denominator-log sum by balanced products, and combine the coefficient/degree-factor estimates.",
+  "hypotheses": "Dimension at least two, delta at most one, denominators above one, positive coefficient scale, balanced logarithmic bounds and explicit product expression above one. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [],
+  "caller_summary": "1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Use the strict balance inequality at index0 to infer r0>0 and delta>=0. Expand the logarithm of the positive product with Real.log_mul, Real.log_rpow and Real.log_prod. Sum the strict balanced logarithmic bounds over the nonempty finite variable set, replace log of the degree product and log B using the supplied estimates, then divide by positive r0*log(q0). The final linear bound uses delta<=1 and m>=2. G is arbitrary real; its later specialization is gamma-minus-eta.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

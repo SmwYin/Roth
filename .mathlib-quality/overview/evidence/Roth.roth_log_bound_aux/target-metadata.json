@@ -1,0 +1,47 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 505,
+  "name": "Roth.roth_log_bound_aux",
+  "short": "roth_log_bound_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 541,
+  "source": "private lemma roth_log_bound_aux {m : ℕ} [NeZero m] (hm2 : 2 ≤ m) {δ G κ B : ℝ} (hδ1 : δ ≤ 1)\n    {q r : Fin m → ℕ} (hq1 : ∀ j, 1 < q j)\n    (h53 : ∀ j, (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0))) (hBpos : 0 < B)\n    (hBX : B ≤ (q 0 : ℝ) ^ (δ * r 0)) (hN : (∏ j, ((r j : ℝ) + 1)) < B ^ δ)\n    (hone : 1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) * B ^ (1 + 3 * δ) *\n      (q 0 : ℝ) ^ (-(r 0 : ℝ) * G * κ))) : G * κ < m * (1 + 4 * δ) := by\n  have hr0 : 0 < r 0 := Nat.pos_of_ne_zero fun h ↦ by simpa [h] using h53 0\n  have hK0 := mul_pos (Nat.cast_pos.2 hr0) (Real.log_pos (Nat.one_lt_cast.2 (hq1 0)))\n  have hδ0 : 0 ≤ δ := le_of_lt <|\n    (div_pos_iff_of_pos_right (by norm_num : (0 : ℝ) < 10)).mp <|\n    (lt_add_iff_pos_right 1).mp <| (mul_lt_mul_iff_left₀ hK0).mp <| by\n      simpa only [one_mul] using h53 0\n  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ Nat.cast_pos.2 (lt_trans zero_lt_one (hq1 j))\n  have hN0 : 0 < ∏ j, ((r j : ℝ) + 1) := Finset.prod_pos fun j _ ↦ Nat.cast_add_one_pos _\n  -- take logarithms\n  have hlog := Real.log_pos hone\n  rw [Real.log_mul (Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _).ne'\n      ((mul_pos (mul_pos hN0 (Real.rpow_pos_of_pos hBpos _))\n        (Real.rpow_pos_of_pos (hqR 0) _)).ne'),\n    Real.log_mul (mul_pos hN0 (Real.rpow_pos_of_pos hBpos _)).ne'\n      (Real.rpow_pos_of_pos (hqR 0) _).ne',\n    Real.log_mul hN0.ne' (Real.rpow_pos_of_pos hBpos _).ne',\n    Real.log_rpow hBpos, Real.log_rpow (hqR 0)] at hlog\n  have hlogP : Real.log (∏ j, (q j : ℝ) ^ r j) <\n      m * ((1 + δ / 10) * (r 0 * Real.log (q 0))) := by\n    simp_rw [Real.log_prod (fun j _ ↦ (pow_pos (hqR j) _).ne'), Real.log_pow]\n    simpa only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] using\n      Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty (fun j _ ↦ h53 j)\n  have hpos : 0 < m * (1 + δ / 10) + (1 + 4 * δ) * δ - G * κ :=\n    (mul_pos_iff_of_pos_left hK0).mp <| by\n      linarith only [hlog, hlogP, (Real.log_lt_log hN0 hN).trans_eq (Real.log_rpow hBpos δ),\n        mul_le_mul_of_nonneg_left (a := 1 + 4 * δ)\n          ((Real.log_le_log hBpos hBX).trans_eq (Real.log_rpow (hqR 0) _)) (by positivity)]\n  have hmR : (2 : ℝ) ≤ m := by exact_mod_cast hm2\n  apply (sub_pos.mp hpos).trans_le\n  linarith only [mul_le_mul_of_nonneg_right\n    (by linarith only [hδ1, hmR] : 1 + 4 * δ ≤ (39 / 10) * m) hδ0]",
+  "signature": "private lemma roth_log_bound_aux {m : ℕ} [NeZero m] (hm2 : 2 ≤ m) {δ G κ B : ℝ} (hδ1 : δ ≤ 1)\n    {q r : Fin m → ℕ} (hq1 : ∀ j, 1 < q j)\n    (h53 : ∀ j, (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0))) (hBpos : 0 < B)\n    (hBX : B ≤ (q 0 : ℝ) ^ (δ * r 0)) (hN : (∏ j, ((r j : ℝ) + 1)) < B ^ δ)\n    (hone : 1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) * B ^ (1 + 3 * δ) *\n      (q 0 : ℝ) ^ (-(r 0 : ℝ) * G * κ))) : G * κ < m * (1 + 4 * δ)",
+  "body": "by\n  have hr0 : 0 < r 0 := Nat.pos_of_ne_zero fun h ↦ by simpa [h] using h53 0\n  have hK0 := mul_pos (Nat.cast_pos.2 hr0) (Real.log_pos (Nat.one_lt_cast.2 (hq1 0)))\n  have hδ0 : 0 ≤ δ := le_of_lt <|\n    (div_pos_iff_of_pos_right (by norm_num : (0 : ℝ) < 10)).mp <|\n    (lt_add_iff_pos_right 1).mp <| (mul_lt_mul_iff_left₀ hK0).mp <| by\n      simpa only [one_mul] using h53 0\n  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ Nat.cast_pos.2 (lt_trans zero_lt_one (hq1 j))\n  have hN0 : 0 < ∏ j, ((r j : ℝ) + 1) := Finset.prod_pos fun j _ ↦ Nat.cast_add_one_pos _\n  -- take logarithms\n  have hlog := Real.log_pos hone\n  rw [Real.log_mul (Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _).ne'\n      ((mul_pos (mul_pos hN0 (Real.rpow_pos_of_pos hBpos _))\n        (Real.rpow_pos_of_pos (hqR 0) _)).ne'),\n    Real.log_mul (mul_pos hN0 (Real.rpow_pos_of_pos hBpos _)).ne'\n      (Real.rpow_pos_of_pos (hqR 0) _).ne',\n    Real.log_mul hN0.ne' (Real.rpow_pos_of_pos hBpos _).ne',\n    Real.log_rpow hBpos, Real.log_rpow (hqR 0)] at hlog\n  have hlogP : Real.log (∏ j, (q j : ℝ) ^ r j) <\n      m * ((1 + δ / 10) * (r 0 * Real.log (q 0))) := by\n    simp_rw [Real.log_prod (fun j _ ↦ (pow_pos (hqR j) _).ne'), Real.log_pow]\n    simpa only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] using\n      Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty (fun j _ ↦ h53 j)\n  have hpos : 0 < m * (1 + δ / 10) + (1 + 4 * δ) * δ - G * κ :=\n    (mul_pos_iff_of_pos_left hK0).mp <| by\n      linarith only [hlog, hlogP, (Real.log_lt_log hN0 hN).trans_eq (Real.log_rpow hBpos δ),\n        mul_le_mul_of_nonneg_left (a := 1 + 4 * δ)\n          ((Real.log_le_log hBpos hBX).trans_eq (Real.log_rpow (hqR 0) _)) (by positivity)]\n  have hmR : (2 : ℝ) ≤ m := by exact_mod_cast hm2\n  apply (sub_pos.mp hpos).trans_le\n  linarith only [mul_le_mul_of_nonneg_right\n    (by linarith only [hδ1, hmR] : 1 + 4 * δ ≤ (39 / 10) * m) hδ0]",
+  "proof_lines": 32,
+  "sha256": "bf05acb3214941359bce9508e5b9d1e16b855d1636a8f426ec4804df2a92c6ed",
+  "what": "Taking logarithms of the evaluation expression bounds the index gap times the approximation exponent.",
+  "how": "Use Real.log_mul, Real.log_prod and Real.log_rpow, bound the denominator-log sum by balanced products, and combine the coefficient/degree-factor estimates.",
+  "hypotheses": "Dimension at least two, delta at most one, denominators above one, positive coefficient scale, balanced logarithmic bounds and explicit product expression above one.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.roth_of_isIntegral",
+      "file": "Roth/Main.lean",
+      "line": 547
+    }
+  ],
+  "notes": [
+    "proof/body >30 lines"
+  ],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.roth_of_isIntegral"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 465,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.roth_of_isIntegral",
+      "file": "Roth/Main.lean",
+      "line": 547
+    }
+  ]
+}
