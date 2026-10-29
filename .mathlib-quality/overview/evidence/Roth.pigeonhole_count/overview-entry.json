@@ -1,0 +1,61 @@
+{
+  "type": "∀ {B : ℝ},\n  0 < B → ∀ {c : ℝ}, 1 ≤ c → ∀ {n D N : ℕ}, 0 < N → c * ↑n * ↑D ≤ ↑N / 2 → ↑(2 * ⌊B ^ c⌋₊ + 1) ^ (n * D) < (B + 1) ^ N",
+  "kind": "theorem",
+  "what": "A strict upper bound for the number of integer remainder-coefficient arrays: for B>0,c≥1 and c n D≤N/2 with N>0, (2 floor(B^c)+1)^(nD)<(B+1)^N.",
+  "how": "Uses floor_rpow_count_lt_aux to bound one coefficient count by (B+1)^(2c), then pow_lt_pow_left₀, Real.rpow_mul_natCast and exponent monotonicity; handles nD=0 using one_lt_pow₀.",
+  "hypotheses": [
+    "B>0 gives positive real-power base and B+1>1.",
+    "c≥1 supplies power superadditivity in the floor-count helper.",
+    "N>0 retains strictness in the zero-dimensional case.",
+    "c n D≤N/2 is the weak exponent budget; n,D may be zero."
+  ],
+  "project_dependencies": [
+    "Roth.floor_rpow_count_lt_aux"
+  ],
+  "caller_summary": {
+    "lexical_total_excluding_declaration": 1,
+    "docstring_mentions": 1,
+    "external_to_file_uses": 0,
+    "callers": [
+      {
+        "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+        "visibility": "private",
+        "file": "Roth/MainLemma.lean",
+        "line": 581,
+        "call_line": 615,
+        "purpose": "Supply strict remainder count from n=f.natDegree,D=J.card,N=product(r+1),c exponent,B natural-coerced. Exact Cn=floor(B^c) with B>0,c>=1,N>0 and hD is retained."
+      }
+    ],
+    "inline_derivations": [],
+    "scope_note": "Fresh rg --no-ignore and tracked git grep agree with one canonical direct kernel-value consumer; no direct type consumers; no simp attribute. Transitive downstream use via main_lemma is a separate scope.",
+    "total_actual_proof_uses": 1,
+    "internal_use_count_excluding_declaring_file": 0
+  },
+  "mathlib_api_audit": "Existing rpow/floor/order primitives are appropriate. No exact existing replacement was verified in all15 search cells; the scalar floor helper and budget theorem in scratch are new proofs, not existing mathlib API.",
+  "moral_duplications": [
+    {
+      "other": "Roth.floor_rpow_count_lt_aux",
+      "same_statement": false,
+      "same_proof": false,
+      "action": "Keep scalar floor bound distinct from exponent-budget lifting."
+    },
+    {
+      "other": "Roth.exists_ne_modByMonic_eq",
+      "same_statement": false,
+      "same_proof": false,
+      "action": "Keep arithmetic size comparison distinct from finite pigeonhole existence."
+    }
+  ],
+  "generalization": {
+    "verified": "theorem powerBudget {a b t : ℝ} {k N : ℕ} (ha : 0 ≤ a) (hb : 1 < b)\n    (hbase : a < b ^ t) (hN : 0 < N) (hbudget : t * k ≤ N) : a ^ k < b ^ N",
+    "semantic": "Arbitrary a,b,t separate count generation from exponent lifting; permits other coefficient-count bounds. Flattening nD to k alone is only representation normalization.",
+    "hypothesis_localization": "N positivity can be localized to k=0 in verified localizedBudget; exact target cannot drop it because nD=0 is allowed.",
+    "sharpness": "B0,c0,N0/no-budget and positive c=1/2 counterexamples compile. No claim that c>=1 is sharp or that current hypotheses are globally maximal."
+  },
+  "missing_api": [
+    "Possible arbitrary strict-base/exponent-budget lifting law with explicit zero-exponent behavior; public value undecided.",
+    "Possible scalar floor-count estimate; supplied project helper is not existing mathlib."
+  ],
+  "junk": "Not dead: one private actual caller and transitive use in main_lemma. An actual inline proof compiles, but no <=3 existing-mathlib-call proof was established; deletion as trivial wrapper is unsupported.",
+  "action": "Retain locally while considering the three concrete upstream API questions. Assessment complete, no task blocker; production files unchanged."
+}

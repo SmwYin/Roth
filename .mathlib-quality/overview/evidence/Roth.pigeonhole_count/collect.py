@@ -1,0 +1,26 @@
+from pathlib import Path
+import json,hashlib,subprocess,re
+R=Path('/Users/ramin/LEAN/Roth');D=Path(__file__).parent;N='Roth.pigeonhole_count'
+def put(n,x):(D/n).write_text(json.dumps(x,indent=2,ensure_ascii=False)+'\n' if not isinstance(x,str) else x)
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+forms={'current':r'pigeonhole_count|floor.*rpow.*count|2 \* ⌊','standard':r'card_S_lt_card_T|add_rpow_le_rpow_add|floor.*pow|pow.*floor','abstract':r'rpow_mul_natCast|rpow_le_rpow_of_exponent_le|pow_lt_pow_left₀|one_lt_pow₀'}
+for f,pat in forms.items():
+ cmd=['rg','-n',pat,'.lake/packages/mathlib/Mathlib'];p=subprocess.run(cmd,cwd=R,capture_output=True,text=True);put('search-'+f+'-rg.json',dict(request=cmd,result=dict(exit_code=p.returncode,stdout=p.stdout,stderr=p.stderr)))
+cmd=['rg','-n',r'(theorem|lemma|def)\s+(Roth\.)?pigeonhole_count\b','.lake/packages/mathlib/Mathlib'];p=subprocess.run(cmd,cwd=R,capture_output=True,text=True);put('full-name-search.json',dict(request=cmd,result=dict(exit_code=p.returncode,stdout=p.stdout,stderr=p.stderr),interpretation='No lexical exact-name hit; does not prove semantic absence.'))
+inputs=[]
+for p in ['Mathlib/Analysis/MeanInequalitiesPow.lean','Mathlib/Analysis/SpecialFunctions/Pow/Real.lean','Mathlib/Algebra/Order/Floor/Semiring.lean','Mathlib/NumberTheory/SiegelsLemma.lean','Mathlib/Combinatorics/Additive/AP/Three/Behrend.lean','Mathlib/Algebra/Order/GroupWithZero/Unbundled/Basic.lean']:
+ src=R/'.lake/packages/mathlib'/p;n='mathlib-'+p.replace('/','-')+'.txt';put(n,src.read_text());inputs.append(dict(path=p,archive=n,sha256=sha(src),bytes=src.stat().st_size))
+put('mathlib-inputs.json',inputs)
+p=R/'.mathlib-quality/references/clean.tex';put('literature-local-input.json',dict(path=str(p.relative_to(R)),sha256=sha(p),bytes=p.stat().st_size));put('literature-local-excerpt.txt','\n'.join(p.read_text().splitlines()[1394:1536])+'\n')
+r=json.loads((D/'original-final-receipt.json').read_text());ds=r['result']['structuredContent']['result']['items'];get=lambda marker:next(x['message'].split(marker+': ',1)[1]for x in ds if x['message'].startswith(marker+': '))
+put('native-type.json',dict(type=get('COUNT248_FULL_TYPE'),method='Lean.getConstInfo; pp.funBinderTypes=true',printer_elision=True,body_printer_note='Explicit26115character printer elision, not full kernel-body dump. Complete written replay, full type, used-constant lists, standard axioms and293 kernel values available.'))
+cs=dict(requested=293,unique=293,present=293,values=293,direct_value=[x['message'].split('COUNT248_DIRECT_CONSUMER: ',1)[1]for x in ds if x['message'].startswith('COUNT248_DIRECT_CONSUMER: ')],direct_type=[x['message'].split('COUNT248_DIRECT_TYPE_CONSUMER: ',1)[1]for x in ds if x['message'].startswith('COUNT248_DIRECT_TYPE_CONSUMER: ')])
+put('canonical-consumers.json',cs)
+deps={k:[x.strip() for x in get('COUNT248_'+k.upper()+'_CONSTANTS').strip('[]').split(',')]for k in ['type','body']};order=json.loads((D/'canonical-snapshot.json').read_text());canon=[('_private.'+x['file'][:-5].replace('/','.')+'.0.'+x['name'])if x['visibility']=='private'else x['name']for x in order]
+deps.update(canonical_type=[n for n in canon if n in deps['type']],canonical_body=[n for n in canon if n in deps['body']],source_body=['Roth.floor_rpow_count_lt_aux'],simp_attribute=False,transitive_scope='Not enumerated: direct target used constants and293 direct consumer checks are not transitive/simp closure claims.');put('dependencies.json',deps)
+put('callers.json',dict(lexical_total_excluding_declaration=1,docstring_mentions=1,total_actual_proof_uses=1,internal_use_count_excluding_declaring_file=0,external_to_file_uses=0,callers=[dict(name='Roth.exists_mem_RSet_le_index_of_rpow_bound_aux',visibility='private',file='Roth/MainLemma.lean',line=581,call_line=615,purpose='Supply strict remainder count from n=f.natDegree,D=J.card,N=product(r+1),c exponent,B natural-coerced. Exact Cn=floor(B^c) with B>0,c>=1,N>0 and hD is retained.')],inline_derivations=[],scope_note='Fresh rg --no-ignore and tracked git grep agree with one canonical direct kernel-value consumer; no direct type consumers; no simp attribute. Transitive downstream use via main_lemma is a separate scope.'))
+put('formal-search-matrix.json',[dict(form=f,method=m,receipt='search-'+f+'-'+m+'.json')for f in forms for m in ['leanfinder','loogle','leansearch','rg','local_search']])
+for p in D.glob('web-*.json'):
+ x=json.loads(p.read_text());x['locators']=[y for y in x.get('locators',[])if len(y['title'])<180 and not re.search(r'\\(?:qquad|mathbb|forall)|\*\*Lemma',y['title'])];put(p.name,x)
+put('preparation-checks.json',dict(original=dict(exit_code=0,width_max=100,canonical_gate='PASS exact293 unique source order BEFORE both actual runs'),inline=dict(exit_code=0,width_max=100,complete_modules=['Roth.MainLemma'],actual_callers=1),isolated=dict(exit_code=0,width_max=96,exact_imports=19),import_chronology='Rejected original18 lacks Real.add_rpow_le_rpow_add. Root explicitly approved genuine MeanInequalitiesPow19th solely for independent semantic test. Shared18/disk9 unchanged. Initial successful19 archive preserved; strengthened guards then final success.'))
+print('PASS collected15 formal cells; source/pin/mathematical input receipts; native dependencies')

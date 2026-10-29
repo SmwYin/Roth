@@ -1,0 +1,85 @@
+from pathlib import Path
+D=Path(__file__).parent
+s=(D/'isolated-prefix.lean.txt').read_text()+'''\n#check_failure Roth.pigeonhole_count
+namespace Count248Isolated
+'''
+mod=(D/'source-MainLemma.lean.txt').read_text();helper=mod[mod.index('private lemma floor_rpow_count_lt_aux'):mod.index('/-- For positive real `B`')].replace('private lemma floor_rpow_count_lt_aux','theorem floorBound')
+s+=helper
+s+='''
+theorem powerBudget {a b t : ℝ} {k N : ℕ} (ha : 0 ≤ a) (hb : 1 < b)
+    (hbase : a < b ^ t) (hN : 0 < N) (hbudget : t * k ≤ N) : a ^ k < b ^ N := by
+  by_cases hk : k = 0
+  · simpa [hk] using one_lt_pow₀ hb hN.ne'
+  calc
+    _ < (b ^ t) ^ k := pow_lt_pow_left₀ hbase ha hk
+    _ = b ^ (t * k) := (Real.rpow_mul_natCast (by positivity) _ _).symm
+    _ ≤ b ^ N := by
+      rw [← Real.rpow_natCast]
+      exact Real.rpow_le_rpow_of_exponent_le hb.le hbudget
+
+theorem flattened {B c : ℝ} {k N : ℕ} (hB : 0 < B) (hc : 1 ≤ c)
+    (hN : 0 < N) (hbudget : 2 * c * k ≤ N) :
+    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ k < (B + 1) ^ N :=
+  powerBudget (Nat.cast_nonneg _) (by linarith) (floorBound hB hc) hN hbudget
+
+theorem original {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}
+    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :
+    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N := by
+  apply flattened hB hc hN
+  push_cast
+  linarith only [hD]
+
+theorem zeroBGuard : (1 : ℝ) * (1 : ℕ) * (1 : ℕ) ≤ (2 : ℕ) / 2 ∧
+    ¬ ((2 * ⌊(0 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <
+      ((0 : ℝ) + 1) ^ (2 : ℕ) := by norm_num
+
+theorem zeroCGuard : (0 : ℝ) * (1 : ℕ) * (1 : ℕ) ≤ (1 : ℕ) / 2 ∧
+    ¬ ((2 * ⌊(1 : ℝ) ^ (0 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <
+      ((1 : ℝ) + 1) ^ (1 : ℕ) := by norm_num
+
+theorem zeroNGuard : (1 : ℝ) * (0 : ℕ) * (1 : ℕ) ≤ (0 : ℕ) / 2 ∧
+    ¬ ((2 * ⌊(1 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (0 * 1 : ℕ) <
+      ((1 : ℝ) + 1) ^ (0 : ℕ) := by norm_num
+
+theorem noBudgetGuard :
+    ¬ ((2 * ⌊(1 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <
+      ((1 : ℝ) + 1) ^ (1 : ℕ) := by norm_num
+
+theorem zeroExponent {B c : ℝ} (hB : 0 < B) {N : ℕ} (hN : 0 < N) :
+    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (0 : ℕ) < (B + 1) ^ N := by
+  simpa using one_lt_pow₀ (by linarith : 1 < B + 1) hN.ne'
+
+theorem boundaryStrict :
+    (1 : ℝ) * (1 : ℕ) * (1 : ℕ) = (2 : ℕ) / 2 ∧
+    ((2 * ⌊(1 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <
+      ((1 : ℝ) + 1) ^ (2 : ℕ) := by norm_num
+
+theorem weakBaseGuard : (1 : ℝ) ≤ (1 : ℝ) ^ (1 : ℝ) ∧
+    (1 : ℝ) * (1 : ℕ) ≤ (1 : ℕ) ∧ ¬ (1 : ℝ) ^ (1 : ℕ) < (1 : ℝ) ^ (1 : ℕ) := by
+  norm_num
+
+theorem weakConclusion {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}
+    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :
+    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) ≤ (B + 1) ^ N :=
+  (original hB hc hN hD).le
+
+theorem candidateProbe {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}
+    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :
+    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N := by
+  fail_if_success
+    exact pow_lt_pow_left₀ (floorBound hB hc) (Nat.cast_nonneg _) (by omega)
+  fail_if_success
+    exact Real.rpow_le_rpow_of_exponent_le (by linarith : 1 ≤ B + 1) hD
+  exact original hB hc hN hD
+
+#check @Real.add_rpow_le_rpow_add
+#check @Real.rpow_mul_natCast
+#check @Real.rpow_le_rpow_of_exponent_le
+#check @pow_lt_pow_left₀
+#check @Nat.floor_le
+#check @one_lt_pow₀
+'''
+for n in ['floorBound','powerBudget','flattened','original','zeroBGuard','zeroCGuard','zeroNGuard','noBudgetGuard','zeroExponent','boundaryStrict','weakBaseGuard','weakConclusion','candidateProbe']:s+='#print axioms '+n+'\n'
+s+='end Count248Isolated\n';assert max(map(len,s.splitlines()))<=100
+(D/'isolated-executed.lean.txt').write_text(s)
+print('PASS exact18 isolated; width',max(map(len,s.splitlines())))

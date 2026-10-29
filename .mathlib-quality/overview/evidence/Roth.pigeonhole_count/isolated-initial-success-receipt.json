@@ -1,0 +1,201 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.MeanInequalitiesPow\n\n#check_failure Roth.pigeonhole_count\nnamespace Count248Isolated\ntheorem floorBound {x c : ℝ} (hx : 0 < x) (hc : 1 ≤ c) :\n    ((2 * ⌊x ^ c⌋₊ + 1 : ℕ) : ℝ) < (x + 1) ^ (2 * c) := by\n  have hu : 0 < x ^ c := Real.rpow_pos_of_pos hx c\n  have hsum : x ^ c + 1 ≤ (x + 1) ^ c := by\n    simpa using Real.add_rpow_le_rpow_add hx.le zero_le_one hc\n  rw [mul_comm 2 c, Real.rpow_mul (by positivity), Real.rpow_two]\n  push_cast\n  nlinarith only [pow_le_pow_left₀ (by positivity) hsum 2, sq_pos_of_pos hu, Nat.floor_le hu.le]\n\n\ntheorem powerBudget {a b t : ℝ} {k N : ℕ} (ha : 0 ≤ a) (hb : 1 < b)\n    (hbase : a < b ^ t) (hN : 0 < N) (hbudget : t * k ≤ N) : a ^ k < b ^ N := by\n  by_cases hk : k = 0\n  · simpa [hk] using one_lt_pow₀ hb hN.ne'\n  calc\n    _ < (b ^ t) ^ k := pow_lt_pow_left₀ hbase ha hk\n    _ = b ^ (t * k) := (Real.rpow_mul_natCast (by positivity) _ _).symm\n    _ ≤ b ^ N := by\n      rw [← Real.rpow_natCast]\n      exact Real.rpow_le_rpow_of_exponent_le hb.le hbudget\n\ntheorem flattened {B c : ℝ} {k N : ℕ} (hB : 0 < B) (hc : 1 ≤ c)\n    (hN : 0 < N) (hbudget : 2 * c * k ≤ N) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ k < (B + 1) ^ N :=\n  powerBudget (Nat.cast_nonneg _) (by linarith) (floorBound hB hc) hN hbudget\n\ntheorem original {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}\n    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N := by\n  apply flattened hB hc hN\n  push_cast\n  linarith only [hD]\n\ntheorem zeroBGuard : (1 : ℝ) * (1 : ℕ) * (1 : ℕ) ≤ (2 : ℕ) / 2 ∧\n    ¬ ((2 * ⌊(0 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <\n      ((0 : ℝ) + 1) ^ (2 : ℕ) := by norm_num\n\ntheorem zeroCGuard : (0 : ℝ) * (1 : ℕ) * (1 : ℕ) ≤ (1 : ℕ) / 2 ∧\n    ¬ ((2 * ⌊(1 : ℝ) ^ (0 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <\n      ((1 : ℝ) + 1) ^ (1 : ℕ) := by norm_num\n\ntheorem zeroNGuard : (1 : ℝ) * (0 : ℕ) * (1 : ℕ) ≤ (0 : ℕ) / 2 ∧\n    ¬ ((2 * ⌊(1 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (0 * 1 : ℕ) <\n      ((1 : ℝ) + 1) ^ (0 : ℕ) := by norm_num\n\ntheorem noBudgetGuard :\n    ¬ ((2 * ⌊(1 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <\n      ((1 : ℝ) + 1) ^ (1 : ℕ) := by norm_num\n\ntheorem zeroExponent {B c : ℝ} (hB : 0 < B) {N : ℕ} (hN : 0 < N) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (0 : ℕ) < (B + 1) ^ N := by\n  simpa using one_lt_pow₀ (by linarith : 1 < B + 1) hN.ne'\n\ntheorem boundaryStrict :\n    (1 : ℝ) * (1 : ℕ) * (1 : ℕ) = (2 : ℕ) / 2 ∧\n    ((2 * ⌊(1 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <\n      ((1 : ℝ) + 1) ^ (2 : ℕ) := by norm_num\n\ntheorem weakBaseGuard : (1 : ℝ) ≤ (1 : ℝ) ^ (1 : ℝ) ∧\n    (1 : ℝ) * (1 : ℕ) ≤ (1 : ℕ) ∧ ¬ (1 : ℝ) ^ (1 : ℕ) < (1 : ℝ) ^ (1 : ℕ) := by\n  norm_num\n\ntheorem weakConclusion {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}\n    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) ≤ (B + 1) ^ N :=\n  (original hB hc hN hD).le\n\ntheorem candidateProbe {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}\n    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N := by\n  fail_if_success\n    exact pow_lt_pow_left₀ (floorBound hB hc) (Nat.cast_nonneg _) (by omega)\n  fail_if_success\n    exact Real.rpow_le_rpow_of_exponent_le (by linarith : 1 ≤ B + 1) hD\n  exact original hB hc hN hD\n\n#check @Real.add_rpow_le_rpow_add\n#check @Real.rpow_mul_natCast\n#check @Real.rpow_le_rpow_of_exponent_le\n#check @pow_lt_pow_left₀\n#check @Nat.floor_le\n#check @one_lt_pow₀\n#print axioms floorBound\n#print axioms powerBudget\n#print axioms flattened\n#print axioms original\n#print axioms zeroBGuard\n#print axioms zeroCGuard\n#print axioms zeroNGuard\n#print axioms noBudgetGuard\n#print axioms zeroExponent\n#print axioms boundaryStrict\n#print axioms weakBaseGuard\n#print axioms weakConclusion\n#print axioms candidateProbe\nend Count248Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.pigeonhole_count`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.add_rpow_le_rpow_add : ∀ {p a b : ℝ}, 0 ≤ a → 0 ≤ b → 1 ≤ p → a ^ p + b ^ p ≤ (a + b) ^ p\",\n      \"line\": 99,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_mul_natCast : ∀ {x : ℝ}, 0 ≤ x → ∀ (y : ℝ) (n : ℕ), x ^ (y * ↑n) = (x ^ y) ^ n\",\n      \"line\": 100,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_le_rpow_of_exponent_le : ∀ {x y z : ℝ}, 1 ≤ x → y ≤ z → x ^ y ≤ x ^ z\",\n      \"line\": 101,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@pow_lt_pow_left₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : PartialOrder M₀] {a b : M₀}\\n  [PosMulStrictMono M₀] [MulPosMono M₀], a < b → 0 ≤ a → ∀ {n : ℕ}, n ≠ 0 → a ^ n < b ^ n\",\n      \"line\": 102,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.floor_le : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R},\\n  0 ≤ a → ↑⌊a⌋₊ ≤ a\",\n      \"line\": 103,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@one_lt_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a : M₀} [ZeroLEOneClass M₀]\\n  [PosMulMono M₀], 1 < a → ∀ {n : ℕ}, n ≠ 0 → 1 < a ^ n\",\n      \"line\": 104,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.floorBound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 105,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.powerBudget' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 106,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.flattened' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 107,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 108,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.zeroBGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 109,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.zeroCGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 110,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.zeroNGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 111,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.noBudgetGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 112,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.zeroExponent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 113,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.boundaryStrict' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 114,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.weakBaseGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 115,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.weakConclusion' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 116,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Count248Isolated.candidateProbe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 117,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.pigeonhole_count`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.add_rpow_le_rpow_add : ∀ {p a b : ℝ}, 0 ≤ a → 0 ≤ b → 1 ≤ p → a ^ p + b ^ p ≤ (a + b) ^ p",
+          "line": 99,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_mul_natCast : ∀ {x : ℝ}, 0 ≤ x → ∀ (y : ℝ) (n : ℕ), x ^ (y * ↑n) = (x ^ y) ^ n",
+          "line": 100,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_le_rpow_of_exponent_le : ∀ {x y z : ℝ}, 1 ≤ x → y ≤ z → x ^ y ≤ x ^ z",
+          "line": 101,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@pow_lt_pow_left₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : PartialOrder M₀] {a b : M₀}\n  [PosMulStrictMono M₀] [MulPosMono M₀], a < b → 0 ≤ a → ∀ {n : ℕ}, n ≠ 0 → a ^ n < b ^ n",
+          "line": 102,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.floor_le : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R},\n  0 ≤ a → ↑⌊a⌋₊ ≤ a",
+          "line": 103,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@one_lt_pow₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : Preorder M₀] {a : M₀} [ZeroLEOneClass M₀]\n  [PosMulMono M₀], 1 < a → ∀ {n : ℕ}, n ≠ 0 → 1 < a ^ n",
+          "line": 104,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.floorBound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 105,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.powerBudget' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 106,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.flattened' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 107,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 108,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.zeroBGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 109,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.zeroCGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 110,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.zeroNGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 111,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.noBudgetGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 112,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.zeroExponent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 113,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.boundaryStrict' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 114,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.weakBaseGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 115,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.weakConclusion' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 116,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Count248Isolated.candidateProbe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 117,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 91544
+}

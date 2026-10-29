@@ -1,0 +1,155 @@
+{
+  "declaration": "Roth.pigeonhole_count",
+  "canonical_index": 248,
+  "completed": true,
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "6d8a1637311b70b3d835c66cbdc741169a32d5691c3191451cd7df8f1493302c",
+      "receipt": "original-final-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "start_line": 17,
+        "timeout_s": 45
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "COUNT248_FULL_TYPE:",
+        "COUNT248_SIGNATURE_IDENTICAL",
+        "COUNT248_AUDIT: requested=293; unique=293",
+        "COUNT248_AUDIT_PRESENT: present=293; values=293",
+        "COUNT248_TYPE_CONSTANTS:",
+        "COUNT248_BODY_CONSTANTS:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "117054cc068e0dc4067365a990f547f991b4a190e4cfbf1c02fc8e31ef5b36b5",
+      "receipt": "isolated-final-receipt.json",
+      "format": "raw",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.MeanInequalitiesPow\n\n#check_failure Roth.pigeonhole_count\nnamespace Count248Isolated\ntheorem floorBound {x c : ℝ} (hx : 0 < x) (hc : 1 ≤ c) :\n    ((2 * ⌊x ^ c⌋₊ + 1 : ℕ) : ℝ) < (x + 1) ^ (2 * c) := by\n  have hu : 0 < x ^ c := Real.rpow_pos_of_pos hx c\n  have hsum : x ^ c + 1 ≤ (x + 1) ^ c := by\n    simpa using Real.add_rpow_le_rpow_add hx.le zero_le_one hc\n  rw [mul_comm 2 c, Real.rpow_mul (by positivity), Real.rpow_two]\n  push_cast\n  nlinarith only [pow_le_pow_left₀ (by positivity) hsum 2, sq_pos_of_pos hu, Nat.floor_le hu.le]\n\n\ntheorem powerBudget {a b t : ℝ} {k N : ℕ} (ha : 0 ≤ a) (hb : 1 < b)\n    (hbase : a < b ^ t) (hN : 0 < N) (hbudget : t * k ≤ N) : a ^ k < b ^ N := by\n  by_cases hk : k = 0\n  · simpa [hk] using one_lt_pow₀ hb hN.ne'\n  calc\n    _ < (b ^ t) ^ k := pow_lt_pow_left₀ hbase ha hk\n    _ = b ^ (t * k) := (Real.rpow_mul_natCast (by positivity) _ _).symm\n    _ ≤ b ^ N := by\n      rw [← Real.rpow_natCast]\n      exact Real.rpow_le_rpow_of_exponent_le hb.le hbudget\n\ntheorem flattened {B c : ℝ} {k N : ℕ} (hB : 0 < B) (hc : 1 ≤ c)\n    (hN : 0 < N) (hbudget : 2 * c * k ≤ N) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ k < (B + 1) ^ N :=\n  powerBudget (Nat.cast_nonneg _) (by linarith) (floorBound hB hc) hN hbudget\n\ntheorem original {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}\n    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N := by\n  apply flattened hB hc hN\n  push_cast\n  linarith only [hD]\n\ntheorem zeroBGuard : (1 : ℝ) * (1 : ℕ) * (1 : ℕ) ≤ (2 : ℕ) / 2 ∧\n    ¬ ((2 * ⌊(0 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <\n      ((0 : ℝ) + 1) ^ (2 : ℕ) := by norm_num\n\ntheorem zeroCGuard : (0 : ℝ) * (1 : ℕ) * (1 : ℕ) ≤ (1 : ℕ) / 2 ∧\n    ¬ ((2 * ⌊(1 : ℝ) ^ (0 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <\n      ((1 : ℝ) + 1) ^ (1 : ℕ) := by norm_num\n\ntheorem zeroNGuard : (1 : ℝ) * (0 : ℕ) * (1 : ℕ) ≤ (0 : ℕ) / 2 ∧\n    ¬ ((2 * ⌊(1 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (0 * 1 : ℕ) <\n      ((1 : ℝ) + 1) ^ (0 : ℕ) := by norm_num\n\ntheorem noBudgetGuard :\n    ¬ ((2 * ⌊(1 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <\n      ((1 : ℝ) + 1) ^ (1 : ℕ) := by norm_num\n\ntheorem zeroExponent {B c : ℝ} (hB : 0 < B) {N : ℕ} (hN : 0 < N) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (0 : ℕ) < (B + 1) ^ N := by\n  simpa using one_lt_pow₀ (by linarith : 1 < B + 1) hN.ne'\n\ntheorem boundaryStrict :\n    (1 : ℝ) * (1 : ℕ) * (1 : ℕ) = (2 : ℕ) / 2 ∧\n    ((2 * ⌊(1 : ℝ) ^ (1 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <\n      ((1 : ℝ) + 1) ^ (2 : ℕ) := by norm_num\n\ntheorem weakBaseGuard : (1 : ℝ) < 2 ∧ (2 : ℝ) ≤ (2 : ℝ) ^ (1 : ℝ) ∧\n    (1 : ℝ) * (1 : ℕ) ≤ (1 : ℕ) ∧ ¬ (2 : ℝ) ^ (1 : ℕ) < (2 : ℝ) ^ (1 : ℕ) := by\n  norm_num\n\ntheorem halfCGuard : (0 : ℝ) < 1 / 2 ∧\n    (1 / 2 : ℝ) * (1 : ℕ) * (1 : ℕ) ≤ (1 : ℕ) / 2 ∧\n    ¬ ((2 * ⌊(1 : ℝ) ^ (1 / 2 : ℝ)⌋₊ + 1 : ℕ) : ℝ) ^ (1 * 1 : ℕ) <\n      ((1 : ℝ) + 1) ^ (1 : ℕ) := by norm_num\n\ntheorem weakConclusion {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}\n    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) ≤ (B + 1) ^ N :=\n  (original hB hc hN hD).le\n\ntheorem candidateProbe {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}\n    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :\n    ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N := by\n  fail_if_success\n    exact pow_lt_pow_left₀ (floorBound hB hc) (Nat.cast_nonneg _) (by omega)\n  fail_if_success\n    exact Real.rpow_le_rpow_of_exponent_le (by linarith : 1 ≤ B + 1) hD\n  exact original hB hc hN hD\n\n#check @Real.add_rpow_le_rpow_add\n#check @Real.rpow_mul_natCast\n#check @Real.rpow_le_rpow_of_exponent_le\n#check @pow_lt_pow_left₀\n#check @Nat.floor_le\n#check @one_lt_pow₀\n#print axioms floorBound\n#print axioms powerBudget\n#print axioms flattened\n#print axioms original\n#print axioms zeroBGuard\n#print axioms zeroCGuard\n#print axioms zeroNGuard\n#print axioms noBudgetGuard\n#print axioms zeroExponent\n#print axioms boundaryStrict\n#print axioms halfCGuard\n#print axioms weakBaseGuard\n#print axioms weakConclusion\n#print axioms candidateProbe\ntheorem naturalVersion {B : ℕ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ}\n    (hN : 0 < N) (hD : c * n * D ≤ N / 2) :\n    (2 * ⌊(B : ℝ) ^ c⌋₊ + 1) ^ (n * D) < (B + 1) ^ N := by\n  exact_mod_cast original (Nat.cast_pos.2 hB) hc hN hD\n\ntheorem localizedBudget {a b t : ℝ} {k N : ℕ} (ha : 0 ≤ a) (hb : 1 < b)\n    (hbase : a < b ^ t) (hzero : k = 0 → 0 < N) (hbudget : t * k ≤ N) : a ^ k < b ^ N := by\n  by_cases hk : k = 0\n  · simpa [hk] using one_lt_pow₀ hb (hzero hk).ne'\n  calc\n    _ < (b ^ t) ^ k := pow_lt_pow_left₀ hbase ha hk\n    _ = b ^ (t * k) := (Real.rpow_mul_natCast (by positivity) _ _).symm\n    _ ≤ b ^ N := by\n      rw [← Real.rpow_natCast]\n      exact Real.rpow_le_rpow_of_exponent_le hb.le hbudget\n\n#print axioms naturalVersion\n#print axioms localizedBudget\nend Count248Isolated\n"
+      },
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Count248Isolated.floorBound' depends on axioms:",
+        "'Count248Isolated.powerBudget' depends on axioms:",
+        "'Count248Isolated.flattened' depends on axioms:",
+        "'Count248Isolated.original' depends on axioms:",
+        "'Count248Isolated.zeroBGuard' depends on axioms:",
+        "'Count248Isolated.zeroCGuard' depends on axioms:",
+        "'Count248Isolated.zeroNGuard' depends on axioms:",
+        "'Count248Isolated.noBudgetGuard' depends on axioms:",
+        "'Count248Isolated.zeroExponent' depends on axioms:",
+        "'Count248Isolated.boundaryStrict' depends on axioms:",
+        "'Count248Isolated.halfCGuard' depends on axioms:",
+        "'Count248Isolated.weakBaseGuard' depends on axioms:",
+        "'Count248Isolated.weakConclusion' depends on axioms:",
+        "'Count248Isolated.candidateProbe' depends on axioms:",
+        "'Count248Isolated.naturalVersion' depends on axioms:",
+        "'Count248Isolated.localizedBudget' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "538f35431d04a06c827df1d6a7b821747883e49fa4b702c53a4fe1ecf3bc5705",
+      "receipt": "inline-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "start_line": 17,
+        "timeout_s": 45
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "COUNT248_INLINE_SIGNATURE_IDENTICAL",
+        "COUNT248_INLINE_NO_TARGET",
+        "'Count248Inline.main_lemma' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "rejected-isolated-executed.lean.txt",
+      "receipt": "rejected-isolated-receipt.json",
+      "format": "raw",
+      "reason": "Exact18 lacked genuine Real.add_rpow_le_rpow_add import; recovered sorryAx only in rejected evidence."
+    }
+  ],
+  "warming": [
+    {
+      "source": "original-initial-success-executed.lean.txt",
+      "receipt": "original-warming-receipt.json",
+      "reason": "Initial cold fullmodule diagnostic was partial/timed_out; never accepted as success."
+    }
+  ],
+  "supplementary_successes": [
+    {
+      "source": "original-initial-success-executed.lean.txt",
+      "receipt": "original-initial-success-receipt.json",
+      "format": "disk"
+    },
+    {
+      "source": "isolated-initial-success-executed.lean.txt",
+      "receipt": "isolated-initial-success-receipt.json",
+      "format": "raw"
+    },
+    {
+      "source": "isolated-second-success-executed.lean.txt",
+      "receipt": "isolated-second-success-receipt.json",
+      "format": "raw"
+    }
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "unresolved": [],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-final-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293,
+    "exact_source_order_gate": "preparation-checks.json"
+  },
+  "full_actual_callers": {
+    "source": "inline-executed.lean.txt",
+    "receipt": "inline-receipt.json",
+    "complete_modules": [
+      "Roth.MainLemma"
+    ],
+    "original_signatures_verified": 1,
+    "direct_target_absence_verified": 1,
+    "endpoint_axiom_checks": 1,
+    "target_declaration_removed": true,
+    "proof_note": "Full original target proof inserted as a local have at the actual sole caller; complete declaring module replayed; helper retained and not claimed existing mathlib."
+  },
+  "composition": {
+    "original_existing_only_three_call_witness": false,
+    "new_proofs_count_as_existing_api": false,
+    "abstract_budget_proof_verified": true,
+    "independent_floor_proof_verified": true,
+    "original_bridge_verified": true,
+    "natural_cast_verified": true,
+    "broad_exact_search": "Not run: avoid broad numerical-heartbeat searches; targeted candidate probes do not prove semantic absence."
+  },
+  "controls": {
+    "stable_disk_import_count": 9,
+    "shared_isolated_import_count": 18,
+    "declaration_only_isolated_import_count": 19,
+    "shared_prefix_unchanged": true,
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "fad927215a124d6928eaf99af55185c1261bcc2a834a2c2fcbda3946fa3ceafc",
+    "additional_import": "Mathlib.Analysis.MeanInequalitiesPow",
+    "authorization": "Explicit root approval for required semantic experiment; pinned header is genuine current module."
+  },
+  "root_acceptance": "pending",
+  "secret_guard": "secret-guard.json"
+}

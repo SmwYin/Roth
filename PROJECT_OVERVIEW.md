@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 247/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 248/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 247; remaining: 46.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 84 BORDERLINE-needs-human, 59 SKIP.
+- Completed applicable assessments: 248; remaining: 45.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 85 BORDERLINE-needs-human, 59 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3036,6 +3036,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.floor_rpow_count_lt_aux.md).
 
+### Completed: `Roth.pigeonhole_count`
+
+- Type: `∀ {B : ℝ},
+  0 < B → ∀ {c : ℝ}, 1 ≤ c → ∀ {n D N : ℕ}, 0 < N → c * ↑n * ↑D ≤ ↑N / 2 → ↑(2 * ⌊B ^ c⌋₊ + 1) ^ (n * D) < (B + 1) ^ N`
+- What: A strict upper bound for the number of integer remainder-coefficient arrays: for B>0,c≥1 and c n D≤N/2 with N>0, (2 floor(B^c)+1)^(nD)<(B+1)^N.
+- How: Uses floor_rpow_count_lt_aux to bound one coefficient count by (B+1)^(2c), then pow_lt_pow_left₀, Real.rpow_mul_natCast and exponent monotonicity; handles nD=0 using one_lt_pow₀.
+- Hypotheses: B>0 gives positive real-power base and B+1>1., c≥1 supplies power superadditivity in the floor-count helper., N>0 retains strictness in the zero-dimensional case., c n D≤N/2 is the weak exponent budget; n,D may be zero.
+- Project dependencies: Roth.floor_rpow_count_lt_aux
+- Caller summary: lexical total excluding declaration: 1; docstring mentions: 1; external to file uses: 0; callers: {'name': 'Roth.exists_mem_RSet_le_index_of_rpow_bound_aux', 'visibility': 'private', 'file': 'Roth/MainLemma.lean', 'line': 581, 'call_line': 615, 'purpose': 'Supply strict remainder count from n=f.natDegree,D=J.card,N=product(r+1),c exponent,B natural-coerced. Exact Cn=floor(B^c) with B>0,c>=1,N>0 and hD is retained.'}; inline derivations: None; scope note: Fresh rg --no-ignore and tracked git grep agree with one canonical direct kernel-value consumer; no direct type consumers; no simp attribute. Transitive downstream use via main_lemma is a separate scope.; total actual proof uses: 1; internal use count excluding declaring file: 0
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.pigeonhole_count.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3556,6 +3567,8 @@ Completed `Roth.ncard_boxFamily`: Finset.card_finsupp, Finsupp.card_Iic, Nat.car
 
 Completed `Roth.floor_rpow_count_lt_aux`: Real.add_rpow_le_rpow_add gives x^c+1<=(x+1)^c. Rewrite the doubled exponent as a square and use positivity of x^c, the natural-floor upper bound and the expanded square to obtain a strict gap. This is the positive scalar base estimate raised to a positive integer count in pigeonhole_count; its strictness is not the final exponent-budget comparison.
 
+Completed `Roth.pigeonhole_count`: Existing rpow/floor/order primitives are appropriate. No exact existing replacement was verified in all15 search cells; the scalar floor helper and budget theorem in scratch are new proofs, not existing mathlib API.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4051,6 +4064,8 @@ Completed `Roth.boxFamily_finite`: Shares the coefficient-array representation w
 Completed `Roth.ncard_boxFamily`: Shares enumeration with boxFamily_finite and exponent count with card_box; neither counts polynomial coefficient assignments. Enumerated count is a short closing simp composition; semantic bridge and finprod transport remain distinct.
 
 Completed `Roth.floor_rpow_count_lt_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.pigeonhole_count`: {'other': 'Roth.floor_rpow_count_lt_aux', 'same_statement': False, 'same_proof': False, 'action': 'Keep scalar floor bound distinct from exponent-budget lifting.'}, {'other': 'Roth.exists_ne_modByMonic_eq', 'same_statement': False, 'same_proof': False, 'action': 'Keep arithmetic size comparison distinct from finite pigeonhole existence.'}
 
 ## Part 5: Generalization opportunities
 
@@ -4558,6 +4573,9 @@ Completed `Roth.ncard_boxFamily`: Verified new generic semantic family over arbi
 
 Completed `Roth.floor_rpow_count_lt_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.pigeonhole_count`: verified: theorem powerBudget {a b t : ℝ} {k N : ℕ} (ha : 0 ≤ a) (hb : 1 < b)
+    (hbase : a < b ^ t) (hN : 0 < N) (hbudget : t * k ≤ N) : a ^ k < b ^ N; semantic: Arbitrary a,b,t separate count generation from exponent lifting; permits other coefficient-count bounds. Flattening nD to k alone is only representation normalization.; hypothesis localization: N positivity can be localized to k=0 in verified localizedBudget; exact target cannot drop it because nD=0 is allowed.; sharpness: B0,c0,N0/no-budget and positive c=1/2 counterexamples compile. No claim that c>=1 is sharp or that current hypotheses are globally maximal.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5054,6 +5072,8 @@ Completed `Roth.boxFamily_finite`: A semantic finite-coefficient/finite-support 
 Completed `Roth.ncard_boxFamily`: Potential semantic coefficient-family representation/counting interface; existing enumerator cardinality APIs already suffice after the new bridge. Exact upstream API packaging remains a future question.
 
 Completed `Roth.floor_rpow_count_lt_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.pigeonhole_count`: Possible arbitrary strict-base/exponent-budget lifting law with explicit zero-exponent behavior; public value undecided., Possible scalar floor-count estimate; supplied project helper is not existing mathlib.
 
 ## Part 7: Junk / removable
 
@@ -5554,6 +5574,8 @@ Completed `Roth.ncard_boxFamily`: Used mathematical count, not dead code. No unc
 
 Completed `Roth.floor_rpow_count_lt_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.pigeonhole_count`: Not dead: one private actual caller and transitive use in main_lemma. An actual inline proof compiles, but no <=3 existing-mathlib-call proof was established; deletion as trivial wrapper is unsupported.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5805,6 +5827,7 @@ Completed `Roth.floor_rpow_count_lt_aux`: Retain a live private proof interface.
 | 245 | `Roth.boxFamily_finite` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_finite.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily_finite/root-acceptance.json) |
 | 246 | `Roth.ncard_boxFamily` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.ncard_boxFamily.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.ncard_boxFamily/root-acceptance.json) |
 | 247 | `Roth.floor_rpow_count_lt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.floor_rpow_count_lt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.floor_rpow_count_lt_aux/root-acceptance.json) |
+| 248 | `Roth.pigeonhole_count` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.pigeonhole_count.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.pigeonhole_count/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6298,12 +6321,14 @@ Completed `Roth.ncard_boxFamily` action: BORDERLINE completed assessment: retain
 
 Completed `Roth.floor_rpow_count_lt_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.pigeonhole_count` action: Retain locally while considering the three concrete upstream API questions. Assessment complete, no task blocker; production files unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.pigeonhole_count` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_ne_modByMonic_eq` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

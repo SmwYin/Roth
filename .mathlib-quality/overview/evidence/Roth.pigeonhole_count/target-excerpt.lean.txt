@@ -1,0 +1,17 @@
+theorem pigeonhole_count {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ} (hN : 0 < N)
+    (hD : c * n * D ≤ N / 2) : ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N := by
+  -- The source sets Y = 2(1+B) and uses the intermediate estimate
+  -- `2⌊B^c⌋ + 1 < Y^c`
+  -- The helper instead bounds the count directly by `(B + 1)^(2c)`.
+  by_cases hk : n * D = 0
+  · simpa [hk] using one_lt_pow₀ (by linarith) hN.ne'
+  calc
+    _ < ((B + 1) ^ (2 * c)) ^ (n * D) :=
+      pow_lt_pow_left₀ (floor_rpow_count_lt_aux hB hc) (Nat.cast_nonneg _) hk
+    _ = (B + 1) ^ (2 * c * (n * D : ℕ)) := (Real.rpow_mul_natCast (by positivity) _ _).symm
+    _ ≤ (B + 1) ^ N := by
+      rw [← Real.rpow_natCast]
+      apply Real.rpow_le_rpow_of_exponent_le (by linarith)
+      push_cast
+      linarith only [hD]
+
