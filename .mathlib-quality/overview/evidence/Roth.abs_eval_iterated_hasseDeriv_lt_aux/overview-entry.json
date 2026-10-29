@@ -1,0 +1,21 @@
+{
+  "declaration": "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+  "kind": "lemma",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {P : MvPolynomial σ ℤ} {r : σ → ℕ} {B α β : ℝ}\n  {s : ℕ},\n  (∀ (j : σ), degreeOf j P ≤ r j) →\n    0 < B →\n      ∑ j : σ, r j ≤ s →\n        2 ^ s < β →\n          (1 + |α|) ^ s ≤ β →\n            (∀ (d : σ →₀ ℕ), |↑(P.coeff d)| ≤ B) →\n              ∀ (i k : σ →₀ ℕ),\n                |(eval fun (x : σ) ↦ α) ((map (Int.castRingHom ℝ)) ((hasseDeriv i) ((hasseDeriv k) P)))| <\n                  β * (β * B) * β",
+  "what": "Bounds every evaluated iterated Hasse derivative of an integer polynomial by beta cubed times the original coefficient bound, from coordinate degrees and a common exponential bound.",
+  "how": "Combine abs_coeff_hasseDeriv_le twice with abs_eval_le, rewrite products using Finset.prod_pow_eq_pow_sum and bound total degrees by the chosen size.",
+  "hypotheses": "Finite variables, bounded degrees/coefficient size, positive coefficient bound and bounds for powers of two and one plus the point absolute value. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "MvPolynomial.degreeOf_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv",
+    "Roth.abs_coeff_hasseDeriv_le",
+    "Roth.abs_eval_le"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Apply degreeOf_hasseDeriv_le twice, abs_coeff_hasseDeriv_le twice and abs_eval_le. Rewrite the product of identical evaluation factors with Finset.prod_pow_eq_pow_sum, replace the degree sum by s, and combine the two strict powers-of-two estimates with positive B and the non-strict evaluation-factor bound. The sole caller exists_auxiliary_polynomial_of_log_bound_aux chooses beta=B^delta, derives B>0 from a nonzero integer coefficient, and rewrites B*beta^3 as B^(1+3delta). This is an analytic height estimate, not the subsequent Hasse-derivative selection lemma.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

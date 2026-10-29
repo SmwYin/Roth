@@ -1,0 +1,17 @@
+private lemma abs_eval_iterated_hasseDeriv_lt_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}
+    {r : σ → ℕ} {B α β : ℝ} {s : ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (hB : 0 < B) (hs : ∑ j, r j ≤ s)
+    (h2 : (2 : ℝ) ^ s < β) (hα : (1 + |α|) ^ s ≤ β) (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (i k : σ →₀ ℕ)
+    : |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| <
+      β * (β * B) * β := by
+  have hdQ : ∀ j, degreeOf j (hasseDeriv k P) ≤ r j := fun j ↦
+    (degreeOf_hasseDeriv_le j k P).trans (hP j)
+  have heval := abs_eval_le (hasseDeriv i (hasseDeriv k P))
+    (fun j ↦ (degreeOf_hasseDeriv_le j i _).trans (hdQ j))
+    (abs_coeff_hasseDeriv_le i _ hdQ (abs_coeff_hasseDeriv_le k P hP hc)) (fun _ ↦ α)
+  rw [Finset.prod_pow_eq_pow_sum] at heval
+  have h2' : (2 : ℝ) ^ (∑ j, r j) < β :=
+    (pow_le_pow_right₀ (by norm_num) hs).trans_lt h2
+  exact heval.trans_lt <| mul_lt_mul_of_nonneg_of_pos
+    (mul_lt_mul'' h2' (mul_lt_mul_of_pos_right h2' hB) (by positivity) (by positivity))
+    ((pow_le_pow_right₀ (le_add_of_nonneg_right (abs_nonneg α)) hs).trans hα)
+    (by positivity) ((pow_pos (by norm_num) _).trans h2')

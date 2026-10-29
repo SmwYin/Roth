@@ -1,0 +1,64 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 459,
+  "name": "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+  "short": "abs_eval_iterated_hasseDeriv_lt_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 475,
+  "source": "private lemma abs_eval_iterated_hasseDeriv_lt_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}\n    {r : σ → ℕ} {B α β : ℝ} {s : ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (hB : 0 < B) (hs : ∑ j, r j ≤ s)\n    (h2 : (2 : ℝ) ^ s < β) (hα : (1 + |α|) ^ s ≤ β) (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (i k : σ →₀ ℕ)\n    : |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| <\n      β * (β * B) * β := by\n  have hdQ : ∀ j, degreeOf j (hasseDeriv k P) ≤ r j := fun j ↦\n    (degreeOf_hasseDeriv_le j k P).trans (hP j)\n  have heval := abs_eval_le (hasseDeriv i (hasseDeriv k P))\n    (fun j ↦ (degreeOf_hasseDeriv_le j i _).trans (hdQ j))\n    (abs_coeff_hasseDeriv_le i _ hdQ (abs_coeff_hasseDeriv_le k P hP hc)) (fun _ ↦ α)\n  rw [Finset.prod_pow_eq_pow_sum] at heval\n  have h2' : (2 : ℝ) ^ (∑ j, r j) < β :=\n    (pow_le_pow_right₀ (by norm_num) hs).trans_lt h2\n  exact heval.trans_lt <| mul_lt_mul_of_nonneg_of_pos\n    (mul_lt_mul'' h2' (mul_lt_mul_of_pos_right h2' hB) (by positivity) (by positivity))\n    ((pow_le_pow_right₀ (le_add_of_nonneg_right (abs_nonneg α)) hs).trans hα)\n    (by positivity) ((pow_pos (by norm_num) _).trans h2')",
+  "signature": "private lemma abs_eval_iterated_hasseDeriv_lt_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}\n    {r : σ → ℕ} {B α β : ℝ} {s : ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (hB : 0 < B) (hs : ∑ j, r j ≤ s)\n    (h2 : (2 : ℝ) ^ s < β) (hα : (1 + |α|) ^ s ≤ β) (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (i k : σ →₀ ℕ)\n    : |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| <\n      β * (β * B) * β",
+  "body": "by\n  have hdQ : ∀ j, degreeOf j (hasseDeriv k P) ≤ r j := fun j ↦\n    (degreeOf_hasseDeriv_le j k P).trans (hP j)\n  have heval := abs_eval_le (hasseDeriv i (hasseDeriv k P))\n    (fun j ↦ (degreeOf_hasseDeriv_le j i _).trans (hdQ j))\n    (abs_coeff_hasseDeriv_le i _ hdQ (abs_coeff_hasseDeriv_le k P hP hc)) (fun _ ↦ α)\n  rw [Finset.prod_pow_eq_pow_sum] at heval\n  have h2' : (2 : ℝ) ^ (∑ j, r j) < β :=\n    (pow_le_pow_right₀ (by norm_num) hs).trans_lt h2\n  exact heval.trans_lt <| mul_lt_mul_of_nonneg_of_pos\n    (mul_lt_mul'' h2' (mul_lt_mul_of_pos_right h2' hB) (by positivity) (by positivity))\n    ((pow_le_pow_right₀ (le_add_of_nonneg_right (abs_nonneg α)) hs).trans hα)\n    (by positivity) ((pow_pos (by norm_num) _).trans h2')",
+  "proof_lines": 13,
+  "sha256": "e49a05bb30f9132af963bb4832c3f682ef09617739c4a3acdf332f795adfdaf9",
+  "what": "All iterated Hasse derivatives evaluated on the diagonal satisfy a common product bound.",
+  "how": "Combine abs_coeff_hasseDeriv_le twice with abs_eval_le, rewrite products using Finset.prod_pow_eq_pow_sum and bound total degrees by the chosen size.",
+  "hypotheses": "Finite variables, bounded degrees/coefficient size, positive coefficient bound and bounds for powers of two and one plus the point absolute value.",
+  "source_body_refs": [
+    "MvPolynomial.degreeOf_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv",
+    "Roth.abs_coeff_hasseDeriv_le",
+    "Roth.abs_eval_le"
+  ],
+  "source_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 643
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "MvPolynomial.degreeOf_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv",
+    "Roth.abs_coeff_hasseDeriv_le",
+    "Roth.abs_eval_le"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_auxiliary_polynomial_of_log_bound_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 405,
+  "project_body_refs": [
+    "MvPolynomial.degreeOf_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv",
+    "Roth.abs_coeff_hasseDeriv_le",
+    "Roth.abs_eval_le"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 643
+    }
+  ]
+}
