@@ -1,0 +1,124 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+#check @Finset.inf_lt_iff
+#check @Finset.inf'_lt_iff
+#check @Finset.inf'_eq_csInf_image
+#check @Finset.coe_inf'
+namespace Witness254
+universe u v w
+theorem abstract_cutoff {I : Type u} {A : Type v} {L : Type w} [Semiring A]
+    [LinearOrder L] [OrderTop L] (D : I → L) (P : AddMonoidAlgebra A I) (c : L) :
+    AddMonoidAlgebra.infDegree D P < c ↔ ∃ i ∈ P.coeff.support, D i < c :=
+  Finset.inf_lt_iff
+theorem coefficient_cutoff {I A L : Type*} [Semiring A] [LinearOrder L] [OrderTop L]
+    (D : I → L) (P : AddMonoidAlgebra A I) {c : L}
+    (hc : AddMonoidAlgebra.infDegree D P < c) : ∃ i, D i < c ∧ P.coeff i ≠ 0 :=
+  (Finset.inf_lt_iff.mp hc).imp fun _ ⟨hi, hw⟩ ↦ ⟨hw, Finsupp.mem_support_iff.mp hi⟩
+theorem projected_cutoff {I A : Type*} [Semiring A] (D : I → ℝ)
+    (P : AddMonoidAlgebra A I) (hP : P.coeff.support.Nonempty) {c : ℝ}
+    (hc : (AddMonoidAlgebra.infDegree (fun i ↦ (D i : WithTop ℝ)) P).untopD 0 < c) :
+    ∃ i, D i < c ∧ P.coeff i ≠ 0 := by
+  change (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0 < c at hc
+  rw [← Finset.coe_inf' hP D, WithTop.untopD_coe] at hc
+  exact (Finset.inf'_lt_iff hP |>.mp hc).imp fun _ ⟨hi, hw⟩ ↦
+    ⟨hw, Finsupp.mem_support_iff.mp hi⟩
+theorem finite_real_cutoff {I : Type*} (s : Finset I) (hs : s.Nonempty) (D : I → ℝ)
+    {c : ℝ} (hc : sInf (D '' (↑s : Set I)) < c) : ∃ i ∈ s, D i < c := by
+  rw [← Finset.inf'_eq_csInf_image s hs D] at hc
+  exact (Finset.inf'_lt_iff hs).mp hc
+noncomputable def translate {σ : Type*} (α : σ → ℝ) (P : MvPolynomial σ ℝ) :
+    MvPolynomial σ ℝ := MvPolynomial.aeval (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P
+theorem translated_cutoff {σ : Type*} (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (D : (σ →₀ ℕ) → ℝ) (hP : (translate α P).coeff.support.Nonempty) {c : ℝ}
+    (hc : (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))
+      (translate α P)).untopD 0 < c) : ∃ d, D d < c ∧ (translate α P).coeff d ≠ 0 :=
+  projected_cutoff D _ hP hc
+end Witness254
+#print axioms Witness254.abstract_cutoff
+#print axioms Witness254.coefficient_cutoff
+#print axioms Witness254.projected_cutoff
+#print axioms Witness254.finite_real_cutoff
+#print axioms Witness254.translated_cutoff
+namespace Witness254Project
+open Roth MvPolynomial
+theorem finset_bridge {I : Type*} (s : Finset I) (D : I → ℝ) :
+    (s.inf (fun i ↦ (D i : WithTop ℝ))).untopD 0 = sInf (D '' (↑s : Set I)) := by
+  classical
+  rcases s.eq_empty_or_nonempty with h | h
+  · subst s
+    simp
+  · change (s.inf (WithTop.some ∘ D)).untopD 0 = _
+    rw [← Finset.coe_inf' h D, Finset.inf'_eq_csInf_image]
+    rfl
+theorem index_bridge {σ : Type*} [Fintype σ] (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) : index P α r =
+      (AddMonoidAlgebra.infDegree (fun d ↦ (weight r d : WithTop ℝ)) (taylor α P)).untopD 0 :=
+  (finset_bridge (taylor α P).support (weight r)).symm
+theorem recovery {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    (α : σ → ℝ) (r : σ → ℕ) {c : ℝ} (hc : index P α r < c) :
+    ∃ k : σ →₀ ℕ, weight r k < c ∧ eval α (hasseDeriv k P) ≠ 0 := by
+  have hn : (taylor α P).coeff.support.Nonempty := by simpa using hP
+  rw [index_bridge] at hc
+  obtain ⟨k, hw, hk⟩ := Witness254.projected_cutoff (weight r) (taylor α P) hn hc
+  exact ⟨k, hw, by rwa [coeff_taylor] at hk⟩
+theorem contraposition {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    (α : σ → ℝ) (r : σ → ℕ) {c : ℝ} (hc : index P α r < c) :
+    ∃ k : σ →₀ ℕ, weight r k < c ∧ eval α (hasseDeriv k P) ≠ 0 := by
+  by_contra! hn
+  exact hc.not_ge ((le_index_iff hP).2 fun k hk ↦ le_of_not_gt fun hw ↦ hk (hn k hw))
+theorem generalized {σ A : Type*} [CommRing A] {P : MvPolynomial σ A} (hP : P ≠ 0)
+    (α : σ → A) (D : (σ →₀ ℕ) → ℝ) {c : ℝ}
+    (hc : sInf (D '' ((taylor α P).support : Set (σ →₀ ℕ))) < c) :
+    ∃ k : σ →₀ ℕ, D k < c ∧ eval α (hasseDeriv k P) ≠ 0 := by
+  have hn : (taylor α P).support.Nonempty := by simpa using hP
+  obtain ⟨k, hk, hw⟩ := Witness254.finite_real_cutoff (taylor α P).support hn D hc
+  exact ⟨k, hw, by rwa [mem_support_iff, coeff_taylor] at hk⟩
+example {σ : Type*} [Fintype σ] (α : σ → ℝ) (r : σ → ℕ) :
+    index (0 : MvPolynomial σ ℝ) α r < 1 ∧
+      ¬ ∃ k : σ →₀ ℕ, weight r k < 1 ∧ eval α (hasseDeriv k (0 : MvPolynomial σ ℝ)) ≠ 0 := by
+  simp [index]
+example {σ : Type*} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (r : σ → ℕ) {c : ℝ} (hc : c ≤ 0) : ¬ index P α r < c :=
+  not_lt_of_ge (hc.trans (index_nonneg P α r))
+example {σ : Type*} [Fintype σ] (α : σ → ℝ) (r : σ → ℕ) :
+    index (1 : MvPolynomial σ ℝ) α r ≤ 0 ∧
+      ¬ ∃ k : σ →₀ ℕ, weight r k < 0 ∧
+        eval α (hasseDeriv k (1 : MvPolynomial σ ℝ)) ≠ 0 := by
+  constructor
+  · simp [index]
+  · rintro ⟨k, hk, _⟩
+    exact (weight_nonneg r k).not_gt hk
+example {σ : Type*} [Fintype σ] (α : σ → ℝ) {a c : ℝ} (ha : a ≠ 0)
+    (hc : 0 < c) : ∃ k : σ →₀ ℕ, weight (fun _ ↦ 0) k < c ∧
+      eval α (hasseDeriv k (C a)) ≠ 0 := by
+  exact ⟨0, by simpa using hc, by simpa [hasseDeriv_zero_apply] using ha⟩
+example (α : Empty → ℝ) (r : Empty → ℕ) {a c : ℝ} (ha : a ≠ 0)
+    (hc : 0 < c) : ∃ k : Empty →₀ ℕ, weight r k < c ∧
+      eval α (hasseDeriv k (C a)) ≠ 0 :=
+  ⟨0, by simpa using hc, by simpa [hasseDeriv_zero_apply] using ha⟩
+end Witness254Project
+#print axioms Witness254Project.finset_bridge
+#print axioms Witness254Project.index_bridge
+#print axioms Witness254Project.recovery
+#print axioms Witness254Project.contraposition
+#print axioms Witness254Project.generalized
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let old ← Lean.getConstInfo `Roth.exists_hasseDeriv_eval_ne_zero
+  for n in [`Witness254Project.recovery, `Witness254Project.contraposition] do
+    let ci ← Lean.getConstInfo n
+    unless ← Lean.Meta.isDefEq old.type ci.type do throwError "WITNESS254_RECOVERY_TYPE_CHANGED"
+  Lean.logInfo "WITNESS254_RECOVERIES_EXACT_TYPE"

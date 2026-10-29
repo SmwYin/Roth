@@ -1,0 +1,85 @@
+{
+  "tool": "mcp__lean_lsp__lean_leanfinder",
+  "request": {
+    "query": "For a nonzero real multivariate polynomial, index less than c implies a nonvanishing Hasse derivative of weight less than c",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_eq_zero_of_lt_natDegree\",\n      \"informal_name\": \"Hasse Derivative Zero for Order Greater than Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ), p.natDegree < n → (Polynomial.hasseDeriv n) p = 0\",\n      \"informal_description\": \"If the natural degree of a polynomial $ p $ is less than $ n $, then the $ n $-th Hasse derivative of $ p $ is the zero polynomial, i.e., $ \\\\text{hasseDeriv}^n(p) = 0 $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"informal_name\": \"Degree Bound for Hasse Derivative of Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\\\deg(D^{(n)}(p)) \\\\leq \\\\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.weightedHomogeneousComponent_of_weightedOrder\",\n      \"informal_name\": \"Non-vanishing Weighted Homogeneous Component at Weighted Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] {w : σ → ℕ} {f : MvPowerSeries σ R} {p : ℕ},\\n  ↑p = MvPowerSeries.weightedOrder w f → (MvPowerSeries.weightedHomogeneousComponent w p) f ≠ 0\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\\\sigma $ and a weight function $ w : \\\\sigma \\\\to \\\\mathbb{N} $, if the weighted order of $ f $ is $ p \\\\in \\\\mathbb{N} $, then the weighted homogeneous component of $ f $ of degree $ p $ is non-zero. In symbols: if $ \\\\operatorname{ord}_w(f) = p $, then $ f^{(p)}_w \\\\neq 0 $, where $ f^{(p)}_w $ denotes the sum of all terms in $ f $ with weighted degree $ p $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.weightedHomogeneousComponent_eq_zero\",\n      \"informal_name\": \"Weighted Homogeneous Component Vanishes Below Total Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {w : σ → M} (n : M)\\n  (φ : MvPolynomial σ R) [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M],\\n  MvPolynomial.weightedTotalDegree w φ < n → (MvPolynomial.weightedHomogeneousComponent w n) φ = 0\",\n      \"informal_description\": \"For a multivariate polynomial $\\\\varphi$ over a commutative semiring with a weight function $w : \\\\sigma \\\\to M$ (where $M$ is a sup-semilattice with a bottom element), if the weighted total degree of $\\\\varphi$ is strictly less than $n$, then the weighted homogeneous component of $\\\\varphi$ of degree $n$ is zero.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.le_weightedTotalDegree\",\n      \"informal_name\": \"Weighted Monomial Degree ≤ Weighted Total Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\\n  [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M] (w : σ → M) {φ : MvPolynomial σ R} {d : σ →₀ ℕ},\\n  d ∈ φ.support → (Finsupp.weight w) d ≤ MvPolynomial.weightedTotalDegree w φ\",\n      \"informal_description\": \"For any multivariate polynomial $\\\\varphi$ over a commutative semiring $R$ with variables indexed by $\\\\sigma$, any weighting function $w : \\\\sigma \\\\to M$ where $M$ is a sup-semilattice, and any monomial $d$ in the support of $\\\\varphi$, the weight of $d$ with respect to $w$ is less than or equal to the weighted total degree of $\\\\varphi$ with respect to $w$.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.combinatorial_nullstellensatz_exists_eval_nonzero\",\n      \"informal_name\": \"Combinatorial Nullstellensatz: Existence of Non-Vanishing Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (f : MvPolynomial σ R) (t : σ →₀ ℕ),\\n  MvPolynomial.coeff t f ≠ 0 →\\n    f.totalDegree = Finsupp.degree t →\\n      ∀ (S : σ → Finset R), (∀ (i : σ), t i < (S i).card) → ∃ s, (∀ (i : σ), s i ∈ S i) ∧ (MvPolynomial.eval s) f ≠ 0\",\n      \"informal_description\": \"Let $ R $ be an integral domain, $ f $ a multivariate polynomial in $ R[\\\\sigma] $, and $ t $ a monomial with nonzero coefficient in $ f $ such that the total degree of $ f $ equals the degree of $ t $. For any family of finite subsets $ S_i \\\\subseteq R $ indexed by $ \\\\sigma $, if each $ S_i $ has cardinality strictly greater than the exponent of $ t $ in variable $ i $, then there exists an evaluation $ s : \\\\sigma \\\\to R $ with $ s(i) \\\\in S_i $ for all $ i $, such that $ f(s) \\\\neq 0 $. This is the combinatorial Nullstellensatz existence theorem.\",\n      \"path\": \"Mathlib.Combinatorics.Nullstellensatz\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_hasseDeriv\",\n      \"informal_name\": \"Natural Degree of Hasse Derivative: $\\\\deg(D^{(n)} p) = \\\\deg(p) - n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [IsAddTorsionFree R] (p : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv n) p).natDegree = p.natDegree - n\",\n      \"informal_description\": \"For a torsion-free semiring $ R $ and a polynomial $ p \\\\in R[X] $, the natural degree of the $ n $-th Hasse derivative of $ p $ is equal to the natural degree of $ p $ minus $ n $. This holds for all $ n \\\\in \\\\mathbb{N} $, where the Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\\\binom{i}{n} a_i X^{i - n} $ and the natural degree $ \\\\deg(p) $ is defined as the degree of $ p $ if non-zero, otherwise 0.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.exists_mem_support_not_dvd_of_forall_totalDegree_le\",\n      \"informal_name\": \"Existence of a Monomial with Non-Divisible Exponent in Polynomial Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k : Type u_1} {K : Type u_2} {ι : Type u_3} [inst : Field k] [inst_1 : Field K] [inst_2 : Algebra k K] (p : ℕ),\\n  Nat.Prime p →\\n    (∀ (s : Finset K), LinearIndepOn k id ↑s → LinearIndepOn k (fun x => x ^ p) ↑s) →\\n      ∀ {a : ι → K} {F : MvPolynomial ι k},\\n        (∀ (F' : MvPolynomial ι k), F' ≠ 0 → (MvPolynomial.aeval a) F' = 0 → F.totalDegree ≤ F'.totalDegree) →\\n          F ≠ 0 → (MvPolynomial.aeval a) F = 0 → ∃ i, ∃ σ ∈ F.support, ¬p ∣ σ i\",\n      \"informal_description\": \"Let $ R $ be a commutative semiring, $ \\\\sigma $ a type of variables, and $ p $ a prime number. If $ F \\\\in R[\\\\sigma] $ is a nonzero multivariate polynomial such that $ F(a) = 0 $ for some assignment $ a : \\\\sigma \\\\to S $ into an $ R $-algebra $ S $, then there exists an index $ i : \\\\sigma $ and a monomial $ \\\\sigma \\\\in \\\\text{support}(F) $ such that $ p $ does not divide the exponent $ \\\\sigma(i) $ of the variable $ i $ in $ \\\\sigma $.\",\n      \"path\": \"Mathlib.FieldTheory.SeparablyGenerated\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.hasseDeriv_eq_zero_of_lt_natDegree",
+          "informal_name": "Hasse Derivative Zero for Order Greater than Degree",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ), p.natDegree < n → (Polynomial.hasseDeriv n) p = 0",
+          "informal_description": "If the natural degree of a polynomial $ p $ is less than $ n $, then the $ n $-th Hasse derivative of $ p $ is the zero polynomial, i.e., $ \\text{hasseDeriv}^n(p) = 0 $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "Polynomial.natDegree_hasseDeriv_le",
+          "informal_name": "Degree Bound for Hasse Derivative of Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n",
+          "informal_description": "For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\deg(D^{(n)}(p)) \\leq \\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "MvPowerSeries.weightedHomogeneousComponent_of_weightedOrder",
+          "informal_name": "Non-vanishing Weighted Homogeneous Component at Weighted Order",
+          "kind": "theorem",
+          "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] {w : σ → ℕ} {f : MvPowerSeries σ R} {p : ℕ},\n  ↑p = MvPowerSeries.weightedOrder w f → (MvPowerSeries.weightedHomogeneousComponent w p) f ≠ 0",
+          "informal_description": "For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\sigma $ and a weight function $ w : \\sigma \\to \\mathbb{N} $, if the weighted order of $ f $ is $ p \\in \\mathbb{N} $, then the weighted homogeneous component of $ f $ of degree $ p $ is non-zero. In symbols: if $ \\operatorname{ord}_w(f) = p $, then $ f^{(p)}_w \\neq 0 $, where $ f^{(p)}_w $ denotes the sum of all terms in $ f $ with weighted degree $ p $.",
+          "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+        },
+        {
+          "formal_name": "MvPolynomial.weightedHomogeneousComponent_eq_zero",
+          "informal_name": "Weighted Homogeneous Component Vanishes Below Total Degree",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {w : σ → M} (n : M)\n  (φ : MvPolynomial σ R) [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M],\n  MvPolynomial.weightedTotalDegree w φ < n → (MvPolynomial.weightedHomogeneousComponent w n) φ = 0",
+          "informal_description": "For a multivariate polynomial $\\varphi$ over a commutative semiring with a weight function $w : \\sigma \\to M$ (where $M$ is a sup-semilattice with a bottom element), if the weighted total degree of $\\varphi$ is strictly less than $n$, then the weighted homogeneous component of $\\varphi$ of degree $n$ is zero.",
+          "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+        },
+        {
+          "formal_name": "MvPolynomial.le_weightedTotalDegree",
+          "informal_name": "Weighted Monomial Degree ≤ Weighted Total Degree",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\n  [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M] (w : σ → M) {φ : MvPolynomial σ R} {d : σ →₀ ℕ},\n  d ∈ φ.support → (Finsupp.weight w) d ≤ MvPolynomial.weightedTotalDegree w φ",
+          "informal_description": "For any multivariate polynomial $\\varphi$ over a commutative semiring $R$ with variables indexed by $\\sigma$, any weighting function $w : \\sigma \\to M$ where $M$ is a sup-semilattice, and any monomial $d$ in the support of $\\varphi$, the weight of $d$ with respect to $w$ is less than or equal to the weighted total degree of $\\varphi$ with respect to $w$.",
+          "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+        },
+        {
+          "formal_name": "MvPolynomial.combinatorial_nullstellensatz_exists_eval_nonzero",
+          "informal_name": "Combinatorial Nullstellensatz: Existence of Non-Vanishing Evaluation",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (f : MvPolynomial σ R) (t : σ →₀ ℕ),\n  MvPolynomial.coeff t f ≠ 0 →\n    f.totalDegree = Finsupp.degree t →\n      ∀ (S : σ → Finset R), (∀ (i : σ), t i < (S i).card) → ∃ s, (∀ (i : σ), s i ∈ S i) ∧ (MvPolynomial.eval s) f ≠ 0",
+          "informal_description": "Let $ R $ be an integral domain, $ f $ a multivariate polynomial in $ R[\\sigma] $, and $ t $ a monomial with nonzero coefficient in $ f $ such that the total degree of $ f $ equals the degree of $ t $. For any family of finite subsets $ S_i \\subseteq R $ indexed by $ \\sigma $, if each $ S_i $ has cardinality strictly greater than the exponent of $ t $ in variable $ i $, then there exists an evaluation $ s : \\sigma \\to R $ with $ s(i) \\in S_i $ for all $ i $, such that $ f(s) \\neq 0 $. This is the combinatorial Nullstellensatz existence theorem.",
+          "path": "Mathlib.Combinatorics.Nullstellensatz"
+        },
+        {
+          "formal_name": "Polynomial.natDegree_hasseDeriv",
+          "informal_name": "Natural Degree of Hasse Derivative: $\\deg(D^{(n)} p) = \\deg(p) - n$",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] [IsAddTorsionFree R] (p : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv n) p).natDegree = p.natDegree - n",
+          "informal_description": "For a torsion-free semiring $ R $ and a polynomial $ p \\in R[X] $, the natural degree of the $ n $-th Hasse derivative of $ p $ is equal to the natural degree of $ p $ minus $ n $. This holds for all $ n \\in \\mathbb{N} $, where the Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\binom{i}{n} a_i X^{i - n} $ and the natural degree $ \\deg(p) $ is defined as the degree of $ p $ if non-zero, otherwise 0.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "MvPolynomial.exists_mem_support_not_dvd_of_forall_totalDegree_le",
+          "informal_name": "Existence of a Monomial with Non-Divisible Exponent in Polynomial Support",
+          "kind": "theorem",
+          "type": "∀ {k : Type u_1} {K : Type u_2} {ι : Type u_3} [inst : Field k] [inst_1 : Field K] [inst_2 : Algebra k K] (p : ℕ),\n  Nat.Prime p →\n    (∀ (s : Finset K), LinearIndepOn k id ↑s → LinearIndepOn k (fun x => x ^ p) ↑s) →\n      ∀ {a : ι → K} {F : MvPolynomial ι k},\n        (∀ (F' : MvPolynomial ι k), F' ≠ 0 → (MvPolynomial.aeval a) F' = 0 → F.totalDegree ≤ F'.totalDegree) →\n          F ≠ 0 → (MvPolynomial.aeval a) F = 0 → ∃ i, ∃ σ ∈ F.support, ¬p ∣ σ i",
+          "informal_description": "Let $ R $ be a commutative semiring, $ \\sigma $ a type of variables, and $ p $ a prime number. If $ F \\in R[\\sigma] $ is a nonzero multivariate polynomial such that $ F(a) = 0 $ for some assignment $ a : \\sigma \\to S $ into an $ R $-algebra $ S $, then there exists an index $ i : \\sigma $ and a monomial $ \\sigma \\in \\text{support}(F) $ such that $ p $ does not divide the exponent $ \\sigma(i) $ of the variable $ i $ in $ \\sigma $.",
+          "path": "Mathlib.FieldTheory.SeparablyGenerated"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 3002
+}

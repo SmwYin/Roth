@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 253/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 254/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 253; remaining: 40.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 59 SKIP.
+- Completed applicable assessments: 254; remaining: 39.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 59 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3118,6 +3118,19 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Fresh tracked/no-ignore searches: only declaration. Exact293 kernel audit: zero direct type/value consumers. Related private theta helper uses a weak variant.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul.md).
 
+### Completed: `Roth.exists_hasseDeriv_eval_ne_zero`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] {P : MvPolynomial σ ℝ},
+  P ≠ 0 →
+    ∀ (α : σ → ℝ) (r : σ → ℕ) {c : ℝ},
+      Roth.index P α r < c → ∃ (k : σ →₀ ℕ), Roth.weight r k < c ∧ (eval α) ((hasseDeriv k) P) ≠ 0`
+- What: A nonzero polynomial with index below c has a nonvanishing Hasse derivative of weight below c.
+- How: Take a derivative attaining the minimum and transfer the strict inequality along its weight equality.
+- Hypotheses: Fintype σ for existing weight/index signatures, P ≠ 0 essential because index0=0, α arbitrary; r : σ → ℕ includes zero entries, strict index P α r < c
+- Project dependencies: Roth.index, MvPolynomial.hasseDeriv, Roth.weight, Roth.exists_weight_eq_index
+- Caller summary: One use at MainLemma:486 inside private exists_hasseDeriv_index_eval_bound_aux; main_lemma uses that caller at752. Full module caller inline and exact signatures verified.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_hasseDeriv_eval_ne_zero.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3650,6 +3663,8 @@ Completed `Roth.le_index_of_forall_eval_eq_zero`: Existing le_of_not_gt is only 
 
 Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Pinned mul_lt_mul_iff_of_pos_right, sq_pos_of_ne_zero, mul_lt_of_lt_one_left and field_simp support the proof; no exact full implication identified by15cells/compiled exact? probe.
 
+Completed `Roth.exists_hasseDeriv_eval_ne_zero`: NO-mathlib-has-it via re-aim: AddMonoidAlgebra.infDegree is Finset support inf; Finset.inf_lt_iff is exactly its strict-cutoff witness law. Finset.inf'_lt_iff is the real nonempty form. Taylor/Hasse and zero-default bridges remain explicit.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4157,6 +4172,8 @@ Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Equal-remainder evaluation is a sh
 Completed `Roth.le_index_of_forall_eval_eq_zero`: le_index_iff supplies unrestricted nonzero-derivative bounds, not bounded checking., eq_sum_box_hasseDeriv and degreeOf_taylor_le share out-of-box annihilation but conclude reconstruction/support confinement., exists_hasseDeriv_eval_ne_zero is the complementary strict upper-cutoff witness theorem.
 
 Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Related theta_lt_eta_of_sq_log_bound_aux repeats square clearing with weak hypotheses/conclusion; not an exact duplicate or actual caller.
+
+Completed `Roth.exists_hasseDeriv_eval_ne_zero`: Strict-cutoff consequence of Roth.exists_weight_eq_index, Contraposition of Roth.le_index_iff, Existing Finset.inf_lt_iff re-aim law
 
 ## Part 5: Generalization opportunities
 
@@ -4677,6 +4694,8 @@ Completed `Roth.le_index_of_forall_eval_eq_zero`: Verified cutoff-local outside-
 
 Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Verified Budget253.generic replaces 2m+1 by arbitrary positive a under the same class assumptions; exact original recovery compiled. Weak δm≤1 and strict-budget partners compiled.
 
+Completed `Roth.exists_hasseDeriv_eval_ne_zero`: Verified arbitrary I, semiring coefficients A and any linear order L with top for infDegree; arbitrary σ and CommRing A with real exponent-cost D for translated Hasse form. Existing index signature itself retains Fintype.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5185,6 +5204,8 @@ Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Upstream design decision between a
 Completed `Roth.le_index_of_forall_eval_eq_zero`: Potential discoverability for bounded Hasse/Taylor support checking, not a missing finite-infimum order law. Upstream choice between a public boxed convenience theorem and local use of shared support bridges remains a taste/API question.
 
 Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Potential positive-scale budget-transfer family; scratch proof is new, not existing mathlib API. No missing instance or simp API justified.
+
+Completed `Roth.exists_hasseDeriv_eval_ne_zero`: No new strict finite-infimum witness law needed. Project translation/Hasse coefficient bridge and zero-default real projection are separate normalization API, not existing mathlib calls.
 
 ## Part 7: Junk / removable
 
@@ -5697,6 +5718,8 @@ Completed `Roth.le_index_of_forall_eval_eq_zero`: Not dead code: the sole caller
 
 Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Unused within audited source/direct-kernel scope; candidate for local removal if no stable public API intended. No external/simp/transitive deadness claim.
 
+Completed `Roth.exists_hasseDeriv_eval_ne_zero`: Used, mathematically valid local convenience. Redundant upstream after infDegree re-aim; candidate for local inlining, not dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5954,6 +5977,7 @@ Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Unused within audited 
 | 251 | `Roth.eval_hasseDeriv_sub_eq_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eval_hasseDeriv_sub_eq_zero/root-acceptance.json) |
 | 252 | `Roth.le_index_of_forall_eval_eq_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.le_index_of_forall_eval_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.le_index_of_forall_eval_eq_zero/root-acceptance.json) |
 | 253 | `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul/root-acceptance.json) |
+| 254 | `Roth.exists_hasseDeriv_eval_ne_zero` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_hasseDeriv_eval_ne_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_hasseDeriv_eval_ne_zero/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6459,12 +6483,14 @@ Completed `Roth.le_index_of_forall_eval_eq_zero` action: BORDERLINE-needs-human;
 
 Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` action: BORDERLINE-needs-human: resolve three concrete upstream/local API questions; keep production unchanged. If retained, prefer generic positive scale and weak companion.
 
+Completed `Roth.exists_hasseDeriv_eval_ne_zero` action: Do not upstream this spelling. At sole caller MainLemma:486 use the verified finite-support strict infimum witness, rewriting support membership by coeff_taylor, or inline the existing project attained-minimum corollary while retaining current index API. After the coordinated index/infDegree bridge refactor delete the wrapper; main_lemma signature is preserved. Alternative local home: Roth/Index.lean near exists_weight_eq_index if retained for readability.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_hasseDeriv_eval_ne_zero` next. Supporting identities receive their own applicable checks.
+   `Roth.abs_eval_iterated_hasseDeriv_lt_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

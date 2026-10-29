@@ -1,0 +1,110 @@
+{
+  "declaration": "Roth.exists_hasseDeriv_eval_ne_zero",
+  "canonical_index": 254,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "source_sha256": "a07f687e0b90a065ae77d014d36df9f7da09865a6ced67464c4927e8c67fbf95",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "WITNESS254_SIGNATURE_IDENTICAL",
+        "WITNESS254_AUDIT: requested=293; unique=293",
+        "WITNESS254_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "format": "virtual",
+      "source_sha256": "0d9c448384bb7af9cdcfa18594bfa311f5e4446aad84139fe3efd6162f5f1eb8",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n#check_failure Roth.exists_hasseDeriv_eval_ne_zero\n#check_failure MvPolynomial.taylor\n#check @Finset.inf_lt_iff\n#check @Finset.inf'_lt_iff\n#check @Finset.inf'_eq_csInf_image\n#check @Finset.coe_inf'\nnamespace Witness254\nuniverse u v w\ntheorem abstract_cutoff {I : Type u} {A : Type v} {L : Type w} [Semiring A]\n    [LinearOrder L] [OrderTop L] (D : I → L) (P : AddMonoidAlgebra A I) (c : L) :\n    AddMonoidAlgebra.infDegree D P < c ↔ ∃ i ∈ P.coeff.support, D i < c :=\n  Finset.inf_lt_iff\ntheorem coefficient_cutoff {I A L : Type*} [Semiring A] [LinearOrder L] [OrderTop L]\n    (D : I → L) (P : AddMonoidAlgebra A I) {c : L}\n    (hc : AddMonoidAlgebra.infDegree D P < c) : ∃ i, D i < c ∧ P.coeff i ≠ 0 :=\n  (Finset.inf_lt_iff.mp hc).imp fun _ ⟨hi, hw⟩ ↦ ⟨hw, Finsupp.mem_support_iff.mp hi⟩\ntheorem projected_cutoff {I A : Type*} [Semiring A] (D : I → ℝ)\n    (P : AddMonoidAlgebra A I) (hP : P.coeff.support.Nonempty) {c : ℝ}\n    (hc : (AddMonoidAlgebra.infDegree (fun i ↦ (D i : WithTop ℝ)) P).untopD 0 < c) :\n    ∃ i, D i < c ∧ P.coeff i ≠ 0 := by\n  change (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0 < c at hc\n  rw [← Finset.coe_inf' hP D, WithTop.untopD_coe] at hc\n  exact (Finset.inf'_lt_iff hP |>.mp hc).imp fun _ ⟨hi, hw⟩ ↦\n    ⟨hw, Finsupp.mem_support_iff.mp hi⟩\ntheorem finite_real_cutoff {I : Type*} (s : Finset I) (hs : s.Nonempty) (D : I → ℝ)\n    {c : ℝ} (hc : sInf (D '' (↑s : Set I)) < c) : ∃ i ∈ s, D i < c := by\n  rw [← Finset.inf'_eq_csInf_image s hs D] at hc\n  exact (Finset.inf'_lt_iff hs).mp hc\nnoncomputable def translate {σ : Type*} (α : σ → ℝ) (P : MvPolynomial σ ℝ) :\n    MvPolynomial σ ℝ := MvPolynomial.aeval (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P\ntheorem translated_cutoff {σ : Type*} (P : MvPolynomial σ ℝ) (α : σ → ℝ)\n    (D : (σ →₀ ℕ) → ℝ) (hP : (translate α P).coeff.support.Nonempty) {c : ℝ}\n    (hc : (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))\n      (translate α P)).untopD 0 < c) : ∃ d, D d < c ∧ (translate α P).coeff d ≠ 0 :=\n  projected_cutoff D _ hP hc\nend Witness254\n#print axioms Witness254.abstract_cutoff\n#print axioms Witness254.coefficient_cutoff\n#print axioms Witness254.projected_cutoff\n#print axioms Witness254.finite_real_cutoff\n#print axioms Witness254.translated_cutoff\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "Witness254.abstract_cutoff",
+        "Witness254.projected_cutoff",
+        "Witness254.finite_real_cutoff",
+        "Witness254.translated_cutoff"
+      ]
+    },
+    {
+      "label": "project",
+      "source": "project-executed.lean.txt",
+      "receipt": "project-receipt.json",
+      "format": "disk",
+      "source_sha256": "43444ec1fbc89c3240a4af5a866ee71b6509268df267d050639e63c4d00d0ab9",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "WITNESS254_RECOVERIES_EXACT_TYPE",
+        "Witness254Project.generalized"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "format": "disk",
+      "source_sha256": "5118dbf46032cefb63b058d5697c514467746fb2c1e9f961055bc3b535c30284",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "WITNESS254_FULL_CALLER_AND_MAIN_SIGNATURES_IDENTICAL_NO_DIRECT_TARGET"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "isolated-rejected-executed.lean.txt",
+      "receipt": "isolated-rejected-receipt.json",
+      "reason": "Missing explicit support nonempty argument and multiline field projection syntax; recovered sorryAx; excluded entirely"
+    },
+    {
+      "source": "inline-rejected-executed.lean.txt",
+      "receipt": "inline-rejected-receipt.json",
+      "reason": "Audit metaprogram dotted syntax and opaque value access failed; mathematical caller proofs had standard axioms but whole attempt rejected"
+    },
+    {
+      "source": "inline-rejected-executed.lean.txt",
+      "receipt": "inline-stale-query-receipt.json",
+      "reason": "Accidental diagnostic query after failed width prep repeated previous rejected source; not a new execution success or accepted evidence"
+    }
+  ],
+  "full_actual_callers": {
+    "count": 1,
+    "original_signatures_verified": 2,
+    "inline_source": "inline-executed.lean.txt",
+    "coverage": "Full original MainLemma module with target removed; private direct caller finite-minimum inlining and main_lemma continuation; caller/main types definitionally equal to originals"
+  },
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "fad927215a124d6928eaf99af55185c1261bcc2a834a2c2fcbda3946fa3ceafc",
+    "proofs": [
+      "zero polynomial positive cutoff counterexample",
+      "c<=0 impossible",
+      "weak equality cutoff insufficient",
+      "allzero r nonzero constant order0",
+      "empty σ nonzero constant order0"
+    ]
+  },
+  "printer_elision": false
+}

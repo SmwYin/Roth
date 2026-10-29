@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n#check_failure Roth.exists_hasseDeriv_eval_ne_zero\n#check_failure MvPolynomial.taylor\n#check @Finset.inf_lt_iff\n#check @Finset.inf'_lt_iff\n#check @Finset.inf'_eq_csInf_image\n#check @Finset.coe_inf'\nnamespace Witness254\nuniverse u v w\ntheorem abstract_cutoff {I : Type u} {A : Type v} {L : Type w} [Semiring A]\n    [LinearOrder L] [OrderTop L] (D : I → L) (P : AddMonoidAlgebra A I) (c : L) :\n    AddMonoidAlgebra.infDegree D P < c ↔ ∃ i ∈ P.coeff.support, D i < c :=\n  Finset.inf_lt_iff\ntheorem coefficient_cutoff {I A L : Type*} [Semiring A] [LinearOrder L] [OrderTop L]\n    (D : I → L) (P : AddMonoidAlgebra A I) {c : L}\n    (hc : AddMonoidAlgebra.infDegree D P < c) : ∃ i, D i < c ∧ P.coeff i ≠ 0 :=\n  (Finset.inf_lt_iff.mp hc).imp fun _ ⟨hi, hw⟩ ↦ ⟨hw, Finsupp.mem_support_iff.mp hi⟩\ntheorem projected_cutoff {I A : Type*} [Semiring A] (D : I → ℝ)\n    (P : AddMonoidAlgebra A I) (hP : P.coeff.support.Nonempty) {c : ℝ}\n    (hc : (AddMonoidAlgebra.infDegree (fun i ↦ (D i : WithTop ℝ)) P).untopD 0 < c) :\n    ∃ i, D i < c ∧ P.coeff i ≠ 0 := by\n  change (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0 < c at hc\n  rw [← Finset.coe_inf' hP D, WithTop.untopD_coe] at hc\n  exact (Finset.inf'_lt_iff hP |>.mp hc).imp fun _ ⟨hi, hw⟩ ↦\n    ⟨hw, Finsupp.mem_support_iff.mp hi⟩\ntheorem finite_real_cutoff {I : Type*} (s : Finset I) (hs : s.Nonempty) (D : I → ℝ)\n    {c : ℝ} (hc : sInf (D '' (↑s : Set I)) < c) : ∃ i ∈ s, D i < c := by\n  rw [← Finset.inf'_eq_csInf_image s hs D] at hc\n  exact (Finset.inf'_lt_iff hs).mp hc\nnoncomputable def translate {σ : Type*} (α : σ → ℝ) (P : MvPolynomial σ ℝ) :\n    MvPolynomial σ ℝ := MvPolynomial.aeval (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P\ntheorem translated_cutoff {σ : Type*} (P : MvPolynomial σ ℝ) (α : σ → ℝ)\n    (D : (σ →₀ ℕ) → ℝ) (hP : (translate α P).coeff.support.Nonempty) {c : ℝ}\n    (hc : (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))\n      (translate α P)).untopD 0 < c) : ∃ d, D d < c ∧ (translate α P).coeff d ≠ 0 :=\n  projected_cutoff D _ hP hc\nend Witness254\n#print axioms Witness254.abstract_cutoff\n#print axioms Witness254.coefficient_cutoff\n#print axioms Witness254.projected_cutoff\n#print axioms Witness254.finite_real_cutoff\n#print axioms Witness254.translated_cutoff\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_hasseDeriv_eval_ne_zero`\",\n      \"line\": 19,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf_lt_iff : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] [inst_1 : OrderTop α] {s : Finset ι}\\n  {f : ι → α} {a : α}, s.inf f < a ↔ ∃ b ∈ s, f b < a\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf'_lt_iff : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] {s : Finset ι} (H : s.Nonempty) {f : ι → α}\\n  {a : α}, s.inf' H f < a ↔ ∃ b ∈ s, f b < a\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf'_eq_csInf_image : ∀ {ι : Type u_1} {α : Type u_2} [inst : ConditionallyCompleteLattice α] (s : Finset ι)\\n  (H : s.Nonempty) (f : ι → α), s.inf' H f = sInf (f '' ↑s)\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.coe_inf' : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\\n  (f : β → α), ↑(s.inf' H f) = s.inf (WithTop.some ∘ f)\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Witness254.abstract_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 55,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Witness254.coefficient_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 56,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Witness254.projected_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 57,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Witness254.finite_real_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 58,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Witness254.translated_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 59,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_hasseDeriv_eval_ne_zero`",
+          "line": 19,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf_lt_iff : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] [inst_1 : OrderTop α] {s : Finset ι}\n  {f : ι → α} {a : α}, s.inf f < a ↔ ∃ b ∈ s, f b < a",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf'_lt_iff : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] {s : Finset ι} (H : s.Nonempty) {f : ι → α}\n  {a : α}, s.inf' H f < a ↔ ∃ b ∈ s, f b < a",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf'_eq_csInf_image : ∀ {ι : Type u_1} {α : Type u_2} [inst : ConditionallyCompleteLattice α] (s : Finset ι)\n  (H : s.Nonempty) (f : ι → α), s.inf' H f = sInf (f '' ↑s)",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.coe_inf' : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\n  (f : β → α), ↑(s.inf' H f) = s.inf (WithTop.some ∘ f)",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Witness254.abstract_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 55,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Witness254.coefficient_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 56,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Witness254.projected_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 57,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Witness254.finite_real_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 58,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Witness254.translated_cutoff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 59,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 730
+}

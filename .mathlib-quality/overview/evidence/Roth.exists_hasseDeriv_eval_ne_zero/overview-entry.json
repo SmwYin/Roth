@@ -1,0 +1,29 @@
+{
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {P : MvPolynomial σ ℝ},\n  P ≠ 0 →\n    ∀ (α : σ → ℝ) (r : σ → ℕ) {c : ℝ},\n      Roth.index P α r < c → ∃ (k : σ →₀ ℕ), Roth.weight r k < c ∧ (eval α) ((hasseDeriv k) P) ≠ 0",
+  "kind": "theorem",
+  "what": "A nonzero polynomial with index below c has a nonvanishing Hasse derivative of weight below c.",
+  "how": "Take a derivative attaining the minimum and transfer the strict inequality along its weight equality.",
+  "hypotheses": [
+    "Fintype σ for existing weight/index signatures",
+    "P ≠ 0 essential because index0=0",
+    "α arbitrary; r : σ → ℕ includes zero entries",
+    "strict index P α r < c"
+  ],
+  "project_dependencies": [
+    "Roth.index",
+    "MvPolynomial.hasseDeriv",
+    "Roth.weight",
+    "Roth.exists_weight_eq_index"
+  ],
+  "caller_summary": "One use at MainLemma:486 inside private exists_hasseDeriv_index_eval_bound_aux; main_lemma uses that caller at752. Full module caller inline and exact signatures verified.",
+  "mathlib_api_audit": "NO-mathlib-has-it via re-aim: AddMonoidAlgebra.infDegree is Finset support inf; Finset.inf_lt_iff is exactly its strict-cutoff witness law. Finset.inf'_lt_iff is the real nonempty form. Taylor/Hasse and zero-default bridges remain explicit.",
+  "moral_duplications": [
+    "Strict-cutoff consequence of Roth.exists_weight_eq_index",
+    "Contraposition of Roth.le_index_iff",
+    "Existing Finset.inf_lt_iff re-aim law"
+  ],
+  "generalization": "Verified arbitrary I, semiring coefficients A and any linear order L with top for infDegree; arbitrary σ and CommRing A with real exponent-cost D for translated Hasse form. Existing index signature itself retains Fintype.",
+  "missing_api": "No new strict finite-infimum witness law needed. Project translation/Hasse coefficient bridge and zero-default real projection are separate normalization API, not existing mathlib calls.",
+  "junk": "Used, mathematically valid local convenience. Redundant upstream after infDegree re-aim; candidate for local inlining, not dead code.",
+  "action": "Do not upstream this spelling. At sole caller MainLemma:486 use the verified finite-support strict infimum witness, rewriting support membership by coeff_taylor, or inline the existing project attained-minimum corollary while retaining current index API. After the coordinated index/infDegree bridge refactor delete the wrapper; main_lemma signature is preserved. Alternative local home: Roth/Index.lean near exists_weight_eq_index if retained for readability."
+}
