@@ -1,0 +1,24 @@
+private lemma exists_mem_RSet_le_index_of_log_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)
+    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m q₁ r₁ : ℕ} (hm : 0 < m)
+    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) (hs : ∑ j, r j ≤ m * r₁) {δ : ℝ} (hδ0 : 0 ≤ δ)
+    (hL : 2 * m + 1 + 2 * m * Real.log (1 + A) ≤ δ ^ 2 * Real.log q₁) :
+    ∃ P : MvPolynomial (Fin m) ℤ, P ∈ RSet (mainCoeffBound δ q₁ r₁) r ∧
+      gam δ f.natDegree m ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by
+  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree
+  have hr₁ : 0 < r₁ := Nat.pos_of_mul_pos_left <| (hr ⟨0, hm⟩).trans_le
+    ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)
+  have hq : 3 ≤ δ ^ 2 * Real.log q₁ := by
+    have hmR : (1 : ℝ) ≤ m := by exact_mod_cast hm
+    nlinarith only [hL, hmR, mul_nonneg (by positivity : (0 : ℝ) ≤ 2 * m)
+      (Real.log_nonneg (by linarith : 1 ≤ 1 + A))]
+  obtain ⟨_, hTA, _⟩ := three_small_factors (m := m) (q₁ := q₁) (α := 0)
+    hδ0 hr₁ (zero_le_one.trans hA1) (by simpa using hL)
+  have hpow : (mainCoeffBound δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) =
+      mainCoeffBound δ q₁ r₁ * ((mainCoeffBound δ q₁ r₁ : ℝ) ^ δ) ^ 3 := by
+    rw [Real.rpow_add_of_nonneg (by positivity) zero_le_one (by positivity), Real.rpow_one,
+      ← Real.rpow_mul_natCast (by positivity)]
+    simp [mul_comm]
+  simpa only [gam, lam] using
+    exists_mem_RSet_le_index_of_rpow_bound_aux (B := mainCoeffBound δ q₁ r₁) hf hfα hA
+    hm r hr (Nat.floor_pos.2 <| (by norm_num : (1 : ℝ) ≤ 4).trans
+      (four_lt_rpow hδ0 hr₁ hq).le) hs hTA.le hpow.ge

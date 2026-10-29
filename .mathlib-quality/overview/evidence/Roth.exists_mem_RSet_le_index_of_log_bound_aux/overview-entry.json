@@ -1,0 +1,25 @@
+{
+  "declaration": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+  "kind": "lemma",
+  "type": "∀ {f : Polynomial ℤ} {α A : ℝ},\n  f.Monic →\n    (Polynomial.aeval α) f = 0 →\n      (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →\n        ∀ {m q₁ r₁ : ℕ},\n          0 < m →\n            ∀ (r : Fin m → ℕ),\n              (∀ (j : Fin m), 0 < r j) →\n                ∑ j : Fin m, r j ≤ m * r₁ →\n                  ∀ {δ : ℝ},\n                    0 ≤ δ →\n                      2 * ↑m + 1 + 2 * ↑m * Real.log (1 + A) ≤ δ ^ 2 * Real.log ↑q₁ →\n                        ∃ P ∈ Roth.RSet (↑(Roth.mainCoeffBound δ q₁ r₁)) r,\n                          Roth.gam δ f.natDegree m ≤ Roth.index ((map (Int.castRingHom ℝ)) P) (fun (x : Fin m) ↦ α) r",
+  "what": "Specializes the power-budget construction to the logarithmic Roth parameters and obtains index at least gamma with the natural-floor coefficient bound.",
+  "how": "Use three_small_factors and four_lt_rpow to establish the coefficient growth needed by exists_mem_RSet_le_index_of_rpow_bound_aux; unfold gam and lam.",
+  "hypotheses": "Monic integer equation, bounded coefficients, positive dimension/degrees, total degree bound and nonnegative delta with logarithmic bound. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.RSet",
+    "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+    "Roth.four_lt_rpow",
+    "Roth.gam",
+    "Roth.index",
+    "Roth.lam",
+    "Roth.mainCoeffBound",
+    "Roth.three_small_factors"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Use monicity to obtain A>=1, degree positivity and the sum bound to obtain r1>0, and the logarithmic threshold to derive the hypothesis for four_lt_rpow. Invoke three_small_factors at alpha0 to control (1+A)^(m*r1). Rewrite B^(1+3delta)=B*(B^delta)^3 using Real.rpow_add_of_nonneg and Real.rpow_mul_natCast, prove the floor bound B positive, and invoke the rpow-budget helper. Unfold gam and lam to match its index cutoff. The sole auxiliary-polynomial caller adds evaluation control and weakens the floor coefficient bound to the real power bound.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
