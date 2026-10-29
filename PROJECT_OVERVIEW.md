@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 277/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 278/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 277; remaining: 16.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 29 YES-but-generalise-first, 46 NO-mathlib-has-it, 97 BORDERLINE-needs-human, 71 SKIP.
+- Completed applicable assessments: 278; remaining: 15.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 30 YES-but-generalise-first, 46 NO-mathlib-has-it, 97 BORDERLINE-needs-human, 71 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3536,6 +3536,27 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One actual source caller: Roth.exists_roth_approximants_aux at Main438; zero external-to-file callers. One direct native kernel-value consumer, no direct type consumers, five canonical transitive consumers. Complete caller proof tested with literal inline and generic recovered replacement.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_approximants.md).
 
+### Completed: `Roth.exists_degrees`
+
+- Type: `∀ {m : ℕ} [inst : NeZero m] {δ : ℝ},
+  0 < δ →
+    δ ≤ 1 →
+      ∀ {q : Fin m → ℕ},
+        (∀ (j : Fin m), 1 < q j) →
+          (∀ (i j : Fin m), ↑i + 1 = ↑j → 2 / δ * Real.log ↑(q i) ≤ Real.log ↑(q j)) →
+            ∃ (r : Fin m → ℕ),
+              (∀ (j : Fin m), 0 < r j) ∧
+                (∀ (j : Fin m), 10 / δ < ↑(r j)) ∧
+                  (∀ (i j : Fin m), ↑i + 1 = ↑j → ↑(r j) / δ < ↑(r i)) ∧
+                    (∀ (j : Fin m), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) ∧
+                      ∀ (j : Fin m), ↑(r j) * Real.log ↑(q j) < (1 + δ / 10) * (↑(r 0) * Real.log ↑(q 0))`
+- What: Choose positive natural degrees, larger than10/δ, with strict adjacent ratio and simultaneous weak-lower/strict-upper balanced logarithmic products.
+- How: Use exists_nat_gt above a finite supremum, then Nat.le_ceil and Nat.ceil_lt_add_one on ceil(s*log(q0)/log(qj)); positivity transports bounds and the factor2 preserves strict separation.
+- Hypotheses: Nonzero finite dimension, δ>0 with original δ≤1, denominators qj>1 and weak adjacent logarithm growth2/δ.
+- Project dependencies: None
+- Caller summary: explicit caller count: 1; external to file count: 0; callers: {'name': 'Roth.exists_roth_approximants_aux', 'file': 'Roth/Main.lean', 'declaration_line': 429, 'declaration_end_line': 450, 'call_line': 440}; reading: Entire Roth/Main.lean1–588, Entire Roth/LeanEval.lean1–73; verification scope: Full actual caller literal inline and all-positive-delta replacement, exact original caller signature equality. hδ1 remains needed for caller antitonicity and last degree>=3; no claim it can be removed there.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_degrees.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4116,6 +4137,8 @@ Completed `Roth.exists_delta`: ContinuousAt.eventually_lt, Filter.Eventually.and
 
 Completed `Roth.exists_approximants`: Set.seq_of_forall_finite_exists, Nat.exists_strictMono_subsequence, Filter.extraction_forall_of_frequently and log monotonicity are primitives, not a verified ≤3-call exact chain replacement. Dirichlet supplies subcritical reduced rational infinitude. LiouvilleWith has existential constantC and excludes exact equality, so is not the same fixed1 predicate.
 
+Completed `Roth.exists_degrees`: Existing Nat.ceil_lt_mul is scalar rounding; tendsto_nat_ceil_mul_div_atTop is asymptotic. Neither is a verified existing full finite package; generic helper is newly proved scratch mathematics.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4671,6 +4694,8 @@ Completed `Roth.exists_m`: Shares small-parameter selection theme with exists_de
 Completed `Roth.exists_delta`: Shares neighborhood shrinking with exists_delta_bound, but adds independent quotient continuity and slack. No separate actual inline reconstruction found.
 
 Completed `Roth.exists_approximants`: Reduced selector supplies arithmetic existence; target adds recursive finite selection and strict log growth. exists_degrees consumes that output and has a different rounding/balancing argument. No separate source inline rederivation found.
+
+Completed `Roth.exists_degrees`: {'a': 'Roth.exists_degrees', 'b': 'Roth.exists_approximants', 'same_statement': False, 'same_proof': False, 'verdict': 'Complementary denominator selection versus degree rounding; do not unify.'}, {'a': 'Roth.exists_degrees', 'b': 'Nat.ceil_lt_mul', 'same_statement': False, 'same_proof': 'Partial ceiling estimate only', 'verdict': 'Reuse scalar candidate in future cleanup; finite synchronization/separation is new proof.'}, {'a': 'Roth.exists_degrees', 'b': 'tendsto_nat_ceil_mul_div_atTop', 'same_statement': False, 'same_proof': 'Asymptotic version of one-coordinate rounding', 'verdict': 'A finite quantitative theorem still needs scale selection and arithmetic assembly.'}
 
 ## Part 5: Generalization opportunities
 
@@ -5242,6 +5267,15 @@ Completed `Roth.exists_delta`: verified: True; proposed type: ∀ {f p q : ℝ �
 
 Completed `Roth.exists_approximants`: verified: True; proposed type: ∀ {A : Type*} (s : Set A) (height : A → ℝ), (∀ B : ℝ, ∃ a ∈ s, B < height a) → ∀ (F : ℕ → ℝ → ℝ) (L : ℝ), ∃ f : ℕ → A, (∀ k, f k ∈ s) ∧ (∀ k, 0 < height (f k)) ∧ L < height (f 0) ∧ ∀ k, F k (height (f k)) < height (f (k+1)); kappa: Remove0<κ: newly proved unrestricted selector yields full chain; κ≤2 also drops supplied infinitude.; recovery: Exact original full signature recovered from generic cofinal-height finite selection, with native type equality. Explicit δ0,-1 and full old positiveκ type through unrestricted theorem verified.
 
+Completed `Roth.exists_degrees`: verified: True; proposed type: variable {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] [FloorRing K]
+theorem exists_separated_nat_multiples {ι : Type*} [Finite ι] (b : ι) {ℓ : ι → K} (hℓ : ∀ j, 0 < ℓ j)
+    {ε B δ c : K} (hε : 0 < ε) (hB : 0 < B) (hc : 1 < c)
+    (R : ι → ι → Prop) (hg : ∀ i j, R i j → c / δ * ℓ i ≤ ℓ j) :
+    ∃ r : ι → ℕ, (∀ j, 0 < r j) ∧ (∀ j, B < r j) ∧
+      (∀ i j, R i j → (r j : K) / δ < r i) ∧
+      (∀ j, (r b : K) * ℓ b ≤ r j * ℓ j) ∧
+      ∀ j, (r j : K) * ℓ j < (1 + ε) * (r b * ℓ b) ; remove: δ≤1 from original target; retain: δ>0 for positive ε=δ/10 and B=10/δ in original quantitative recovery, q>1/log positivity, strict adjacent ratio and strict upper balanced product; weak lower product; scope: Generic ordered field with FloorRing; arbitrary Finite ι, base b, positive ℓ, ε,B, c>1, arbitrary relation R, unrestricted generic δ. Original full type recovered exactly.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5798,6 +5832,8 @@ Completed `Roth.exists_m`: Possible reusable generic scalar dimension selector, 
 Completed `Roth.exists_delta`: Potential simultaneous quantitative perturbation convenience lemma; generic point selection itself already exists. Public API scope remains a future question.
 
 Completed `Roth.exists_approximants`: Possible cofinal real-height recursive-growth selection theorem, with finite-chain corollary. Generic scratch theorem is new proof; upstream API granularity remains a future design question.
+
+Completed `Roth.exists_degrees`: Finite simultaneous positive-weight natural rounding with an arbitrary relative error, lower degree bound and strict separation margin.
 
 ## Part 7: Junk / removable
 
@@ -6358,6 +6394,8 @@ Completed `Roth.exists_delta`: Used theorem; sole caller can inline it but requi
 
 Completed `Roth.exists_approximants`: Used theorem, complete proof can inline into sole caller but no ≤3-call mathlib replacement established. Keep project-local while assessing generic upstream selection API.
 
+Completed `Roth.exists_degrees`: Not dead: one complete actual private caller and terminal dependency chain. No ≤3-existing-call replacement verified; retain local wrapper until upstream generic API exists.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6639,6 +6677,7 @@ Completed `Roth.exists_approximants`: Used theorem, complete proof can inline in
 | 275 | `Roth.exists_m` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_m.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_m/root-acceptance.json) |
 | 276 | `Roth.exists_delta` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_delta.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_delta/root-acceptance.json) |
 | 277 | `Roth.exists_approximants` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_approximants.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_approximants/root-acceptance.json) |
+| 278 | `Roth.exists_degrees` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_degrees.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_degrees/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7192,12 +7231,14 @@ Completed `Roth.exists_delta` action: BORDERLINE-needs-human: keep project-local
 
 Completed `Roth.exists_approximants` action: BORDERLINE-needs-human: keep this arithmetic packaging local; three concrete future public-API questions remain, without blocking completion of the assessment.
 
+Completed `Roth.exists_degrees` action: verdict: YES-but-generalise-first; home: Mathlib/Algebra/Order/Floor/Finite.lean (new leaf); pr title: feat(Algebra/Order/Floor): balance natural multiples of finite positive weights; next: Run /generalise Roth.exists_degrees and /cleanup on the generic finite-weight lemmas; replace current caller via the verified all-positive-delta recovery.; grouping: Own small balancing+separation PR. Keep separate from accepted YES Roth.eventually_div_rpow_lt and Roth.exists_reduced_approx (analytic/Diophantine interfaces), and Roth.main_lemma (project theorem); progress snapshot confirms those verdicts.; reviewers: Yaël Dillies (a78f66ab84/e06eff5f95) or Seewoo Lee (caabe1c7b0): recent relevant order/floor commits, not endorsements.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_degrees` next. Supporting identities receive their own applicable checks.
+   `Roth.one_le_prod_pow_mul_abs_eval` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

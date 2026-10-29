@@ -1,0 +1,88 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.exists_degrees
+namespace Degrees278Generic
+
+/-- Natural multiples of finitely many positive weights can be balanced with arbitrary error. -/
+theorem balanced {ι : Type*} [Fintype ι] (b : ι) {ℓ : ι → ℝ} (hℓ : ∀ j, 0 < ℓ j)
+    {ε B : ℝ} (hε : 0 < ε) (hB : 0 < B) : ∃ r : ι → ℕ, (∀ j, 0 < r j) ∧
+      (∀ j, B < r j) ∧ (∀ j, (r b : ℝ) * ℓ b ≤ r j * ℓ j) ∧
+      ∀ j, (r j : ℝ) * ℓ j < (1 + ε) * (r b * ℓ b) := by
+  classical
+  have : Nonempty ι := ⟨b⟩
+  let K := max B (1 / ε)
+  obtain ⟨s, hs⟩ := exists_nat_gt
+    (Finset.univ.sup' Finset.univ_nonempty (fun j ↦ K * ℓ j / ℓ b))
+  have hS (j) : K * ℓ j < (s : ℝ) * ℓ b :=
+    (div_lt_iff₀ (hℓ b)).1 ((Finset.le_sup' _ (Finset.mem_univ j)).trans_lt hs)
+  let r : ι → ℕ := fun j ↦ ⌈s * ℓ b / ℓ j⌉₊
+  have hrb : r b = s := by
+    simp only [r, mul_div_cancel_right₀ _ (hℓ b).ne', Nat.ceil_natCast]
+  have hlow (j) := (div_le_iff₀ (hℓ j)).1 (Nat.le_ceil (s * ℓ b / ℓ j))
+  have hlarge (j) : B < r j := by
+    apply (mul_lt_mul_iff_left₀ (hℓ j)).1
+    exact ((mul_le_mul_of_nonneg_right (le_max_left _ _) (hℓ j).le).trans_lt
+      (hS j)).trans_le (hlow j)
+  have hsmall (j) : ℓ j < ε * (s * ℓ b) := by
+    have h := ((mul_le_mul_of_nonneg_right (le_max_right B (1 / ε)) (hℓ j).le).trans_lt
+      (hS j))
+    have h' := mul_lt_mul_of_pos_left h hε
+    have he : ε * (1 / ε * ℓ j) = ℓ j := by field_simp
+    rwa [he] at h'
+  refine ⟨r, fun j ↦ ?_, hlarge, ?_, ?_⟩
+  · exact_mod_cast hB.trans (hlarge j)
+  · simpa only [hrb] using hlow
+  · intro j
+    rw [hrb]
+    refine (mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one (by positivity)) (hℓ j)).trans ?_
+    rw [add_mul, one_mul, div_mul_cancel₀ _ (hℓ j).ne', add_mul, one_mul]
+    exact add_lt_add_left (hsmall j) _
+
+/-- A strict growth margin survives simultaneous natural rounding. -/
+theorem separated {ι : Type*} [Fintype ι] (b : ι) {ℓ : ι → ℝ} (hℓ : ∀ j, 0 < ℓ j)
+    {ε B δ c : ℝ} (hε : 0 < ε) (hB : 0 < B) (hδ : 0 < δ) (hc : 1 < c)
+    (R : ι → ι → Prop) (hg : ∀ i j, R i j → c / δ * ℓ i ≤ ℓ j) :
+    ∃ r : ι → ℕ, (∀ j, 0 < r j) ∧ (∀ j, B < r j) ∧
+      (∀ i j, R i j → (r j : ℝ) / δ < r i) ∧
+      (∀ j, (r b : ℝ) * ℓ b ≤ r j * ℓ j) ∧
+      ∀ j, (r j : ℝ) * ℓ j < (1 + ε) * (r b * ℓ b) := by
+  let τ := min ε ((c - 1) / 2)
+  have hτ : 0 < τ := lt_min hε (by linarith)
+  obtain ⟨r, hr, hlarge, hlow, hup⟩ := balanced b hℓ hτ hB
+  have hτc : 1 + τ ≤ c := by
+    have := min_le_right ε ((c - 1) / 2)
+    dsimp [τ]
+    linarith
+  refine ⟨r, hr, hlarge, ?_, hlow, fun j ↦ (hup j).trans_le ?_⟩
+  · intro i j hij
+    have h : (r j : ℝ) * (c / δ) < (1 + τ) * r i := by
+      apply (mul_lt_mul_iff_left₀ (hℓ i)).1
+      simpa only [mul_assoc] using
+        (mul_le_mul_of_nonneg_left (hg i j hij) (Nat.cast_nonneg (r j))).trans_lt
+          ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))
+    have h' := h.trans_le (mul_le_mul_of_nonneg_right hτc (Nat.cast_nonneg (r i)))
+    rw [mul_div_assoc, mul_comm (r j : ℝ) c, mul_div_assoc] at h'
+    exact (mul_lt_mul_iff_right₀ (zero_lt_one.trans hc)).1 h'
+  · exact mul_le_mul_of_nonneg_right (add_le_add_left (min_le_left _ _) 1) (by positivity)
+
+end Degrees278Generic
+
+#print axioms Degrees278Generic.balanced
+#print axioms Degrees278Generic.separated

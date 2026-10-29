@@ -1,0 +1,42 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.exists_degrees
+
+namespace Degrees278Edges
+-- At zero error, the strict upper bound contradicts the base coordinate itself.
+theorem zero_error : ¬ ∃ r : Fin 1 → ℕ, (r 0 : ℝ) < (1 + (0 : ℝ)) * r 0 := by
+  simp
+-- Nonnegative weights are insufficient: zero makes the strict upper bound impossible.
+theorem zero_weight (ε : ℝ) :
+    ¬ ∃ r : Fin 1 → ℕ, (r 0 : ℝ) * 0 < (1 + ε) * (r 0 * 0) := by
+  simp
+-- A growth margin of one cannot enforce strict adjacent separation when δ=1.
+theorem no_margin : ¬ ∃ r : Fin 2 → ℕ,
+    (r 0 : ℝ) ≤ r 1 ∧ (r 1 : ℝ) / 1 < r 0 := by
+  simp
+-- The original denominator assumption cannot simply become q>=1.
+theorem denominator_one (δ : ℝ) : ¬ ∃ r : Fin 1 → ℕ,
+    (r 0 : ℝ) * Real.log (1 : ℕ) < (1 + δ / 10) * (r 0 * Real.log (1 : ℕ)) := by
+  simp
+#print axioms zero_error
+#print axioms zero_weight
+#print axioms no_margin
+#print axioms denominator_one
+end Degrees278Edges

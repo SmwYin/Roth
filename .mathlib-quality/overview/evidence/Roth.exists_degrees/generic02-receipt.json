@@ -1,0 +1,71 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_degrees\nnamespace Degrees278Generic\n\n/-- Natural multiples of finitely many positive weights can be balanced with arbitrary error. -/\ntheorem balanced {\u03b9 : Type*} [Finite \u03b9] (b : \u03b9) {\u2113 : \u03b9 \u2192 \u211d} (h\u2113 : \u2200 j, 0 < \u2113 j)\n    {\u03b5 B : \u211d} (h\u03b5 : 0 < \u03b5) (hB : 0 < B) : \u2203 r : \u03b9 \u2192 \u2115, (\u2200 j, 0 < r j) \u2227\n      (\u2200 j, B < r j) \u2227 (\u2200 j, (r b : \u211d) * \u2113 b \u2264 r j * \u2113 j) \u2227\n      \u2200 j, (r j : \u211d) * \u2113 j < (1 + \u03b5) * (r b * \u2113 b) := by\n  classical\n  let : Fintype \u03b9 := Fintype.ofFinite \u03b9\n  have : Nonempty \u03b9 := \u27e8b\u27e9\n  let K := max B (1 / \u03b5)\n  obtain \u27e8s, hs\u27e9 := exists_nat_gt\n    (Finset.univ.sup' Finset.univ_nonempty (fun j \u21a6 K * \u2113 j / \u2113 b))\n  have hS (j) : K * \u2113 j < (s : \u211d) * \u2113 b :=\n    (div_lt_iff\u2080 (h\u2113 b)).1 ((Finset.le_sup' _ (Finset.mem_univ j)).trans_lt hs)\n  let r : \u03b9 \u2192 \u2115 := fun j \u21a6 \u2308s * \u2113 b / \u2113 j\u2309\u208a\n  have hrb : r b = s := by\n    simp only [r, mul_div_cancel_right\u2080 _ (h\u2113 b).ne', Nat.ceil_natCast]\n  have hlow (j) := (div_le_iff\u2080 (h\u2113 j)).1 (Nat.le_ceil (s * \u2113 b / \u2113 j))\n  have hlarge (j) : B < r j := by\n    apply (mul_lt_mul_iff_left\u2080 (h\u2113 j)).1\n    exact ((mul_le_mul_of_nonneg_right (le_max_left _ _) (h\u2113 j).le).trans_lt\n      (hS j)).trans_le (hlow j)\n  have hsmall (j) : \u2113 j < \u03b5 * (s * \u2113 b) := by\n    have h := ((mul_le_mul_of_nonneg_right (le_max_right B (1 / \u03b5)) (h\u2113 j).le).trans_lt\n      (hS j))\n    have h' := mul_lt_mul_of_pos_left h h\u03b5\n    have he : \u03b5 * (1 / \u03b5 * \u2113 j) = \u2113 j := by field_simp\n    rwa [he] at h'\n  refine \u27e8r, fun j \u21a6 ?_, hlarge, ?_, ?_\u27e9\n  \u00b7 exact_mod_cast hB.trans (hlarge j)\n  \u00b7 simpa only [hrb] using hlow\n  \u00b7 intro j\n    rw [hrb]\n    refine (mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one\n      (div_nonneg (mul_nonneg (Nat.cast_nonneg _) (h\u2113 b).le) (h\u2113 j).le)) (h\u2113 j)).trans ?_\n    rw [add_mul, one_mul, div_mul_cancel\u2080 _ (h\u2113 j).ne', add_mul, one_mul]\n    linarith only [hsmall j]\n\n/-- A strict growth margin survives simultaneous natural rounding. -/\ntheorem separated {\u03b9 : Type*} [Finite \u03b9] (b : \u03b9) {\u2113 : \u03b9 \u2192 \u211d} (h\u2113 : \u2200 j, 0 < \u2113 j)\n    {\u03b5 B \u03b4 c : \u211d} (h\u03b5 : 0 < \u03b5) (hB : 0 < B) (h\u03b4 : 0 < \u03b4) (hc : 1 < c)\n    (R : \u03b9 \u2192 \u03b9 \u2192 Prop) (hg : \u2200 i j, R i j \u2192 c / \u03b4 * \u2113 i \u2264 \u2113 j) :\n    \u2203 r : \u03b9 \u2192 \u2115, (\u2200 j, 0 < r j) \u2227 (\u2200 j, B < r j) \u2227\n      (\u2200 i j, R i j \u2192 (r j : \u211d) / \u03b4 < r i) \u2227\n      (\u2200 j, (r b : \u211d) * \u2113 b \u2264 r j * \u2113 j) \u2227\n      \u2200 j, (r j : \u211d) * \u2113 j < (1 + \u03b5) * (r b * \u2113 b) := by\n  let \u03c4 := min \u03b5 ((c - 1) / 2)\n  have h\u03c4 : 0 < \u03c4 := lt_min h\u03b5 (by linarith)\n  obtain \u27e8r, hr, hlarge, hlow, hup\u27e9 := balanced b h\u2113 h\u03c4 hB\n  have h\u03c4c : 1 + \u03c4 \u2264 c := by\n    have := min_le_right \u03b5 ((c - 1) / 2)\n    dsimp [\u03c4]\n    linarith\n  refine \u27e8r, hr, hlarge, ?_, hlow, fun j \u21a6 (hup j).trans_le ?_\u27e9\n  \u00b7 intro i j hij\n    have h : (r j : \u211d) * (c / \u03b4) < (1 + \u03c4) * r i := by\n      apply (mul_lt_mul_iff_left\u2080 (h\u2113 i)).1\n      simpa only [mul_assoc] using\n        (mul_le_mul_of_nonneg_left (hg i j hij) (Nat.cast_nonneg (r j))).trans_lt\n          ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))\n    have h' := h.trans_le (mul_le_mul_of_nonneg_right h\u03c4c (Nat.cast_nonneg (r i)))\n    have hm : (r j : \u211d) * (c / \u03b4) = c * (r j / \u03b4) := by ring\n    rw [hm] at h'\n    exact (mul_lt_mul_iff_right\u2080 (zero_lt_one.trans hc)).1 h'\n  \u00b7 exact mul_le_mul_of_nonneg_right (add_le_add le_rfl (min_le_left _ _))\n      (mul_nonneg (Nat.cast_nonneg _) (h\u2113 b).le)\n\nend Degrees278Generic\n\n#print axioms Degrees278Generic.balanced\n#print axioms Degrees278Generic.separated\n"
+  },
+  "elapsed_ms": 1667,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "generic02",
+      "operation": "run_code",
+      "source": "generic2-executed.lean.txt",
+      "source_sha256": "3948a9f0337bf64308fcbe61d5a93335c93c77b3bb172971f6ec620023070fec",
+      "receipt": "generic02-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.exists_degrees/root-requests/generic02.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.exists_degrees/generic2-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_degrees`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Degrees278Generic.balanced' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 91,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Degrees278Generic.separated' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 92,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `h\u03b4` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _h\u03b4\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 62,\n      \"column\": 46,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_degrees`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Degrees278Generic.balanced' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 91,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Degrees278Generic.separated' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 92,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `h\u03b4` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _h\u03b4\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 62,
+          "column": 46,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,36 @@
+theorem exists_degrees {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) {q : Fin m → ℕ}
+    (hq : ∀ j, 1 < q j) (h50 : ∀ i j : Fin m, i.val + 1 = j.val →
+      2 / δ * Real.log (q i) ≤ Real.log (q j)) : ∃ r : Fin m → ℕ, (∀ j, 0 < r j) ∧
+      (∀ j, 10 / δ < r j) ∧ (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ < r i) ∧
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧ ∀ j,
+      (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0)) := by
+  let ℓ (j) := Real.log (q j)
+  have hℓ : ∀ j, 0 < ℓ j := fun j ↦ Real.log_pos (by exact_mod_cast hq j)
+  obtain ⟨s, hs⟩ := exists_nat_gt (Finset.univ.sup' Finset.univ_nonempty (10 * ℓ · / (δ * ℓ 0)))
+  have hS (j) : 10 * ℓ j < ((s : ℝ) * ℓ 0) * δ := by
+    simpa only [mul_assoc, mul_comm δ] using (div_lt_iff₀ (mul_pos hδ0 (hℓ 0))).1
+      ((Finset.le_sup' _ (Finset.mem_univ j)).trans_lt hs)
+  let r : Fin m → ℕ := fun j ↦ ⌈s * ℓ 0 / ℓ j⌉₊
+  have hr0 : r 0 = s := by simp only [r, mul_div_cancel_right₀ _ (hℓ 0).ne', Nat.ceil_natCast]
+  have hlow (j) := (div_le_iff₀ (hℓ j)).1 (Nat.le_ceil (s * ℓ 0 / ℓ j))
+  have hup (j) : (r j : ℝ) * ℓ j < (1 + δ / 10) * (s * ℓ 0) := by
+    refine (mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one (by positivity)) (hℓ j)).trans_le ?_
+    rw [add_mul, one_mul, div_mul_cancel₀ _ (hℓ j).ne', add_mul, one_mul]
+    refine add_le_add le_rfl ?_
+    rw [div_mul_eq_mul_div, le_div_iff₀ (by norm_num : (0 : ℝ) < 10)]
+    simpa only [mul_comm] using (hS j).le
+  have hlarge (j) : 10 / δ < r j := by
+    refine (div_lt_iff₀ hδ0).2 ((mul_lt_mul_iff_left₀ (hℓ j)).1 ?_)
+    simpa only [mul_right_comm] using (hS j).trans_le (mul_le_mul_of_nonneg_right (hlow j) hδ0.le)
+  refine ⟨r, fun j ↦ ?_, hlarge, fun i j hij ↦ ?_, ?_⟩
+  · exact_mod_cast (div_pos (by norm_num : (0 : ℝ) < 10) hδ0).trans (hlarge j)
+  · have h : (r j : ℝ) * (2 / δ) < (1 + δ / 10) * r i := by
+      apply (mul_lt_mul_iff_left₀ (hℓ i)).1
+      simpa only [mul_assoc] using
+        (mul_le_mul_of_nonneg_left (h50 i j hij) (Nat.cast_nonneg (r j))).trans_lt
+          ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))
+    rw [← mul_div_assoc, mul_comm (r j : ℝ) 2, mul_div_assoc] at h
+    exact (mul_lt_mul_iff_right₀ (by norm_num : (0 : ℝ) < 2)).1 <| h.trans_le
+      (mul_le_mul_of_nonneg_right ((add_le_add le_rfl
+        (div_le_div_of_nonneg_right hδ1 (by norm_num))).trans (by norm_num)) (Nat.cast_nonneg _))
+  · simpa only [hr0] using And.intro hlow hup

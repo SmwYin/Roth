@@ -1,0 +1,73 @@
+{
+  "type": "∀ {m : ℕ} [inst : NeZero m] {δ : ℝ},\n  0 < δ →\n    δ ≤ 1 →\n      ∀ {q : Fin m → ℕ},\n        (∀ (j : Fin m), 1 < q j) →\n          (∀ (i j : Fin m), ↑i + 1 = ↑j → 2 / δ * Real.log ↑(q i) ≤ Real.log ↑(q j)) →\n            ∃ (r : Fin m → ℕ),\n              (∀ (j : Fin m), 0 < r j) ∧\n                (∀ (j : Fin m), 10 / δ < ↑(r j)) ∧\n                  (∀ (i j : Fin m), ↑i + 1 = ↑j → ↑(r j) / δ < ↑(r i)) ∧\n                    (∀ (j : Fin m), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) ∧\n                      ∀ (j : Fin m), ↑(r j) * Real.log ↑(q j) < (1 + δ / 10) * (↑(r 0) * Real.log ↑(q 0))",
+  "kind": "theorem",
+  "what": "Choose positive natural degrees, larger than10/δ, with strict adjacent ratio and simultaneous weak-lower/strict-upper balanced logarithmic products.",
+  "how": "Use exists_nat_gt above a finite supremum, then Nat.le_ceil and Nat.ceil_lt_add_one on ceil(s*log(q0)/log(qj)); positivity transports bounds and the factor2 preserves strict separation.",
+  "hypotheses": "Nonzero finite dimension, δ>0 with original δ≤1, denominators qj>1 and weak adjacent logarithm growth2/δ.",
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_caller_count": 1,
+    "external_to_file_count": 0,
+    "callers": [
+      {
+        "name": "Roth.exists_roth_approximants_aux",
+        "file": "Roth/Main.lean",
+        "declaration_line": 429,
+        "declaration_end_line": 450,
+        "call_line": 440
+      }
+    ],
+    "reading": [
+      "Entire Roth/Main.lean1–588",
+      "Entire Roth/LeanEval.lean1–73"
+    ],
+    "verification_scope": "Full actual caller literal inline and all-positive-delta replacement, exact original caller signature equality. hδ1 remains needed for caller antitonicity and last degree>=3; no claim it can be removed there."
+  },
+  "mathlib_api_audit": "Existing Nat.ceil_lt_mul is scalar rounding; tendsto_nat_ceil_mul_div_atTop is asymptotic. Neither is a verified existing full finite package; generic helper is newly proved scratch mathematics.",
+  "moral_duplications": [
+    {
+      "a": "Roth.exists_degrees",
+      "b": "Roth.exists_approximants",
+      "same_statement": false,
+      "same_proof": false,
+      "verdict": "Complementary denominator selection versus degree rounding; do not unify."
+    },
+    {
+      "a": "Roth.exists_degrees",
+      "b": "Nat.ceil_lt_mul",
+      "same_statement": false,
+      "same_proof": "Partial ceiling estimate only",
+      "verdict": "Reuse scalar candidate in future cleanup; finite synchronization/separation is new proof."
+    },
+    {
+      "a": "Roth.exists_degrees",
+      "b": "tendsto_nat_ceil_mul_div_atTop",
+      "same_statement": false,
+      "same_proof": "Asymptotic version of one-coordinate rounding",
+      "verdict": "A finite quantitative theorem still needs scale selection and arithmetic assembly."
+    }
+  ],
+  "generalization": {
+    "verified": true,
+    "proposed_type": "variable {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] [FloorRing K]\ntheorem exists_separated_nat_multiples {ι : Type*} [Finite ι] (b : ι) {ℓ : ι → K} (hℓ : ∀ j, 0 < ℓ j)\n    {ε B δ c : K} (hε : 0 < ε) (hB : 0 < B) (hc : 1 < c)\n    (R : ι → ι → Prop) (hg : ∀ i j, R i j → c / δ * ℓ i ≤ ℓ j) :\n    ∃ r : ι → ℕ, (∀ j, 0 < r j) ∧ (∀ j, B < r j) ∧\n      (∀ i j, R i j → (r j : K) / δ < r i) ∧\n      (∀ j, (r b : K) * ℓ b ≤ r j * ℓ j) ∧\n      ∀ j, (r j : K) * ℓ j < (1 + ε) * (r b * ℓ b) ",
+    "remove": [
+      "δ≤1 from original target"
+    ],
+    "retain": [
+      "δ>0 for positive ε=δ/10 and B=10/δ in original quantitative recovery",
+      "q>1/log positivity",
+      "strict adjacent ratio and strict upper balanced product; weak lower product"
+    ],
+    "scope": "Generic ordered field with FloorRing; arbitrary Finite ι, base b, positive ℓ, ε,B, c>1, arbitrary relation R, unrestricted generic δ. Original full type recovered exactly."
+  },
+  "missing_api": "Finite simultaneous positive-weight natural rounding with an arbitrary relative error, lower degree bound and strict separation margin.",
+  "junk": "Not dead: one complete actual private caller and terminal dependency chain. No ≤3-existing-call replacement verified; retain local wrapper until upstream generic API exists.",
+  "action": {
+    "verdict": "YES-but-generalise-first",
+    "home": "Mathlib/Algebra/Order/Floor/Finite.lean (new leaf)",
+    "pr_title": "feat(Algebra/Order/Floor): balance natural multiples of finite positive weights",
+    "next": "Run /generalise Roth.exists_degrees and /cleanup on the generic finite-weight lemmas; replace current caller via the verified all-positive-delta recovery.",
+    "grouping": "Own small balancing+separation PR. Keep separate from accepted YES Roth.eventually_div_rpow_lt and Roth.exists_reduced_approx (analytic/Diophantine interfaces), and Roth.main_lemma (project theorem); progress snapshot confirms those verdicts.",
+    "reviewers": "Yaël Dillies (a78f66ab84/e06eff5f95) or Seewoo Lee (caabe1c7b0): recent relevant order/floor commits, not endorsements."
+  }
+}

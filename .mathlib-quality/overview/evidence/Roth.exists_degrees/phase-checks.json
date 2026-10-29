@@ -1,0 +1,195 @@
+{
+  "size": "SMALL",
+  "size_reason": "Quantitative helper, no new structure or named main theorem.",
+  "definition_one_line": "n/a: theorem",
+  "infrastructure_risks": [
+    {
+      "risk": "Typeclass diamond",
+      "status": "n/a",
+      "reason": "Theorem introduces no definitional equality, instance, coercion or universe-polymorphic structure."
+    },
+    {
+      "risk": "Reducibility leak",
+      "status": "n/a",
+      "reason": "Theorem introduces no definitional equality, instance, coercion or universe-polymorphic structure."
+    },
+    {
+      "risk": "Noncanonical unfolding",
+      "status": "n/a",
+      "reason": "Theorem introduces no definitional equality, instance, coercion or universe-polymorphic structure."
+    },
+    {
+      "risk": "Instance priority",
+      "status": "n/a",
+      "reason": "Theorem introduces no definitional equality, instance, coercion or universe-polymorphic structure."
+    },
+    {
+      "risk": "Universes",
+      "status": "n/a",
+      "reason": "Theorem introduces no definitional equality, instance, coercion or universe-polymorphic structure."
+    },
+    {
+      "risk": "Coercion ambiguity",
+      "status": "n/a",
+      "reason": "Theorem introduces no definitional equality, instance, coercion or universe-polymorphic structure."
+    }
+  ],
+  "modern9": [
+    {
+      "question": "Typeclasses",
+      "applies": "yes",
+      "reformulation": "Field, LinearOrder, IsStrictOrderedRing and FloorRing on K; Finite index",
+      "downstream": "Rational and real weights share one proof; no explicit Archimedean assumption, inferred by FloorRing.archimedean."
+    },
+    {
+      "question": "Filters",
+      "applies": "no",
+      "reformulation": "Finite quantitative existence retained",
+      "downstream": "tendsto_nat_ceil_mul_div_atTop is an asymptotic building block but loses the explicit finite package; filter proof would need finite-eventual intersection."
+    },
+    {
+      "question": "Universal property",
+      "applies": "no",
+      "reformulation": "Existential witnesses with inequalities",
+      "downstream": "No universal construction characterized."
+    },
+    {
+      "question": "Bundled substructure",
+      "applies": "no",
+      "reformulation": "Positive weight hypotheses",
+      "downstream": "No closure subset/algebraic substructure."
+    },
+    {
+      "question": "Algebraic hierarchy",
+      "applies": "yes",
+      "reformulation": "ℝ→ordered floor field",
+      "downstream": "Only ordered-field arithmetic and ceiling bounds are used; no real completeness or logarithm after positivity."
+    },
+    {
+      "question": "Higher categories",
+      "applies": "no",
+      "reformulation": "None",
+      "downstream": "Finite ordered arithmetic is unrelated."
+    },
+    {
+      "question": "Concrete index",
+      "applies": "yes",
+      "reformulation": "Fin m→Finite ι with base b and relation R",
+      "downstream": "Avoids nonzero dimension/Fin successor bookkeeping in generic API."
+    },
+    {
+      "question": "Concrete via abstract",
+      "applies": "yes",
+      "reformulation": "Replace log(q j) by arbitrary positive ℓ j, δ/10 by ε and 2 by c>1",
+      "downstream": "Real.log appears only in initial positivity line; generic proof and exact full recovery verified natively."
+    },
+    {
+      "question": "False generalization",
+      "applies": "no false change",
+      "reformulation": "Retain natural witnesses, strict upper/ratio and weak lower products",
+      "downstream": "All five original outputs recovered together. Lower threshold and error are independent semantic parameters, not cosmetic constant changes."
+    }
+  ],
+  "proofstrategy5": [
+    {
+      "question": "Topology",
+      "applies": "no",
+      "alternative": "No topology",
+      "cost": "n/a"
+    },
+    {
+      "question": "Algebra point-free",
+      "applies": "no",
+      "alternative": "Scalar order estimates, no subobjects",
+      "cost": "n/a"
+    },
+    {
+      "question": "Analysis sequence/filter",
+      "applies": "no",
+      "alternative": "Direct finite ceiling estimate best matches quantitative outputs",
+      "cost": "n/a"
+    },
+    {
+      "question": "Category universal property",
+      "applies": "no",
+      "alternative": "No categorical construction",
+      "cost": "n/a"
+    },
+    {
+      "question": "Missing helper API",
+      "applies": "yes",
+      "alternative": "Finite positive-weight balancing plus separated relation corollary",
+      "cost": "New API; Nat.ceil_lt_mul covers only a scalar rounding bound."
+    }
+  ],
+  "statement_shape3": [
+    {
+      "check": "Normal form",
+      "assessment": "Use natural witnesses with weak lower product and strict upper product. Equivalent ratio/interval forms require positive divisions; conjunction packaging matches caller."
+    },
+    {
+      "check": "Syntactic generality",
+      "assessment": "Finite ι, base b, arbitrary relation R, weights ℓ, tolerance ε, lower threshold B and growth c; specializes directly without changing old signature."
+    },
+    {
+      "check": "Superfluous arguments",
+      "assessment": "δ≤1 removable from target with all outputs. Generic δ>0 was unused and removed; original δ>0 retained for ε,B. Redundant Archimedean removed. Fintype weakened to Finite. Caller δ≤1 is retained: used by the actual antitonicity/degree>=3 proof; no blanket mathematical necessity claim."
+    }
+  ],
+  "generality": [
+    {
+      "parameter": "m/NeZero",
+      "assessment": "Needed to address base0; generic base b over Finite ι replaces it."
+    },
+    {
+      "parameter": "δ>0",
+      "assessment": "Retained in original quantitative extension; zero error impossible at base."
+    },
+    {
+      "parameter": "δ≤1",
+      "assessment": "Removed natively while retaining original outputs, via τ=min(δ/10,1/2). δ≤10 is a weaker consequence, no need stop there."
+    },
+    {
+      "parameter": "q naturals",
+      "assessment": "Only log positivity used; arbitrary positive weights verified over floor ordered fields."
+    },
+    {
+      "parameter": "q>1",
+      "assessment": "Cannot weaken to q≥1; q=1 strict upper0<0 counterexample."
+    },
+    {
+      "parameter": "h50",
+      "assessment": "Weak growth inequality sufficient; strict ratio obtained from strict ceiling upper bound and c>1 margin."
+    },
+    {
+      "parameter": "10,2,δ/10",
+      "assessment": "Generalize independently to positive B, c>1 and ε>0; not merely renamed arithmetic constants."
+    }
+  ],
+  "composition": "NOT-COMPOSABLE",
+  "proofstrategy_verdict": "REFACTOR-RECOMMENDED",
+  "statementshape_verdict": "RESTATE-BEFORE-SHIP",
+  "pairwise_duplications": [
+    {
+      "a": "Roth.exists_degrees",
+      "b": "Roth.exists_approximants",
+      "same_statement": false,
+      "same_proof": false,
+      "verdict": "Complementary denominator selection versus degree rounding; do not unify."
+    },
+    {
+      "a": "Roth.exists_degrees",
+      "b": "Nat.ceil_lt_mul",
+      "same_statement": false,
+      "same_proof": "Partial ceiling estimate only",
+      "verdict": "Reuse scalar candidate in future cleanup; finite synchronization/separation is new proof."
+    },
+    {
+      "a": "Roth.exists_degrees",
+      "b": "tendsto_nat_ceil_mul_div_atTop",
+      "same_statement": false,
+      "same_proof": "Asymptotic version of one-coordinate rounding",
+      "verdict": "A finite quantitative theorem still needs scale selection and arithmetic assembly."
+    }
+  ]
+}

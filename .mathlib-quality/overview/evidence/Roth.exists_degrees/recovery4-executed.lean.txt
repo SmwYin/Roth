@@ -1,0 +1,112 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Degrees278Generic
+variable {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] [FloorRing K]
+
+/-- Natural multiples of finitely many positive weights can be balanced with arbitrary error. -/
+theorem balanced {ι : Type*} [Finite ι] (b : ι) {ℓ : ι → K} (hℓ : ∀ j, 0 < ℓ j)
+    {ε B : K} (hε : 0 < ε) (hB : 0 < B) : ∃ r : ι → ℕ, (∀ j, 0 < r j) ∧
+      (∀ j, B < r j) ∧ (∀ j, (r b : K) * ℓ b ≤ r j * ℓ j) ∧
+      ∀ j, (r j : K) * ℓ j < (1 + ε) * (r b * ℓ b) := by
+  classical
+  let : Fintype ι := Fintype.ofFinite ι
+  have : Nonempty ι := ⟨b⟩
+  let K := max B (1 / ε)
+  obtain ⟨s, hs⟩ := exists_nat_gt
+    (Finset.univ.sup' Finset.univ_nonempty (fun j ↦ K * ℓ j / ℓ b))
+  have hS (j) : K * ℓ j < (s : K) * ℓ b :=
+    (div_lt_iff₀ (hℓ b)).1 ((Finset.le_sup' _ (Finset.mem_univ j)).trans_lt hs)
+  let r : ι → ℕ := fun j ↦ ⌈s * ℓ b / ℓ j⌉₊
+  have hrb : r b = s := by
+    simp only [r, mul_div_cancel_right₀ _ (hℓ b).ne', Nat.ceil_natCast]
+  have hlow (j) := (div_le_iff₀ (hℓ j)).1 (Nat.le_ceil (s * ℓ b / ℓ j))
+  have hlarge (j) : B < r j := by
+    apply (mul_lt_mul_iff_left₀ (hℓ j)).1
+    exact ((mul_le_mul_of_nonneg_right (le_max_left _ _) (hℓ j).le).trans_lt
+      (hS j)).trans_le (hlow j)
+  have hsmall (j) : ℓ j < ε * (s * ℓ b) := by
+    have h := ((mul_le_mul_of_nonneg_right (le_max_right B (1 / ε)) (hℓ j).le).trans_lt
+      (hS j))
+    have h' := mul_lt_mul_of_pos_left h hε
+    have he : ε * (1 / ε * ℓ j) = ℓ j := by field_simp
+    rwa [he] at h'
+  refine ⟨r, fun j ↦ ?_, hlarge, ?_, ?_⟩
+  · exact_mod_cast hB.trans (hlarge j)
+  · simpa only [hrb] using hlow
+  · intro j
+    rw [hrb]
+    refine (mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one
+      (div_nonneg (mul_nonneg (Nat.cast_nonneg _) (hℓ b).le) (hℓ j).le)) (hℓ j)).trans ?_
+    rw [add_mul, one_mul, div_mul_cancel₀ _ (hℓ j).ne', add_mul, one_mul]
+    linarith only [hsmall j]
+
+/-- A strict growth margin survives simultaneous natural rounding. -/
+theorem separated {ι : Type*} [Finite ι] (b : ι) {ℓ : ι → K} (hℓ : ∀ j, 0 < ℓ j)
+    {ε B δ c : K} (hε : 0 < ε) (hB : 0 < B) (hc : 1 < c)
+    (R : ι → ι → Prop) (hg : ∀ i j, R i j → c / δ * ℓ i ≤ ℓ j) :
+    ∃ r : ι → ℕ, (∀ j, 0 < r j) ∧ (∀ j, B < r j) ∧
+      (∀ i j, R i j → (r j : K) / δ < r i) ∧
+      (∀ j, (r b : K) * ℓ b ≤ r j * ℓ j) ∧
+      ∀ j, (r j : K) * ℓ j < (1 + ε) * (r b * ℓ b) := by
+  let τ := min ε ((c - 1) / 2)
+  have hτ : 0 < τ := lt_min hε (by linarith)
+  obtain ⟨r, hr, hlarge, hlow, hup⟩ := balanced b hℓ hτ hB
+  have hτc : 1 + τ ≤ c := by
+    have := min_le_right ε ((c - 1) / 2)
+    dsimp [τ]
+    linarith
+  refine ⟨r, hr, hlarge, ?_, hlow, fun j ↦ (hup j).trans_le ?_⟩
+  · intro i j hij
+    have h : (r j : K) * (c / δ) < (1 + τ) * r i := by
+      apply (mul_lt_mul_iff_left₀ (hℓ i)).1
+      simpa only [mul_assoc] using
+        (mul_le_mul_of_nonneg_left (hg i j hij) (Nat.cast_nonneg (r j))).trans_lt
+          ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))
+    have h' := h.trans_le (mul_le_mul_of_nonneg_right hτc (Nat.cast_nonneg (r i)))
+    have hm : (r j : K) * (c / δ) = c * (r j / δ) := by ring
+    rw [hm] at h'
+    exact (mul_lt_mul_iff_right₀ (zero_lt_one.trans hc)).1 h'
+  · exact mul_le_mul_of_nonneg_right (add_le_add le_rfl (min_le_left _ _))
+      (mul_nonneg (Nat.cast_nonneg _) (hℓ b).le)
+
+end Degrees278Generic
+
+namespace Degrees278Recovery
+theorem all_positive_delta {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) {q : Fin m → ℕ}
+    (hq : ∀ j, 1 < q j) (h50 : ∀ i j : Fin m, i.val + 1 = j.val →
+      2 / δ * Real.log (q i) ≤ Real.log (q j)) : ∃ r : Fin m → ℕ, (∀ j, 0 < r j) ∧
+      (∀ j, 10 / δ < r j) ∧ (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ < r i) ∧
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧ ∀ j,
+      (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0))  := by
+  exact Degrees278Generic.separated (0 : Fin m)
+    (fun j ↦ Real.log_pos (by exact_mod_cast hq j))
+    (div_pos hδ0 (by norm_num)) (div_pos (by norm_num) hδ0) (by norm_num)
+    (fun i j ↦ i.val + 1 = j.val) h50
+
+theorem recovered {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) (_hδ1 : δ ≤ 1) {q : Fin m → ℕ}
+    (hq : ∀ j, 1 < q j) (h50 : ∀ i j : Fin m, i.val + 1 = j.val →
+      2 / δ * Real.log (q i) ≤ Real.log (q j)) : ∃ r : Fin m → ℕ, (∀ j, 0 < r j) ∧
+      (∀ j, 10 / δ < r j) ∧ (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ < r i) ∧
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧ ∀ j,
+      (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0))  := by
+  exact all_positive_delta hδ0 hq h50
+
+end Degrees278Recovery
+
+example : @Roth.exists_degrees = @Degrees278Recovery.recovered := Subsingleton.elim _ _
+#print axioms Degrees278Recovery.all_positive_delta
+#print axioms Degrees278Recovery.recovered

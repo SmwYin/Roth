@@ -1,0 +1,47 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 282,
+  "name": "Roth.exists_degrees",
+  "short": "exists_degrees",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 317,
+  "source": "theorem exists_degrees {m : \u2115} [NeZero m] {\u03b4 : \u211d} (h\u03b40 : 0 < \u03b4) (h\u03b41 : \u03b4 \u2264 1) {q : Fin m \u2192 \u2115}\n    (hq : \u2200 j, 1 < q j) (h50 : \u2200 i j : Fin m, i.val + 1 = j.val \u2192\n      2 / \u03b4 * Real.log (q i) \u2264 Real.log (q j)) : \u2203 r : Fin m \u2192 \u2115, (\u2200 j, 0 < r j) \u2227\n      (\u2200 j, 10 / \u03b4 < r j) \u2227 (\u2200 i j : Fin m, i.val + 1 = j.val \u2192 (r j : \u211d) / \u03b4 < r i) \u2227\n      (\u2200 j, (r 0 : \u211d) * Real.log (q 0) \u2264 r j * Real.log (q j)) \u2227 \u2200 j,\n      (r j : \u211d) * Real.log (q j) < (1 + \u03b4 / 10) * (r 0 * Real.log (q 0)) := by\n  let \u2113 (j) := Real.log (q j)\n  have h\u2113 : \u2200 j, 0 < \u2113 j := fun j \u21a6 Real.log_pos (by exact_mod_cast hq j)\n  obtain \u27e8s, hs\u27e9 := exists_nat_gt (Finset.univ.sup' Finset.univ_nonempty (10 * \u2113 \u00b7 / (\u03b4 * \u2113 0)))\n  have hS (j) : 10 * \u2113 j < ((s : \u211d) * \u2113 0) * \u03b4 := by\n    simpa only [mul_assoc, mul_comm \u03b4] using (div_lt_iff\u2080 (mul_pos h\u03b40 (h\u2113 0))).1\n      ((Finset.le_sup' _ (Finset.mem_univ j)).trans_lt hs)\n  let r : Fin m \u2192 \u2115 := fun j \u21a6 \u2308s * \u2113 0 / \u2113 j\u2309\u208a\n  have hr0 : r 0 = s := by simp only [r, mul_div_cancel_right\u2080 _ (h\u2113 0).ne', Nat.ceil_natCast]\n  have hlow (j) := (div_le_iff\u2080 (h\u2113 j)).1 (Nat.le_ceil (s * \u2113 0 / \u2113 j))\n  have hup (j) : (r j : \u211d) * \u2113 j < (1 + \u03b4 / 10) * (s * \u2113 0) := by\n    refine (mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one (by positivity)) (h\u2113 j)).trans_le ?_\n    rw [add_mul, one_mul, div_mul_cancel\u2080 _ (h\u2113 j).ne', add_mul, one_mul]\n    refine add_le_add le_rfl ?_\n    rw [div_mul_eq_mul_div, le_div_iff\u2080 (by norm_num : (0 : \u211d) < 10)]\n    simpa only [mul_comm] using (hS j).le\n  have hlarge (j) : 10 / \u03b4 < r j := by\n    refine (div_lt_iff\u2080 h\u03b40).2 ((mul_lt_mul_iff_left\u2080 (h\u2113 j)).1 ?_)\n    simpa only [mul_right_comm] using (hS j).trans_le (mul_le_mul_of_nonneg_right (hlow j) h\u03b40.le)\n  refine \u27e8r, fun j \u21a6 ?_, hlarge, fun i j hij \u21a6 ?_, ?_\u27e9\n  \u00b7 exact_mod_cast (div_pos (by norm_num : (0 : \u211d) < 10) h\u03b40).trans (hlarge j)\n  \u00b7 have h : (r j : \u211d) * (2 / \u03b4) < (1 + \u03b4 / 10) * r i := by\n      apply (mul_lt_mul_iff_left\u2080 (h\u2113 i)).1\n      simpa only [mul_assoc] using\n        (mul_le_mul_of_nonneg_left (h50 i j hij) (Nat.cast_nonneg (r j))).trans_lt\n          ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))\n    rw [\u2190 mul_div_assoc, mul_comm (r j : \u211d) 2, mul_div_assoc] at h\n    exact (mul_lt_mul_iff_right\u2080 (by norm_num : (0 : \u211d) < 2)).1 <| h.trans_le\n      (mul_le_mul_of_nonneg_right ((add_le_add le_rfl\n        (div_le_div_of_nonneg_right h\u03b41 (by norm_num))).trans (by norm_num)) (Nat.cast_nonneg _))\n  \u00b7 simpa only [hr0] using And.intro hlow hup",
+  "signature": "theorem exists_degrees {m : \u2115} [NeZero m] {\u03b4 : \u211d} (h\u03b40 : 0 < \u03b4) (h\u03b41 : \u03b4 \u2264 1) {q : Fin m \u2192 \u2115}\n    (hq : \u2200 j, 1 < q j) (h50 : \u2200 i j : Fin m, i.val + 1 = j.val \u2192\n      2 / \u03b4 * Real.log (q i) \u2264 Real.log (q j)) : \u2203 r : Fin m \u2192 \u2115, (\u2200 j, 0 < r j) \u2227\n      (\u2200 j, 10 / \u03b4 < r j) \u2227 (\u2200 i j : Fin m, i.val + 1 = j.val \u2192 (r j : \u211d) / \u03b4 < r i) \u2227\n      (\u2200 j, (r 0 : \u211d) * Real.log (q 0) \u2264 r j * Real.log (q j)) \u2227 \u2200 j,\n      (r j : \u211d) * Real.log (q j) < (1 + \u03b4 / 10) * (r 0 * Real.log (q 0))",
+  "body": "by\n  let \u2113 (j) := Real.log (q j)\n  have h\u2113 : \u2200 j, 0 < \u2113 j := fun j \u21a6 Real.log_pos (by exact_mod_cast hq j)\n  obtain \u27e8s, hs\u27e9 := exists_nat_gt (Finset.univ.sup' Finset.univ_nonempty (10 * \u2113 \u00b7 / (\u03b4 * \u2113 0)))\n  have hS (j) : 10 * \u2113 j < ((s : \u211d) * \u2113 0) * \u03b4 := by\n    simpa only [mul_assoc, mul_comm \u03b4] using (div_lt_iff\u2080 (mul_pos h\u03b40 (h\u2113 0))).1\n      ((Finset.le_sup' _ (Finset.mem_univ j)).trans_lt hs)\n  let r : Fin m \u2192 \u2115 := fun j \u21a6 \u2308s * \u2113 0 / \u2113 j\u2309\u208a\n  have hr0 : r 0 = s := by simp only [r, mul_div_cancel_right\u2080 _ (h\u2113 0).ne', Nat.ceil_natCast]\n  have hlow (j) := (div_le_iff\u2080 (h\u2113 j)).1 (Nat.le_ceil (s * \u2113 0 / \u2113 j))\n  have hup (j) : (r j : \u211d) * \u2113 j < (1 + \u03b4 / 10) * (s * \u2113 0) := by\n    refine (mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one (by positivity)) (h\u2113 j)).trans_le ?_\n    rw [add_mul, one_mul, div_mul_cancel\u2080 _ (h\u2113 j).ne', add_mul, one_mul]\n    refine add_le_add le_rfl ?_\n    rw [div_mul_eq_mul_div, le_div_iff\u2080 (by norm_num : (0 : \u211d) < 10)]\n    simpa only [mul_comm] using (hS j).le\n  have hlarge (j) : 10 / \u03b4 < r j := by\n    refine (div_lt_iff\u2080 h\u03b40).2 ((mul_lt_mul_iff_left\u2080 (h\u2113 j)).1 ?_)\n    simpa only [mul_right_comm] using (hS j).trans_le (mul_le_mul_of_nonneg_right (hlow j) h\u03b40.le)\n  refine \u27e8r, fun j \u21a6 ?_, hlarge, fun i j hij \u21a6 ?_, ?_\u27e9\n  \u00b7 exact_mod_cast (div_pos (by norm_num : (0 : \u211d) < 10) h\u03b40).trans (hlarge j)\n  \u00b7 have h : (r j : \u211d) * (2 / \u03b4) < (1 + \u03b4 / 10) * r i := by\n      apply (mul_lt_mul_iff_left\u2080 (h\u2113 i)).1\n      simpa only [mul_assoc] using\n        (mul_le_mul_of_nonneg_left (h50 i j hij) (Nat.cast_nonneg (r j))).trans_lt\n          ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))\n    rw [\u2190 mul_div_assoc, mul_comm (r j : \u211d) 2, mul_div_assoc] at h\n    exact (mul_lt_mul_iff_right\u2080 (by norm_num : (0 : \u211d) < 2)).1 <| h.trans_le\n      (mul_le_mul_of_nonneg_right ((add_le_add le_rfl\n        (div_le_div_of_nonneg_right h\u03b41 (by norm_num))).trans (by norm_num)) (Nat.cast_nonneg _))\n  \u00b7 simpa only [hr0] using And.intro hlow hup",
+  "proof_lines": 31,
+  "sha256": "e7aaea3e7e4a9c148049bd0652aee0d2f27f061b0ad00052e959ff8b2bbfc6dd",
+  "what": "Choose positive integer degrees with strong adjacent decline and nearly balanced degree-logarithm products.",
+  "how": "Take a sufficiently large first scale using exists_nat_gt and Finset.sup', then round each target ratio upward with Nat.ceil; Nat.le_ceil and Nat.ceil_lt_add_one control both sides.",
+  "hypotheses": "Nonzero dimension, positive delta at most one, denominators above one and rapid adjacent logarithmic growth.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.exists_roth_approximants_aux",
+      "file": "Roth/Main.lean",
+      "line": 429
+    }
+  ],
+  "notes": [
+    "proof/body >30 lines"
+  ],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.exists_roth_approximants_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 473,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.exists_roth_approximants_aux",
+      "file": "Roth/Main.lean",
+      "line": 429
+    }
+  ]
+}

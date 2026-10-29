@@ -1,0 +1,166 @@
+{
+  "declaration": "Roth.exists_degrees",
+  "canonical_index": 278,
+  "completed": true,
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "276a03306536e22136c825084dd3d394dae3186b9840c0cd732a05bb9ac91cec",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "elapsed_ms": 3030,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 10,
+      "axiom_print_required": true,
+      "required_info": [
+        "DEG278_AUDIT: requested=293; unique=293",
+        "DEG278_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "generic",
+      "source": "generic5-executed.lean.txt",
+      "source_sha256": "05d244aaf1f6d51ef3fc691106d3ef5f7e478366cd508f1ad4003f0642675ba5",
+      "receipt": "generic05-receipt.json",
+      "format": "isolated",
+      "elapsed_ms": 3026,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_degrees\nnamespace Degrees278Generic\nvariable {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] [FloorRing K]\n\n/-- Natural multiples of finitely many positive weights can be balanced with arbitrary error. -/\ntheorem balanced {\u03b9 : Type*} [Finite \u03b9] (b : \u03b9) {\u2113 : \u03b9 \u2192 K} (h\u2113 : \u2200 j, 0 < \u2113 j)\n    {\u03b5 B : K} (h\u03b5 : 0 < \u03b5) (hB : 0 < B) : \u2203 r : \u03b9 \u2192 \u2115, (\u2200 j, 0 < r j) \u2227\n      (\u2200 j, B < r j) \u2227 (\u2200 j, (r b : K) * \u2113 b \u2264 r j * \u2113 j) \u2227\n      \u2200 j, (r j : K) * \u2113 j < (1 + \u03b5) * (r b * \u2113 b) := by\n  classical\n  let : Fintype \u03b9 := Fintype.ofFinite \u03b9\n  have : Nonempty \u03b9 := \u27e8b\u27e9\n  let A := max B (1 / \u03b5)\n  obtain \u27e8s, hs\u27e9 := exists_nat_gt\n    (Finset.univ.sup' Finset.univ_nonempty (fun j \u21a6 A * \u2113 j / \u2113 b))\n  have hS (j) : A * \u2113 j < (s : K) * \u2113 b :=\n    (div_lt_iff\u2080 (h\u2113 b)).1 ((Finset.le_sup' _ (Finset.mem_univ j)).trans_lt hs)\n  let r : \u03b9 \u2192 \u2115 := fun j \u21a6 \u2308s * \u2113 b / \u2113 j\u2309\u208a\n  have hrb : r b = s := by\n    simp only [r, mul_div_cancel_right\u2080 _ (h\u2113 b).ne', Nat.ceil_natCast]\n  have hlow (j) := (div_le_iff\u2080 (h\u2113 j)).1 (Nat.le_ceil (s * \u2113 b / \u2113 j))\n  have hlarge (j) : B < r j := by\n    apply (mul_lt_mul_iff_left\u2080 (h\u2113 j)).1\n    exact ((mul_le_mul_of_nonneg_right (le_max_left _ _) (h\u2113 j).le).trans_lt\n      (hS j)).trans_le (hlow j)\n  have hsmall (j) : \u2113 j < \u03b5 * (s * \u2113 b) := by\n    have h := ((mul_le_mul_of_nonneg_right (le_max_right B (1 / \u03b5)) (h\u2113 j).le).trans_lt\n      (hS j))\n    have h' := mul_lt_mul_of_pos_left h h\u03b5\n    have he : \u03b5 * (1 / \u03b5 * \u2113 j) = \u2113 j := by field_simp\n    rwa [he] at h'\n  refine \u27e8r, fun j \u21a6 ?_, hlarge, ?_, ?_\u27e9\n  \u00b7 exact_mod_cast hB.trans (hlarge j)\n  \u00b7 simpa only [hrb] using hlow\n  \u00b7 intro j\n    rw [hrb]\n    refine (mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one\n      (div_nonneg (mul_nonneg (Nat.cast_nonneg _) (h\u2113 b).le) (h\u2113 j).le)) (h\u2113 j)).trans ?_\n    rw [add_mul, one_mul, div_mul_cancel\u2080 _ (h\u2113 j).ne', add_mul, one_mul]\n    linarith only [hsmall j]\n\n/-- A strict growth margin survives simultaneous natural rounding. -/\ntheorem separated {\u03b9 : Type*} [Finite \u03b9] (b : \u03b9) {\u2113 : \u03b9 \u2192 K} (h\u2113 : \u2200 j, 0 < \u2113 j)\n    {\u03b5 B \u03b4 c : K} (h\u03b5 : 0 < \u03b5) (hB : 0 < B) (hc : 1 < c)\n    (R : \u03b9 \u2192 \u03b9 \u2192 Prop) (hg : \u2200 i j, R i j \u2192 c / \u03b4 * \u2113 i \u2264 \u2113 j) :\n    \u2203 r : \u03b9 \u2192 \u2115, (\u2200 j, 0 < r j) \u2227 (\u2200 j, B < r j) \u2227\n      (\u2200 i j, R i j \u2192 (r j : K) / \u03b4 < r i) \u2227\n      (\u2200 j, (r b : K) * \u2113 b \u2264 r j * \u2113 j) \u2227\n      \u2200 j, (r j : K) * \u2113 j < (1 + \u03b5) * (r b * \u2113 b) := by\n  let \u03c4 := min \u03b5 ((c - 1) / 2)\n  have h\u03c4 : 0 < \u03c4 := lt_min h\u03b5 (by linarith)\n  obtain \u27e8r, hr, hlarge, hlow, hup\u27e9 := balanced b h\u2113 h\u03c4 hB\n  have h\u03c4c : 1 + \u03c4 \u2264 c := by\n    have := min_le_right \u03b5 ((c - 1) / 2)\n    dsimp [\u03c4]\n    linarith\n  refine \u27e8r, hr, hlarge, ?_, hlow, fun j \u21a6 (hup j).trans_le ?_\u27e9\n  \u00b7 intro i j hij\n    have h : (r j : K) * (c / \u03b4) < (1 + \u03c4) * r i := by\n      apply (mul_lt_mul_iff_left\u2080 (h\u2113 i)).1\n      simpa only [mul_assoc] using\n        (mul_le_mul_of_nonneg_left (hg i j hij) (Nat.cast_nonneg (r j))).trans_lt\n          ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))\n    have h' := h.trans_le (mul_le_mul_of_nonneg_right h\u03c4c (Nat.cast_nonneg (r i)))\n    have hm : (r j : K) * (c / \u03b4) = c * (r j / \u03b4) := by ring\n    rw [hm] at h'\n    exact (mul_lt_mul_iff_right\u2080 (zero_lt_one.trans hc)).1 h'\n  \u00b7 exact mul_le_mul_of_nonneg_right (add_le_add le_rfl (min_le_left _ _))\n      (mul_nonneg (Nat.cast_nonneg _) (h\u2113 b).le)\n\nend Degrees278Generic\n\n#check @FloorRing.archimedean\n#print axioms Degrees278Generic.balanced\n#print axioms Degrees278Generic.separated\n"
+      },
+      "native_region_start_line": 19,
+      "axiom_print_required": true,
+      "required_info": []
+    },
+    {
+      "label": "recovery",
+      "source": "recovery5-executed.lean.txt",
+      "source_sha256": "5557308e55b6e24fdd9f205dbbf220744fe42cb9e62e92dfcc300e4ec508e82a",
+      "receipt": "recovery05-receipt.json",
+      "format": "disk",
+      "elapsed_ms": 1684,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 10,
+      "axiom_print_required": true,
+      "required_info": []
+    },
+    {
+      "label": "callers",
+      "source": "callers5-executed.lean.txt",
+      "source_sha256": "5474ff283a5a2516c17017aa1f85449ce0d506369c1d639e7d942808f1031718",
+      "receipt": "callers05-receipt.json",
+      "format": "disk",
+      "elapsed_ms": 1385,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 10,
+      "axiom_print_required": true,
+      "required_info": []
+    },
+    {
+      "label": "composition",
+      "source": "composition6-executed.lean.txt",
+      "source_sha256": "d569b3f203d877dadfaa6943180d3a5b9b1ae2d12be7c159c3ce82ec2f7cacef",
+      "receipt": "composition06-receipt.json",
+      "format": "isolated",
+      "elapsed_ms": 866,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_degrees\nnamespace Degrees278Composition\nvariable {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] [FloorRing K]\n\n/-- Natural multiples of finitely many positive weights can be balanced with arbitrary error. -/\ntheorem balanced {\u03b9 : Type*} [Finite \u03b9] (b : \u03b9) {\u2113 : \u03b9 \u2192 K} (h\u2113 : \u2200 j, 0 < \u2113 j)\n    {\u03b5 B : K} (h\u03b5 : 0 < \u03b5) (hB : 0 < B) : \u2203 r : \u03b9 \u2192 \u2115, (\u2200 j, 0 < r j) \u2227\n      (\u2200 j, B < r j) \u2227 (\u2200 j, (r b : K) * \u2113 b \u2264 r j * \u2113 j) \u2227\n      \u2200 j, (r j : K) * \u2113 j < (1 + \u03b5) * (r b * \u2113 b) := by\n  fail_if_success solve | simp\n  fail_if_success solve | exact?\n  classical\n  let : Fintype \u03b9 := Fintype.ofFinite \u03b9\n  have : Nonempty \u03b9 := \u27e8b\u27e9\n  let A := max B (1 / \u03b5)\n  obtain \u27e8s, hs\u27e9 := exists_nat_gt\n    (Finset.univ.sup' Finset.univ_nonempty (fun j \u21a6 A * \u2113 j / \u2113 b))\n  have hS (j) : A * \u2113 j < (s : K) * \u2113 b :=\n    (div_lt_iff\u2080 (h\u2113 b)).1 ((Finset.le_sup' _ (Finset.mem_univ j)).trans_lt hs)\n  let r : \u03b9 \u2192 \u2115 := fun j \u21a6 \u2308s * \u2113 b / \u2113 j\u2309\u208a\n  have hrb : r b = s := by\n    simp only [r, mul_div_cancel_right\u2080 _ (h\u2113 b).ne', Nat.ceil_natCast]\n  have hlow (j) := (div_le_iff\u2080 (h\u2113 j)).1 (Nat.le_ceil (s * \u2113 b / \u2113 j))\n  have hlarge (j) : B < r j := by\n    apply (mul_lt_mul_iff_left\u2080 (h\u2113 j)).1\n    exact ((mul_le_mul_of_nonneg_right (le_max_left _ _) (h\u2113 j).le).trans_lt\n      (hS j)).trans_le (hlow j)\n  have hsmall (j) : \u2113 j < \u03b5 * (s * \u2113 b) := by\n    have h := ((mul_le_mul_of_nonneg_right (le_max_right B (1 / \u03b5)) (h\u2113 j).le).trans_lt\n      (hS j))\n    have h' := mul_lt_mul_of_pos_left h h\u03b5\n    have he : \u03b5 * (1 / \u03b5 * \u2113 j) = \u2113 j := by field_simp\n    rwa [he] at h'\n  refine \u27e8r, fun j \u21a6 ?_, hlarge, ?_, ?_\u27e9\n  \u00b7 exact_mod_cast hB.trans (hlarge j)\n  \u00b7 simpa only [hrb] using hlow\n  \u00b7 intro j\n    rw [hrb]\n    refine (mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one\n      (div_nonneg (mul_nonneg (Nat.cast_nonneg _) (h\u2113 b).le) (h\u2113 j).le)) (h\u2113 j)).trans ?_\n    rw [add_mul, one_mul, div_mul_cancel\u2080 _ (h\u2113 j).ne', add_mul, one_mul]\n    linarith only [hsmall j]\n\n/-- A strict growth margin survives simultaneous natural rounding. -/\ntheorem separated {\u03b9 : Type*} [Finite \u03b9] (b : \u03b9) {\u2113 : \u03b9 \u2192 K} (h\u2113 : \u2200 j, 0 < \u2113 j)\n    {\u03b5 B \u03b4 c : K} (h\u03b5 : 0 < \u03b5) (hB : 0 < B) (hc : 1 < c)\n    (R : \u03b9 \u2192 \u03b9 \u2192 Prop) (hg : \u2200 i j, R i j \u2192 c / \u03b4 * \u2113 i \u2264 \u2113 j) :\n    \u2203 r : \u03b9 \u2192 \u2115, (\u2200 j, 0 < r j) \u2227 (\u2200 j, B < r j) \u2227\n      (\u2200 i j, R i j \u2192 (r j : K) / \u03b4 < r i) \u2227\n      (\u2200 j, (r b : K) * \u2113 b \u2264 r j * \u2113 j) \u2227\n      \u2200 j, (r j : K) * \u2113 j < (1 + \u03b5) * (r b * \u2113 b) := by\n  let \u03c4 := min \u03b5 ((c - 1) / 2)\n  have h\u03c4 : 0 < \u03c4 := lt_min h\u03b5 (by linarith)\n  obtain \u27e8r, hr, hlarge, hlow, hup\u27e9 := balanced b h\u2113 h\u03c4 hB\n  have h\u03c4c : 1 + \u03c4 \u2264 c := by\n    have := min_le_right \u03b5 ((c - 1) / 2)\n    dsimp [\u03c4]\n    linarith\n  refine \u27e8r, hr, hlarge, ?_, hlow, fun j \u21a6 (hup j).trans_le ?_\u27e9\n  \u00b7 intro i j hij\n    have h : (r j : K) * (c / \u03b4) < (1 + \u03c4) * r i := by\n      apply (mul_lt_mul_iff_left\u2080 (h\u2113 i)).1\n      simpa only [mul_assoc] using\n        (mul_le_mul_of_nonneg_left (hg i j hij) (Nat.cast_nonneg (r j))).trans_lt\n          ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))\n    have h' := h.trans_le (mul_le_mul_of_nonneg_right h\u03c4c (Nat.cast_nonneg (r i)))\n    have hm : (r j : K) * (c / \u03b4) = c * (r j / \u03b4) := by ring\n    rw [hm] at h'\n    exact (mul_lt_mul_iff_right\u2080 (zero_lt_one.trans hc)).1 h'\n  \u00b7 exact mul_le_mul_of_nonneg_right (add_le_add le_rfl (min_le_left _ _))\n      (mul_nonneg (Nat.cast_nonneg _) (h\u2113 b).le)\n\nend Degrees278Composition\n\n#check @exists_nat_gt\n#check @Finset.le_sup'\n#check @Nat.le_ceil\n#check @Nat.ceil_lt_add_one\n#check @Nat.ceil_natCast\n#check @tendsto_nat_ceil_mul_div_atTop\n#print axioms Degrees278Composition.balanced\n#print axioms Degrees278Composition.separated\n\n"
+      },
+      "native_region_start_line": 19,
+      "axiom_print_required": true,
+      "required_info": []
+    },
+    {
+      "label": "candidate",
+      "source": "candidate6-executed.lean.txt",
+      "source_sha256": "76a44345503d3336f8ee8c090f0edfd5f19e458be3bb0181348d994d8dbf5843",
+      "receipt": "candidate06-receipt.json",
+      "format": "isolated",
+      "elapsed_ms": 81641,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.Order.Floor.Semifield\n\n#check_failure Roth.exists_degrees\n#check @Nat.ceil_lt_mul\n#check @Nat.ceil_le_mul\nnamespace Degrees278Candidate\n-- The closest existing scalar bound works once its single-coordinate threshold is supplied.\nexample {K : Type*} [Field K] [LinearOrder K] [IsOrderedRing K] [FloorSemiring K]\n    {a \u03b5 : K} (h\u03b5 : 0 < \u03b5) (ha : (\u2308\u03b5\u207b\u00b9\u2309\u208a : K) / (1 + \u03b5) < a) :\n    (\u2308a\u2309\u208a : K) < (1 + \u03b5) * a := by\n  exact Nat.ceil_lt_mul (by linarith) (by simpa using ha)\nend Degrees278Candidate\n"
+      },
+      "native_region_start_line": 19,
+      "axiom_print_required": false,
+      "required_info": []
+    },
+    {
+      "label": "edges",
+      "source": "edges-executed.lean.txt",
+      "source_sha256": "935058291edf0d9b1b1585c915edd4eda0fcf00c04efea1c031a655f96a05ce9",
+      "receipt": "edges01-receipt.json",
+      "format": "isolated",
+      "elapsed_ms": 1215,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_degrees\n\nnamespace Degrees278Edges\n-- At zero error, the strict upper bound contradicts the base coordinate itself.\ntheorem zero_error : \u00ac \u2203 r : Fin 1 \u2192 \u2115, (r 0 : \u211d) < (1 + (0 : \u211d)) * r 0 := by\n  simp\n-- Nonnegative weights are insufficient: zero makes the strict upper bound impossible.\ntheorem zero_weight (\u03b5 : \u211d) :\n    \u00ac \u2203 r : Fin 1 \u2192 \u2115, (r 0 : \u211d) * 0 < (1 + \u03b5) * (r 0 * 0) := by\n  simp\n-- A growth margin of one cannot enforce strict adjacent separation when \u03b4=1.\ntheorem no_margin : \u00ac \u2203 r : Fin 2 \u2192 \u2115,\n    (r 0 : \u211d) \u2264 r 1 \u2227 (r 1 : \u211d) / 1 < r 0 := by\n  simp\n-- The original denominator assumption cannot simply become q>=1.\ntheorem denominator_one (\u03b4 : \u211d) : \u00ac \u2203 r : Fin 1 \u2192 \u2115,\n    (r 0 : \u211d) * Real.log (1 : \u2115) < (1 + \u03b4 / 10) * (r 0 * Real.log (1 : \u2115)) := by\n  simp\n#print axioms zero_error\n#print axioms zero_weight\n#print axioms no_margin\n#print axioms denominator_one\nend Degrees278Edges\n"
+      },
+      "native_region_start_line": 19,
+      "axiom_print_required": true,
+      "required_info": []
+    }
+  ],
+  "other_executions": [
+    {
+      "receipt": "composition05-receipt.json",
+      "source": "composition5-executed.lean.txt",
+      "source_sha256": "74a69e37e366a5ccdfe5f379e776ddbdfddd8e1babd043375f215b199604dade",
+      "status": "rejected; inspect complete raw diagnostics"
+    },
+    {
+      "receipt": "generic01-receipt.json",
+      "source": "generic-executed.lean.txt",
+      "source_sha256": "fd66b920f5a67293032c0a3f031cd7fc210648c8c0f6cf140a1884da191dd181",
+      "status": "rejected; inspect complete raw diagnostics"
+    },
+    {
+      "receipt": "generic02-receipt.json",
+      "source": "generic2-executed.lean.txt",
+      "source_sha256": "3948a9f0337bf64308fcbe61d5a93335c93c77b3bb172971f6ec620023070fec",
+      "status": "rejected; inspect complete raw diagnostics"
+    },
+    {
+      "receipt": "generic04-receipt.json",
+      "source": "generic4-executed.lean.txt",
+      "source_sha256": "3d8ac8677188f01b3542cac78ff65a950283ebfa986ec82df3883d8e1067537e",
+      "status": "rejected; inspect complete raw diagnostics"
+    }
+  ],
+  "preparation_only": [
+    "callers3-executed.lean.txt",
+    "recovery2-executed.lean.txt",
+    "composition2-executed.lean.txt",
+    "callers2-executed.lean.txt",
+    "recovery3-executed.lean.txt",
+    "recovery-executed.lean.txt",
+    "composition3-executed.lean.txt",
+    "callers4-executed.lean.txt",
+    "recovery4-executed.lean.txt",
+    "composition4-executed.lean.txt",
+    "composition-executed.lean.txt",
+    "callers-executed.lean.txt",
+    "generic3-executed.lean.txt"
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "attempt_accounting": {
+    "native_executions": 11,
+    "accepted": 7,
+    "rejected": 4
+  },
+  "build_gate": "Shared baseline clean2467 jobs with fresh17 matching; next required file-end literalbuild289, not278. No new production source.",
+  "prefix_control": "prefix-controls.json",
+  "native_executor": "root exclusively"
+}

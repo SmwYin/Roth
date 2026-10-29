@@ -1,0 +1,21 @@
+namespace Degrees278Recovery
+theorem all_positive_delta {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) {q : Fin m → ℕ}
+    (hq : ∀ j, 1 < q j) (h50 : ∀ i j : Fin m, i.val + 1 = j.val →
+      2 / δ * Real.log (q i) ≤ Real.log (q j)) : ∃ r : Fin m → ℕ, (∀ j, 0 < r j) ∧
+      (∀ j, 10 / δ < r j) ∧ (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ < r i) ∧
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧ ∀ j,
+      (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0))  := by
+  exact Degrees278Generic.separated (0 : Fin m)
+    (fun j ↦ Real.log_pos (by exact_mod_cast hq j))
+    (div_pos hδ0 (by norm_num)) (div_pos (by norm_num) hδ0) hδ0 (by norm_num)
+    (fun i j ↦ i.val + 1 = j.val) h50
+
+theorem recovered {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) (_hδ1 : δ ≤ 1) {q : Fin m → ℕ}
+    (hq : ∀ j, 1 < q j) (h50 : ∀ i j : Fin m, i.val + 1 = j.val →
+      2 / δ * Real.log (q i) ≤ Real.log (q j)) : ∃ r : Fin m → ℕ, (∀ j, 0 < r j) ∧
+      (∀ j, 10 / δ < r j) ∧ (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ < r i) ∧
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧ ∀ j,
+      (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0))  := by
+  exact all_positive_delta hδ0 hq h50
+
+end Degrees278Recovery
