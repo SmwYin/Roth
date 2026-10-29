@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 273/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 274/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 273; remaining: 20.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 28 YES-but-generalise-first, 46 NO-mathlib-has-it, 94 BORDERLINE-needs-human, 71 SKIP.
+- Completed applicable assessments: 274; remaining: 19.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 29 YES-but-generalise-first, 46 NO-mathlib-has-it, 94 BORDERLINE-needs-human, 71 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3474,6 +3474,19 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.approxSet_num_den_mem_aux.md).
 
+### Completed: `Roth.exists_reduced_approx`
+
+- Type: `∀ {α : ℝ},
+  Irrational α →
+    ∀ {κ : ℝ},
+      0 < κ → (Roth.approxSet α κ).Infinite → ∀ (Q₀ : ℕ), ∃ hq ∈ Roth.approxSet α κ, Q₀ < hq.2 ∧ IsCoprime hq.1 ↑hq.2`
+- What: Infinitely many fixed-quality approximating pairs to an irrational real yield reduced approximants beyond every natural denominator threshold.
+- How: Canonicalize rational values; bounded reduced denominator would give finite image; positive irrational error and power decay make each original rational-value fiber finite; finite-fiber criterion contradicts supplied infinity.
+- Hypotheses: Irrational α, real exponentκ, 0<κ currently, independently droppable, infinite approxSet α κ, arbitrary natural thresholdQ₀
+- Project dependencies: Roth.approxSet, Roth.approxSet_den_le_finite, Roth.approxSet_num_den_mem_aux, Roth.eventually_div_rpow_lt
+- Caller summary: declaration: Roth.exists_reduced_approx; explicit caller count: 1; external to file count: 0; internal use count excluding declaring file: 0; same file count: 1; callers: {'name': 'Roth.exists_approximants', 'file': 'Roth/Main.lean', 'line': 261, 'usage': 'choose g hgmem hglt hgcop using fun Q₀ : ℕ ↦ exists_reduced_approx hα hκ hinf Q₀', 'full_body_archive': 'caller-excerpt.lean.txt', 'verification': 'callers-executed.lean.txt', 'proof': 'Full original signature and body; target full proof inlined in a local term with complete private-helper closure; type agreement checked.'}; inline rederivations: None; lexical scope: All production Roth/ plus Roth.lean with --no-ignore and canonical metadata cross-check; kernel scope: All293 ordered declarations and separate project-restricted transitive closure; simp scope is not inferred.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_reduced_approx.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4046,6 +4059,8 @@ Completed `Roth.exists_monic_aeval_eq_zero`: building blocks: Polynomial.Monic.m
 
 Completed `Roth.approxSet_num_den_mem_aux`: Rat.den_dvd gives the reduced positive denominator at most the original q. Rat.cast_def rewrites the value without changing it, and nonnegative-exponent monotonicity makes the reciprocal error tolerance no smaller at the reduced denominator. The sole exists_reduced_approx caller uses the result to force bounded reduced representatives under its contradiction hypothesis; finite fibers then handle arbitrary unreduced pairs.
 
+Completed `Roth.exists_reduced_approx`: forms: current: finder: Partial match: Dirichlet2, LiouvilleWith, bounded denominator separation.; search: Partial match: rational Dirichlet2; no same arbitrary supplied κ theorem.; loogle: No results for Irrational _, IsCoprime _ _.; rg: No matching source lines in exact query; not absence.; local: Project target returned, index=error; no absence inference.; standard: finder: Dirichlet rational infinitude at exponent2.; search: Dirichlet and Legendre rational-set APIs.; loogle: Dirichlet2 and iff irrational matched.; rg: Pinned Dirichlet2/finite rational approximants/LiouvilleWith signatures.; local: Two Dirichlet names returned, index=error; verify pinned source/native.; abstract: finder: Finite image and finite fibers: Set.Finite.of_finite_fibers.; search: Exact finite-fiber building block; not approximation arithmetic.; loogle: Exact Set.Finite.of_finite_fibers signature.; rg: Pinned finite-fiber lemma and finite image API.; local: Finite-fiber name returned, index=error; not absence.; cells: {'form': 'current', 'method': 'finder', 'receipt': 'formal-current-finder.json', 'status': 'PASS', 'finding': 'Partial match: Dirichlet2, LiouvilleWith, bounded denominator separation.'}, {'form': 'current', 'method': 'search', 'receipt': 'formal-current-search.json', 'status': 'PASS', 'finding': 'Partial match: rational Dirichlet2; no same arbitrary supplied κ theorem.'}, {'form': 'current', 'method': 'loogle', 'receipt': 'formal-current-loogle.json', 'status': 'PASS', 'finding': 'No results for Irrational _, IsCoprime _ _.'}, {'form': 'current', 'method': 'rg', 'receipt': 'formal-current-rg.json', 'status': 'PASS', 'finding': 'No matching source lines in exact query; not absence.'}, {'form': 'current', 'method': 'local', 'receipt': 'formal-current-local.json', 'status': 'attempted; pinned/native fallback used', 'finding': 'Project target returned, index=error; no absence inference.'}, {'form': 'standard', 'method': 'finder', 'receipt': 'formal-standard-finder.json', 'status': 'PASS', 'finding': 'Dirichlet rational infinitude at exponent2.'}, {'form': 'standard', 'method': 'search', 'receipt': 'formal-standard-search.json', 'status': 'PASS', 'finding': 'Dirichlet and Legendre rational-set APIs.'}, {'form': 'standard', 'method': 'loogle', 'receipt': 'formal-standard-loogle.json', 'status': 'PASS', 'finding': 'Dirichlet2 and iff irrational matched.'}, {'form': 'standard', 'method': 'rg', 'receipt': 'formal-standard-rg.json', 'status': 'PASS', 'finding': 'Pinned Dirichlet2/finite rational approximants/LiouvilleWith signatures.'}, {'form': 'standard', 'method': 'local', 'receipt': 'formal-standard-local.json', 'status': 'attempted; pinned/native fallback used', 'finding': 'Two Dirichlet names returned, index=error; verify pinned source/native.'}, {'form': 'abstract', 'method': 'finder', 'receipt': 'formal-abstract-finder.json', 'status': 'PASS', 'finding': 'Finite image and finite fibers: Set.Finite.of_finite_fibers.'}, {'form': 'abstract', 'method': 'search', 'receipt': 'formal-abstract-search.json', 'status': 'PASS', 'finding': 'Exact finite-fiber building block; not approximation arithmetic.'}, {'form': 'abstract', 'method': 'loogle', 'receipt': 'formal-abstract-loogle.json', 'status': 'PASS', 'finding': 'Exact Set.Finite.of_finite_fibers signature.'}, {'form': 'abstract', 'method': 'rg', 'receipt': 'formal-abstract-rg.json', 'status': 'PASS', 'finding': 'Pinned finite-fiber lemma and finite image API.'}, {'form': 'abstract', 'method': 'local', 'receipt': 'formal-abstract-local.json', 'status': 'attempted; pinned/native fallback used', 'finding': 'Finite-fiber name returned, index=error; not absence.'}; conclusion: Partial existing building blocks; no verified same arbitrary fixed-quality theorem. Existing Dirichlet2 is a complete replacement only in subcritical range after nontrivial reduction/transport. Exact? closure probe is bounded evidence, not universal absence.; pinned signature receipt: isolated2-receipt.json; native generic route probe: composition-receipt.json
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4593,6 +4608,8 @@ Completed `Roth.reduction`: Powergap and integral scalar prerequisites are exist
 Completed `Roth.exists_monic_aeval_eq_zero`: IsIntegral is the standard monic-annihilator existential without degree padding; irrational-root degree bound needs an extra irrationality premise and cannot replace this theorem. No second project padding theorem found.
 
 Completed `Roth.approxSet_num_den_mem_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.exists_reduced_approx`: Rat.num_div_den/Rat.reduced cover representation only. Dirichlet2 covers the subcritical existence regime; LiouvilleWith changes existential constant/equality exclusions; IsDiophantine is uniform lower bounds for every epsilon, not this pointwise lemma.
 
 ## Part 5: Generalization opportunities
 
@@ -5153,6 +5170,10 @@ Completed `Roth.exists_monic_aeval_eq_zero`: verified: True; proposed type: ∀ 
 
 Completed `Roth.approxSet_num_den_mem_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.exists_reduced_approx`: status: STRICTLY NARROWER THAN STANDARD; verified: True; proposed type: ∀ {α : ℝ}, Irrational α → ∀ {κ : ℝ}, (Roth.approxSet α κ).Infinite →
+  ∀ Q₀ : ℕ, ∃ hq ∈ Roth.approxSet α κ, Q₀ < hq.2 ∧ IsCoprime hq.1 (hq.2 : ℤ); subcritical type: ∀ {α : ℝ}, Irrational α → ∀ {κ : ℝ}, κ ≤ 2 →
+  ∀ Q₀ : ℕ, ∃ hq ∈ Roth.approxSet α κ, Q₀ < hq.2 ∧ IsCoprime hq.1 (hq.2 : ℤ); proof source: isolated2-executed.lean.txt; semantic generic source: generic-executed.lean.txt; rows: {'parameter': 'α : ℝ', 'assessment': 'Real absolute value and real powers are actual arithmetic; no unsupported ordered-field or p-adic claim.'}, {'parameter': 'Irrational α', 'assessment': 'Uniform removal false: α=0 κ=3 has infinitely many exact pairs but no reduced denominator>1. Native counterexample.'}, {'parameter': 'κ : ℝ and 0<κ', 'assessment': 'Drop positivity entirely via original positive branch and irrational Dirichlet2 for κ≤0; actual stronger κ≤2 branch omits hinf.'}, {'parameter': 'hinf', 'assessment': 'Needed conditionally in unrestricted theorem above2; subcritical theorem verified without it. No proof of unconditional supra2 statement claimed.'}, {'parameter': 'Q₀ : ℕ', 'assessment': 'Arbitrary inclusive threshold including0 retained, strict output Q₀<q retained.'}, {'parameter': 'ℤ×ℕ and coprimality', 'assessment': 'Positive natural denominator and integer numerator canonicalize to rational num/den; reduction is substantive, not Rat.num_div_den alone.'}, {'parameter': 'fixed coefficient1 / tolerance', 'assessment': 'Coefficient1 is a genuine supplied-quality predicate, not the existential C of LiouvilleWith. Arbitrary semantic s/f/r/height/good schema independently proved with all necessary finiteness/normalization premises and exact current recovery; no blanket analytic arbitrary-tolerance theorem claimed.'}; generic vs existing: unbounded_canonical and arithmetic recovery are own new proofs. Set.Finite.of_finite_fibers and Dirichlet2 are existing mathlib building blocks.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5701,6 +5722,8 @@ Completed `Roth.reduction`: Potential fixed-unit pair scaling/threshold API or e
 Completed `Roth.exists_monic_aeval_eq_zero`: Possible arbitrary-cutoff monic-annihilator existence API; packaging choice remains a future upstream question.
 
 Completed `Roth.approxSet_num_den_mem_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.exists_reduced_approx`: Finite fixed-rational-value fibers for decay approximation sets, canonicalization-to-unbounded-reduced-denominator transfer, and public unrestricted/subcritical existence interfaces.
 
 ## Part 7: Junk / removable
 
@@ -6253,6 +6276,8 @@ Completed `Roth.exists_monic_aeval_eq_zero`: Used by one private helper and tran
 
 Completed `Roth.approxSet_num_den_mem_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.exists_reduced_approx`: Not junk: one actual recursive sequence caller, nontrivial finite-fiber arithmetic. Mere single use does not make a1–3call wrapper.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6530,6 +6555,7 @@ Completed `Roth.approxSet_num_den_mem_aux`: Retain a live private proof interfac
 | 271 | `Roth.reduction` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.reduction.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.reduction/root-acceptance.json) |
 | 272 | `Roth.exists_monic_aeval_eq_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_monic_aeval_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_monic_aeval_eq_zero/root-acceptance.json) |
 | 273 | `Roth.approxSet_num_den_mem_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet_num_den_mem_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet_num_den_mem_aux/root-acceptance.json) |
+| 274 | `Roth.exists_reduced_approx` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_reduced_approx.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_reduced_approx/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7075,12 +7101,14 @@ Completed `Roth.exists_monic_aeval_eq_zero` action: Keep production unchanged fo
 
 Completed `Roth.approxSet_num_den_mem_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.exists_reduced_approx` action: declaration: Roth.exists_reduced_approx; canonical index: 274; verdict: YES-but-generalise-first; completed: True; allphases: PASS; phases: 0: PASS; 1: PASS; 2: PASS; 3: PASS; 4a: PASS; 4b: PASS; 4c: PASS; 4.5: PASS; 4.6: PASS; 5: PASS; 5.5: PASS; 6.0: PASS; 6: PASS; 7: PASS; 8: PASS; unresolved: None; root acceptance: pending; parent verdict inherited: False; cost based verdict: False; questions: None; upstream home: Mathlib/NumberTheory/DiophantineApproximation/Basic.lean; pr title: feat(NumberTheory): obtain arbitrarily large reduced fixed-quality approximations; grouping: Pair with already accepted YES Roth.eventually_div_rpow_lt as finite-fiber/rpow support; rational canonicalization and finite-strip prerequisites can remain internal. Do not bundle unrelated polynomial main_lemma solely because accepted YES.; reviewers: Andrew Hendel — path-specific documentation commit834e5169 (2026-05-12), Yaël Dillies — rational coercion maintenance483ba09b (2026-06-16) and Set.ofPred d99d52c3 (2026-07-17) in relevant paths; pre pr checklist: /generalise Roth.exists_reduced_approx — retain proven unrestricted and subcritical forms, /cleanup Roth/Main.lean Roth.exists_reduced_approx — decompose finite fiber/canonicalization proof, Select reviewers using recent relevant pinned commits in reviewer-git.json; invitations not sent
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_reduced_approx` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_m` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

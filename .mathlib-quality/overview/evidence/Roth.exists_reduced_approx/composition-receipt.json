@@ -1,0 +1,55 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.DiophantineApproximation.Basic\n\n#check_failure Roth.exists_reduced_approx\nnamespace Reduced274\ndef approxSet (\u03b1 \u03ba : \u211d) : Set (\u2124 \u00d7 \u2115) :=\n  {hq | 0 < hq.2 \u2227 |\u03b1 - (hq.1 : \u211d) / hq.2| < 1 / (hq.2 : \u211d) ^ \u03ba}\ntheorem approxSet_den_le_finite (\u03b1 \u03ba : \u211d) (Q\u2080 : \u2115) : {hq \u2208 approxSet \u03b1 \u03ba | hq.2 \u2264 Q\u2080}.Finite := by\n  set S : \u211d := \u2211 q \u2208 Finset.Icc 1 Q\u2080, 1 / (q : \u211d) ^ \u03ba\n  set K : \u2124 := \u2308(Q\u2080 : \u211d) * (|\u03b1| + S)\u2309\n  refine (Finset.finite_toSet (Finset.Icc (-K) K \u00d7\u02e2 Finset.Icc 1 Q\u2080)).subset ?_\n  rintro \u27e8h, q\u27e9 \u27e8\u27e8hq0, happ\u27e9, hqQ\u27e9\n  simp only at hq0 happ hqQ\n  have hqR : (0 : \u211d) < q := by exact_mod_cast hq0\n  have hdiv : |(h : \u211d) / q| \u2264 |\u03b1| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, abs_sub_abs_le_abs_sub ((h : \u211d) / q) \u03b1,\n      Finset.single_le_sum (f := fun q : \u2115 \u21a6 1 / (q : \u211d) ^ \u03ba) (fun i _ \u21a6 by positivity)\n        (Finset.mem_Icc.2 \u27e8hq0, hqQ\u27e9)]\n  have habs : |(h : \u211d)| \u2264 Q\u2080 * (|\u03b1| + S) := by\n    have hqQR : (q : \u211d) \u2264 Q\u2080 := by exact_mod_cast hqQ\n    have hh : |(h : \u211d)| / q \u2264 |\u03b1| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff\u2080 hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| \u2264 K := by\n    have : ((|h| : \u2124) : \u211d) \u2264 K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact \u27e8abs_le.1 hK', hq0, hqQ\u27e9\ntheorem eventually_div_rpow_lt {M \u03ba \u03ba' : \u211d} (h\u03ba : \u03ba' < \u03ba) :\n    \u2203 Q\u2080 : \u2115, \u2200 q : \u2115, Q\u2080 < q \u2192 M / (q : \u211d) ^ \u03ba < 1 / (q : \u211d) ^ \u03ba' := by\n  obtain \u27e8N, hN\u27e9 := Filter.eventually_atTop.1\n    (((tendsto_rpow_atTop (sub_pos.2 h\u03ba)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)\n  refine \u27e8N, fun q hq \u21a6 ?_\u27e9\n  have hq0 : (0 : \u211d) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq\n  rw [div_lt_iff\u2080 (Real.rpow_pos_of_pos hq0 \u03ba), one_div_mul_eq_div, \u2190 Real.rpow_sub hq0]\n  exact hN q hq.le\ntheorem approxSet_num_den_mem_aux {\u03b1 \u03ba : \u211d} (h\u03ba : 0 \u2264 \u03ba) {h : \u2124} {q : \u2115}\n    (hq : (h, q) \u2208 approxSet \u03b1 \u03ba) : (((h : \u211a) / q).num, ((h : \u211a) / q).den) \u2208 approxSet \u03b1 \u03ba := by\n  set x : \u211a := (h : \u211a) / q\n  have hden : x.den \u2264 q := Nat.le_of_dvd hq.1 <| Int.natCast_dvd_natCast.1 <| by\n    simpa [x, Rat.divInt_eq_div] using Rat.den_dvd h q\n  refine \u27e8x.den_pos, ?_\u27e9\n  rw [\u2190 Rat.cast_def, Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast]\n  exact hq.2.trans_le (by gcongr)\ntheorem composition_probe {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (h\u03ba : 0 < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (Q\u2080 : \u2115) : \u2203 hq \u2208 approxSet \u03b1 \u03ba, Q\u2080 < hq.2 \u2227\n    IsCoprime hq.1 (hq.2 : \u2124) := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp only [approxSet]\n  by_contra! hcon\n  set \u03c1 : \u2124 \u00d7 \u2115 \u2192 \u211a := fun hq \u21a6 (hq.1 : \u211a) / hq.2\n  have hV : (\u03c1 '' approxSet \u03b1 \u03ba).Finite := by\n    refine ((approxSet_den_le_finite \u03b1 \u03ba Q\u2080).image \u03c1).subset ?_\n    rintro _ \u27e8hq, hmem, rfl\u27e9\n    -- the reduced form of a solution is a reduced solution\n    have hm : ((\u03c1 hq).num, (\u03c1 hq).den) \u2208 approxSet \u03b1 \u03ba :=\n      approxSet_num_den_mem_aux h\u03ba.le hmem\n    refine \u27e8((\u03c1 hq).num, (\u03c1 hq).den), \u27e8hm, ?_\u27e9, ?_\u27e9\n    \u00b7 by_contra! hc\n      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (\u03c1 hq).reduced)\n    \u00b7 exact Rat.num_div_den (\u03c1 hq)\n  have hfib : \u2200 x \u2208 \u03c1 '' approxSet \u03b1 \u03ba, {hq \u2208 approxSet \u03b1 \u03ba | \u03c1 hq = x}.Finite := by\n    intro x _\n    obtain \u27e8N, hN\u27e9 := eventually_div_rpow_lt (M := 1 / |\u03b1 - (x : \u211d)|) h\u03ba\n    refine (approxSet_den_le_finite \u03b1 \u03ba N).subset ?_\n    rintro \u27e8h, q\u27e9 \u27e8hm, h\u03c1x\u27e9\n    refine \u27e8hm, le_of_not_gt fun hq \u21a6 ?_\u27e9\n    have hbound := hN q hq\n    rw [Real.rpow_zero, div_one, div_right_comm,\n      div_lt_iff\u2080 (abs_pos.2 (sub_ne_zero.2 (h\u03b1.ne_rat x))), one_mul] at hbound\n    exact not_lt_of_gt hbound <| by simpa [\u2190 h\u03c1x, \u03c1] using hm.2\n  exact hinf (Set.Finite.of_finite_fibers \u03c1 hV hfib)\n\n\n#print axioms Reduced274.composition_probe\nend Reduced274\n"
+  },
+  "elapsed_ms": 11572,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "composition01",
+      "operation": "run_code",
+      "source": "composition-executed.lean.txt",
+      "source_sha256": "4bdb9c1cbf2d2711fcfa4a98776adde6c875a5e2ae1d83887bc7b16d3e72c0e7",
+      "receipt": "composition-receipt.json",
+      "arguments": {},
+      "extra_import": "Mathlib.NumberTheory.DiophantineApproximation.Basic",
+      "authorization": "native-prefix-authorizations.json"
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.exists_reduced_approx/root-requests/composition01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.exists_reduced_approx/composition-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_reduced_approx`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Reduced274.composition_probe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 95,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_reduced_approx`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Reduced274.composition_probe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 95,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 164,
+  "name": "Roth.exists_reduced_approx",
+  "short": "exists_reduced_approx",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 189,
+  "source": "theorem exists_reduced_approx {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (h\u03ba : 0 < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (Q\u2080 : \u2115) : \u2203 hq \u2208 approxSet \u03b1 \u03ba, Q\u2080 < hq.2 \u2227\n    IsCoprime hq.1 (hq.2 : \u2124) := by\n  by_contra! hcon\n  set \u03c1 : \u2124 \u00d7 \u2115 \u2192 \u211a := fun hq \u21a6 (hq.1 : \u211a) / hq.2\n  have hV : (\u03c1 '' approxSet \u03b1 \u03ba).Finite := by\n    refine ((approxSet_den_le_finite \u03b1 \u03ba Q\u2080).image \u03c1).subset ?_\n    rintro _ \u27e8hq, hmem, rfl\u27e9\n    -- the reduced form of a solution is a reduced solution\n    have hm : ((\u03c1 hq).num, (\u03c1 hq).den) \u2208 approxSet \u03b1 \u03ba :=\n      approxSet_num_den_mem_aux h\u03ba.le hmem\n    refine \u27e8((\u03c1 hq).num, (\u03c1 hq).den), \u27e8hm, ?_\u27e9, ?_\u27e9\n    \u00b7 by_contra! hc\n      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (\u03c1 hq).reduced)\n    \u00b7 exact Rat.num_div_den (\u03c1 hq)\n  have hfib : \u2200 x \u2208 \u03c1 '' approxSet \u03b1 \u03ba, {hq \u2208 approxSet \u03b1 \u03ba | \u03c1 hq = x}.Finite := by\n    intro x _\n    obtain \u27e8N, hN\u27e9 := eventually_div_rpow_lt (M := 1 / |\u03b1 - (x : \u211d)|) h\u03ba\n    refine (approxSet_den_le_finite \u03b1 \u03ba N).subset ?_\n    rintro \u27e8h, q\u27e9 \u27e8hm, h\u03c1x\u27e9\n    refine \u27e8hm, le_of_not_gt fun hq \u21a6 ?_\u27e9\n    have hbound := hN q hq\n    rw [Real.rpow_zero, div_one, div_right_comm,\n      div_lt_iff\u2080 (abs_pos.2 (sub_ne_zero.2 (h\u03b1.ne_rat x))), one_mul] at hbound\n    exact not_lt_of_gt hbound <| by simpa [\u2190 h\u03c1x, \u03c1] using hm.2\n  exact hinf (Set.Finite.of_finite_fibers \u03c1 hV hfib)",
+  "signature": "theorem exists_reduced_approx {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (h\u03ba : 0 < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (Q\u2080 : \u2115) : \u2203 hq \u2208 approxSet \u03b1 \u03ba, Q\u2080 < hq.2 \u2227\n    IsCoprime hq.1 (hq.2 : \u2124)",
+  "body": "by\n  by_contra! hcon\n  set \u03c1 : \u2124 \u00d7 \u2115 \u2192 \u211a := fun hq \u21a6 (hq.1 : \u211a) / hq.2\n  have hV : (\u03c1 '' approxSet \u03b1 \u03ba).Finite := by\n    refine ((approxSet_den_le_finite \u03b1 \u03ba Q\u2080).image \u03c1).subset ?_\n    rintro _ \u27e8hq, hmem, rfl\u27e9\n    -- the reduced form of a solution is a reduced solution\n    have hm : ((\u03c1 hq).num, (\u03c1 hq).den) \u2208 approxSet \u03b1 \u03ba :=\n      approxSet_num_den_mem_aux h\u03ba.le hmem\n    refine \u27e8((\u03c1 hq).num, (\u03c1 hq).den), \u27e8hm, ?_\u27e9, ?_\u27e9\n    \u00b7 by_contra! hc\n      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (\u03c1 hq).reduced)\n    \u00b7 exact Rat.num_div_den (\u03c1 hq)\n  have hfib : \u2200 x \u2208 \u03c1 '' approxSet \u03b1 \u03ba, {hq \u2208 approxSet \u03b1 \u03ba | \u03c1 hq = x}.Finite := by\n    intro x _\n    obtain \u27e8N, hN\u27e9 := eventually_div_rpow_lt (M := 1 / |\u03b1 - (x : \u211d)|) h\u03ba\n    refine (approxSet_den_le_finite \u03b1 \u03ba N).subset ?_\n    rintro \u27e8h, q\u27e9 \u27e8hm, h\u03c1x\u27e9\n    refine \u27e8hm, le_of_not_gt fun hq \u21a6 ?_\u27e9\n    have hbound := hN q hq\n    rw [Real.rpow_zero, div_one, div_right_comm,\n      div_lt_iff\u2080 (abs_pos.2 (sub_ne_zero.2 (h\u03b1.ne_rat x))), one_mul] at hbound\n    exact not_lt_of_gt hbound <| by simpa [\u2190 h\u03c1x, \u03c1] using hm.2\n  exact hinf (Set.Finite.of_finite_fibers \u03c1 hV hfib)",
+  "proof_lines": 24,
+  "sha256": "13acdf6c5d185bff4156fbeffaf6b55e2e2a1f04c9e366fb323fb1409516b1f2",
+  "what": "Infinitely many approximations to an irrational number yield coprime approximations above every denominator cutoff.",
+  "how": "Assume bounded reduced denominators, use approxSet_num_den_mem_aux to make the rational image finite, bound each fiber by eventually_div_rpow_lt and conclude using Set.Finite.of_finite_fibers.",
+  "hypotheses": "Irrational real number, positive exponent and infinite approximation set.",
+  "source_body_refs": [
+    "Roth.approxSet",
+    "Roth.approxSet_den_le_finite",
+    "Roth.approxSet_num_den_mem_aux",
+    "Roth.eventually_div_rpow_lt"
+  ],
+  "source_type_refs": [
+    "Roth.approxSet"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_approximants",
+      "file": "Roth/Main.lean",
+      "line": 256
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.approxSet",
+    "Roth.approxSet_den_le_finite",
+    "Roth.approxSet_num_den_mem_aux",
+    "Roth.eventually_div_rpow_lt"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_approximants"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 192,
+  "project_body_refs": [
+    "Roth.approxSet",
+    "Roth.approxSet_den_le_finite",
+    "Roth.approxSet_num_den_mem_aux",
+    "Roth.eventually_div_rpow_lt"
+  ],
+  "project_type_refs": [
+    "Roth.approxSet"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_approximants",
+      "file": "Roth/Main.lean",
+      "line": 256
+    }
+  ]
+}
