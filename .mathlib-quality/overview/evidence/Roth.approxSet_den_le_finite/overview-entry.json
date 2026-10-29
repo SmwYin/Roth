@@ -1,0 +1,17 @@
+{
+  "type": "∀ (α κ : ℝ) (Q₀ : ℕ), {hq : ℤ × ℕ | hq ∈ Roth.approxSet α κ ∧ hq.2 ≤ Q₀}.Finite",
+  "kind": "theorem",
+  "what": "For every real center and real exponent, only finitely many supplied positive integer-denominator approximating pairs have denominator at most a fixed natural bound.",
+  "how": "Contain pairs in a finite rectangle: Finset.single_le_sum bounds the error radii, triangle inequality bounds numerator size, and Int.le_ceil converts the real bound into a finite integer interval.",
+  "hypotheses": "Arbitrary real α and κ, arbitrary natural Q. No irrationality, algebraicity, positivity ofκ, or coprimality. Positive supplied denominator is part of approxSet.",
+  "project_dependencies": [
+    "Roth.approxSet"
+  ],
+  "caller_summary": "Four lexical uses in three full callers: reduction once, exists_reduced_approx twice, LeanEval.isDiophantine_iff once. All3 are direct kernel-value consumers; no direct kernel-type consumer. Both literal-local-proof and generalized replacement retain all original signatures.",
+  "mathlib_api_audit": "Existing finite intervals, finite unions/products and finite-fiber criterion verified. Rat.finite_rat_abs_sub_lt_one_div_den_sq concerns reduced rational targets, rational center and exponent2, not these supplied pairs. Neither that result nor of_finite_fibers directly replaces this arithmetic bridge.",
+  "moral_duplications": "Comparable finite-fiber reasoning inside exists_reduced_approx additionally needs irrationality and positive-exponent decay to bound unreduced representations of a fixed rational. These are distinct facts.",
+  "generalization": "Freshly compiled arbitrary real radius ψ:ℕ→ℝ bounded-denominator theorem, credited267newproof template, exact current statement specialization. New finite-radius integer tubes over arbitrary finite index sets work over [Ring K] [LinearOrder K] [IsStrictOrderedRing K] [FloorRing K]; closed endpoints and signed radii allowed. No unverified relaxation claimed.",
+  "missing_api": "Potential upstream choice between arbitrary-ψ approximation slices and a general finite integer-cast tube lemma. Finite image/fibers already exists; arithmetic interval transport remains real proof.",
+  "junk": "Used by the reduction and reduced-approximant extraction and LeanEval equivalence; meaningful local API, not dead code or an established<=3call wrapper.",
+  "action": "BORDERLINE-needs-human: retain local helper. Three concrete future upstream API questions decide whether to add an arbitrary-ψ slice companion to an approximation family, a generic finite-tube theorem, or keep this arithmetic packaging local. All assessment checks complete; no pending user blocker."
+}

@@ -1,0 +1,141 @@
+{
+  "declaration": "Roth.approxSet_den_le_finite",
+  "canonical_index": 269,
+  "completed": true,
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "cc039acbffd6e073c2ff4eda7522c9520008e68a0d3a986a72a98a60bb2da078",
+      "native_region_start_line": 16,
+      "required_info": [
+        "BOUND269_FULL_TYPE:",
+        "BOUND269_AUDIT: requested=293; unique=293",
+        "BOUND269_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      }
+    },
+    {
+      "label": "isolated",
+      "format": "run_code",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "65fd78ef8ab70cf2e122b4b9a5cb60e9f2d865046c9a6db57c98f75bf8c96323",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Bounded269Isolated.bounded_den_finite' depends on axioms:",
+        "'Bounded269Isolated.finite_radius' depends on axioms:",
+        "'Bounded269Isolated.zero_pairs_infinite' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.approxSet_den_le_finite\n#check @Set.Finite.of_finite_fibers\n#check @Set.Finite.biUnion\n#check @Set.finite_Icc\n#check @Int.ceil_le\n#check @Int.le_floor\nnamespace Bounded269Isolated\ntheorem bounded_den_finite (α : ℝ) (ψ : ℕ → ℝ) (Q₀ : ℕ) :\n    {hq : ℤ × ℕ | (0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < ψ hq.2) ∧\n      hq.2 ≤ Q₀}.Finite := by\n  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, |ψ q|\n  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉\n  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_\n  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩\n  simp only at hq0 happ hqQ\n  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0\n  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, le_abs_self (ψ q), abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,\n      Finset.single_le_sum (f := fun q : ℕ ↦ |ψ q|) (fun i _ ↦ abs_nonneg _)\n        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]\n  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by\n    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ\n    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| ≤ K := by\n    have : ((|h| : ℤ) : ℝ) ≤ K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact ⟨abs_le.1 hK', hq0, hqQ⟩\n\ntheorem finite_radius {ι : Type*} (s : Set ι) (hs : s.Finite) (c r : ι → ℝ) :\n    {p : ℤ × ι | p.2 ∈ s ∧ |(p.1 : ℝ) - c p.2| ≤ r p.2}.Finite := by\n  refine (hs.biUnion fun i _ ↦\n    (Set.finite_Icc ⌈c i - r i⌉ ⌊c i + r i⌋).prod (Set.finite_singleton i)).subset ?_\n  rintro ⟨h, i⟩ ⟨hi, hb⟩\n  have hb' := abs_le.mp hb\n  have hlo : c i - r i ≤ (h : ℝ) := by linarith only [hb'.1]\n  have hhi : (h : ℝ) ≤ c i + r i := by linarith only [hb'.2]\n  simp only [Set.mem_iUnion, Set.mem_prod, Set.mem_Icc, Set.mem_singleton_iff]\n  exact ⟨i, hi, ⟨Int.ceil_le.mpr hlo, Int.le_floor.mpr hhi⟩, rfl⟩\ntheorem old_form (α κ : ℝ) (Q : ℕ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |α - (p.1 : ℝ) / p.2| < 1 / (p.2 : ℝ) ^ κ) ∧\n      p.2 ≤ Q}.Finite := bounded_den_finite α (fun q ↦ 1 / (q : ℝ) ^ κ) Q\ntheorem zero_bound (α : ℝ) (ψ : ℕ → ℝ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |α - (p.1 : ℝ) / p.2| < ψ p.2) ∧ p.2 ≤ 0} = ∅ := by\n  ext p\n  simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]\n  omega\ntheorem negative_exponent (Q : ℕ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |(-1000000 : ℝ) - (p.1 : ℝ) / p.2| <\n      1 / (p.2 : ℝ) ^ (-3 : ℝ)) ∧ p.2 ≤ Q}.Finite := old_form _ _ Q\ntheorem rational_center (Q : ℕ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |(3 / 7 : ℝ) - (p.1 : ℝ) / p.2| <\n      1 / (p.2 : ℝ) ^ (9 : ℝ)) ∧ p.2 ≤ Q}.Finite := old_form _ _ Q\ntheorem closed_endpoint (s : Set ℕ) (hs : s.Finite) (r : ℕ → ℝ) :\n    {p : ℤ × ℕ | p.2 ∈ s ∧ |(p.1 : ℝ) - 17| ≤ r p.2}.Finite :=\n  finite_radius s hs (fun _ ↦ 17) r\ntheorem negative_radius_empty (c : ℝ) : {h : ℤ | |(h : ℝ) - c| < -1} = ∅ := by\n  ext h\n  simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]\n  linarith only [abs_nonneg ((h : ℝ) - c)]\ntheorem zero_pairs_infinite (κ : ℝ) :\n    {p : ℤ × ℕ | 0 < p.2 ∧ |(0 : ℝ) - (p.1 : ℝ) / p.2| <\n      1 / (p.2 : ℝ) ^ κ}.Infinite := by\n  refine (Set.infinite_range_of_injective (f := fun n : ℕ ↦ ((0 : ℤ), n + 1)) ?_).mono ?_\n  · intro a b hab\n    exact Nat.add_right_cancel (congrArg Prod.snd hab)\n  · rintro _ ⟨n, rfl⟩\n    refine ⟨Nat.succ_pos _, ?_⟩\n    simp only [Int.cast_zero, zero_div, sub_zero, abs_zero]\n    positivity\n-- A fresh default-resource closure probe; the arithmetic bridge is not supplied.\nexample (α κ : ℝ) (Q : ℕ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |α - (p.1 : ℝ) / p.2| < 1 / (p.2 : ℝ) ^ κ) ∧\n      p.2 ≤ Q}.Finite := by\n  fail_if_success exact Set.Finite.of_finite_fibers Prod.snd (Set.finite_Iic Q)\n  exact old_form α κ Q\nend Bounded269Isolated\n#print axioms Bounded269Isolated.bounded_den_finite\n#print axioms Bounded269Isolated.finite_radius\n#print axioms Bounded269Isolated.old_form\n#print axioms Bounded269Isolated.zero_bound\n#print axioms Bounded269Isolated.negative_exponent\n#print axioms Bounded269Isolated.rational_center\n#print axioms Bounded269Isolated.closed_endpoint\n#print axioms Bounded269Isolated.negative_radius_empty\n#print axioms Bounded269Isolated.zero_pairs_infinite\n"
+      }
+    },
+    {
+      "label": "inline",
+      "format": "disk",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "source_sha256": "d515b318738b07e11db658ba492e00e0fc547f1bea05cb808dd59d09776fe04e",
+      "native_region_start_line": 16,
+      "required_info": [
+        "BOUND269_DIRECT_PROJECT_TYPE: [Roth.approxSet]",
+        "BOUND269_INLINE_CLOSURE_NO_TARGET: Bounded269Generic.isDiophantine_iff"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      }
+    },
+    {
+      "label": "supplement",
+      "format": "run_code",
+      "source": "supplement-executed.lean.txt",
+      "receipt": "supplement-receipt.json",
+      "source_sha256": "ba26954850a97d8cb7d4bdd2b6969550116316041a9b15e765087d314b60f89f",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Bounded269Supplement.finite_radius' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.approxSet_den_le_finite\nnamespace Bounded269Supplement\ntheorem finite_radius {K ι : Type*} [Ring K] [LinearOrder K]\n    [IsStrictOrderedRing K] [FloorRing K] (s : Set ι) (hs : s.Finite) (c r : ι → K) :\n    {p : ℤ × ι | p.2 ∈ s ∧ |(p.1 : K) - c p.2| ≤ r p.2}.Finite := by\n  refine (hs.biUnion fun i _ ↦\n    (Set.finite_Icc ⌈c i - r i⌉ ⌊c i + r i⌋).prod (Set.finite_singleton i)).subset ?_\n  rintro ⟨h, i⟩ ⟨hi, hb⟩\n  have hb' := abs_le.mp hb\n  have hlo : c i - r i ≤ (h : K) := by\n    simpa only [sub_eq_add_neg, add_comm] using (le_sub_iff_add_le.mp hb'.1)\n  have hhi : (h : K) ≤ c i + r i := by\n    simpa only [add_comm] using (sub_le_iff_le_add.mp hb'.2)\n  simp only [Set.mem_iUnion, Set.mem_prod, Set.mem_Icc, Set.mem_singleton_iff]\n  exact ⟨i, hi, ⟨Int.ceil_le.mpr hlo, Int.le_floor.mpr hhi⟩, rfl⟩\n\nend Bounded269Supplement\n#print axioms Bounded269Supplement.finite_radius\n"
+      }
+    },
+    {
+      "label": "supplement2",
+      "format": "run_code",
+      "source": "supplement2-executed.lean.txt",
+      "receipt": "supplement2-receipt.json",
+      "source_sha256": "42421e1c49f4d9425e120dc0183dd434259d7d9097ad0929cc69f39543a71bd8",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Bounded269Supplement.zero_denominator_unrestricted' depends on axioms:"
+      ],
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.approxSet_den_le_finite\nnamespace Bounded269Supplement\ntheorem finite_radius {K ι : Type*} [Ring K] [LinearOrder K]\n    [IsStrictOrderedRing K] [FloorRing K] (s : Set ι) (hs : s.Finite) (c r : ι → K) :\n    {p : ℤ × ι | p.2 ∈ s ∧ |(p.1 : K) - c p.2| ≤ r p.2}.Finite := by\n  fail_if_success solve | exact?\n  refine (hs.biUnion fun i _ ↦\n    (Set.finite_Icc ⌈c i - r i⌉ ⌊c i + r i⌋).prod (Set.finite_singleton i)).subset ?_\n  rintro ⟨h, i⟩ ⟨hi, hb⟩\n  have hb' := abs_le.mp hb\n  have hlo : c i - r i ≤ (h : K) := by\n    simpa only [sub_eq_add_neg, add_comm] using (le_sub_iff_add_le.mp hb'.1)\n  have hhi : (h : K) ≤ c i + r i := by\n    simpa only [add_comm] using (sub_le_iff_le_add.mp hb'.2)\n  simp only [Set.mem_iUnion, Set.mem_prod, Set.mem_Icc, Set.mem_singleton_iff]\n  exact ⟨i, hi, ⟨Int.ceil_le.mpr hlo, Int.le_floor.mpr hhi⟩, rfl⟩\n\ntheorem zero_denominator_unrestricted :\n    {p : ℤ × ℕ | p.2 ≤ 0 ∧ |(0 : ℝ) - (p.1 : ℝ) / p.2| < 1}.Infinite := by\n  refine (Set.infinite_range_of_injective (f := fun h : ℤ ↦ (h, (0 : ℕ))) ?_).mono ?_\n  · intro a b hab\n    exact congrArg Prod.fst hab\n  · rintro _ ⟨h, rfl⟩\n    simp\nend Bounded269Supplement\n#print axioms Bounded269Supplement.finite_radius\n#print axioms Bounded269Supplement.zero_denominator_unrestricted\n"
+      }
+    },
+    {
+      "label": "scope",
+      "format": "disk",
+      "source": "scope-executed.lean.txt",
+      "receipt": "scope-receipt.json",
+      "source_sha256": "15bfe6e5b39d8db323ddb2f9f98dd0c5fedfda18cf5058360f4a8bbbdfd34865",
+      "native_region_start_line": 16,
+      "required_info": [
+        "BOUND269_PROJECT_VALUE_CLOSURE:",
+        "BOUND269_INLINE_CLOSURE_NO_TARGET: Bounded269Literal.isDiophantine_iff"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      }
+    }
+  ],
+  "rejected": [
+    {
+      "label": "isolated-rejected1",
+      "source": "isolated-rejected1-executed.lean.txt",
+      "receipt": "isolated-rejected1-receipt.json"
+    },
+    {
+      "label": "isolated-rejected2",
+      "source": "isolated-rejected2-executed.lean.txt",
+      "receipt": "isolated-rejected2-receipt.json"
+    },
+    {
+      "label": "supplement-rejected1",
+      "source": "supplement-rejected1-executed.lean.txt",
+      "receipt": "supplement-rejected1-receipt.json"
+    }
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "attempt_accounting": {
+    "native_executions": 9,
+    "accepted_sources": 6,
+    "rejected_sources": 3,
+    "all_raw_responses_archived": true
+  },
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "363a6821de56e15a68978bcfef1f74e28eb837482667eba3b9ef498e98cea593",
+    "shared_import_count": 18,
+    "disk_import_count": 9,
+    "no_production_edits": true,
+    "no_pin_edits": true,
+    "no_git_edits": true,
+    "no_resource_raises": true,
+    "no_extra_imports": true
+  },
+  "no_file_end_build_due": true,
+  "next_file_end_canonical_index": 289,
+  "accepted_previous_file_end": "canonical228Theta full build accepted; baseline2467jobs reused via fresh17hashes",
+  "original_replay_scope": "Exact target only, no private helpers; namespace/name substitution only."
+}

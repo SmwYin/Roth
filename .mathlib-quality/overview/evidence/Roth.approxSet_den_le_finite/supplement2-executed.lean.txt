@@ -1,0 +1,46 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.approxSet_den_le_finite
+namespace Bounded269Supplement
+theorem finite_radius {K ι : Type*} [Ring K] [LinearOrder K]
+    [IsStrictOrderedRing K] [FloorRing K] (s : Set ι) (hs : s.Finite) (c r : ι → K) :
+    {p : ℤ × ι | p.2 ∈ s ∧ |(p.1 : K) - c p.2| ≤ r p.2}.Finite := by
+  fail_if_success solve | exact?
+  refine (hs.biUnion fun i _ ↦
+    (Set.finite_Icc ⌈c i - r i⌉ ⌊c i + r i⌋).prod (Set.finite_singleton i)).subset ?_
+  rintro ⟨h, i⟩ ⟨hi, hb⟩
+  have hb' := abs_le.mp hb
+  have hlo : c i - r i ≤ (h : K) := by
+    simpa only [sub_eq_add_neg, add_comm] using (le_sub_iff_add_le.mp hb'.1)
+  have hhi : (h : K) ≤ c i + r i := by
+    simpa only [add_comm] using (sub_le_iff_le_add.mp hb'.2)
+  simp only [Set.mem_iUnion, Set.mem_prod, Set.mem_Icc, Set.mem_singleton_iff]
+  exact ⟨i, hi, ⟨Int.ceil_le.mpr hlo, Int.le_floor.mpr hhi⟩, rfl⟩
+
+theorem zero_denominator_unrestricted :
+    {p : ℤ × ℕ | p.2 ≤ 0 ∧ |(0 : ℝ) - (p.1 : ℝ) / p.2| < 1}.Infinite := by
+  refine (Set.infinite_range_of_injective (f := fun h : ℤ ↦ (h, (0 : ℕ))) ?_).mono ?_
+  · intro a b hab
+    exact congrArg Prod.fst hab
+  · rintro _ ⟨h, rfl⟩
+    simp
+end Bounded269Supplement
+#print axioms Bounded269Supplement.finite_radius
+#print axioms Bounded269Supplement.zero_denominator_unrestricted

@@ -1,0 +1,48 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.approxSet_den_le_finite\nnamespace Bounded269Supplement\ntheorem finite_radius {K ι : Type*} [Ring K] [LinearOrder K]\n    [IsStrictOrderedRing K] [FloorRing K] (s : Set ι) (hs : s.Finite) (c r : ι → K) :\n    {p : ℤ × ι | p.2 ∈ s ∧ |(p.1 : K) - c p.2| ≤ r p.2}.Finite := by\n  fail_if_success solve | exact?\n  refine (hs.biUnion fun i _ ↦\n    (Set.finite_Icc ⌈c i - r i⌉ ⌊c i + r i⌋).prod (Set.finite_singleton i)).subset ?_\n  rintro ⟨h, i⟩ ⟨hi, hb⟩\n  have hb' := abs_le.mp hb\n  have hlo : c i - r i ≤ (h : K) := by\n    simpa only [sub_eq_add_neg, add_comm] using (le_sub_iff_add_le.mp hb'.1)\n  have hhi : (h : K) ≤ c i + r i := by\n    simpa only [add_comm] using (sub_le_iff_le_add.mp hb'.2)\n  simp only [Set.mem_iUnion, Set.mem_prod, Set.mem_Icc, Set.mem_singleton_iff]\n  exact ⟨i, hi, ⟨Int.ceil_le.mpr hlo, Int.le_floor.mpr hhi⟩, rfl⟩\n\ntheorem zero_denominator_unrestricted :\n    {p : ℤ × ℕ | p.2 ≤ 0 ∧ |(0 : ℝ) - (p.1 : ℝ) / p.2| < 1}.Infinite := by\n  refine (Set.infinite_range_of_injective (f := fun h : ℤ ↦ (h, (0 : ℕ))) ?_).mono ?_\n  · intro a b hab\n    exact congrArg Prod.fst hab\n  · rintro _ ⟨h, rfl⟩\n    simp\nend Bounded269Supplement\n#print axioms Bounded269Supplement.finite_radius\n#print axioms Bounded269Supplement.zero_denominator_unrestricted\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.approxSet_den_le_finite`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Supplement.finite_radius' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Supplement.zero_denominator_unrestricted' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.approxSet_den_le_finite`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Supplement.finite_radius' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Supplement.zero_denominator_unrestricted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 17544
+}

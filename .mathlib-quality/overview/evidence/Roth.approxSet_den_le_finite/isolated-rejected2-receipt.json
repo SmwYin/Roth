@@ -1,0 +1,176 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.approxSet_den_le_finite\n#check @Set.Finite.of_finite_fibers\n#check @Set.Finite.biUnion\n#check @Set.finite_Icc\n#check @Int.ceil_le\n#check @Int.le_floor\nnamespace Bounded269Isolated\ntheorem bounded_den_finite (α : ℝ) (ψ : ℕ → ℝ) (Q₀ : ℕ) :\n    {hq : ℤ × ℕ | (0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < ψ hq.2) ∧\n      hq.2 ≤ Q₀}.Finite := by\n  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, |ψ q|\n  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉\n  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_\n  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩\n  simp only at hq0 happ hqQ\n  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0\n  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, le_abs_self (ψ q), abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,\n      Finset.single_le_sum (f := fun q : ℕ ↦ |ψ q|) (fun i _ ↦ abs_nonneg _)\n        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]\n  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by\n    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ\n    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| ≤ K := by\n    have : ((|h| : ℤ) : ℝ) ≤ K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact ⟨abs_le.1 hK', hq0, hqQ⟩\n\ntheorem finite_radius {ι : Type*} (s : Set ι) (hs : s.Finite) (c r : ι → ℝ) :\n    {p : ℤ × ι | p.2 ∈ s ∧ |(p.1 : ℝ) - c p.2| ≤ r p.2}.Finite := by\n  refine (hs.biUnion fun i _ ↦\n    (Set.finite_Icc ⌈c i - r i⌉ ⌊c i + r i⌋).prod (Set.finite_singleton i)).subset ?_\n  rintro ⟨h, i⟩ ⟨hi, hb⟩\n  have hb' := abs_le.mp hb\n  have hlo : c i - r i ≤ (h : ℝ) := by linarith only [hb'.1]\n  have hhi : (h : ℝ) ≤ c i + r i := by linarith only [hb'.2]\n  simp only [Set.mem_iUnion, Set.mem_prod, Set.mem_Icc, Set.mem_singleton_iff]\n  exact ⟨i, hi, ⟨Int.ceil_le.mpr hlo, Int.le_floor.mpr hhi⟩, rfl⟩\ntheorem old_form (α κ : ℝ) (Q : ℕ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |α - (p.1 : ℝ) / p.2| < 1 / (p.2 : ℝ) ^ κ) ∧\n      p.2 ≤ Q}.Finite := bounded_den_finite α (fun q ↦ 1 / (q : ℝ) ^ κ) Q\ntheorem zero_bound (α : ℝ) (ψ : ℕ → ℝ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |α - (p.1 : ℝ) / p.2| < ψ p.2) ∧ p.2 ≤ 0} = ∅ := by\n  ext p\n  simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]\n  omega\ntheorem negative_exponent (Q : ℕ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |(-1000000 : ℝ) - (p.1 : ℝ) / p.2| <\n      1 / (p.2 : ℝ) ^ (-3 : ℝ)) ∧ p.2 ≤ Q}.Finite := old_form _ _ Q\ntheorem rational_center (Q : ℕ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |(3 / 7 : ℝ) - (p.1 : ℝ) / p.2| <\n      1 / (p.2 : ℝ) ^ (9 : ℝ)) ∧ p.2 ≤ Q}.Finite := old_form _ _ Q\ntheorem closed_endpoint (s : Set ℕ) (hs : s.Finite) (r : ℕ → ℝ) :\n    {p : ℤ × ℕ | p.2 ∈ s ∧ |(p.1 : ℝ) - 17| ≤ r p.2}.Finite :=\n  finite_radius s hs (fun _ ↦ 17) r\ntheorem negative_radius_empty (c : ℝ) : {h : ℤ | |(h : ℝ) - c| < -1} = ∅ := by\n  ext h\n  simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]\n  linarith only [abs_nonneg ((h : ℝ) - c)]\ntheorem zero_pairs_infinite (κ : ℝ) :\n    {p : ℤ × ℕ | 0 < p.2 ∧ |(0 : ℝ) - (p.1 : ℝ) / p.2| <\n      1 / (p.2 : ℝ) ^ κ}.Infinite := by\n  refine (Set.infinite_range_of_injective (f := fun n : ℕ ↦ ((0 : ℤ), n + 1)) ?_).mono ?_\n  · intro a b hab\n    exact Nat.add_right_cancel (congrArg Prod.snd hab)\n  · rintro _ ⟨n, rfl⟩\n    exact ⟨Nat.succ_pos _, by simp only [Int.cast_zero, zero_div, sub_zero, abs_zero]\n                            positivity⟩\n-- A fresh default-resource closure probe; the arithmetic bridge is not supplied.\nexample (α κ : ℝ) (Q : ℕ) :\n    {p : ℤ × ℕ | (0 < p.2 ∧ |α - (p.1 : ℝ) / p.2| < 1 / (p.2 : ℝ) ^ κ) ∧\n      p.2 ≤ Q}.Finite := by\n  fail_if_success exact Set.Finite.of_finite_fibers Prod.snd (Set.finite_Iic Q)\n  exact old_form α κ Q\nend Bounded269Isolated\n#print axioms Bounded269Isolated.bounded_den_finite\n#print axioms Bounded269Isolated.finite_radius\n#print axioms Bounded269Isolated.old_form\n#print axioms Bounded269Isolated.zero_bound\n#print axioms Bounded269Isolated.negative_exponent\n#print axioms Bounded269Isolated.rational_center\n#print axioms Bounded269Isolated.closed_endpoint\n#print axioms Bounded269Isolated.negative_radius_empty\n#print axioms Bounded269Isolated.zero_pairs_infinite\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.approxSet_den_le_finite`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Set.Finite.of_finite_fibers : ∀ {α : Type u_1} {β : Type u_2} (f : α → β) {s : Set α},\\n  (f '' s).Finite → (∀ x ∈ f '' s, (s ∩ f ⁻¹' {x}).Finite) → s.Finite\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Set.Finite.biUnion : ∀ {α : Type u_1} {ι : Type u_2} {s : Set ι},\\n  s.Finite → ∀ {t : ι → Set α}, (∀ i ∈ s, (t i).Finite) → (⋃ i ∈ s, t i).Finite\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Set.finite_Icc : ∀ {α : Type u_1} [inst : Preorder α] [LocallyFiniteOrder α] (a b : α), (Set.Icc a b).Finite\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Int.ceil_le : ∀ {α : Type u_1} [inst : Ring α] [inst_1 : LinearOrder α] [inst_2 : FloorRing α] {z : ℤ} {a : α},\\n  ⌈a⌉ ≤ z ↔ a ≤ ↑z\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Int.le_floor : ∀ {α : Type u_1} [inst : Ring α] [inst_1 : LinearOrder α] [inst_2 : FloorRing α] {z : ℤ} {a : α},\\n  z ≤ ⌊a⌋ ↔ ↑z ≤ a\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unexpected identifier; expected '⟩'\",\n      \"line\": 92,\n      \"column\": 86,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\nκ : ℝ\\nn : ℕ\\n⊢ 0 < 1 / ↑(n + 1) ^ κ\",\n      \"line\": 92,\n      \"column\": 28,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Isolated.bounded_den_finite' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 101,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Isolated.finite_radius' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 102,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Isolated.old_form' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 103,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Isolated.zero_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 104,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Isolated.negative_exponent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 105,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Isolated.rational_center' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 106,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Isolated.closed_endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 107,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Isolated.negative_radius_empty' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 108,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Isolated.zero_pairs_infinite' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 109,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.approxSet_den_le_finite`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Set.Finite.of_finite_fibers : ∀ {α : Type u_1} {β : Type u_2} (f : α → β) {s : Set α},\n  (f '' s).Finite → (∀ x ∈ f '' s, (s ∩ f ⁻¹' {x}).Finite) → s.Finite",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Set.Finite.biUnion : ∀ {α : Type u_1} {ι : Type u_2} {s : Set ι},\n  s.Finite → ∀ {t : ι → Set α}, (∀ i ∈ s, (t i).Finite) → (⋃ i ∈ s, t i).Finite",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Set.finite_Icc : ∀ {α : Type u_1} [inst : Preorder α] [LocallyFiniteOrder α] (a b : α), (Set.Icc a b).Finite",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Int.ceil_le : ∀ {α : Type u_1} [inst : Ring α] [inst_1 : LinearOrder α] [inst_2 : FloorRing α] {z : ℤ} {a : α},\n  ⌈a⌉ ≤ z ↔ a ≤ ↑z",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Int.le_floor : ∀ {α : Type u_1} [inst : Ring α] [inst_1 : LinearOrder α] [inst_2 : FloorRing α] {z : ℤ} {a : α},\n  z ≤ ⌊a⌋ ↔ ↑z ≤ a",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unexpected identifier; expected '⟩'",
+          "line": 92,
+          "column": 86,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\nκ : ℝ\nn : ℕ\n⊢ 0 < 1 / ↑(n + 1) ^ κ",
+          "line": 92,
+          "column": 28,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Isolated.bounded_den_finite' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 101,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Isolated.finite_radius' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 102,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Isolated.old_form' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 103,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Isolated.zero_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 104,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Isolated.negative_exponent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 105,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Isolated.rational_center' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 106,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Isolated.closed_endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 107,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Isolated.negative_radius_empty' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 108,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Isolated.zero_pairs_infinite' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 109,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 522
+}

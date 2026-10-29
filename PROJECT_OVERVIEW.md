@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 268/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 269/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 268; remaining: 25.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 27 YES-but-generalise-first, 46 NO-mathlib-has-it, 91 BORDERLINE-needs-human, 70 SKIP.
+- Completed applicable assessments: 269; remaining: 24.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 27 YES-but-generalise-first, 46 NO-mathlib-has-it, 92 BORDERLINE-needs-human, 70 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3416,6 +3416,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One lexical and canonical direct value caller: Roth.reduction at Main118 (use121); no external-file caller or direct type consumer. Full original caller inlined successfully via sign and integralClosure routes.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_nat_mul_isIntegral.md).
 
+### Completed: `Roth.approxSet_den_le_finite`
+
+- Type: `∀ (α κ : ℝ) (Q₀ : ℕ), {hq : ℤ × ℕ | hq ∈ Roth.approxSet α κ ∧ hq.2 ≤ Q₀}.Finite`
+- What: For every real center and real exponent, only finitely many supplied positive integer-denominator approximating pairs have denominator at most a fixed natural bound.
+- How: Contain pairs in a finite rectangle: Finset.single_le_sum bounds the error radii, triangle inequality bounds numerator size, and Int.le_ceil converts the real bound into a finite integer interval.
+- Hypotheses: Arbitrary real α and κ, arbitrary natural Q. No irrationality, algebraicity, positivity ofκ, or coprimality. Positive supplied denominator is part of approxSet.
+- Project dependencies: Roth.approxSet
+- Caller summary: Four lexical uses in three full callers: reduction once, exists_reduced_approx twice, LeanEval.isDiophantine_iff once. All3 are direct kernel-value consumers; no direct kernel-type consumer. Both literal-local-proof and generalized replacement retain all original signatures.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.approxSet_den_le_finite.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3978,6 +3988,8 @@ Completed `Roth.approxSet`: Pinned DiophantineApproximation.Basic supplies reduc
 
 Completed `Roth.exists_nat_mul_isIntegral`: NO-mathlib-has-it: IsAlgebraic.exists_nsmul_eq in Algebraic/Integral207–214 plus verified integralClosure property bridge; canonical natDenominator/isIntegral_natDenominator_smul/natDenominator_ne_zero in Algebraic/Denominator supply normalized witness.
 
+Completed `Roth.approxSet_den_le_finite`: Existing finite intervals, finite unions/products and finite-fiber criterion verified. Rat.finite_rat_abs_sub_lt_one_div_den_sq concerns reduced rational targets, rational center and exponent2, not these supplied pairs. Neither that result nor of_finite_fibers directly replaces this arithmetic bridge.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4515,6 +4527,8 @@ Completed `Roth.main_lemma`: Private construction/selector lemmas factor the pro
 Completed `Roth.approxSet`: Related to reduced rational-height conditions in roth_rat and uniform lower-bound IsDiophantine, with different representation/quantification. No exact bypassing duplicate was found.
 
 Completed `Roth.exists_nat_mul_isIntegral`: Separation.exists_nat_smul_eq_map clears rational polynomial coefficients and is not the same theorem: integral scaled root additionally requires monic normalization.
+
+Completed `Roth.approxSet_den_le_finite`: Comparable finite-fiber reasoning inside exists_reduced_approx additionally needs irrationality and positive-exponent decay to bound unreduced representations of a fixed rational. These are distinct facts.
 
 ## Part 5: Generalization opportunities
 
@@ -5065,6 +5079,8 @@ Completed `Roth.approxSet`: Verified arbitrary error-function approxWith and coe
 
 Completed `Roth.exists_nat_mul_isIntegral`: Verified {A : Type*} [Ring A] {x : A} (h : IsAlgebraic ℤ x) : ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : A) * x). Also arbitrary domain R/fraction field K/commutative K-algebra A yields ∃ r:R,r≠0 ∧ IsIntegral R (r•x), already existing infrastructure; no GCD needed. PositiveNat does not generalize to arbitrary base R.
 
+Completed `Roth.approxSet_den_le_finite`: Freshly compiled arbitrary real radius ψ:ℕ→ℝ bounded-denominator theorem, credited267newproof template, exact current statement specialization. New finite-radius integer tubes over arbitrary finite index sets work over [Ring K] [LinearOrder K] [IsStrictOrderedRing K] [FloorRing K]; closed endpoints and signed radii allowed. No unverified relaxation claimed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5603,6 +5619,8 @@ Completed `Roth.main_lemma`: Quantitative bounded-coefficient high-index auxilia
 Completed `Roth.approxSet`: Choose a primary named approximation family and expose finite slices, reduced rational image/fiber conversions and frequent-witness/LiouvilleWith bridges together.
 
 Completed `Roth.exists_nat_mul_isIntegral`: No mathematical gap for the real result: stronger existing nonzeroNat integral-closure existence and normalized denominator API verified. Do not propose the scratch RingA sign lemma as already existing; it is a newly verified generic proof.
+
+Completed `Roth.approxSet_den_le_finite`: Potential upstream choice between arbitrary-ψ approximation slices and a general finite integer-cast tube lemma. Finite image/fibers already exists; arithmetic interval transport remains real proof.
 
 ## Part 7: Junk / removable
 
@@ -6145,6 +6163,8 @@ Completed `Roth.approxSet`: Not junk: stable semantic family shared by ten expli
 
 Completed `Roth.exists_nat_mul_isIntegral`: Used in the Roth reduction, mathematically meaningful; redundant upstream wrapper, not dead code.
 
+Completed `Roth.approxSet_den_le_finite`: Used by the reduction and reduced-approximant extraction and LeanEval equivalence; meaningful local API, not dead code or an established<=3call wrapper.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6417,6 +6437,7 @@ Completed `Roth.exists_nat_mul_isIntegral`: Used in the Roth reduction, mathemat
 | 266 | `Roth.main_lemma` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/Roth.main_lemma.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.main_lemma/root-acceptance.json) |
 | 267 | `Roth.approxSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet/root-acceptance.json) |
 | 268 | `Roth.exists_nat_mul_isIntegral` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_nat_mul_isIntegral.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_nat_mul_isIntegral/root-acceptance.json) |
+| 269 | `Roth.approxSet_den_le_finite` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet_den_le_finite.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet_den_le_finite/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6952,12 +6973,14 @@ Completed `Roth.approxSet` action: BORDERLINE-needs-human: retain project-local 
 
 Completed `Roth.exists_nat_mul_isIntegral` action: Do not upstream this real wrapper. On an authorized cleanup delete it and replace the first obtain in Roth.reduction by the checked exists_nsmul_eq integralClosure block (no extra imports), or import Algebraic.Denominator and use its canonical witness. Retain project-local Main helper only if pedagogical correspondence is desired. Production unchanged.
 
+Completed `Roth.approxSet_den_le_finite` action: BORDERLINE-needs-human: retain local helper. Three concrete future upstream API questions decide whether to add an arbitrary-ψ slice companion to an approximation family, a generic finite-tube theorem, or keep this arithmetic packaging local. All assessment checks complete; no pending user blocker.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.approxSet_den_le_finite` next. Supporting identities receive their own applicable checks.
+   `Roth.eventually_div_rpow_lt` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,76 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 73,
+  "name": "Roth.approxSet_den_le_finite",
+  "short": "approxSet_den_le_finite",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 96,
+  "source": "theorem approxSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by\n  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ\n  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉\n  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_\n  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩\n  simp only at hq0 happ hqQ\n  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0\n  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,\n      Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)\n        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]\n  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by\n    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ\n    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| ≤ K := by\n    have : ((|h| : ℤ) : ℝ) ≤ K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact ⟨abs_le.1 hK', hq0, hqQ⟩",
+  "signature": "theorem approxSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite",
+  "body": "by\n  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ\n  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉\n  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_\n  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩\n  simp only at hq0 happ hqQ\n  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0\n  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,\n      Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)\n        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]\n  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by\n    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ\n    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| ≤ K := by\n    have : ((|h| : ℤ) : ℝ) ≤ K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact ⟨abs_le.1 hK', hq0, hqQ⟩",
+  "proof_lines": 24,
+  "sha256": "db8b0e291fc52eb5a9f949c993159566a13b13ec532ab89b1d9827654edf19ab",
+  "what": "Only finitely many sufficiently good approximation pairs have bounded denominator.",
+  "how": "Sum the finitely many allowed error radii using Finset.single_le_sum, bound numerator absolute values by Int.le_ceil, and embed all pairs into a finite rectangle of integer/natural intervals.",
+  "hypotheses": "Arbitrary real number/exponent and a natural denominator bound.",
+  "source_body_refs": [],
+  "source_type_refs": [
+    "Roth.approxSet"
+  ],
+  "source_callers": [
+    {
+      "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+      "file": "Roth/LeanEval.lean",
+      "line": 42
+    },
+    {
+      "name": "Roth.reduction",
+      "file": "Roth/Main.lean",
+      "line": 118
+    },
+    {
+      "name": "Roth.exists_reduced_approx",
+      "file": "Roth/Main.lean",
+      "line": 164
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.reduction",
+    "Roth.exists_reduced_approx"
+  ],
+  "used_by_other_files": [
+    {
+      "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+      "file": "Roth/LeanEval.lean",
+      "line": 42
+    }
+  ],
+  "assignment_offset": 93,
+  "project_body_refs": [],
+  "project_type_refs": [
+    "Roth.approxSet"
+  ],
+  "project_callers": [
+    {
+      "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+      "file": "Roth/LeanEval.lean",
+      "line": 42
+    },
+    {
+      "name": "Roth.reduction",
+      "file": "Roth/Main.lean",
+      "line": 118
+    },
+    {
+      "name": "Roth.exists_reduced_approx",
+      "file": "Roth/Main.lean",
+      "line": 164
+    }
+  ]
+}

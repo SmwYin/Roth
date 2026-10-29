@@ -1,0 +1,353 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Bounded269Literal
+open Roth
+private theorem approxSet_num_den_mem_aux {α κ : ℝ} (hκ : 0 ≤ κ) {h : ℤ} {q : ℕ}
+    (hq : (h, q) ∈ approxSet α κ) : (((h : ℚ) / q).num, ((h : ℚ) / q).den) ∈ approxSet α κ := by
+  set x : ℚ := (h : ℚ) / q
+  have hden : x.den ≤ q := Nat.le_of_dvd hq.1 <| Int.natCast_dvd_natCast.1 <| by
+    simpa [x, Rat.divInt_eq_div] using Rat.den_dvd h q
+  refine ⟨x.den_pos, ?_⟩
+  rw [← Rat.cast_def, Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast]
+  exact hq.2.trans_le (by gcongr)
+open Real
+private lemma exists_pos_div_rpow_lt_aux {x κ : ℝ} (hx : Irrational x)
+    (hs : (Roth.approxSet x κ).Finite) :
+    ∃ C : ℝ, 0 < C ∧ ∀ (p q : ℤ), 0 < q → C / (q : ℝ) ^ κ < |x - (p : ℝ) / q| := by
+  let f : ℤ × ℕ → ℝ := fun a ↦ |x - (a.1 : ℝ) / a.2| * (a.2 : ℝ) ^ κ
+  obtain ⟨a, ha, hmin⟩ := Set.exists_min_image _ f (hs.insert (0, 1))
+    (Set.insert_nonempty (0, 1) _)
+  have haq : 0 < a.2 := by
+    rcases ha with rfl | ha <;> first | exact ha.1 | norm_num
+  have hfa : 0 < f a := mul_pos
+    (abs_pos.mpr (sub_ne_zero.mpr (by simpa using hx.ne_rational a.1 a.2)))
+    (rpow_pos_of_pos (by positivity) _)
+  refine ⟨min (1 / 2) (f a / 2), by positivity, fun p q hq ↦ ?_⟩
+  lift q to ℕ using hq.le
+  have hq' : 0 < (q : ℝ) ^ κ := rpow_pos_of_pos (by exact_mod_cast hq) _
+  rw [Int.cast_natCast, div_lt_iff₀ hq']
+  by_cases hmem : (p, q) ∈ Roth.approxSet x κ
+  · exact (min_le_right _ _).trans_lt
+      ((half_lt_self hfa).trans_le (hmin (p, q) (Set.mem_insert_of_mem _ hmem)))
+  · apply ((min_le_left _ _).trans_lt (by norm_num : (1 : ℝ) / 2 < 1)).trans_le
+    exact le_of_not_gt fun h ↦ hmem ⟨by exact_mod_cast hq, (lt_div_iff₀ hq').mpr h⟩
+theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)
+    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧
+    (approxSet α' κ').Infinite := by
+  have bound (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
+    set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ
+    set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉
+    refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_
+    rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩
+    simp only at hq0 happ hqQ
+    have hqR : (0 : ℝ) < q := by exact_mod_cast hq0
+    have hdiv : |(h : ℝ) / q| ≤ |α| + S := by
+      rw [abs_sub_comm] at happ
+      linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,
+        Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)
+          (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]
+    have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by
+      have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ
+      have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv
+      simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans
+        (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))
+    have hK' : |h| ≤ K := by
+      have : ((|h| : ℤ) : ℝ) ≤ K := by
+        rw [Int.cast_abs]
+        exact habs.trans (Int.le_ceil _)
+      exact_mod_cast this
+    simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]
+    exact ⟨abs_le.1 hK', hq0, hqQ⟩
+  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg
+  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)
+  refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩
+  refine ((hinf.sdiff (bound α κ Q₀)).image
+    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap
+      Function.injective_id).injOn).mono ?_
+  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩
+  refine ⟨hq0, ?_⟩
+  dsimp only [Prod.map, id]
+  push_cast
+  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]
+  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by
+        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
+    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
+example : @Roth.reduction =
+    @reduction := Subsingleton.elim _ _
+#print axioms reduction
+theorem exists_reduced_approx {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : 0 < κ)
+    (hinf : (approxSet α κ).Infinite) (Q₀ : ℕ) : ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧
+    IsCoprime hq.1 (hq.2 : ℤ) := by
+  have bound (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
+    set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ
+    set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉
+    refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_
+    rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩
+    simp only at hq0 happ hqQ
+    have hqR : (0 : ℝ) < q := by exact_mod_cast hq0
+    have hdiv : |(h : ℝ) / q| ≤ |α| + S := by
+      rw [abs_sub_comm] at happ
+      linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,
+        Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)
+          (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]
+    have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by
+      have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ
+      have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv
+      simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans
+        (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))
+    have hK' : |h| ≤ K := by
+      have : ((|h| : ℤ) : ℝ) ≤ K := by
+        rw [Int.cast_abs]
+        exact habs.trans (Int.le_ceil _)
+      exact_mod_cast this
+    simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]
+    exact ⟨abs_le.1 hK', hq0, hqQ⟩
+  by_contra! hcon
+  set ρ : ℤ × ℕ → ℚ := fun hq ↦ (hq.1 : ℚ) / hq.2
+  have hV : (ρ '' approxSet α κ).Finite := by
+    refine ((bound α κ Q₀).image ρ).subset ?_
+    rintro _ ⟨hq, hmem, rfl⟩
+    -- the reduced form of a solution is a reduced solution
+    have hm : ((ρ hq).num, (ρ hq).den) ∈ approxSet α κ :=
+      approxSet_num_den_mem_aux hκ.le hmem
+    refine ⟨((ρ hq).num, (ρ hq).den), ⟨hm, ?_⟩, ?_⟩
+    · by_contra! hc
+      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (ρ hq).reduced)
+    · exact Rat.num_div_den (ρ hq)
+  have hfib : ∀ x ∈ ρ '' approxSet α κ, {hq ∈ approxSet α κ | ρ hq = x}.Finite := by
+    intro x _
+    obtain ⟨N, hN⟩ := eventually_div_rpow_lt (M := 1 / |α - (x : ℝ)|) hκ
+    refine (bound α κ N).subset ?_
+    rintro ⟨h, q⟩ ⟨hm, hρx⟩
+    refine ⟨hm, le_of_not_gt fun hq ↦ ?_⟩
+    have hbound := hN q hq
+    rw [Real.rpow_zero, div_one, div_right_comm,
+      div_lt_iff₀ (abs_pos.2 (sub_ne_zero.2 (hα.ne_rat x))), one_mul] at hbound
+    exact not_lt_of_gt hbound <| by simpa [← hρx, ρ] using hm.2
+  exact hinf (Set.Finite.of_finite_fibers ρ hV hfib)
+example : @Roth.exists_reduced_approx =
+    @exists_reduced_approx := Subsingleton.elim _ _
+#print axioms exists_reduced_approx
+theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :
+    LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine x ↔
+      ∀ {κ : ℝ}, (Roth.approxSet x κ).Infinite → κ ≤ 2 := by
+  have bound (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
+    set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ
+    set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉
+    refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_
+    rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩
+    simp only at hq0 happ hqQ
+    have hqR : (0 : ℝ) < q := by exact_mod_cast hq0
+    have hdiv : |(h : ℝ) / q| ≤ |α| + S := by
+      rw [abs_sub_comm] at happ
+      linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,
+        Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)
+          (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]
+    have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by
+      have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ
+      have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv
+      simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans
+        (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))
+    have hK' : |h| ≤ K := by
+      have : ((|h| : ℤ) : ℝ) ≤ K := by
+        rw [Int.cast_abs]
+        exact habs.trans (Int.le_ceil _)
+      exact_mod_cast this
+    simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]
+    exact ⟨abs_le.1 hK', hq0, hqQ⟩
+  refine ⟨fun h κ hinf ↦ le_of_not_gt fun hκ ↦ ?_, fun h ε hε ↦ ?_⟩
+  · obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)
+    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (M := 1 / C)
+      (by linarith : 2 + (κ - 2) / 2 < κ)
+    obtain ⟨⟨p, q⟩, hpq, hq⟩ :=
+      (hinf.sdiff (bound x κ Q)).nonempty
+    have hgap : 1 / (q : ℝ) ^ κ < C / (q : ℝ) ^ (2 + (κ - 2) / 2) := by
+      simpa [div_eq_mul_inv, ← mul_assoc, hC.ne'] using
+        mul_lt_mul_of_pos_left (hQ q (lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩)) hC
+    exact (hpq.2.trans hgap).not_gt (by simpa using hbound p q (by exact_mod_cast hpq.1))
+  · apply exists_pos_div_rpow_lt_aux hx
+    exact Set.not_infinite.mp fun hinf ↦
+      (by linarith : ¬ (2 + ε ≤ 2)) (h hinf)
+example : @LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff =
+    @isDiophantine_iff := Subsingleton.elim _ _
+#print axioms isDiophantine_iff
+end Bounded269Literal
+
+namespace Bounded269Generic
+open Roth
+theorem bounded_den_finite (α : ℝ) (ψ : ℕ → ℝ) (Q₀ : ℕ) :
+    {hq : ℤ × ℕ | (0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < ψ hq.2) ∧
+      hq.2 ≤ Q₀}.Finite := by
+  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, |ψ q|
+  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉
+  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_
+  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩
+  simp only at hq0 happ hqQ
+  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0
+  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by
+    rw [abs_sub_comm] at happ
+    linarith only [happ, le_abs_self (ψ q), abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,
+      Finset.single_le_sum (f := fun q : ℕ ↦ |ψ q|) (fun i _ ↦ abs_nonneg _)
+        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]
+  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by
+    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ
+    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv
+    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans
+      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))
+  have hK' : |h| ≤ K := by
+    have : ((|h| : ℤ) : ℝ) ≤ K := by
+      rw [Int.cast_abs]
+      exact habs.trans (Int.le_ceil _)
+    exact_mod_cast this
+  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]
+  exact ⟨abs_le.1 hK', hq0, hqQ⟩
+
+
+private theorem approxSet_num_den_mem_aux {α κ : ℝ} (hκ : 0 ≤ κ) {h : ℤ} {q : ℕ}
+    (hq : (h, q) ∈ approxSet α κ) : (((h : ℚ) / q).num, ((h : ℚ) / q).den) ∈ approxSet α κ := by
+  set x : ℚ := (h : ℚ) / q
+  have hden : x.den ≤ q := Nat.le_of_dvd hq.1 <| Int.natCast_dvd_natCast.1 <| by
+    simpa [x, Rat.divInt_eq_div] using Rat.den_dvd h q
+  refine ⟨x.den_pos, ?_⟩
+  rw [← Rat.cast_def, Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast]
+  exact hq.2.trans_le (by gcongr)
+open Real
+private lemma exists_pos_div_rpow_lt_aux {x κ : ℝ} (hx : Irrational x)
+    (hs : (Roth.approxSet x κ).Finite) :
+    ∃ C : ℝ, 0 < C ∧ ∀ (p q : ℤ), 0 < q → C / (q : ℝ) ^ κ < |x - (p : ℝ) / q| := by
+  let f : ℤ × ℕ → ℝ := fun a ↦ |x - (a.1 : ℝ) / a.2| * (a.2 : ℝ) ^ κ
+  obtain ⟨a, ha, hmin⟩ := Set.exists_min_image _ f (hs.insert (0, 1))
+    (Set.insert_nonempty (0, 1) _)
+  have haq : 0 < a.2 := by
+    rcases ha with rfl | ha <;> first | exact ha.1 | norm_num
+  have hfa : 0 < f a := mul_pos
+    (abs_pos.mpr (sub_ne_zero.mpr (by simpa using hx.ne_rational a.1 a.2)))
+    (rpow_pos_of_pos (by positivity) _)
+  refine ⟨min (1 / 2) (f a / 2), by positivity, fun p q hq ↦ ?_⟩
+  lift q to ℕ using hq.le
+  have hq' : 0 < (q : ℝ) ^ κ := rpow_pos_of_pos (by exact_mod_cast hq) _
+  rw [Int.cast_natCast, div_lt_iff₀ hq']
+  by_cases hmem : (p, q) ∈ Roth.approxSet x κ
+  · exact (min_le_right _ _).trans_lt
+      ((half_lt_self hfa).trans_le (hmin (p, q) (Set.mem_insert_of_mem _ hmem)))
+  · apply ((min_le_left _ _).trans_lt (by norm_num : (1 : ℝ) / 2 < 1)).trans_le
+    exact le_of_not_gt fun h ↦ hmem ⟨by exact_mod_cast hq, (lt_div_iff₀ hq').mpr h⟩
+theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)
+    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧
+    (approxSet α' κ').Infinite := by
+  have bound (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
+    exact bounded_den_finite α (fun q ↦ 1 / (q : ℝ) ^ κ) Q₀
+  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg
+  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)
+  refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩
+  refine ((hinf.sdiff (bound α κ Q₀)).image
+    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap
+      Function.injective_id).injOn).mono ?_
+  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩
+  refine ⟨hq0, ?_⟩
+  dsimp only [Prod.map, id]
+  push_cast
+  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]
+  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by
+        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
+    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
+example : @Roth.reduction =
+    @reduction := Subsingleton.elim _ _
+#print axioms reduction
+theorem exists_reduced_approx {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : 0 < κ)
+    (hinf : (approxSet α κ).Infinite) (Q₀ : ℕ) : ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧
+    IsCoprime hq.1 (hq.2 : ℤ) := by
+  have bound (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
+    exact bounded_den_finite α (fun q ↦ 1 / (q : ℝ) ^ κ) Q₀
+  by_contra! hcon
+  set ρ : ℤ × ℕ → ℚ := fun hq ↦ (hq.1 : ℚ) / hq.2
+  have hV : (ρ '' approxSet α κ).Finite := by
+    refine ((bound α κ Q₀).image ρ).subset ?_
+    rintro _ ⟨hq, hmem, rfl⟩
+    -- the reduced form of a solution is a reduced solution
+    have hm : ((ρ hq).num, (ρ hq).den) ∈ approxSet α κ :=
+      approxSet_num_den_mem_aux hκ.le hmem
+    refine ⟨((ρ hq).num, (ρ hq).den), ⟨hm, ?_⟩, ?_⟩
+    · by_contra! hc
+      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (ρ hq).reduced)
+    · exact Rat.num_div_den (ρ hq)
+  have hfib : ∀ x ∈ ρ '' approxSet α κ, {hq ∈ approxSet α κ | ρ hq = x}.Finite := by
+    intro x _
+    obtain ⟨N, hN⟩ := eventually_div_rpow_lt (M := 1 / |α - (x : ℝ)|) hκ
+    refine (bound α κ N).subset ?_
+    rintro ⟨h, q⟩ ⟨hm, hρx⟩
+    refine ⟨hm, le_of_not_gt fun hq ↦ ?_⟩
+    have hbound := hN q hq
+    rw [Real.rpow_zero, div_one, div_right_comm,
+      div_lt_iff₀ (abs_pos.2 (sub_ne_zero.2 (hα.ne_rat x))), one_mul] at hbound
+    exact not_lt_of_gt hbound <| by simpa [← hρx, ρ] using hm.2
+  exact hinf (Set.Finite.of_finite_fibers ρ hV hfib)
+example : @Roth.exists_reduced_approx =
+    @exists_reduced_approx := Subsingleton.elim _ _
+#print axioms exists_reduced_approx
+theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :
+    LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine x ↔
+      ∀ {κ : ℝ}, (Roth.approxSet x κ).Infinite → κ ≤ 2 := by
+  have bound (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
+    exact bounded_den_finite α (fun q ↦ 1 / (q : ℝ) ^ κ) Q₀
+  refine ⟨fun h κ hinf ↦ le_of_not_gt fun hκ ↦ ?_, fun h ε hε ↦ ?_⟩
+  · obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)
+    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (M := 1 / C)
+      (by linarith : 2 + (κ - 2) / 2 < κ)
+    obtain ⟨⟨p, q⟩, hpq, hq⟩ :=
+      (hinf.sdiff (bound x κ Q)).nonempty
+    have hgap : 1 / (q : ℝ) ^ κ < C / (q : ℝ) ^ (2 + (κ - 2) / 2) := by
+      simpa [div_eq_mul_inv, ← mul_assoc, hC.ne'] using
+        mul_lt_mul_of_pos_left (hQ q (lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩)) hC
+    exact (hpq.2.trans hgap).not_gt (by simpa using hbound p q (by exact_mod_cast hpq.1))
+  · apply exists_pos_div_rpow_lt_aux hx
+    exact Set.not_infinite.mp fun hinf ↦
+      (by linarith : ¬ (2 + ε ≤ 2)) (h hinf)
+example : @LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff =
+    @isDiophantine_iff := Subsingleton.elim _ _
+#print axioms isDiophantine_iff
+end Bounded269Generic
+
+run_cmd do
+  let env ← Lean.getEnv
+  let ci ← Lean.getConstInfo `Roth.approxSet_den_le_finite
+  let rootDeps := (ci.value? (allowOpaque := true)).get!.getUsedConstants.toList
+  let project := rootDeps.filter fun n ↦ n.toString.startsWith "Roth."
+  Lean.logInfo m!"BOUND269_DIRECT_PROJECT_BODY: {project}"
+  let projectTy := ci.type.getUsedConstants.toList.filter fun n ↦ n.toString.startsWith "Roth."
+  Lean.logInfo m!"BOUND269_DIRECT_PROJECT_TYPE: {projectTy}"
+  let targets := #[`Bounded269Literal.reduction, `Bounded269Literal.exists_reduced_approx,
+    `Bounded269Literal.isDiophantine_iff, `Bounded269Generic.reduction,
+    `Bounded269Generic.exists_reduced_approx, `Bounded269Generic.isDiophantine_iff]
+  for n in targets do
+    let mut todo := [n]
+    let mut seen : List Lean.Name := []
+    while !todo.isEmpty do
+      let k := todo.head!
+      todo := todo.tail!
+      unless seen.contains k do
+        seen := k :: seen
+        if k == `Roth.approxSet_den_le_finite ||
+            k.toString.startsWith "Roth.approxSet_den_le_finite." then
+          throwError "BOUND269_CIRCULAR: {n} via {k}"
+        if let some info := env.find? k then
+          if let some v := info.value? (allowOpaque := true) then
+            let deps := v.getUsedConstants.toList.filter fun d ↦
+              d.toString.startsWith "Roth." || d.toString.startsWith "_private.Roth." ||
+                (d.toString.splitOn "Bounded269").length > 1
+            todo := deps ++ todo
+    Lean.logInfo m!"BOUND269_INLINE_CLOSURE_NO_TARGET: {n}"

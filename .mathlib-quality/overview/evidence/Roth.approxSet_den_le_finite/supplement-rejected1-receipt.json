@@ -1,0 +1,57 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.approxSet_den_le_finite\nnamespace Bounded269Supplement\ntheorem finite_radius {K ι : Type*} [Ring K] [LinearOrder K]\n    [IsStrictOrderedRing K] [FloorRing K] (s : Set ι) (hs : s.Finite) (c r : ι → K) :\n    {p : ℤ × ι | p.2 ∈ s ∧ |(p.1 : K) - c p.2| ≤ r p.2}.Finite := by\n  refine (hs.biUnion fun i _ ↦\n    (Set.finite_Icc ⌈c i - r i⌉ ⌊c i + r i⌋).prod (Set.finite_singleton i)).subset ?_\n  rintro ⟨h, i⟩ ⟨hi, hb⟩\n  have hb' := abs_le.mp hb\n  have hlo : c i - r i ≤ (h : K) := by linarith only [hb'.1]\n  have hhi : (h : K) ≤ c i + r i := by linarith only [hb'.2]\n  simp only [Set.mem_iUnion, Set.mem_prod, Set.mem_Icc, Set.mem_singleton_iff]\n  exact ⟨i, hi, ⟨Int.ceil_le.mpr hlo, Int.le_floor.mpr hhi⟩, rfl⟩\n\nend Bounded269Supplement\n#print axioms Bounded269Supplement.finite_radius\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.approxSet_den_le_finite`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"linarith failed to find a contradiction\\nK : Type u_1\\nι : Type u_2\\ninst✝³ : Ring K\\ninst✝² : LinearOrder K\\ninst✝¹ : IsStrictOrderedRing K\\ninst✝ : FloorRing K\\ns : Set ι\\nhs : s.Finite\\nc r : ι → K\\nh : ℤ\\ni : ι\\nhi : (h, i).2 ∈ s\\nhb : |↑(h, i).1 - c (h, i).2| ≤ r (h, i).2\\nhb' : -r (h, i).2 ≤ ↑(h, i).1 - c (h, i).2 ∧ ↑(h, i).1 - c (h, i).2 ≤ r (h, i).2\\na✝ : ↑h < c i - r i\\n⊢ False\\nfailed\",\n      \"line\": 29,\n      \"column\": 40,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"linarith failed to find a contradiction\\nK : Type u_1\\nι : Type u_2\\ninst✝³ : Ring K\\ninst✝² : LinearOrder K\\ninst✝¹ : IsStrictOrderedRing K\\ninst✝ : FloorRing K\\ns : Set ι\\nhs : s.Finite\\nc r : ι → K\\nh : ℤ\\ni : ι\\nhi : (h, i).2 ∈ s\\nhb : |↑(h, i).1 - c (h, i).2| ≤ r (h, i).2\\nhb' : -r (h, i).2 ≤ ↑(h, i).1 - c (h, i).2 ∧ ↑(h, i).1 - c (h, i).2 ≤ r (h, i).2\\nhlo : c i - r i ≤ ↑h\\na✝ : c i + r i < ↑h\\n⊢ False\\nfailed\",\n      \"line\": 30,\n      \"column\": 40,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bounded269Supplement.finite_radius' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.approxSet_den_le_finite`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "linarith failed to find a contradiction\nK : Type u_1\nι : Type u_2\ninst✝³ : Ring K\ninst✝² : LinearOrder K\ninst✝¹ : IsStrictOrderedRing K\ninst✝ : FloorRing K\ns : Set ι\nhs : s.Finite\nc r : ι → K\nh : ℤ\ni : ι\nhi : (h, i).2 ∈ s\nhb : |↑(h, i).1 - c (h, i).2| ≤ r (h, i).2\nhb' : -r (h, i).2 ≤ ↑(h, i).1 - c (h, i).2 ∧ ↑(h, i).1 - c (h, i).2 ≤ r (h, i).2\na✝ : ↑h < c i - r i\n⊢ False\nfailed",
+          "line": 29,
+          "column": 40,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "linarith failed to find a contradiction\nK : Type u_1\nι : Type u_2\ninst✝³ : Ring K\ninst✝² : LinearOrder K\ninst✝¹ : IsStrictOrderedRing K\ninst✝ : FloorRing K\ns : Set ι\nhs : s.Finite\nc r : ι → K\nh : ℤ\ni : ι\nhi : (h, i).2 ∈ s\nhb : |↑(h, i).1 - c (h, i).2| ≤ r (h, i).2\nhb' : -r (h, i).2 ≤ ↑(h, i).1 - c (h, i).2 ∧ ↑(h, i).1 - c (h, i).2 ≤ r (h, i).2\nhlo : c i - r i ≤ ↑h\na✝ : c i + r i < ↑h\n⊢ False\nfailed",
+          "line": 30,
+          "column": 40,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bounded269Supplement.finite_radius' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1591
+}
