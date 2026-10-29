@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 246/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 247/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 246; remaining: 47.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 84 BORDERLINE-needs-human, 58 SKIP.
+- Completed applicable assessments: 247; remaining: 46.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 84 BORDERLINE-needs-human, 59 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3026,6 +3026,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One same-file explicit body caller Roth.exists_ne_modByMonic_eq at MainLemma:359; inlined proof preserves its full signature and exact cardinal inequality. Kernel direct value consumers1, type consumers0; no transitive-independence claim.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.ncard_boxFamily.md).
 
+### Completed: `Roth.floor_rpow_count_lt_aux`
+
+- Type: `∀ {x c : ℝ}, 0 < x → 1 ≤ c → ↑(2 * ⌊x ^ c⌋₊ + 1) < (x + 1) ^ (2 * c)`
+- What: For x>0 and c>=1 the integer coefficient count2 floor(x^c)+1 is strictly smaller than(x+1)^(2c).
+- How: Use Real.add_rpow_le_rpow_add, Nat.floor_le and a positive-square comparison.
+- Hypotheses: Positive base and real exponent at least one. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: None
+- Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.floor_rpow_count_lt_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3544,6 +3554,8 @@ Completed `Roth.boxFamily_finite`: Finset.finsupp, Finset.mem_finsupp_iff, Finse
 
 Completed `Roth.ncard_boxFamily`: Finset.card_finsupp, Finsupp.card_Iic, Nat.card_Iic, Int.card_Icc, Set.ncard_image_of_injective, Set.ncard_coe_finset and finprod transport are genuine mathlib. The semantic representation bridge is project/new proof. External Polynomial.card_eq_of_natDegree_le_of_coeff_le corresponds to pin Polynomial.ncard_boxPoly, a univariate result.
 
+Completed `Roth.floor_rpow_count_lt_aux`: Real.add_rpow_le_rpow_add gives x^c+1<=(x+1)^c. Rewrite the doubled exponent as a square and use positivity of x^c, the natural-floor upper bound and the expanded square to obtain a strict gap. This is the positive scalar base estimate raised to a positive integer count in pigeonhole_count; its strictness is not the final exponent-budget comparison.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4037,6 +4049,8 @@ Completed `Roth.boxFamily_eq_image_finsupp_aux`: The structural review distingui
 Completed `Roth.boxFamily_finite`: Shares the coefficient-array representation with Roth.ncard_boxFamily; finiteness and counting are different statements. It is not a duplicate of finite degree-index sets or nonzero bounded families.
 
 Completed `Roth.ncard_boxFamily`: Shares enumeration with boxFamily_finite and exponent count with card_box; neither counts polynomial coefficient assignments. Enumerated count is a short closing simp composition; semantic bridge and finprod transport remain distinct.
+
+Completed `Roth.floor_rpow_count_lt_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -4542,6 +4556,8 @@ Completed `Roth.boxFamily_finite`: Compiled: arbitrary CommSemiring R, arbitrary
 
 Completed `Roth.ncard_boxFamily`: Verified new generic semantic family over arbitrary CommSemiring R and r : sigma →₀ Nat, with coordinate-dependent Finset choices t d and 0∈t d only off Finset.Iic r. Original function-r/finite-support/finprod type recovered and caller retained. This changes parent representation, not a mechanical weakening of an Int typeclass.
 
+Completed `Roth.floor_rpow_count_lt_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5036,6 +5052,8 @@ Completed `Roth.boxFamily_eq_image_finsupp_aux`: No new primitive is needed for 
 Completed `Roth.boxFamily_finite`: A semantic finite-coefficient/finite-support bridge for MvPolynomial is the candidate API boundary; current Finset.finsupp image machinery already supplies the enumerated form.
 
 Completed `Roth.ncard_boxFamily`: Potential semantic coefficient-family representation/counting interface; existing enumerator cardinality APIs already suffice after the new bridge. Exact upstream API packaging remains a future question.
+
+Completed `Roth.floor_rpow_count_lt_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -5534,6 +5552,8 @@ Completed `Roth.boxFamily_finite`: Used once and successfully inlined in its act
 
 Completed `Roth.ncard_boxFamily`: Used mathematical count, not dead code. No unconditional removal from the local API is justified. Pure existing <=3-call replacement not established.
 
+Completed `Roth.floor_rpow_count_lt_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5784,6 +5804,7 @@ Completed `Roth.ncard_boxFamily`: Used mathematical count, not dead code. No unc
 | 244 | `Roth.boxFamily_eq_image_finsupp_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_eq_image_finsupp_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily_eq_image_finsupp_aux/root-acceptance.json) |
 | 245 | `Roth.boxFamily_finite` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_finite.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily_finite/root-acceptance.json) |
 | 246 | `Roth.ncard_boxFamily` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.ncard_boxFamily.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.ncard_boxFamily/root-acceptance.json) |
+| 247 | `Roth.floor_rpow_count_lt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.floor_rpow_count_lt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.floor_rpow_count_lt_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6275,12 +6296,14 @@ Completed `Roth.boxFamily_finite` action: Retain production unchanged. Consider 
 
 Completed `Roth.ncard_boxFamily` action: BORDERLINE completed assessment: retain locally; future upstream interface questions in report. If local inlining is selected, use the verified full proof in the sole caller; retain project private bridge. No production changes.
 
+Completed `Roth.floor_rpow_count_lt_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.floor_rpow_count_lt_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.pigeonhole_count` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

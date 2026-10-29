@@ -1,0 +1,45 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 320,
+  "name": "Roth.floor_rpow_count_lt_aux",
+  "short": "floor_rpow_count_lt_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 327,
+  "source": "private lemma floor_rpow_count_lt_aux {x c : ℝ} (hx : 0 < x) (hc : 1 ≤ c) :\n    ((2 * ⌊x ^ c⌋₊ + 1 : ℕ) : ℝ) < (x + 1) ^ (2 * c) := by\n  have hu : 0 < x ^ c := Real.rpow_pos_of_pos hx c\n  have hsum : x ^ c + 1 ≤ (x + 1) ^ c := by\n    simpa using Real.add_rpow_le_rpow_add hx.le zero_le_one hc\n  rw [mul_comm 2 c, Real.rpow_mul (by positivity), Real.rpow_two]\n  push_cast\n  nlinarith only [pow_le_pow_left₀ (by positivity) hsum 2, sq_pos_of_pos hu, Nat.floor_le hu.le]",
+  "signature": "private lemma floor_rpow_count_lt_aux {x c : ℝ} (hx : 0 < x) (hc : 1 ≤ c) :\n    ((2 * ⌊x ^ c⌋₊ + 1 : ℕ) : ℝ) < (x + 1) ^ (2 * c)",
+  "body": "by\n  have hu : 0 < x ^ c := Real.rpow_pos_of_pos hx c\n  have hsum : x ^ c + 1 ≤ (x + 1) ^ c := by\n    simpa using Real.add_rpow_le_rpow_add hx.le zero_le_one hc\n  rw [mul_comm 2 c, Real.rpow_mul (by positivity), Real.rpow_two]\n  push_cast\n  nlinarith only [pow_le_pow_left₀ (by positivity) hsum 2, sq_pos_of_pos hu, Nat.floor_le hu.le]",
+  "proof_lines": 7,
+  "sha256": "2d0d1b086522ac03ec6e327d1d64174f2b392ee709a65b050c0787ed5e777579",
+  "what": "The number of bounded integral coefficients is strictly below a doubled-exponent growth bound.",
+  "how": "Use Real.add_rpow_le_rpow_add, Nat.floor_le and a positive-square comparison.",
+  "hypotheses": "Positive base and real exponent at least one.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.pigeonhole_count",
+      "file": "Roth/MainLemma.lean",
+      "line": 334
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.pigeonhole_count"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 129,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.pigeonhole_count",
+      "file": "Roth/MainLemma.lean",
+      "line": 334
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "file": "Roth/MainLemma.lean",
+    "line": 334,
+    "name": "Roth.pigeonhole_count",
+    "short": "pigeonhole_count",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 349,
+    "source": "theorem pigeonhole_count {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ} (hN : 0 < N)\n    (hD : c * n * D ≤ N / 2) : ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N := by\n  -- The source sets Y = 2(1+B) and uses the intermediate estimate\n  -- `2⌊B^c⌋ + 1 < Y^c`\n  -- The helper instead bounds the count directly by `(B + 1)^(2c)`.\n  by_cases hk : n * D = 0\n  · simpa [hk] using one_lt_pow₀ (by linarith) hN.ne'\n  calc\n    _ < ((B + 1) ^ (2 * c)) ^ (n * D) :=\n      pow_lt_pow_left₀ (floor_rpow_count_lt_aux hB hc) (Nat.cast_nonneg _) hk\n    _ = (B + 1) ^ (2 * c * (n * D : ℕ)) := (Real.rpow_mul_natCast (by positivity) _ _).symm\n    _ ≤ (B + 1) ^ N := by\n      rw [← Real.rpow_natCast]\n      apply Real.rpow_le_rpow_of_exponent_le (by linarith)\n      push_cast\n      linarith only [hD]",
+    "signature": "theorem pigeonhole_count {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ} (hN : 0 < N)\n    (hD : c * n * D ≤ N / 2) : ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N",
+    "body": "by\n  -- The source sets Y = 2(1+B) and uses the intermediate estimate\n  -- `2⌊B^c⌋ + 1 < Y^c`\n  -- The helper instead bounds the count directly by `(B + 1)^(2c)`.\n  by_cases hk : n * D = 0\n  · simpa [hk] using one_lt_pow₀ (by linarith) hN.ne'\n  calc\n    _ < ((B + 1) ^ (2 * c)) ^ (n * D) :=\n      pow_lt_pow_left₀ (floor_rpow_count_lt_aux hB hc) (Nat.cast_nonneg _) hk\n    _ = (B + 1) ^ (2 * c * (n * D : ℕ)) := (Real.rpow_mul_natCast (by positivity) _ _).symm\n    _ ≤ (B + 1) ^ N := by\n      rw [← Real.rpow_natCast]\n      apply Real.rpow_le_rpow_of_exponent_le (by linarith)\n      push_cast\n      linarith only [hD]",
+    "proof_lines": 15,
+    "sha256": "e0943534c5b86f97846e70c3dc87c8501444f181782533f0deeaa1ac53752890",
+    "what": "The count of possible bounded remainders is smaller than the count of box polynomials under a dimension inequality.",
+    "how": "Treat zero exponent separately; apply floor_rpow_count_lt_aux, compare powers using Real.rpow_le_rpow_of_exponent_le and the dimension bound.",
+    "hypotheses": "Positive base, exponent at least one, positive total number of coefficients and remainder-count dimension inequality.",
+    "source_body_refs": [
+      "Roth.floor_rpow_count_lt_aux"
+    ],
+    "source_type_refs": [],
+    "source_callers": [
+      {
+        "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 581
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+    "uses_from_project": [
+      "Roth.floor_rpow_count_lt_aux"
+    ],
+    "used_by_in_file": [
+      "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 176,
+    "project_body_refs": [
+      "Roth.floor_rpow_count_lt_aux"
+    ],
+    "project_type_refs": [],
+    "project_callers": [
+      {
+        "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 581
+      }
+    ]
+  }
+]

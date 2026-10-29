@@ -1,0 +1,8 @@
+private lemma floor_rpow_count_lt_aux {x c : ℝ} (hx : 0 < x) (hc : 1 ≤ c) :
+    ((2 * ⌊x ^ c⌋₊ + 1 : ℕ) : ℝ) < (x + 1) ^ (2 * c) := by
+  have hu : 0 < x ^ c := Real.rpow_pos_of_pos hx c
+  have hsum : x ^ c + 1 ≤ (x + 1) ^ c := by
+    simpa using Real.add_rpow_le_rpow_add hx.le zero_le_one hc
+  rw [mul_comm 2 c, Real.rpow_mul (by positivity), Real.rpow_two]
+  push_cast
+  nlinarith only [pow_le_pow_left₀ (by positivity) hsum 2, sq_pos_of_pos hu, Nat.floor_le hu.le]
