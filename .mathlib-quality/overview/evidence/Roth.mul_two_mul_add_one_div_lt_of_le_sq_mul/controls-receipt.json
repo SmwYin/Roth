@@ -1,0 +1,39 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul\nnamespace Budget253Controls\ntheorem absence_probe {K : Type*} [Semifield K] [LinearOrder K]\n    [IsStrictOrderedRing K] [ExistsAddOfLE K] {δ m L : K} (hm : 0 < 2 * m + 1) (hδm : δ * m < 1)\n    (h32 : 2 * m + 1 ≤ δ ^ 2 * L) : m * (2 * m + 1) / δ < L := by\n  fail_if_success exact?\n  have hδ : δ ≠ 0 := by\n    rintro rfl\n    simpa using hm.trans_le h32\n  apply (mul_lt_mul_iff_of_pos_right (sq_pos_of_ne_zero hδ)).1\n  calc\n    _ = (δ * m) * (2 * m + 1) := by field_simp\n    _ < 2 * m + 1 := mul_lt_of_lt_one_left hm hδm\n    _ ≤ L * δ ^ 2 := h32.trans_eq (mul_comm _ _)\n\n\n#print axioms absence_probe\nexample {K : Type*} [Semifield K] [LinearOrder K] [IsStrictOrderedRing K] : True := by\n  fail_if_success have : ExistsAddOfLE K := inferInstance\n  trivial\nend Budget253Controls\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Budget253Controls.absence_probe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Budget253Controls.absence_probe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 10223
+}

@@ -1,0 +1,40 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul
+namespace Budget253Controls
+theorem absence_probe {K : Type*} [Semifield K] [LinearOrder K]
+    [IsStrictOrderedRing K] [ExistsAddOfLE K] {δ m L : K} (hm : 0 < 2 * m + 1) (hδm : δ * m < 1)
+    (h32 : 2 * m + 1 ≤ δ ^ 2 * L) : m * (2 * m + 1) / δ < L := by
+  fail_if_success exact?
+  have hδ : δ ≠ 0 := by
+    rintro rfl
+    simpa using hm.trans_le h32
+  apply (mul_lt_mul_iff_of_pos_right (sq_pos_of_ne_zero hδ)).1
+  calc
+    _ = (δ * m) * (2 * m + 1) := by field_simp
+    _ < 2 * m + 1 := mul_lt_of_lt_one_left hm hδm
+    _ ≤ L * δ ^ 2 := h32.trans_eq (mul_comm _ _)
+
+
+#print axioms absence_probe
+example {K : Type*} [Semifield K] [LinearOrder K] [IsStrictOrderedRing K] : True := by
+  fail_if_success have : ExistsAddOfLE K := inferInstance
+  trivial
+end Budget253Controls

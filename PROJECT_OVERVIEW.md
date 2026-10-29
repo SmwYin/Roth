@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 252/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 253/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 252; remaining: 41.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 89 BORDERLINE-needs-human, 59 SKIP.
+- Completed applicable assessments: 253; remaining: 40.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 59 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3107,6 +3107,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One source proof call and one canonical kernel-value consumer: private exists_mem_RSet_le_index_aux at MainLemma:562; no external-to-file source calls or direct type consumers. Full caller inlining and entire module continuation through main_lemma compile with the original caller signature.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.le_index_of_forall_eval_eq_zero.md).
 
+### Completed: `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`
+
+- Type: `∀ {K : Type u_1} [inst : Semifield K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K]
+  [ExistsAddOfLE K] {δ m L : K}, 0 < 2 * m + 1 → δ * m < 1 → 2 * m + 1 ≤ δ ^ 2 * L → m * (2 * m + 1) / δ < L`
+- What: Transfers the quadratic budget 2m+1≤δ²L and δm<1 into m(2m+1)/δ<L in an ordered semifield.
+- How: Derive δ≠0, multiply by its positive square, normalize the rational expression, apply mul_lt_of_lt_one_left, then the budget.
+- Hypotheses: Semifield, LinearOrder, IsStrictOrderedRing, ExistsAddOfLE; 0<2m+1; δm<1; 2m+1≤δ²L. No δ>0 or m≥0 assumed.
+- Project dependencies: None
+- Caller summary: Fresh tracked/no-ignore searches: only declaration. Exact293 kernel audit: zero direct type/value consumers. Related private theta helper uses a weak variant.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3637,6 +3648,8 @@ Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Existing eval₂_modByMonic_eq_sel
 
 Completed `Roth.le_index_of_forall_eval_eq_zero`: Existing le_of_not_gt is only scalar contraposition. Finset.le_inf_iff/le_inf and AddMonoidAlgebra.infDegree already supply the abstract support lower bound; a three-call bounded-support check compiles once support⊆test-set is given. MvPowerSeries.nat_le_weightedOrder/le_weightedOrder are natural-weight/top-valued alternatives. Project Hasse/Taylor support normalization is still needed for the exact bounded derivative theorem.
 
+Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Pinned mul_lt_mul_iff_of_pos_right, sq_pos_of_ne_zero, mul_lt_of_lt_one_left and field_simp support the proof; no exact full implication identified by15cells/compiled exact? probe.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4142,6 +4155,8 @@ Completed `Roth.sub_mem_RSet`: Only scalar/degree/nonzero leaves coincide with e
 Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Equal-remainder evaluation is a short chain of existing polynomial evaluation laws, but the full mapped-Hasse-diagonal conclusion requires coefficient/evaluation normalization. Parent diag is one-call aeval; diag_sub is map_sub; Hasse and its transport were accepted YES separately. No verdict inherited.
 
 Completed `Roth.le_index_of_forall_eval_eq_zero`: le_index_iff supplies unrestricted nonzero-derivative bounds, not bounded checking., eq_sum_box_hasseDeriv and degreeOf_taylor_le share out-of-box annihilation but conclude reconstruction/support confinement., exists_hasseDeriv_eval_ne_zero is the complementary strict upper-cutoff witness theorem.
+
+Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Related theta_lt_eta_of_sq_log_bound_aux repeats square clearing with weak hypotheses/conclusion; not an exact duplicate or actual caller.
 
 ## Part 5: Generalization opportunities
 
@@ -4660,6 +4675,8 @@ Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Verified arbitrary CommRing coeffi
 
 Completed `Roth.le_index_of_forall_eval_eq_zero`: Verified cutoff-local outside-box degree condition, or outside-box evaluated annihilation, weakens the global degree premise. New finite-support observation proofs work over arbitrary Zero coefficients and conditionally complete linear ordered weights; arbitrary-variable/CommRing polynomial indexAny recovers the exact original via finite-support weights. Fintype cannot simply be deleted from the unchanged parent signatures.
 
+Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Verified Budget253.generic replaces 2m+1 by arbitrary positive a under the same class assumptions; exact original recovery compiled. Weak δm≤1 and strict-budget partners compiled.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5166,6 +5183,8 @@ Completed `Roth.sub_mem_RSet`: Possible combined coefficient-family subtraction 
 Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Upstream design decision between a generic equal-remainder evaluation companion, a reusable diagonal-evaluation bridge, and retaining the full Hasse corollary locally; three concrete future questions in report.
 
 Completed `Roth.le_index_of_forall_eval_eq_zero`: Potential discoverability for bounded Hasse/Taylor support checking, not a missing finite-infimum order law. Upstream choice between a public boxed convenience theorem and local use of shared support bridges remains a taste/API question.
+
+Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Potential positive-scale budget-transfer family; scratch proof is new, not existing mathlib API. No missing instance or simp API justified.
 
 ## Part 7: Junk / removable
 
@@ -5676,6 +5695,8 @@ Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Not dead code: one direct caller a
 
 Completed `Roth.le_index_of_forall_eval_eq_zero`: Not dead code: the sole caller converts pigeonhole remainder equalities into the key index bound. Full inlining works but duplicates the degree-box proof; one use alone does not establish ≤3-mathlib-call composability.
 
+Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`: Unused within audited source/direct-kernel scope; candidate for local removal if no stable public API intended. No external/simp/transitive deadness claim.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5932,6 +5953,7 @@ Completed `Roth.le_index_of_forall_eval_eq_zero`: Not dead code: the sole caller
 | 250 | `Roth.sub_mem_RSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sub_mem_RSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sub_mem_RSet/root-acceptance.json) |
 | 251 | `Roth.eval_hasseDeriv_sub_eq_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eval_hasseDeriv_sub_eq_zero/root-acceptance.json) |
 | 252 | `Roth.le_index_of_forall_eval_eq_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.le_index_of_forall_eval_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.le_index_of_forall_eval_eq_zero/root-acceptance.json) |
+| 253 | `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6435,12 +6457,14 @@ Completed `Roth.eval_hasseDeriv_sub_eq_zero` action: BORDERLINE-needs-human: ret
 
 Completed `Roth.le_index_of_forall_eval_eq_zero` action: BORDERLINE-needs-human; retain production unchanged. Decide the three concrete future upstream API questions after considering the verified generic support formulation and parent infDegree migration. No question blocks completion of this assessment.
 
+Completed `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` action: BORDERLINE-needs-human: resolve three concrete upstream/local API questions; keep production unchanged. If retained, prefer generic positive scale and weak companion.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_hasseDeriv_eval_ne_zero` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

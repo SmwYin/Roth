@@ -1,0 +1,106 @@
+{
+  "declaration": "Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul",
+  "canonical_index": 253,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "source_sha256": "1255ffdd5de29c367e4957dd2bed2da31c4641ff647ad8039a62bc41784d0090",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "BUDGET253_SIGNATURE_IDENTICAL",
+        "BUDGET253_AUDIT: requested=293; unique=293",
+        "BUDGET253_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "format": "virtual",
+      "source_sha256": "7cdb5c07894e1cc849982a4988872bc4ef9478cee695b9b8b6bbdb536474fc4f",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul\n#check @mul_lt_of_lt_one_left\n#check @mul_lt_mul_iff_of_pos_right\n#check @sq_pos_of_ne_zero\n#check @mul_le_mul_of_nonneg_right\nnamespace Budget253\nvariable {K : Type*} [Semifield K] [LinearOrder K] [IsStrictOrderedRing K]\n  [ExistsAddOfLE K]\ntheorem generic {δ m a L : K} (ha : 0 < a) (hδm : δ * m < 1)\n    (hbudget : a ≤ δ ^ 2 * L) : m * a / δ < L := by\n  have hδ : δ ≠ 0 := by\n    rintro rfl\n    simpa using ha.trans_le hbudget\n  apply (mul_lt_mul_iff_of_pos_right (sq_pos_of_ne_zero hδ)).1\n  calc\n    _ = (δ * m) * a := by field_simp\n    _ < a := mul_lt_of_lt_one_left ha hδm\n    _ ≤ L * δ ^ 2 := hbudget.trans_eq (mul_comm _ _)\ntheorem recovery {δ m L : K} (hm : 0 < 2 * m + 1) (hδm : δ * m < 1)\n    (h32 : 2 * m + 1 ≤ δ ^ 2 * L) : m * (2 * m + 1) / δ < L :=\n  generic hm hδm h32\ntheorem weak {δ m a L : K} (ha : 0 < a) (hδm : δ * m ≤ 1)\n    (hbudget : a ≤ δ ^ 2 * L) : m * a / δ ≤ L := by\n  have hδ : δ ≠ 0 := by\n    rintro rfl\n    simpa using ha.trans_le hbudget\n  apply (mul_le_mul_iff_of_pos_right (sq_pos_of_ne_zero hδ)).1\n  calc\n    _ = (δ * m) * a := by field_simp\n    _ ≤ a := by simpa using mul_le_mul_of_nonneg_right hδm ha.le\n    _ ≤ L * δ ^ 2 := hbudget.trans_eq (mul_comm _ _)\ntheorem strict_budget {δ m a L : K} (ha : 0 < a) (hδm : δ * m ≤ 1)\n    (hbudget : a < δ ^ 2 * L) : m * a / δ < L := by\n  have hδ : δ ≠ 0 := by\n    rintro rfl\n    simpa using ha.trans hbudget\n  apply (mul_lt_mul_iff_of_pos_right (sq_pos_of_ne_zero hδ)).1\n  calc\n    _ = (δ * m) * a := by field_simp\n    _ ≤ a := by simpa using mul_le_mul_of_nonneg_right hδm ha.le\n    _ < L * δ ^ 2 := hbudget.trans_eq (mul_comm _ _)\nomit [IsStrictOrderedRing K] [ExistsAddOfLE K] in\ntheorem delta_nonzero {δ a L : K} (ha : 0 < a) (h : a ≤ δ ^ 2 * L) : δ ≠ 0 := by\n  rintro rfl\n  simpa using ha.trans_le h\nexample {δ m L : K} (hm : 0 < 2 * m + 1) (hδm : δ * m < 1)\n    (h32 : 2 * m + 1 ≤ δ ^ 2 * L) : m * (2 * m + 1) / δ < L := by\n  fail_if_success exact mul_lt_of_lt_one_left hm hδm\n  fail_if_success exact (mul_lt_mul_iff_of_pos_right hm).1 hδm\n  exact recovery hm hδm h32\n-- The original allows a negative delta and a negative m.\ntheorem negative_delta :\n    (0 : ℚ) < 2 * (1 : ℚ) + 1 ∧ (-1 : ℚ) * 1 < 1 ∧\n    2 * (1 : ℚ) + 1 ≤ (-1 : ℚ) ^ 2 * 3 ∧ 1 * (2 * 1 + 1) / (-1 : ℚ) < 3 := by\n  norm_num\ntheorem negative_m :\n    (0 : ℚ) < 2 * (-1 / 4 : ℚ) + 1 ∧ (1 : ℚ) * (-1 / 4) < 1 ∧\n    2 * (-1 / 4 : ℚ) + 1 ≤ (1 : ℚ) ^ 2 * (1 / 2) ∧\n    (-1 / 4 : ℚ) * (2 * (-1 / 4) + 1) / 1 < 1 / 2 := by\n  norm_num\ntheorem zero_m : (0 : ℚ) < 2 * 0 + 1 ∧ (1 : ℚ) * 0 < 1 ∧\n    2 * (0 : ℚ) + 1 ≤ (1 : ℚ) ^ 2 * 1 ∧ 0 * (2 * 0 + 1) / (1 : ℚ) < 1 := by\n  norm_num\n-- Scale positivity cannot be dropped: a=0, delta=0, L=0.\ntheorem zero_scale_counterexample : (0 : ℚ) * 1 < 1 ∧\n    (0 : ℚ) ≤ 0 ^ 2 * 0 ∧ ¬ ((1 : ℚ) * 0 / 0 < 0) := by norm_num\n-- Even delta nonzero does not repair a negative scale.\ntheorem negative_scale_counterexample : (1 : ℚ) * (-2) < 1 ∧\n    (-1 : ℚ) ≤ 1 ^ 2 * (-1) ∧ ¬ ((-2 : ℚ) * (-1) / 1 < -1) := by norm_num\n-- Equality at both bounds only gives the weak conclusion.\ntheorem strictness_counterexample : (0 : ℚ) < 2 * 1 + 1 ∧ (1 : ℚ) * 1 ≤ 1 ∧\n    2 * (1 : ℚ) + 1 ≤ 1 ^ 2 * 3 ∧ ¬ ((1 : ℚ) * (2 * 1 + 1) / 1 < 3) := by\n  norm_num\ntheorem budget_needed : (0 : ℚ) < 2 * 1 + 1 ∧ (1 / 2 : ℚ) * 1 < 1 ∧\n    ¬ ((1 : ℚ) * (2 * 1 + 1) / (1 / 2) < 0) := by norm_num\nend Budget253\n#print axioms Budget253.generic\n#print axioms Budget253.recovery\n#print axioms Budget253.weak\n#print axioms Budget253.strict_budget\n#print axioms Budget253.delta_nonzero\n#print axioms Budget253.negative_delta\n#print axioms Budget253.negative_m\n#print axioms Budget253.zero_m\n#print axioms Budget253.zero_scale_counterexample\n#print axioms Budget253.negative_scale_counterexample\n#print axioms Budget253.strictness_counterexample\n#print axioms Budget253.budget_needed\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "Budget253.generic",
+        "Budget253.recovery",
+        "Budget253.weak",
+        "Budget253.strict_budget",
+        "Budget253.delta_nonzero",
+        "Budget253.negative_delta",
+        "Budget253.negative_m",
+        "Budget253.zero_m",
+        "Budget253.zero_scale_counterexample",
+        "Budget253.negative_scale_counterexample",
+        "Budget253.strictness_counterexample",
+        "Budget253.budget_needed"
+      ]
+    },
+    {
+      "label": "controls",
+      "source": "controls-executed.lean.txt",
+      "receipt": "controls-receipt.json",
+      "format": "virtual",
+      "source_sha256": "1f3685f2dafdd5b38db880c46d55d497602a3946284ff01ec841699b22eee0a4",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul\nnamespace Budget253Controls\ntheorem absence_probe {K : Type*} [Semifield K] [LinearOrder K]\n    [IsStrictOrderedRing K] [ExistsAddOfLE K] {δ m L : K} (hm : 0 < 2 * m + 1) (hδm : δ * m < 1)\n    (h32 : 2 * m + 1 ≤ δ ^ 2 * L) : m * (2 * m + 1) / δ < L := by\n  fail_if_success exact?\n  have hδ : δ ≠ 0 := by\n    rintro rfl\n    simpa using hm.trans_le h32\n  apply (mul_lt_mul_iff_of_pos_right (sq_pos_of_ne_zero hδ)).1\n  calc\n    _ = (δ * m) * (2 * m + 1) := by field_simp\n    _ < 2 * m + 1 := mul_lt_of_lt_one_left hm hδm\n    _ ≤ L * δ ^ 2 := h32.trans_eq (mul_comm _ _)\n\n\n#print axioms absence_probe\nexample {K : Type*} [Semifield K] [LinearOrder K] [IsStrictOrderedRing K] : True := by\n  fail_if_success have : ExistsAddOfLE K := inferInstance\n  trivial\nend Budget253Controls\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "Budget253Controls.absence_probe"
+      ]
+    },
+    {
+      "label": "comparison",
+      "source": "comparison-executed.lean.txt",
+      "receipt": "comparison-receipt.json",
+      "format": "disk",
+      "source_sha256": "ea4abf3ccabc2cd7bf4081d628691fba00e5901a06c1de64702f846a3638b965",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "BUDGET253_EXACT_RECOVERY",
+        "BUDGET253_COMPARISON_MAIN_SIGNATURE_IDENTICAL",
+        "BUDGET253_GENERIC_TYPE:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "isolated-rejected-executed.lean.txt",
+      "receipt": "isolated-rejected-receipt.json",
+      "reason": "Compiled but unused section classes warning; not clean accepted proof evidence"
+    }
+  ],
+  "full_actual_callers": {
+    "count": 0,
+    "inline": "justified n/a: no callers"
+  },
+  "related_nonconsumer_comparison": {
+    "original_signature_retained": true,
+    "native": "comparison-receipt.json",
+    "new_helper": true
+  },
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "fad927215a124d6928eaf99af55185c1261bcc2a834a2c2fcbda3946fa3ceafc"
+  },
+  "canonical_audit": "exact293 generated from tracked order, preexecution checked, runtime all293 unique/present/values; zero type/value consumers",
+  "printer_elision": "Original #print proof body elided; not full kernel body dump"
+}
