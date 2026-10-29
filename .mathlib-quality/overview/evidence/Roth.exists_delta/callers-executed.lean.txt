@@ -1,0 +1,264 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+open scoped Topology
+namespace Delta276Generic
+-- Newly proved schema; its quantitative envelopes are parameters, not discarded.
+theorem simultaneous {f p q : ℝ → ℝ} {U B K : ℝ} (hU : 0 < U)
+    (hf : ContinuousAt f 0) (hp : ContinuousAt p 0) (hq : ContinuousAt q 0)
+    (hq0 : q 0 ≠ 0) (hf0 : f 0 < B) (hquot : p 0 / q 0 < K) :
+    ∃ δ : ℝ, 0 < δ ∧ δ < U ∧ f δ < B ∧ p δ / q δ < K := by
+  exact ((eventually_lt_nhds hU).and
+    ((hf.eventually_lt continuousAt_const hf0).and
+      ((hp.div hq hq0).eventually_lt continuousAt_const hquot))).exists_gt
+
+-- Point selection alone is already an existing API, not the full quantitative bridge.
+example {P : ℝ → Prop} (hP : ∀ᶠ x in 𝓝 (0 : ℝ), P x) : ∃ x, 0 < x ∧ P x :=
+  hP.exists_gt
+#check @ContinuousAt.eventually_lt
+#check @Filter.Eventually.and
+#check @Filter.Eventually.exists_gt
+#check @ContinuousAt.div
+#print axioms simultaneous
+end Delta276Generic
+
+namespace Delta276Recovery
+open Roth
+theorem recovered {n m : ℕ} (hm : 16 * n ^ 2 < m) {κ : ℝ}
+    (h47' : 2 * m / (m - 4 * n * √(m : ℝ)) < κ) : ∃ δ : ℝ, 0 < δ ∧ δ < 1 / m ∧
+    eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ∧
+    (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m) < κ := by
+  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm
+  have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm
+  have h4n : 4 * (n : ℝ) < √(m : ℝ) := Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])
+  have hgap : 2 * (n : ℝ) * √(m : ℝ) < m / 2 := by
+    nlinarith only [Real.sq_sqrt hm0.le,
+      mul_lt_mul_of_pos_right h4n (Real.sqrt_pos.mpr hm0)]
+  apply Delta276Generic.simultaneous (f := fun δ ↦
+    eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ))
+    (p := fun δ ↦ (m : ℝ) * (1 + 4 * δ))
+    (q := fun δ ↦ gam δ n m - eta δ m) (by positivity)
+  · exact (Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _ |>.add
+      (by fun_prop)
+  · fun_prop
+  · unfold gam lam eta
+    exact ((continuousAt_const.sub (by fun_prop)).div_const 2).sub
+      ((Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _)
+  · have : 0 < gam 0 n m - eta 0 m := by
+      simpa [gam, lam, eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)]
+        using (show 0 < ((m : ℝ) - 4 * n * √(m : ℝ)) / 2 by linarith)
+    exact this.ne'
+  · simpa [eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)] using hgap
+  · simpa [gam, lam, eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0),
+      div_div_eq_mul_div, mul_comm] using h47'
+example : @recovered = @Roth.exists_delta := Subsingleton.elim _ _
+-- Strict cap forces m≠0; deleting hm admits m=0 and no positive δ<1/0.
+theorem zero_dimension_impossible : ¬ ∃ δ : ℝ, 0 < δ ∧ δ < 1 / (0 : ℝ) := by
+  simp
+example {κ : ℝ} (hκ : 2 < κ) : ∃ δ : ℝ, 0 < δ ∧ δ < 1 ∧
+    eta δ 1 + 2 * (1 + 3 * δ) * (0 : ℕ) * √(1 : ℝ) < 1 / 2 ∧
+    (1 : ℝ) * (1 + 4 * δ) / (gam δ 0 1 - eta δ 1) < κ := by
+  simpa using (recovered (n := 0) (m := 1) (by norm_num) (by simpa using hκ))
+#print axioms recovered
+#print axioms zero_dimension_impossible
+end Delta276Recovery
+
+namespace Delta276Callers
+open Roth
+-- Choose the polynomial, coefficient bound, dimension and delta with compatible constraints.
+lemma exists_roth_parameters_aux {α κ : ℝ} (hint : IsIntegral ℤ α) (hκ : 2 < κ) :
+    ∃ (f : Polynomial ℤ) (A : ℝ) (m : ℕ) (δ : ℝ), f.Monic ∧ Polynomial.aeval α f = 0 ∧ 1 ≤ A ∧
+      (∀ i, |(f.coeff i : ℝ)| ≤ A) ∧ 2 ≤ m ∧ 0 < δ ∧ δ < 1 / m ∧
+      eta δ m + 2 * (1 + 3 * δ) * f.natDegree * √(m : ℝ) < m / 2 ∧
+      (m : ℝ) * (1 + 4 * δ) / (gam δ f.natDegree m - eta δ m) < κ := by
+  obtain ⟨f, hf, hfα, hdeg⟩ := exists_monic_aeval_eq_zero hint
+  -- a bound for the coefficients of `f`
+  let A : ℝ := 1 + ∑ i ∈ f.support, |(f.coeff i : ℝ)|
+  -- choice of `m` and `δ`
+  obtain ⟨m, hm, -, h47'⟩ := exists_m (n := f.natDegree) hκ
+  obtain ⟨δ, hδ0, hδm, h30, h49⟩ := Delta276Recovery.recovered hm h47'
+  refine ⟨f, A, m, δ, hf, hfα, ?_, ?_, ?_, hδ0, hδm, h30, h49⟩
+  · exact le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ ↦ abs_nonneg _)
+  · intro i
+    exact (Finsupp.single_eval_le_sum f.toFinsupp.coeff (g := fun z : ℤ ↦ |(z : ℝ)|)
+      (by simp) (fun _ ↦ abs_nonneg _) i).trans (le_add_of_nonneg_left zero_le_one)
+  · nlinarith only [hm, hdeg]
+
+-- Choose reduced approximants and balanced positive degrees with compatible growth bounds.
+lemma exists_roth_approximants_aux {α κ : ℝ} (hα : Irrational α) (hκ : 0 < κ)
+    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1)
+    (A : ℝ) : ∃ (h : Fin m → ℤ) (q r : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ (∀ j, 0 < r j) ∧ 3 ≤ r (Fin.rev 0) ∧
+      (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i) ∧ (∀ j, r j ≤ r 0) ∧
+      (2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) < δ ^ 2 * Real.log (q 0)) ∧
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧
+      ∀ j, (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0)) := by
+  -- the approximants and the degrees
+  obtain ⟨h, q, happ, hcop, hq1, hL, h50⟩ := exists_approximants hα hκ hinf m
+    ((2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|)) / δ ^ 2)
+  obtain ⟨r, hr0, h31a, h31b, h33, h53⟩ := exists_degrees hδ0 hδ1 hq1
+    (fun i j hij ↦ (h50 i j hij).le)
+  have hranti : Antitone r := by
+    obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)
+    refine Fin.antitone_iff_succ_le.2 fun i ↦ ?_
+    exact_mod_cast (le_div_self (Nat.cast_nonneg _) hδ0 hδ1).trans
+      (h31b i.castSucc i.succ rfl).le
+  refine ⟨h, q, r, happ, hcop, hq1, hr0, ?_, fun i j hij ↦ (h31b i j hij).le,
+    fun j ↦ hranti (Fin.zero_le j), (div_lt_iff₀' (by positivity)).1 hL, h33, h53⟩
+  exact_mod_cast (by norm_num : (3 : ℝ) ≤ 10).trans
+    ((le_div_self (by norm_num) hδ0 hδ1).trans (h31a (Fin.rev 0)).le)
+
+-- Compare the nonzero integral value from Lemma 9 with its Taylor upper bound.
+lemma one_lt_roth_eval_bound_aux {α κ : ℝ} {f : Polynomial ℤ} (hf : f.Monic)
+    (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} [NeZero m]
+    {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m) {r : Fin m → ℕ} (hr0 : ∀ j, 0 < r j)
+    (hrlast : 3 ≤ r (Fin.rev 0)) (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)
+    {q : Fin m → ℕ} (hq0 : ∀ j, 0 < q j) (hκ0 : 0 ≤ κ) {h : Fin m → ℤ}
+    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ) (hcop : ∀ j, IsCoprime (h j) (q j : ℤ))
+    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
+    1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) *
+      (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) *
+      (q 0 : ℝ) ^ (-(r 0 : ℝ) * (gam δ f.natDegree m - eta δ m) * κ)) := by
+  -- Lemma 9
+  obtain ⟨Q, -, hQd, hidx_strict, hne, hC⟩ :=
+    main_lemma hf hfα hA hδ0 hδm hrlast h31b h32 h33 hcop
+  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq0 j
+  -- the upper bound
+  have hdmap : ∀ j, degreeOf j (map (Int.castRingHom ℝ) Q) ≤ r j := fun j ↦ by
+    rw [degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective, ← degreeOf_eq_sup]
+    exact hQd j
+  have hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j := fun j ↦ by
+    have hrj : (0 : ℝ) < r j := by exact_mod_cast hr0 j
+    rw [Real.rpow_le_iff_le_log (hqR 0) (hqR j), div_mul_eq_mul_div, div_le_iff₀ hrj]
+    linarith [h33 j]
+  exact (one_le_prod_pow_mul_abs_eval Q hQd h hq0 hne).trans_lt
+    (mul_lt_mul_of_pos_left (abs_eval_lt_of_le_index hdmap hidx_strict.le hq0 hκ0 happ hqr hC)
+      (Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _))
+
+-- Bound the common coefficient scale and the product of degree factors.
+lemma roth_product_bound_aux {m : ℕ} [NeZero m] {α A δ : ℝ} (hδ0 : 0 ≤ δ) (hA : 0 ≤ A)
+    {q r : Fin m → ℕ} (hr0 : 0 < r 0) (hr0max : ∀ j, r j ≤ r 0)
+    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log (q 0)) : 0 < (mainCoeffBound δ (q 0) (r 0) : ℝ) ∧
+      (mainCoeffBound δ (q 0) (r 0) : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) ∧
+      (∏ j, ((r j : ℝ) + 1)) < (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ δ := by
+  -- `B` is at most `q_0^{δ r_0}` and `∏ (r_j + 1) < B^δ`
+  have hm1 : (1 : ℝ) ≤ m := by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)
+  have h32' : 3 ≤ δ ^ 2 * Real.log (q 0) := by
+    have := mul_nonneg (Nat.cast_nonneg m) (Real.log_nonneg (le_add_of_nonneg_right hA))
+    have := mul_nonneg (Nat.cast_nonneg m)
+      (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α)))
+    linarith
+  obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor ((by norm_num : (2 : ℝ) ≤ 4).trans
+    (four_lt_rpow hδ0 hr0 h32').le)
+  refine ⟨(Real.sqrt_nonneg _).trans_lt hsqB, hBX, ?_⟩
+  have hprod : ∏ j, (r j + 1) ≤ (2 ^ r 0) ^ m := by
+    simpa using Finset.prod_le_pow_card Finset.univ (fun j ↦ r j + 1) (2 ^ r 0)
+      (fun j _ ↦ Nat.lt_two_pow_self.trans_le (Nat.pow_le_pow_right (by norm_num) (hr0max j)))
+  have hprodR : (∏ j, ((r j : ℝ) + 1)) ≤ (2 : ℝ) ^ (m * r 0) := by
+    exact_mod_cast (by simpa [← pow_mul, mul_comm] using hprod)
+  exact hprodR.trans_lt (three_small_factors hδ0 hr0 hA h32).1
+
+-- Compare logarithms of the denominator product, degree factors and coefficient scale.
+lemma roth_log_bound_aux {m : ℕ} [NeZero m] (hm2 : 2 ≤ m) {δ G κ B : ℝ} (hδ1 : δ ≤ 1)
+    {q r : Fin m → ℕ} (hq1 : ∀ j, 1 < q j)
+    (h53 : ∀ j, (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0))) (hBpos : 0 < B)
+    (hBX : B ≤ (q 0 : ℝ) ^ (δ * r 0)) (hN : (∏ j, ((r j : ℝ) + 1)) < B ^ δ)
+    (hone : 1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) * B ^ (1 + 3 * δ) *
+      (q 0 : ℝ) ^ (-(r 0 : ℝ) * G * κ))) : G * κ < m * (1 + 4 * δ) := by
+  have hr0 : 0 < r 0 := Nat.pos_of_ne_zero fun h ↦ by simpa [h] using h53 0
+  have hK0 := mul_pos (Nat.cast_pos.2 hr0) (Real.log_pos (Nat.one_lt_cast.2 (hq1 0)))
+  have hδ0 : 0 ≤ δ := le_of_lt <|
+    (div_pos_iff_of_pos_right (by norm_num : (0 : ℝ) < 10)).mp <|
+    (lt_add_iff_pos_right 1).mp <| (mul_lt_mul_iff_left₀ hK0).mp <| by
+      simpa only [one_mul] using h53 0
+  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ Nat.cast_pos.2 (lt_trans zero_lt_one (hq1 j))
+  have hN0 : 0 < ∏ j, ((r j : ℝ) + 1) := Finset.prod_pos fun j _ ↦ Nat.cast_add_one_pos _
+  -- take logarithms
+  have hlog := Real.log_pos hone
+  rw [Real.log_mul (Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _).ne'
+      ((mul_pos (mul_pos hN0 (Real.rpow_pos_of_pos hBpos _))
+        (Real.rpow_pos_of_pos (hqR 0) _)).ne'),
+    Real.log_mul (mul_pos hN0 (Real.rpow_pos_of_pos hBpos _)).ne'
+      (Real.rpow_pos_of_pos (hqR 0) _).ne',
+    Real.log_mul hN0.ne' (Real.rpow_pos_of_pos hBpos _).ne',
+    Real.log_rpow hBpos, Real.log_rpow (hqR 0)] at hlog
+  have hlogP : Real.log (∏ j, (q j : ℝ) ^ r j) <
+      m * ((1 + δ / 10) * (r 0 * Real.log (q 0))) := by
+    simp_rw [Real.log_prod (fun j _ ↦ (pow_pos (hqR j) _).ne'), Real.log_pow]
+    simpa only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] using
+      Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty (fun j _ ↦ h53 j)
+  have hpos : 0 < m * (1 + δ / 10) + (1 + 4 * δ) * δ - G * κ :=
+    (mul_pos_iff_of_pos_left hK0).mp <| by
+      linarith only [hlog, hlogP, (Real.log_lt_log hN0 hN).trans_eq (Real.log_rpow hBpos δ),
+        mul_le_mul_of_nonneg_left (a := 1 + 4 * δ)
+          ((Real.log_le_log hBpos hBX).trans_eq (Real.log_rpow (hqR 0) _)) (by positivity)]
+  have hmR : (2 : ℝ) ≤ m := by exact_mod_cast hm2
+  apply (sub_pos.mp hpos).trans_le
+  linarith only [mul_le_mul_of_nonneg_right
+    (by linarith only [hδ1, hmR] : 1 + 4 * δ ≤ (39 / 10) * m) hδ0]
+
+/-- Roth's theorem for irrational real algebraic integers: if `approxSet α κ` is infinite,
+then `κ ≤ 2`.
+
+Source: §7 ("This contradicts (49) and finishes the proof of the theorem"). -/
+theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral ℤ α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) : κ ≤ 2 := by
+  by_contra! hκ
+  obtain ⟨f, A, m, δ, hf, hfα, hA1, hA, hm2, hδ0, hδm, h30, h49⟩ :=
+    exists_roth_parameters_aux hint hκ
+  have : NeZero m := ⟨by lia⟩
+  have hδ1 : δ ≤ 1 := hδm.le.trans (by
+    simpa using one_div_le_one_div_of_le zero_lt_one
+      (show (1 : ℝ) ≤ m by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)))
+  obtain ⟨h, q, r, happ, hcop, hq1, hr0, hrlast, h31b, hr0max, h32, h33, h53⟩ :=
+    exists_roth_approximants_aux hα (by linarith) hinf m hδ0 hδ1 A
+  obtain ⟨hBpos, hBX, hN⟩ :=
+    roth_product_bound_aux hδ0.le (zero_le_one.trans hA1) (hr0 0) hr0max h32.le
+  exact ((div_lt_iff₀' (sub_pos.2 ((eta_lt_gam_iff _ _ _).1 h30))).1 h49).not_gt
+    (roth_log_bound_aux (κ := κ) hm2 hδ1 hq1 h53 hBpos hBX hN
+      (one_lt_roth_eval_bound_aux hf hfα hA hδ0.le hδm.le hr0 hrlast h31b
+        (fun j ↦ zero_lt_one.trans (hq1 j)) (by linarith) (fun j ↦ (happ j).2.le) hcop h32.le h33))
+
+/-- **Roth's theorem.** If `α` is an irrational real algebraic number and `|α - h/q| < 1/q^κ` has
+infinitely many solutions `(h, q)` with `q > 0`, then `κ ≤ 2`.
+
+This is the main theorem of the project.
+
+Source: §6, Theorem (Roth) ("Let `α` be an irrational real algebraic number
+and let `κ ∈ ℝ`. Suppose there are infinitely many pairs of integers `h, q` with `q > 0` such that
+`|α - h/q| < 1/q^κ`. Then `κ ≤ 2`"). -/
+theorem roth {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) : κ ≤ 2 := by
+  by_contra! hκ
+  obtain ⟨α', κ', hα', hint', hκ', hinf'⟩ := reduction hα halg hκ hinf
+  exact (roth_of_isIntegral hα' hint' hinf').not_gt hκ'
+
+/-- Roth's theorem for rational approximations: if `|α - x| < 1 / x.den ^ κ` for infinitely many
+rationals `x`, where `α` is an irrational real algebraic number, then `κ ≤ 2`. -/
+theorem roth_rat {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+    (hinf : {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite) : κ ≤ 2 := by
+  refine roth hα halg ((hinf.image (f := fun x : ℚ ↦ (x.num, x.den))
+    (fun _ _ _ _ hxy ↦ Rat.ext (congrArg Prod.fst hxy) (congrArg Prod.snd hxy))).mono ?_)
+  rintro _ ⟨x, hx, rfl⟩
+  exact ⟨x.den_pos, by rwa [← Rat.cast_def]⟩
+
+
+#print axioms roth_of_isIntegral
+#print axioms roth
+#print axioms roth_rat
+end Delta276Callers

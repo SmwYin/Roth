@@ -1,0 +1,89 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_delta\n\nopen scoped Topology\nnamespace Delta276Generic\n-- Newly proved schema; its quantitative envelopes are parameters, not discarded.\ntheorem simultaneous {f p q : \u211d \u2192 \u211d} {U B K : \u211d} (hU : 0 < U)\n    (hf : ContinuousAt f 0) (hp : ContinuousAt p 0) (hq : ContinuousAt q 0)\n    (hq0 : q 0 \u2260 0) (hf0 : f 0 < B) (hquot : p 0 / q 0 < K) :\n    \u2203 \u03b4 : \u211d, 0 < \u03b4 \u2227 \u03b4 < U \u2227 f \u03b4 < B \u2227 p \u03b4 / q \u03b4 < K := by\n  exact ((eventually_lt_nhds hU).and\n    ((hf.eventually_lt continuousAt_const hf0).and\n      ((hp.div hq hq0).eventually_lt continuousAt_const hquot))).exists_gt\n\n-- Point selection alone is already an existing API, not the full quantitative bridge.\nexample {P : \u211d \u2192 Prop} (hP : \u2200\u1da0 x in \ud835\udcdd (0 : \u211d), P x) : \u2203 x, 0 < x \u2227 P x :=\n  hP.exists_gt\n#check @ContinuousAt.eventually_lt\n#check @Filter.Eventually.and\n#check @Filter.Eventually.exists_gt\n#check @ContinuousAt.div\n#print axioms simultaneous\nend Delta276Generic\n"
+  },
+  "elapsed_ms": 1146,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "generic01",
+      "operation": "run_code",
+      "source": "generic-executed.lean.txt",
+      "source_sha256": "56cd54315466348bb5ea81a8349b438e1074a2b2d372f4c5be38acaa399253d9",
+      "receipt": "generic01-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.exists_delta/root-requests/generic01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.exists_delta/generic-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_delta`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@ContinuousAt.eventually_lt : \u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} [inst : TopologicalSpace \u03b1] [inst_1 : LinearOrder \u03b1]\\n  [OrderClosedTopology \u03b1] {f g : \u03b2 \u2192 \u03b1} [inst_3 : TopologicalSpace \u03b2] {x\u2080 : \u03b2},\\n  ContinuousAt f x\u2080 \u2192 ContinuousAt g x\u2080 \u2192 f x\u2080 < g x\u2080 \u2192 \u2200\u1da0 (x : \u03b2) in \ud835\udcdd x\u2080, f x < g x\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Filter.Eventually.and : \u2200 {\u03b1 : Type u_1} {p q : \u03b1 \u2192 Prop} {f : Filter \u03b1},\\n  Filter.Eventually p f \u2192 Filter.Eventually q f \u2192 \u2200\u1da0 (x : \u03b1) in f, p x \u2227 q x\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Filter.Eventually.exists_gt : \u2200 {\u03b1 : Type u_1} [inst : TopologicalSpace \u03b1] [inst_1 : Preorder \u03b1] {a : \u03b1}\\n  [(\ud835\udcdd[>] a).NeBot] {p : \u03b1 \u2192 Prop}, (\u2200\u1da0 (x : \u03b1) in \ud835\udcdd a, p x) \u2192 \u2203 b, a < b \u2227 p b\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@ContinuousAt.div : \u2200 {\u03b1 : Type u_1} {G\u2080 : Type u_2} [inst : GroupWithZero G\u2080] [inst_1 : TopologicalSpace G\u2080]\\n  [ContinuousInv\u2080 G\u2080] [ContinuousMul G\u2080] {f g : \u03b1 \u2192 G\u2080} [inst_4 : TopologicalSpace \u03b1] {a : \u03b1},\\n  ContinuousAt f a \u2192 ContinuousAt g a \u2192 g a \u2260 0 \u2192 ContinuousAt (f / g) a\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Delta276Generic.simultaneous' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_delta`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@ContinuousAt.eventually_lt : \u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} [inst : TopologicalSpace \u03b1] [inst_1 : LinearOrder \u03b1]\n  [OrderClosedTopology \u03b1] {f g : \u03b2 \u2192 \u03b1} [inst_3 : TopologicalSpace \u03b2] {x\u2080 : \u03b2},\n  ContinuousAt f x\u2080 \u2192 ContinuousAt g x\u2080 \u2192 f x\u2080 < g x\u2080 \u2192 \u2200\u1da0 (x : \u03b2) in \ud835\udcdd x\u2080, f x < g x",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Filter.Eventually.and : \u2200 {\u03b1 : Type u_1} {p q : \u03b1 \u2192 Prop} {f : Filter \u03b1},\n  Filter.Eventually p f \u2192 Filter.Eventually q f \u2192 \u2200\u1da0 (x : \u03b1) in f, p x \u2227 q x",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Filter.Eventually.exists_gt : \u2200 {\u03b1 : Type u_1} [inst : TopologicalSpace \u03b1] [inst_1 : Preorder \u03b1] {a : \u03b1}\n  [(\ud835\udcdd[>] a).NeBot] {p : \u03b1 \u2192 Prop}, (\u2200\u1da0 (x : \u03b1) in \ud835\udcdd a, p x) \u2192 \u2203 b, a < b \u2227 p b",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@ContinuousAt.div : \u2200 {\u03b1 : Type u_1} {G\u2080 : Type u_2} [inst : GroupWithZero G\u2080] [inst_1 : TopologicalSpace G\u2080]\n  [ContinuousInv\u2080 G\u2080] [ContinuousMul G\u2080] {f g : \u03b1 \u2192 G\u2080} [inst_4 : TopologicalSpace \u03b1] {a : \u03b1},\n  ContinuousAt f a \u2192 ContinuousAt g a \u2192 g a \u2260 0 \u2192 ContinuousAt (f / g) a",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Delta276Generic.simultaneous' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

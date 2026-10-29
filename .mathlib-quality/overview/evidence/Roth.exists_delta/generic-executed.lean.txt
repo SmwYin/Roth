@@ -1,0 +1,41 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.exists_delta
+
+open scoped Topology
+namespace Delta276Generic
+-- Newly proved schema; its quantitative envelopes are parameters, not discarded.
+theorem simultaneous {f p q : ℝ → ℝ} {U B K : ℝ} (hU : 0 < U)
+    (hf : ContinuousAt f 0) (hp : ContinuousAt p 0) (hq : ContinuousAt q 0)
+    (hq0 : q 0 ≠ 0) (hf0 : f 0 < B) (hquot : p 0 / q 0 < K) :
+    ∃ δ : ℝ, 0 < δ ∧ δ < U ∧ f δ < B ∧ p δ / q δ < K := by
+  exact ((eventually_lt_nhds hU).and
+    ((hf.eventually_lt continuousAt_const hf0).and
+      ((hp.div hq hq0).eventually_lt continuousAt_const hquot))).exists_gt
+
+-- Point selection alone is already an existing API, not the full quantitative bridge.
+example {P : ℝ → Prop} (hP : ∀ᶠ x in 𝓝 (0 : ℝ), P x) : ∃ x, 0 < x ∧ P x :=
+  hP.exists_gt
+#check @ContinuousAt.eventually_lt
+#check @Filter.Eventually.and
+#check @Filter.Eventually.exists_gt
+#check @ContinuousAt.div
+#print axioms simultaneous
+end Delta276Generic

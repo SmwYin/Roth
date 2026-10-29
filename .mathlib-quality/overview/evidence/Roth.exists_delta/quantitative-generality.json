@@ -1,0 +1,21 @@
+{
+  "type": "∀ {A e M s U K : ℝ}, 0<e → 4*s<M → 0<U → 2*M/(M-4*s)<K → ∃ δ : ℝ, 0<δ ∧ δ<U ∧ A*δ^e+2*(1+3*δ)*s<M/2 ∧ M*(1+4*δ)/((M-4*(1+3*δ)*s)/2-A*δ^e)<K",
+  "semantic_parameters": [
+    "A signed amplitude replaces10^m",
+    "e positive exponent replaces(1/2)^m",
+    "M real scale replaces nat m",
+    "s signed geometric term replaces n*sqrt m",
+    "U positive cap independent of M"
+  ],
+  "assumptions": [
+    "0<e",
+    "4*s<M",
+    "0<U",
+    "2*M/(M-4*s)<K"
+  ],
+  "extra_positivity_assumptions": [],
+  "new_proof_not_existing_mathlib": true,
+  "recovery": "envelopes01-receipt.json",
+  "ambient_bridge": "envelope-bridge01-receipt.json",
+  "proof": "theorem quantitative {A e M s U K : ℝ} (he : 0 < e) (hM : 4 * s < M)\n    (hU : 0 < U) (hK : 2 * M / (M - 4 * s) < K) :\n    ∃ δ : ℝ, 0 < δ ∧ δ < U ∧\n      A * δ ^ e + 2 * (1 + 3 * δ) * s < M / 2 ∧\n      M * (1 + 4 * δ) / ((M - 4 * (1 + 3 * δ) * s) / 2 - A * δ ^ e) < K := by\n  apply Delta276Generic.simultaneous (f := fun δ ↦\n    A * δ ^ e + 2 * (1 + 3 * δ) * s)\n    (p := fun δ ↦ M * (1 + 4 * δ))\n    (q := fun δ ↦ (M - 4 * (1 + 3 * δ) * s) / 2 - A * δ ^ e) hU\n  · exact (Real.continuousAt_rpow_const 0 e (.inr he.le)).const_mul A |>.add\n      (by fun_prop)\n  · fun_prop\n  · exact ((continuousAt_const.sub (by fun_prop)).div_const 2).sub\n      ((Real.continuousAt_rpow_const 0 e (.inr he.le)).const_mul A)\n  · have hgap : 0 < (M - 4 * s) / 2 := by linarith\n    simpa [Real.zero_rpow he.ne'] using hgap.ne'\n  · simpa [Real.zero_rpow he.ne'] using (show 2 * s < M / 2 by linarith)\n  · simpa [Real.zero_rpow he.ne', div_div_eq_mul_div, mul_comm] using hK\n\n"
+}

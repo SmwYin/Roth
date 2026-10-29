@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 275/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 276/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 275; remaining: 18.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 29 YES-but-generalise-first, 46 NO-mathlib-has-it, 95 BORDERLINE-needs-human, 71 SKIP.
+- Completed applicable assessments: 276; remaining: 17.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 29 YES-but-generalise-first, 46 NO-mathlib-has-it, 96 BORDERLINE-needs-human, 71 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3498,6 +3498,24 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit: 1; names: Roth.exists_roth_parameters_aux; transitive project: Roth.exists_roth_parameters_aux, Roth.roth_of_isIntegral, Roth.roth, Roth.roth_rat, LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth; type consumers: None; documentation: 2
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_m.md).
 
+### Completed: `Roth.exists_delta`
+
+- Type: `∀ {n m : ℕ},
+  16 * n ^ 2 < m →
+    ∀ {κ : ℝ},
+      2 * ↑m / (↑m - 4 * ↑n * √↑m) < κ →
+        ∃ (δ : ℝ),
+          0 < δ ∧
+            δ < 1 / ↑m ∧
+              Roth.eta δ m + 2 * (1 + 3 * δ) * ↑n * √↑m < ↑m / 2 ∧
+                ↑m * (1 + 4 * δ) / (Roth.gam δ n m - Roth.eta δ m) < κ`
+- What: Chooses δ>0 below1/m with both the strict eta/square-root envelope and the gamma-minus-eta quotient bound, given the fixed dimension and strict limiting quotient slack.
+- How: Reuse exists_delta_bound for an interval including0, prove continuity of the rpow/gamma/eta quotient at0 using the positive gap, obtain a metric radius, and choose a positive point below both radii.
+- Hypotheses: Natural n,m with16*n²<m; n=0 allowed; m is consequently positive., Real κ satisfying2m/(m-4n√m)<κ; no separate κ>2 premise.
+- Project dependencies: Roth.lam, Roth.gam, Roth.eta, Roth.exists_delta_bound, Roth.eta_lt_gam_iff
+- Caller summary: One actual source caller: private Roth.exists_roth_parameters_aux at Main420. One direct kernel-value consumer, no direct type consumers; five canonical transitive consumers through Roth and LeanEval. Full private caller literal-proof inline and full Main continuation recovery tested.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_delta.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4074,6 +4092,8 @@ Completed `Roth.exists_reduced_approx`: forms: current: finder: Partial match: D
 
 Completed `Roth.exists_m`: Existing Archimedean exists_nat_gt/Nat.le_ceil, Real.sqrt_sq and order/division lemmas are useful building blocks; no exact or≤3-call full simultaneous replacement verified.
 
+Completed `Roth.exists_delta`: ContinuousAt.eventually_lt, Filter.Eventually.and/exists_gt, ContinuousAt.div and Real.continuousAt_rpow_const supply primitives. Generic cap/two-envelope selection compiles isolated; exact full arithmetic recovery is a new bridge, not ≤3 verified existing calls.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4625,6 +4645,8 @@ Completed `Roth.approxSet_num_den_mem_aux`: The structural review distinguishes 
 Completed `Roth.exists_reduced_approx`: Rat.num_div_den/Rat.reduced cover representation only. Dirichlet2 covers the subcritical existence regime; LiouvilleWith changes existential constant/equality exclusions; IsDiophantine is uniform lower bounds for every epsilon, not this pointwise lemma.
 
 Completed `Roth.exists_m`: Shares small-parameter selection theme with exists_delta/exists_delta_bound, but chooses natural dimension at infinity rather than a realδ near0; no duplicate conclusion.
+
+Completed `Roth.exists_delta`: Shares neighborhood shrinking with exists_delta_bound, but adds independent quotient continuity and slack. No separate actual inline reconstruction found.
 
 ## Part 5: Generalization opportunities
 
@@ -5192,6 +5214,8 @@ Completed `Roth.exists_reduced_approx`: status: STRICTLY NARROWER THAN STANDARD;
 Completed `Roth.exists_m`: verified: True; status: Verified semantic parameter widening; no claim that literature standardizes this exact generic API; proposed type: ∀ {a b κ : ℝ}, b < κ → ∃ m : ℕ, a ^ 2 < (m : ℝ) ∧ a * √(m : ℝ) < m ∧ b * m / (m - a * √(m : ℝ)) < κ; current type: ∀ {n : ℕ} {κ : ℝ},
   2 < κ → ∃ (m : ℕ), 16 * n ^ 2 < m ∧ 4 * ↑n * √↑m < ↑m ∧ 2 * ↑m / (↑m - 4 * ↑n * √↑m) < κ; old recovery: a=4*n,b=2, natural first bound recovered by nlinarith + exact_mod_cast; original full type retained; nonnegative real size: generic-executed verifies a≥0; signed-executed removes this assumption with |a| bound; arbitrary coefficient: signed coefficient theorem takes arbitrary real c,t,b,κ; positive c and nonnegative t are included; hypothesis drop: κ>2 cannot weaken to κ≥2 uniformly: n=0,κ=2 no witness certified; threshold caution: b<κ is sufficient; not claimed necessary for every fixed signed a,b; representation: ℝ fixed by Real.sqrt; abstract Archimedean simultaneous-bound lemma checked separately, not a fake ordered-semiring sqrt theorem; limit: Limit-to-b is a conceptual alternative; no full limit-to-b replacement claimed or used. Existing tendsto_sqrt_atTop and bounded-div-atTop cover pieces, not simultaneous quantitative conclusion.
 
+Completed `Roth.exists_delta`: verified: True; proposed type: ∀ {f p q : ℝ → ℝ} {U B K : ℝ}, 0<U → ContinuousAt f 0 → ContinuousAt p 0 → ContinuousAt q 0 → q 0≠0 → f 0<B → p 0/q 0<K → ∃ δ : ℝ, 0<δ ∧ δ<U ∧ f δ<B ∧ p δ/q δ<K; recovery: Exact original type recovered with f=eta+square-root expression, p=m(1+4δ), q=gam-eta; supplies square-root gap, positive cap, exponent continuity and value-at0.; quantitative envelope type: ∀ {A e M s U K : ℝ}, 0<e → 4*s<M → 0<U → 2*M/(M-4*s)<K → ∃ δ : ℝ, 0<δ ∧ δ<U ∧ A*δ^e+2*(1+3*δ)*s<M/2 ∧ M*(1+4*δ)/((M-4*(1+3*δ)*s)/2-A*δ^e)<K; quantitative recovery: Verified mathlib-only19: A=10^m, e=(1/2)^m, M=m, s=n*sqrt m, U=1/m; reconstructs both old quantitative envelopes from genuine mathlib operations. Native ambient bridge uses only [eta,gam,lam] and exact original type equality.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5744,6 +5768,8 @@ Completed `Roth.approxSet_num_den_mem_aux`: No new primitive is needed for this 
 Completed `Roth.exists_reduced_approx`: Finite fixed-rational-value fibers for decay approximation sets, canonicalization-to-unbounded-reduced-denominator transfer, and public unrestricted/subcritical existence interfaces.
 
 Completed `Roth.exists_m`: Possible reusable generic scalar dimension selector, own signed-a,b proof verified; upstream home/publicness remains design question.
+
+Completed `Roth.exists_delta`: Potential simultaneous quantitative perturbation convenience lemma; generic point selection itself already exists. Public API scope remains a future question.
 
 ## Part 7: Junk / removable
 
@@ -6300,6 +6326,8 @@ Completed `Roth.exists_reduced_approx`: Not junk: one actual recursive sequence 
 
 Completed `Roth.exists_m`: Used once directly and by5canonical transitive consumers; substantive proof, no dead-code/wrapper conclusion.
 
+Completed `Roth.exists_delta`: Used theorem; sole caller can inline it but requires full proof, so not established junk or redundant.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6579,6 +6607,7 @@ Completed `Roth.exists_m`: Used once directly and by5canonical transitive consum
 | 273 | `Roth.approxSet_num_den_mem_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet_num_den_mem_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet_num_den_mem_aux/root-acceptance.json) |
 | 274 | `Roth.exists_reduced_approx` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_reduced_approx.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_reduced_approx/root-acceptance.json) |
 | 275 | `Roth.exists_m` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_m.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_m/root-acceptance.json) |
+| 276 | `Roth.exists_delta` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_delta.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_delta/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7128,12 +7157,14 @@ Completed `Roth.exists_reduced_approx` action: declaration: Roth.exists_reduced_
 
 Completed `Roth.exists_m` action: verdict: BORDERLINE-needs-human; questions: Should a generic natural-dimension selection theorem for a²<m and b*m/(m-a*sqrt m)<κ be public mathlib API, or stay local to a Roth proof until a second independent consumer exists?, If upstream, should the primary interface retain the explicitly derived middle inequality, or expose only the square bound and quotient bound with a separate square-root bridge?, Should such a reusable theorem live near real square-root inequalities or in a Roth/Diophantine approximation development, given the absence of an established standalone name?; next: Keep existing project theorem for now; decide upstream public interface before any contribution. Assessment complete, no user blocker or production edit.
 
+Completed `Roth.exists_delta` action: BORDERLINE-needs-human: keep project-local pending three concrete future upstream API decisions; completed assessment is not a user blocker.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_delta` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_approximants` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

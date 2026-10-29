@@ -1,0 +1,221 @@
+{
+  "declaration": "Roth.exists_delta",
+  "canonical_index": 276,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "native_executor": "root exclusively executed all native tools; worker prepared exact sources and inspected complete raw results",
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "3603e79a6d3f37ae7a3a85670a86769cb025544d3767e5cd3884fd85973fd1c9",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "DELTA276_FULL_TYPE:",
+        "DELTA276_AUDIT: requested=293; unique=293",
+        "DELTA276_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 3282
+    },
+    {
+      "label": "generic",
+      "source": "generic-executed.lean.txt",
+      "receipt": "generic01-receipt.json",
+      "source_sha256": "56cd54315466348bb5ea81a8349b438e1074a2b2d372f4c5be38acaa399253d9",
+      "format": "run_code",
+      "native_region_start_line": 20,
+      "required_info": [
+        "'Delta276Generic.simultaneous' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_delta\n\nopen scoped Topology\nnamespace Delta276Generic\n-- Newly proved schema; its quantitative envelopes are parameters, not discarded.\ntheorem simultaneous {f p q : ℝ → ℝ} {U B K : ℝ} (hU : 0 < U)\n    (hf : ContinuousAt f 0) (hp : ContinuousAt p 0) (hq : ContinuousAt q 0)\n    (hq0 : q 0 ≠ 0) (hf0 : f 0 < B) (hquot : p 0 / q 0 < K) :\n    ∃ δ : ℝ, 0 < δ ∧ δ < U ∧ f δ < B ∧ p δ / q δ < K := by\n  exact ((eventually_lt_nhds hU).and\n    ((hf.eventually_lt continuousAt_const hf0).and\n      ((hp.div hq hq0).eventually_lt continuousAt_const hquot))).exists_gt\n\n-- Point selection alone is already an existing API, not the full quantitative bridge.\nexample {P : ℝ → Prop} (hP : ∀ᶠ x in 𝓝 (0 : ℝ), P x) : ∃ x, 0 < x ∧ P x :=\n  hP.exists_gt\n#check @ContinuousAt.eventually_lt\n#check @Filter.Eventually.and\n#check @Filter.Eventually.exists_gt\n#check @ContinuousAt.div\n#print axioms simultaneous\nend Delta276Generic\n"
+      },
+      "elapsed_ms": 1146
+    },
+    {
+      "label": "recovery",
+      "source": "recovery2-executed.lean.txt",
+      "receipt": "recovery02-receipt.json",
+      "source_sha256": "5f679fab48b1085ea3135097d07ce36b5376c01eb3cd88dae8b10089dae3c266",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Delta276Recovery.recovered' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 1940
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline01-receipt.json",
+      "source_sha256": "035ba7f4e77ef51879fc537232a023c9b60575f9992109e0d9cd24c25f1778da",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Delta276Inline.replay' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 1939
+    },
+    {
+      "label": "callers",
+      "source": "callers2-executed.lean.txt",
+      "receipt": "callers02-receipt.json",
+      "source_sha256": "76839a798c51ebaa965990cb04ec07a85ec1c477166be28a0a0d5873485f85bf",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Delta276Callers.roth_of_isIntegral' depends on axioms:",
+        "'Delta276Callers.roth_rat' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 1402
+    },
+    {
+      "label": "composition",
+      "source": "composition2-executed.lean.txt",
+      "receipt": "composition02-receipt.json",
+      "source_sha256": "fa29b8c1a1cd62f6c0fd04519271d703805c63aec82bc359bfd312606846f25d",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Delta276Composition.checked' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 883
+    },
+    {
+      "label": "scope",
+      "source": "scope-executed.lean.txt",
+      "receipt": "scope01-receipt.json",
+      "source_sha256": "d74f0ab586fcb7b24b57bf4f88c09d1a67e248a12e65856bfb7c86bb9747e011",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "DELTA276_PROJECT_CLOSURE:",
+        "DELTA276_TRANSITIVE_PROJECT_CONSUMER:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 2768
+    },
+    {
+      "label": "shape",
+      "source": "shape2-executed.lean.txt",
+      "receipt": "shape02-receipt.json",
+      "source_sha256": "92f317561bfea7861d85ff174e963112ff98e14d839f05a8cc2dd555cfdff335",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Delta276Shape.expanded' depends on axioms:",
+        "'Delta276Shape.no_zero_upper_bound' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 888
+    },
+    {
+      "label": "envelopes",
+      "source": "envelopes-executed.lean.txt",
+      "receipt": "envelopes01-receipt.json",
+      "source_sha256": "117fdc414ff4eea79e90688c6d55038e359d9ce3fb13dc8e79a06f069e4906c5",
+      "format": "run_code",
+      "native_region_start_line": 21,
+      "required_info": [
+        "'Delta276Envelopes.quantitative' depends on axioms:",
+        "'Delta276Envelopes.recovered' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Continuity\n\n#check_failure Roth.exists_delta\nopen scoped Topology\nnamespace Delta276Generic\n-- Newly proved schema; its quantitative envelopes are parameters, not discarded.\ntheorem simultaneous {f p q : ℝ → ℝ} {U B K : ℝ} (hU : 0 < U)\n    (hf : ContinuousAt f 0) (hp : ContinuousAt p 0) (hq : ContinuousAt q 0)\n    (hq0 : q 0 ≠ 0) (hf0 : f 0 < B) (hquot : p 0 / q 0 < K) :\n    ∃ δ : ℝ, 0 < δ ∧ δ < U ∧ f δ < B ∧ p δ / q δ < K := by\n  exact ((eventually_lt_nhds hU).and\n    ((hf.eventually_lt continuousAt_const hf0).and\n      ((hp.div hq hq0).eventually_lt continuousAt_const hquot))).exists_gt\n\n-- Point selection alone is already an existing API, not the full quantitative bridge.\nexample {P : ℝ → Prop} (hP : ∀ᶠ x in 𝓝 (0 : ℝ), P x) : ∃ x, 0 < x ∧ P x :=\n  hP.exists_gt\n#check @ContinuousAt.eventually_lt\n#check @Filter.Eventually.and\n#check @Filter.Eventually.exists_gt\n#check @ContinuousAt.div\n#print axioms simultaneous\nend Delta276Generic\n\nnamespace Delta276Envelopes\n-- Independent semantic amplitude, positive exponent, scale, geometric term and cap.\n-- In particular A and M need no positivity: only M>4s and U>0 are used.\ntheorem quantitative {A e M s U K : ℝ} (he : 0 < e) (hM : 4 * s < M)\n    (hU : 0 < U) (hK : 2 * M / (M - 4 * s) < K) :\n    ∃ δ : ℝ, 0 < δ ∧ δ < U ∧\n      A * δ ^ e + 2 * (1 + 3 * δ) * s < M / 2 ∧\n      M * (1 + 4 * δ) / ((M - 4 * (1 + 3 * δ) * s) / 2 - A * δ ^ e) < K := by\n  apply Delta276Generic.simultaneous (f := fun δ ↦\n    A * δ ^ e + 2 * (1 + 3 * δ) * s)\n    (p := fun δ ↦ M * (1 + 4 * δ))\n    (q := fun δ ↦ (M - 4 * (1 + 3 * δ) * s) / 2 - A * δ ^ e) hU\n  · exact (Real.continuousAt_rpow_const 0 e (.inr he.le)).const_mul A |>.add\n      (by fun_prop)\n  · fun_prop\n  · exact ((continuousAt_const.sub (by fun_prop)).div_const 2).sub\n      ((Real.continuousAt_rpow_const 0 e (.inr he.le)).const_mul A)\n  · have hgap : 0 < (M - 4 * s) / 2 := by linarith\n    simpa [Real.zero_rpow he.ne'] using hgap.ne'\n  · simpa [Real.zero_rpow he.ne'] using (show 2 * s < M / 2 by linarith)\n  · simpa [Real.zero_rpow he.ne', div_div_eq_mul_div, mul_comm] using hK\n\n-- Full old-form recovery reconstructed from genuine mathlib operations alone.\ntheorem recovered {n m : ℕ} (hm : 16 * n ^ 2 < m) {κ : ℝ}\n    (hK : 2 * m / (m - 4 * n * √(m : ℝ)) < κ) : ∃ δ : ℝ, 0 < δ ∧ δ < 1 / m ∧\n    10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) +\n      2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ∧\n    (m : ℝ) * (1 + 4 * δ) /\n      (((m : ℝ) - 4 * (1 + 3 * δ) * n * √(m : ℝ)) / 2 -\n        10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m)) < κ := by\n  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm\n  have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm\n  have h4n : 4 * (n : ℝ) < √(m : ℝ) := Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])\n  have hgap : 4 * ((n : ℝ) * √(m : ℝ)) < m := by\n    nlinarith only [Real.sq_sqrt hm0.le,\n      mul_lt_mul_of_pos_right h4n (Real.sqrt_pos.mpr hm0)]\n  simpa only [mul_assoc] using quantitative (A := 10 ^ m)\n    (e := (1 / 2 : ℝ) ^ m) (M := m) (s := n * √(m : ℝ))\n    (U := 1 / m) (K := κ) (by positivity) hgap (by positivity)\n    (by simpa only [mul_assoc] using hK)\n#print axioms quantitative\n#print axioms recovered\nend Delta276Envelopes\n"
+      },
+      "elapsed_ms": 82264
+    },
+    {
+      "label": "envelope-bridge",
+      "source": "envelope-bridge-executed.lean.txt",
+      "receipt": "envelope-bridge01-receipt.json",
+      "source_sha256": "fdf87207d61525221b22455c1d62814ec931044a0331f9190bb3d2095b80f4e4",
+      "format": "disk",
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Delta276Bridge.recovered' depends on axioms:"
+      ],
+      "axiom_print_required": true,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 1879
+    }
+  ],
+  "other_executions": [
+    {
+      "source": "recovery-executed.lean.txt",
+      "receipt": "recovery01-receipt.json",
+      "source_sha256": "a926a757de63d51bdba9703e668853e1820790903d6fa328e111e2e339ef4472",
+      "status": "rejected"
+    },
+    {
+      "source": "callers-executed.lean.txt",
+      "receipt": "callers01-receipt.json",
+      "source_sha256": "e27f32a2d8337e6d829ba3adaa62c47e495ef2265a3a241786c382f51c36def6",
+      "status": "rejected"
+    },
+    {
+      "source": "composition-executed.lean.txt",
+      "receipt": "composition01-receipt.json",
+      "source_sha256": "f1eb1e7b1941af5c2efb0fffca40f3fbcb089915e5dc8492121d266f5f2cf706",
+      "status": "rejected"
+    },
+    {
+      "source": "shape-executed.lean.txt",
+      "receipt": "shape01-receipt.json",
+      "source_sha256": "0e26886727689d7a3c510b26f65049a65686560dc90e0a400dc15f15f934dbd3",
+      "status": "warning-rejected"
+    }
+  ],
+  "attempt_accounting": {
+    "native_executions": 14,
+    "accepted": 10,
+    "rejected_errors": 3,
+    "rejected_warnings": 1
+  },
+  "build_gate": "Reusable clean2467-job baseline17fresh hashes; next literal fullbuild289, no build required276."
+}

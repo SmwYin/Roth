@@ -1,0 +1,79 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+open scoped Topology
+namespace Delta276Generic
+-- Newly proved schema; its quantitative envelopes are parameters, not discarded.
+theorem simultaneous {f p q : ℝ → ℝ} {U B K : ℝ} (hU : 0 < U)
+    (hf : ContinuousAt f 0) (hp : ContinuousAt p 0) (hq : ContinuousAt q 0)
+    (hq0 : q 0 ≠ 0) (hf0 : f 0 < B) (hquot : p 0 / q 0 < K) :
+    ∃ δ : ℝ, 0 < δ ∧ δ < U ∧ f δ < B ∧ p δ / q δ < K := by
+  exact ((eventually_lt_nhds hU).and
+    ((hf.eventually_lt continuousAt_const hf0).and
+      ((hp.div hq hq0).eventually_lt continuousAt_const hquot))).exists_gt
+
+-- Point selection alone is already an existing API, not the full quantitative bridge.
+example {P : ℝ → Prop} (hP : ∀ᶠ x in 𝓝 (0 : ℝ), P x) : ∃ x, 0 < x ∧ P x :=
+  hP.exists_gt
+#check @ContinuousAt.eventually_lt
+#check @Filter.Eventually.and
+#check @Filter.Eventually.exists_gt
+#check @ContinuousAt.div
+#print axioms simultaneous
+end Delta276Generic
+
+namespace Delta276Recovery
+open Roth
+theorem recovered {n m : ℕ} (hm : 16 * n ^ 2 < m) {κ : ℝ}
+    (h47' : 2 * m / (m - 4 * n * √(m : ℝ)) < κ) : ∃ δ : ℝ, 0 < δ ∧ δ < 1 / m ∧
+    eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ∧
+    (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m) < κ := by
+  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm
+  have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm
+  have h4n : 4 * (n : ℝ) < √(m : ℝ) := Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])
+  have hgap : 2 * (n : ℝ) * √(m : ℝ) < m / 2 := by
+    nlinarith only [Real.sq_sqrt hm0.le,
+      mul_lt_mul_of_pos_right h4n (Real.sqrt_pos.mpr hm0)]
+  apply Delta276Generic.simultaneous (f := fun δ ↦
+    eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ))
+    (p := fun δ ↦ (m : ℝ) * (1 + 4 * δ))
+    (q := fun δ ↦ gam δ n m - eta δ m) (by positivity)
+  · exact (Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _ |>.add
+      (by fun_prop)
+  · fun_prop
+  · unfold gam lam eta
+    exact ((continuousAt_const.sub (by fun_prop)).div_const 2).sub
+      ((Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _)
+  · have : 0 < gam 0 n m - eta 0 m := by
+      simpa [gam, lam, eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)]
+        using (show 0 < ((m : ℝ) - 4 * n * √(m : ℝ)) / 2 by linarith)
+    exact this.ne'
+  · simpa [eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)] using hgap
+  · simpa [gam, lam, eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0),
+      div_div_eq_mul_div, mul_comm] using h47'
+example : @recovered = @Roth.exists_delta := Subsingleton.elim _ _
+-- Strict cap forces m≠0; deleting hm admits m=0 and no positive δ<1/0.
+theorem zero_dimension_impossible : ¬ ∃ δ : ℝ, 0 < δ ∧ δ < 1 / (0 : ℝ) := by
+  rintro ⟨δ, hδ, hlt⟩
+  norm_num at hlt
+  exact hδ.not_ge hlt.le
+example {κ : ℝ} (hκ : 2 < κ) : ∃ δ : ℝ, 0 < δ ∧ δ < 1 ∧
+    eta δ 1 + 2 * (1 + 3 * δ) * (0 : ℕ) * √(1 : ℝ) < 1 / 2 ∧
+    (1 : ℝ) * (1 + 4 * δ) / (gam δ 0 1 - eta δ 1) < κ := by
+  simpa using (recovered (n := 0) (m := 1) (by norm_num) (by simpa using hκ))
+#print axioms recovered
+#print axioms zero_dimension_impossible
+end Delta276Recovery

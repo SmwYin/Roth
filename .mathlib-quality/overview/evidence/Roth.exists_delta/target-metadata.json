@@ -1,0 +1,69 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 227,
+  "name": "Roth.exists_delta",
+  "short": "exists_delta",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 249,
+  "source": "theorem exists_delta {n m : \u2115} (hm : 16 * n ^ 2 < m) {\u03ba : \u211d}\n    (h47' : 2 * m / (m - 4 * n * \u221a(m : \u211d)) < \u03ba) : \u2203 \u03b4 : \u211d, 0 < \u03b4 \u2227 \u03b4 < 1 / m \u2227\n    eta \u03b4 m + 2 * (1 + 3 * \u03b4) * n * \u221a(m : \u211d) < m / 2 \u2227\n    (m : \u211d) * (1 + 4 * \u03b4) / (gam \u03b4 n m - eta \u03b4 m) < \u03ba := by\n  obtain \u27e8\u03b4\u2080, h\u03b4\u2080, h\u03b4\u2080'\u27e9 := exists_delta_bound hm\n  have hc : ContinuousAt (fun \u03b4 \u21a6\n      (m : \u211d) * (1 + 4 * \u03b4) / (gam \u03b4 n m - eta \u03b4 m)) 0 :=\n    (show ContinuousAt (fun \u03b4 : \u211d \u21a6 (m : \u211d) * (1 + 4 * \u03b4)) 0 from\n      continuousAt_const.mul (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).div\n      ((show ContinuousAt (fun \u03b4 \u21a6 gam \u03b4 n m) 0 from\n        (continuousAt_const.sub (((continuousAt_const.mul\n          (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).mul\n            continuousAt_const).mul continuousAt_const)).div_const 2).sub\n        ((Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _))\n      (sub_pos.mpr ((eta_lt_gam_iff 0 n m).mp (h\u03b4\u2080' 0 le_rfl h\u03b4\u2080.le).2)).ne'\n  obtain \u27e8\u03b5, h\u03b5, hbound\u27e9 := Metric.eventually_nhds_iff.mp\n    (hc.eventually_lt continuousAt_const (by\n      simpa [gam, lam, eta, Real.zero_rpow (by positivity : (1 / 2 : \u211d) ^ m \u2260 0),\n        div_div_eq_mul_div, mul_comm] using h47'))\n  obtain \u27e8\u03b4, h\u03b4, hlt\u27e9 := exists_between (lt_min h\u03b4\u2080 h\u03b5)\n  obtain \u27e8h29, h30\u27e9 := h\u03b4\u2080' \u03b4 h\u03b4.le (hlt.trans_le (min_le_left _ _)).le\n  exact \u27e8\u03b4, h\u03b4, h29, h30,\n    hbound (y := \u03b4) (by simpa [Real.dist_eq, abs_of_pos h\u03b4] using hlt.trans_le (min_le_right _ _))\u27e9",
+  "signature": "theorem exists_delta {n m : \u2115} (hm : 16 * n ^ 2 < m) {\u03ba : \u211d}\n    (h47' : 2 * m / (m - 4 * n * \u221a(m : \u211d)) < \u03ba) : \u2203 \u03b4 : \u211d, 0 < \u03b4 \u2227 \u03b4 < 1 / m \u2227\n    eta \u03b4 m + 2 * (1 + 3 * \u03b4) * n * \u221a(m : \u211d) < m / 2 \u2227\n    (m : \u211d) * (1 + 4 * \u03b4) / (gam \u03b4 n m - eta \u03b4 m) < \u03ba",
+  "body": "by\n  obtain \u27e8\u03b4\u2080, h\u03b4\u2080, h\u03b4\u2080'\u27e9 := exists_delta_bound hm\n  have hc : ContinuousAt (fun \u03b4 \u21a6\n      (m : \u211d) * (1 + 4 * \u03b4) / (gam \u03b4 n m - eta \u03b4 m)) 0 :=\n    (show ContinuousAt (fun \u03b4 : \u211d \u21a6 (m : \u211d) * (1 + 4 * \u03b4)) 0 from\n      continuousAt_const.mul (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).div\n      ((show ContinuousAt (fun \u03b4 \u21a6 gam \u03b4 n m) 0 from\n        (continuousAt_const.sub (((continuousAt_const.mul\n          (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).mul\n            continuousAt_const).mul continuousAt_const)).div_const 2).sub\n        ((Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _))\n      (sub_pos.mpr ((eta_lt_gam_iff 0 n m).mp (h\u03b4\u2080' 0 le_rfl h\u03b4\u2080.le).2)).ne'\n  obtain \u27e8\u03b5, h\u03b5, hbound\u27e9 := Metric.eventually_nhds_iff.mp\n    (hc.eventually_lt continuousAt_const (by\n      simpa [gam, lam, eta, Real.zero_rpow (by positivity : (1 / 2 : \u211d) ^ m \u2260 0),\n        div_div_eq_mul_div, mul_comm] using h47'))\n  obtain \u27e8\u03b4, h\u03b4, hlt\u27e9 := exists_between (lt_min h\u03b4\u2080 h\u03b5)\n  obtain \u27e8h29, h30\u27e9 := h\u03b4\u2080' \u03b4 h\u03b4.le (hlt.trans_le (min_le_left _ _)).le\n  exact \u27e8\u03b4, h\u03b4, h29, h30,\n    hbound (y := \u03b4) (by simpa [Real.dist_eq, abs_of_pos h\u03b4] using hlt.trans_le (min_le_right _ _))\u27e9",
+  "proof_lines": 20,
+  "sha256": "c1ab513d9dd3ab8a95bbe05f2721ddd600541b31758e6a92497fb35be8191e9c",
+  "what": "The chosen dimension permits a positive small delta satisfying both the auxiliary-polynomial and final contradiction inequalities.",
+  "how": "Use exists_delta_bound for the first condition, establish continuity of the quotient at zero using Real.continuousAt_rpow_const and eta_lt_gam_iff, then choose a common neighborhood point.",
+  "hypotheses": "Dimension above sixteen degree squared and the displayed zero-delta quotient bound below the exponent.",
+  "source_body_refs": [
+    "Roth.eta",
+    "Roth.eta_lt_gam_iff",
+    "Roth.exists_delta_bound",
+    "Roth.gam",
+    "Roth.lam"
+  ],
+  "source_type_refs": [
+    "Roth.eta",
+    "Roth.gam"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_roth_parameters_aux",
+      "file": "Roth/Main.lean",
+      "line": 410
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.eta",
+    "Roth.eta_lt_gam_iff",
+    "Roth.exists_delta_bound",
+    "Roth.gam",
+    "Roth.lam"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_roth_parameters_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 249,
+  "project_body_refs": [
+    "Roth.eta",
+    "Roth.eta_lt_gam_iff",
+    "Roth.exists_delta_bound",
+    "Roth.gam",
+    "Roth.lam"
+  ],
+  "project_type_refs": [
+    "Roth.eta",
+    "Roth.gam"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_roth_parameters_aux",
+      "file": "Roth/Main.lean",
+      "line": 410
+    }
+  ]
+}

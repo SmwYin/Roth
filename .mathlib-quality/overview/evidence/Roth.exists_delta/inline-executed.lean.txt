@@ -1,0 +1,62 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Delta276Inline
+open Roth
+theorem replay {α κ : ℝ} (hint : IsIntegral ℤ α) (hκ : 2 < κ) :
+    ∃ (f : Polynomial ℤ) (A : ℝ) (m : ℕ) (δ : ℝ), f.Monic ∧ Polynomial.aeval α f = 0 ∧ 1 ≤ A ∧
+      (∀ i, |(f.coeff i : ℝ)| ≤ A) ∧ 2 ≤ m ∧ 0 < δ ∧ δ < 1 / m ∧
+      eta δ m + 2 * (1 + 3 * δ) * f.natDegree * √(m : ℝ) < m / 2 ∧
+      (m : ℝ) * (1 + 4 * δ) / (gam δ f.natDegree m - eta δ m) < κ := by
+  have delta_choice {n m : ℕ} (hm : 16 * n ^ 2 < m) {κ : ℝ}
+    (h47' : 2 * m / (m - 4 * n * √(m : ℝ)) < κ) : ∃ δ : ℝ, 0 < δ ∧ δ < 1 / m ∧
+    eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ∧
+    (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m) < κ := by
+    obtain ⟨δ₀, hδ₀, hδ₀'⟩ := exists_delta_bound hm
+    have hc : ContinuousAt (fun δ ↦
+        (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m)) 0 :=
+      (show ContinuousAt (fun δ : ℝ ↦ (m : ℝ) * (1 + 4 * δ)) 0 from
+        continuousAt_const.mul
+          (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).div
+        ((show ContinuousAt (fun δ ↦ gam δ n m) 0 from
+          (continuousAt_const.sub (((continuousAt_const.mul
+            (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).mul
+              continuousAt_const).mul continuousAt_const)).div_const 2).sub
+          ((Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _))
+        (sub_pos.mpr ((eta_lt_gam_iff 0 n m).mp (hδ₀' 0 le_rfl hδ₀.le).2)).ne'
+    obtain ⟨ε, hε, hbound⟩ := Metric.eventually_nhds_iff.mp
+      (hc.eventually_lt continuousAt_const (by
+        simpa [gam, lam, eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0),
+          div_div_eq_mul_div, mul_comm] using h47'))
+    obtain ⟨δ, hδ, hlt⟩ := exists_between (lt_min hδ₀ hε)
+    obtain ⟨h29, h30⟩ := hδ₀' δ hδ.le (hlt.trans_le (min_le_left _ _)).le
+    exact ⟨δ, hδ, h29, h30,
+      hbound (y := δ) (by
+        simpa [Real.dist_eq, abs_of_pos hδ] using hlt.trans_le (min_le_right _ _))⟩
+  obtain ⟨f, hf, hfα, hdeg⟩ := exists_monic_aeval_eq_zero hint
+  -- a bound for the coefficients of `f`
+  let A : ℝ := 1 + ∑ i ∈ f.support, |(f.coeff i : ℝ)|
+  -- choice of `m` and `δ`
+  obtain ⟨m, hm, -, h47'⟩ := exists_m (n := f.natDegree) hκ
+  obtain ⟨δ, hδ0, hδm, h30, h49⟩ := delta_choice hm h47'
+  refine ⟨f, A, m, δ, hf, hfα, ?_, ?_, ?_, hδ0, hδm, h30, h49⟩
+  · exact le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ ↦ abs_nonneg _)
+  · intro i
+    exact (Finsupp.single_eval_le_sum f.toFinsupp.coeff (g := fun z : ℤ ↦ |(z : ℝ)|)
+      (by simp) (fun _ ↦ abs_nonneg _) i).trans (le_add_of_nonneg_left zero_le_one)
+  · nlinarith only [hm, hdeg]
+#print axioms replay
+end Delta276Inline
