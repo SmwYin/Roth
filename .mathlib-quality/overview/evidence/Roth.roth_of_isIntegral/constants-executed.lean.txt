@@ -1,0 +1,22 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let ci ← Lean.getConstInfo `Roth.roth_of_isIntegral
+  for c in ci.type.getUsedConstants do
+    Lean.logInfo m!"INT287_TYPE_CONSTANT: {c}"
+  for c in (ci.value? (allowOpaque := true)).get!.getUsedConstants do
+    Lean.logInfo m!"INT287_BODY_CONSTANT: {c}"

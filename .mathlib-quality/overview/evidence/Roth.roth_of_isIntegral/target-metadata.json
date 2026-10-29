@@ -1,0 +1,70 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 547,
+  "name": "Roth.roth_of_isIntegral",
+  "short": "roth_of_isIntegral",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 563,
+  "source": "theorem roth_of_isIntegral {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) (hint : IsIntegral \u2124 \u03b1) {\u03ba : \u211d}\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) : \u03ba \u2264 2 := by\n  by_contra! h\u03ba\n  obtain \u27e8f, A, m, \u03b4, hf, hf\u03b1, hA1, hA, hm2, h\u03b40, h\u03b4m, h30, h49\u27e9 :=\n    exists_roth_parameters_aux hint h\u03ba\n  have : NeZero m := \u27e8by lia\u27e9\n  have h\u03b41 : \u03b4 \u2264 1 := h\u03b4m.le.trans (by\n    simpa using one_div_le_one_div_of_le zero_lt_one\n      (show (1 : \u211d) \u2264 m by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)))\n  obtain \u27e8h, q, r, happ, hcop, hq1, hr0, hrlast, h31b, hr0max, h32, h33, h53\u27e9 :=\n    exists_roth_approximants_aux h\u03b1 (by linarith) hinf m h\u03b40 h\u03b41 A\n  obtain \u27e8hBpos, hBX, hN\u27e9 :=\n    roth_product_bound_aux h\u03b40.le (zero_le_one.trans hA1) (hr0 0) hr0max h32.le\n  exact ((div_lt_iff\u2080' (sub_pos.2 ((eta_lt_gam_iff _ _ _).1 h30))).1 h49).not_gt\n    (roth_log_bound_aux (\u03ba := \u03ba) hm2 h\u03b41 hq1 h53 hBpos hBX hN\n      (one_lt_roth_eval_bound_aux hf hf\u03b1 hA h\u03b40.le h\u03b4m.le hr0 hrlast h31b\n        (fun j \u21a6 zero_lt_one.trans (hq1 j)) (by linarith) (fun j \u21a6 (happ j).2.le) hcop h32.le h33))",
+  "signature": "theorem roth_of_isIntegral {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) (hint : IsIntegral \u2124 \u03b1) {\u03ba : \u211d}\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) : \u03ba \u2264 2",
+  "body": "by\n  by_contra! h\u03ba\n  obtain \u27e8f, A, m, \u03b4, hf, hf\u03b1, hA1, hA, hm2, h\u03b40, h\u03b4m, h30, h49\u27e9 :=\n    exists_roth_parameters_aux hint h\u03ba\n  have : NeZero m := \u27e8by lia\u27e9\n  have h\u03b41 : \u03b4 \u2264 1 := h\u03b4m.le.trans (by\n    simpa using one_div_le_one_div_of_le zero_lt_one\n      (show (1 : \u211d) \u2264 m by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)))\n  obtain \u27e8h, q, r, happ, hcop, hq1, hr0, hrlast, h31b, hr0max, h32, h33, h53\u27e9 :=\n    exists_roth_approximants_aux h\u03b1 (by linarith) hinf m h\u03b40 h\u03b41 A\n  obtain \u27e8hBpos, hBX, hN\u27e9 :=\n    roth_product_bound_aux h\u03b40.le (zero_le_one.trans hA1) (hr0 0) hr0max h32.le\n  exact ((div_lt_iff\u2080' (sub_pos.2 ((eta_lt_gam_iff _ _ _).1 h30))).1 h49).not_gt\n    (roth_log_bound_aux (\u03ba := \u03ba) hm2 h\u03b41 hq1 h53 hBpos hBX hN\n      (one_lt_roth_eval_bound_aux hf hf\u03b1 hA h\u03b40.le h\u03b4m.le hr0 hrlast h31b\n        (fun j \u21a6 zero_lt_one.trans (hq1 j)) (by linarith) (fun j \u21a6 (happ j).2.le) hcop h32.le h33))",
+  "proof_lines": 16,
+  "sha256": "0a7d16c502e99a190fbbf80d8b4244df30592ce8e1e16846a53ed2dafe7d7173",
+  "what": "An irrational real algebraic integer cannot have infinitely many approximations of exponent above two.",
+  "how": "Choose parameters with exists_roth_parameters_aux and approximants with exists_roth_approximants_aux, apply roth_product_bound_aux and one_lt_roth_eval_bound_aux, and contradict the quotient bound using roth_log_bound_aux.",
+  "hypotheses": "Irrational real algebraic integer and infinite approximation set.",
+  "source_body_refs": [
+    "Roth.eta_lt_gam_iff",
+    "Roth.exists_roth_approximants_aux",
+    "Roth.exists_roth_parameters_aux",
+    "Roth.one_lt_roth_eval_bound_aux",
+    "Roth.roth_log_bound_aux",
+    "Roth.roth_product_bound_aux"
+  ],
+  "source_type_refs": [
+    "Roth.approxSet"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.roth",
+      "file": "Roth/Main.lean",
+      "line": 573
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.eta_lt_gam_iff",
+    "Roth.exists_roth_approximants_aux",
+    "Roth.exists_roth_parameters_aux",
+    "Roth.one_lt_roth_eval_bound_aux",
+    "Roth.roth_log_bound_aux",
+    "Roth.roth_product_bound_aux"
+  ],
+  "used_by_in_file": [
+    "Roth.roth"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 133,
+  "project_body_refs": [
+    "Roth.eta_lt_gam_iff",
+    "Roth.exists_roth_approximants_aux",
+    "Roth.exists_roth_parameters_aux",
+    "Roth.one_lt_roth_eval_bound_aux",
+    "Roth.roth_log_bound_aux",
+    "Roth.roth_product_bound_aux"
+  ],
+  "project_type_refs": [
+    "Roth.approxSet"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.roth",
+      "file": "Roth/Main.lean",
+      "line": 573
+    }
+  ]
+}

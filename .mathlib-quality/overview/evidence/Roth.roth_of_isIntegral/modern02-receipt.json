@@ -1,0 +1,153 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.roth_of_isIntegral\n#check_failure Roth.approxSet\n#check @Liouville.exists_pos_real_of_irrational_root\n#check @LiouvilleWith.exists_pos\n#check @LiouvilleWith.mono\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#check @LiouvilleWith.irrational\n#check @LiouvilleWith.mul_nat_iff\n#check @LiouvilleWith.add_rat_iff\nnamespace Integral287Modern\nopen Filter\nopen scoped Filter\n-- Scratch mathematical spelling of the pair predicate, using only mathlib operations.\ndef pairSet (\u03b1 \u03ba : \u211d) : Set (\u2124 \u00d7 \u2115) :=\n  {hq | 0 < hq.2 \u2227 |\u03b1 - (hq.1 : \u211d) / hq.2| < 1 / (hq.2 : \u211d) ^ \u03ba}\ntheorem pairSet_den_le_finite (\u03b1 \u03ba : \u211d) (Q\u2080 : \u2115) : {hq \u2208 pairSet \u03b1 \u03ba | hq.2 \u2264 Q\u2080}.Finite := by\n  set S : \u211d := \u2211 q \u2208 Finset.Icc 1 Q\u2080, 1 / (q : \u211d) ^ \u03ba\n  set K : \u2124 := \u2308(Q\u2080 : \u211d) * (|\u03b1| + S)\u2309\n  refine (Finset.finite_toSet (Finset.Icc (-K) K \u00d7\u02e2 Finset.Icc 1 Q\u2080)).subset ?_\n  rintro \u27e8h, q\u27e9 \u27e8\u27e8hq0, happ\u27e9, hqQ\u27e9\n  simp only at hq0 happ hqQ\n  have hqR : (0 : \u211d) < q := by exact_mod_cast hq0\n  have hdiv : |(h : \u211d) / q| \u2264 |\u03b1| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, abs_sub_abs_le_abs_sub ((h : \u211d) / q) \u03b1,\n      Finset.single_le_sum (f := fun q : \u2115 \u21a6 1 / (q : \u211d) ^ \u03ba) (fun i _ \u21a6 by positivity)\n        (Finset.mem_Icc.2 \u27e8hq0, hqQ\u27e9)]\n  have habs : |(h : \u211d)| \u2264 Q\u2080 * (|\u03b1| + S) := by\n    have hqQR : (q : \u211d) \u2264 Q\u2080 := by exact_mod_cast hqQ\n    have hh : |(h : \u211d)| / q \u2264 |\u03b1| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff\u2080 hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| \u2264 K := by\n    have : ((|h| : \u2124) : \u211d) \u2264 K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact \u27e8abs_le.1 hK', hq0, hqQ\u27e9\nlemma infinite_of_frequent {\u03b1 \u03ba : \u211d}\n    (hf : \u2203\u1da0 q : \u2115 in atTop, 0 < q \u2227 \u2203 h : \u2124,\n      |\u03b1 - (h : \u211d) / q| < 1 / (q : \u211d) ^ \u03ba) : (pairSet \u03b1 \u03ba).Infinite := by\n  intro hs\n  obtain \u27e8N, hN\u27e9 := (hs.image Prod.snd).bddAbove\n  obtain \u27e8q, hqN, hq0, h, happ\u27e9 := ((eventually_gt_atTop N).and_frequently hf).exists\n  have hpq : (h, q) \u2208 pairSet \u03b1 \u03ba := \u27e8hq0, happ\u27e9\n  have hqN' : q \u2264 N := hN \u27e8(h, q), hpq, rfl\u27e9\n  exact hqN.not_ge hqN'\nlemma liouville_of_infinite {\u03b1 \u03ba : \u211d} (h\u03b1 : Irrational \u03b1)\n    (hinf : (pairSet \u03b1 \u03ba).Infinite) : LiouvilleWith \u03ba \u03b1 := by\n  refine \u27e81, frequently_atTop.2 fun N \u21a6 ?_\u27e9\n  obtain \u27e8\u27e8h, q\u27e9, hmem, hnot\u27e9 :=\n    (hinf.sdiff (pairSet_den_le_finite \u03b1 \u03ba N)).nonempty\n  have hNq : N < q := not_le.1 fun hq \u21a6 hnot \u27e8hmem, hq\u27e9\n  exact \u27e8q, hNq.le, h, h\u03b1.ne_rational h q, hmem.2\u27e9\nlemma exponent_iff {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) :\n    (\u2200 {\u03ba : \u211d}, (pairSet \u03b1 \u03ba).Infinite \u2192 \u03ba \u2264 2) \u2194\n      \u2200 {p : \u211d}, LiouvilleWith p \u03b1 \u2192 p \u2264 2 := by\n  constructor\n  \u00b7 intro h p hp\n    by_contra! h2\n    have hqp : (p + 2) / 2 < p := by linarith\n    have hf := hp.frequently_lt_rpow_neg hqp\n    have hinf : (pairSet \u03b1 ((p + 2) / 2)).Infinite := by\n      apply infinite_of_frequent\n      refine ((eventually_gt_atTop 0).and_frequently hf).mono ?_\n      rintro q \u27e8hq, m, _, hm\u27e9\n      exact \u27e8hq, m, by simpa [Real.rpow_neg, one_div] using hm\u27e9\n    have := h hinf\n    linarith\n  \u00b7 intro h \u03ba hinf\n    exact h (liouville_of_infinite h\u03b1 hinf)\nlemma integral_modern_of_classical\n    (hR : \u2200 {\u03b1 : \u211d}, Irrational \u03b1 \u2192 IsIntegral \u2124 \u03b1 \u2192\n      \u2200 {\u03ba : \u211d}, (pairSet \u03b1 \u03ba).Infinite \u2192 \u03ba \u2264 2)\n    {\u03b1 p : \u211d} (hint : IsIntegral \u2124 \u03b1) (hp : LiouvilleWith p \u03b1) : p \u2264 2 := by\n  by_contra! h2\n  have h\u03b1 := hp.irrational (by linarith)\n  exact ((exponent_iff h\u03b1).mp (hR h\u03b1 hint) hp).not_gt h2\nlemma recover_classical\n    (hR : \u2200 {\u03b1 p : \u211d}, IsIntegral \u2124 \u03b1 \u2192 LiouvilleWith p \u03b1 \u2192 p \u2264 2)\n    {\u03b1 \u03ba : \u211d} (h\u03b1 : Irrational \u03b1) (hint : IsIntegral \u2124 \u03b1)\n    (hinf : (pairSet \u03b1 \u03ba).Infinite) : \u03ba \u2264 2 :=\n  (exponent_iff h\u03b1).mpr (hR hint) hinf\n-- Existing generic order automation and Liouville irrationality do not supply Roth's bound.\nexample {\u03b1 \u03ba : \u211d} (_h\u03b1 : Irrational \u03b1) (_hint : IsIntegral \u2124 \u03b1)\n    (_hinf : (pairSet \u03b1 \u03ba).Infinite) : True := by\n  fail_if_success\n    have : \u03ba \u2264 2 := by exact?\n  fail_if_success\n    have : \u03ba \u2264 2 := by aesop\n  trivial\nlemma liouville_not_bound {\u03b1 : \u211d} (h\u03b1 : Liouville \u03b1) :\n    \u00ac (\u2200 {\u03ba : \u211d}, (pairSet \u03b1 \u03ba).Infinite \u2192 \u03ba \u2264 2) := by\n  intro h\n  have hh := (exponent_iff h\u03b1.irrational).mp h (h\u03b1.liouvilleWith 3)\n  norm_num at hh\nexample : LiouvilleWith 1 (0 : \u211d) := liouvilleWith_one 0\n#print axioms Integral287Modern.liouville_not_bound\n#print axioms Integral287Modern.exponent_iff\n#print axioms Integral287Modern.integral_modern_of_classical\n#print axioms Integral287Modern.recover_classical\nend Integral287Modern\n"
+  },
+  "elapsed_ms": 3753,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "modern02",
+      "operation": "run_code",
+      "source": "modern2-executed.lean.txt",
+      "source_sha256": "b98f1c3011ace81faa263edda8696442daaaf7f9118ac5512f057c6d5359b350",
+      "receipt": "modern02-receipt.json",
+      "arguments": {},
+      "extra_import_authorization": "root287 effedd80b74beb9109429be8d2df4cc70926d98f957a0867a7a2f9fc10dcd4cc"
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.roth_of_isIntegral/root-requests/modern02.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.roth_of_isIntegral/modern2-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.roth_of_isIntegral`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.approxSet`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Liouville.exists_pos_real_of_irrational_root : \u2200 {\u03b1 : \u211d},\\n  Irrational \u03b1 \u2192\\n    \u2200 {f : Polynomial \u2124},\\n      f \u2260 0 \u2192\\n        Polynomial.eval \u03b1 (Polynomial.map (algebraMap \u2124 \u211d) f) = 0 \u2192\\n          \u2203 A, 0 < A \u2227 \u2200 (a : \u2124) (b : \u2115), 1 \u2264 (\u2191b + 1) ^ f.natDegree * (|\u03b1 - \u2191a / (\u2191b + 1)| * A)\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.exists_pos : \u2200 {p x : \u211d},\\n  LiouvilleWith p x \u2192\\n    \u2203 C, \u2203 (_ : 0 < C), \u2203\u1da0 (n : \u2115) in Filter.atTop, 1 \u2264 n \u2227 \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < C / \u2191n ^ p\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.mono : \u2200 {p q x : \u211d}, LiouvilleWith p x \u2192 q \u2264 p \u2192 LiouvilleWith q x\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in Filter.atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.irrational : \u2200 {p x : \u211d}, LiouvilleWith p x \u2192 1 < p \u2192 Irrational x\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.mul_nat_iff : \u2200 {p x : \u211d} {n : \u2115}, n \u2260 0 \u2192 (LiouvilleWith p (x * \u2191n) \u2194 LiouvilleWith p x)\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.add_rat_iff : \u2200 {p x : \u211d} {r : \u211a}, LiouvilleWith p (x + \u2191r) \u2194 LiouvilleWith p x\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Integral287Modern.liouville_not_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 119,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Integral287Modern.exponent_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 120,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Integral287Modern.integral_modern_of_classical' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 121,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Integral287Modern.recover_classical' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 122,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.roth_of_isIntegral`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.approxSet`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Liouville.exists_pos_real_of_irrational_root : \u2200 {\u03b1 : \u211d},\n  Irrational \u03b1 \u2192\n    \u2200 {f : Polynomial \u2124},\n      f \u2260 0 \u2192\n        Polynomial.eval \u03b1 (Polynomial.map (algebraMap \u2124 \u211d) f) = 0 \u2192\n          \u2203 A, 0 < A \u2227 \u2200 (a : \u2124) (b : \u2115), 1 \u2264 (\u2191b + 1) ^ f.natDegree * (|\u03b1 - \u2191a / (\u2191b + 1)| * A)",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.exists_pos : \u2200 {p x : \u211d},\n  LiouvilleWith p x \u2192\n    \u2203 C, \u2203 (_ : 0 < C), \u2203\u1da0 (n : \u2115) in Filter.atTop, 1 \u2264 n \u2227 \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < C / \u2191n ^ p",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.mono : \u2200 {p q x : \u211d}, LiouvilleWith p x \u2192 q \u2264 p \u2192 LiouvilleWith q x",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in Filter.atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.irrational : \u2200 {p x : \u211d}, LiouvilleWith p x \u2192 1 < p \u2192 Irrational x",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.mul_nat_iff : \u2200 {p x : \u211d} {n : \u2115}, n \u2260 0 \u2192 (LiouvilleWith p (x * \u2191n) \u2194 LiouvilleWith p x)",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.add_rat_iff : \u2200 {p x : \u211d} {r : \u211a}, LiouvilleWith p (x + \u2191r) \u2194 LiouvilleWith p x",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Integral287Modern.liouville_not_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 119,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Integral287Modern.exponent_iff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 120,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Integral287Modern.integral_modern_of_classical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 121,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Integral287Modern.recover_classical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 122,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

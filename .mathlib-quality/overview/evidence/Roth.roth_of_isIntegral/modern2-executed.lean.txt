@@ -1,0 +1,123 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
+
+#check_failure Roth.roth_of_isIntegral
+#check_failure Roth.approxSet
+#check @Liouville.exists_pos_real_of_irrational_root
+#check @LiouvilleWith.exists_pos
+#check @LiouvilleWith.mono
+#check @LiouvilleWith.frequently_lt_rpow_neg
+#check @LiouvilleWith.irrational
+#check @LiouvilleWith.mul_nat_iff
+#check @LiouvilleWith.add_rat_iff
+namespace Integral287Modern
+open Filter
+open scoped Filter
+-- Scratch mathematical spelling of the pair predicate, using only mathlib operations.
+def pairSet (α κ : ℝ) : Set (ℤ × ℕ) :=
+  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}
+theorem pairSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ pairSet α κ | hq.2 ≤ Q₀}.Finite := by
+  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ
+  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉
+  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_
+  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩
+  simp only at hq0 happ hqQ
+  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0
+  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by
+    rw [abs_sub_comm] at happ
+    linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,
+      Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)
+        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]
+  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by
+    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ
+    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv
+    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans
+      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))
+  have hK' : |h| ≤ K := by
+    have : ((|h| : ℤ) : ℝ) ≤ K := by
+      rw [Int.cast_abs]
+      exact habs.trans (Int.le_ceil _)
+    exact_mod_cast this
+  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]
+  exact ⟨abs_le.1 hK', hq0, hqQ⟩
+lemma infinite_of_frequent {α κ : ℝ}
+    (hf : ∃ᶠ q : ℕ in atTop, 0 < q ∧ ∃ h : ℤ,
+      |α - (h : ℝ) / q| < 1 / (q : ℝ) ^ κ) : (pairSet α κ).Infinite := by
+  intro hs
+  obtain ⟨N, hN⟩ := (hs.image Prod.snd).bddAbove
+  obtain ⟨q, hqN, hq0, h, happ⟩ := ((eventually_gt_atTop N).and_frequently hf).exists
+  have hpq : (h, q) ∈ pairSet α κ := ⟨hq0, happ⟩
+  have hqN' : q ≤ N := hN ⟨(h, q), hpq, rfl⟩
+  exact hqN.not_ge hqN'
+lemma liouville_of_infinite {α κ : ℝ} (hα : Irrational α)
+    (hinf : (pairSet α κ).Infinite) : LiouvilleWith κ α := by
+  refine ⟨1, frequently_atTop.2 fun N ↦ ?_⟩
+  obtain ⟨⟨h, q⟩, hmem, hnot⟩ :=
+    (hinf.sdiff (pairSet_den_le_finite α κ N)).nonempty
+  have hNq : N < q := not_le.1 fun hq ↦ hnot ⟨hmem, hq⟩
+  exact ⟨q, hNq.le, h, hα.ne_rational h q, hmem.2⟩
+lemma exponent_iff {α : ℝ} (hα : Irrational α) :
+    (∀ {κ : ℝ}, (pairSet α κ).Infinite → κ ≤ 2) ↔
+      ∀ {p : ℝ}, LiouvilleWith p α → p ≤ 2 := by
+  constructor
+  · intro h p hp
+    by_contra! h2
+    have hqp : (p + 2) / 2 < p := by linarith
+    have hf := hp.frequently_lt_rpow_neg hqp
+    have hinf : (pairSet α ((p + 2) / 2)).Infinite := by
+      apply infinite_of_frequent
+      refine ((eventually_gt_atTop 0).and_frequently hf).mono ?_
+      rintro q ⟨hq, m, _, hm⟩
+      exact ⟨hq, m, by simpa [Real.rpow_neg, one_div] using hm⟩
+    have := h hinf
+    linarith
+  · intro h κ hinf
+    exact h (liouville_of_infinite hα hinf)
+lemma integral_modern_of_classical
+    (hR : ∀ {α : ℝ}, Irrational α → IsIntegral ℤ α →
+      ∀ {κ : ℝ}, (pairSet α κ).Infinite → κ ≤ 2)
+    {α p : ℝ} (hint : IsIntegral ℤ α) (hp : LiouvilleWith p α) : p ≤ 2 := by
+  by_contra! h2
+  have hα := hp.irrational (by linarith)
+  exact ((exponent_iff hα).mp (hR hα hint) hp).not_gt h2
+lemma recover_classical
+    (hR : ∀ {α p : ℝ}, IsIntegral ℤ α → LiouvilleWith p α → p ≤ 2)
+    {α κ : ℝ} (hα : Irrational α) (hint : IsIntegral ℤ α)
+    (hinf : (pairSet α κ).Infinite) : κ ≤ 2 :=
+  (exponent_iff hα).mpr (hR hint) hinf
+-- Existing generic order automation and Liouville irrationality do not supply Roth's bound.
+example {α κ : ℝ} (_hα : Irrational α) (_hint : IsIntegral ℤ α)
+    (_hinf : (pairSet α κ).Infinite) : True := by
+  fail_if_success
+    have : κ ≤ 2 := by exact?
+  fail_if_success
+    have : κ ≤ 2 := by aesop
+  trivial
+lemma liouville_not_bound {α : ℝ} (hα : Liouville α) :
+    ¬ (∀ {κ : ℝ}, (pairSet α κ).Infinite → κ ≤ 2) := by
+  intro h
+  have hh := (exponent_iff hα.irrational).mp h (hα.liouvilleWith 3)
+  norm_num at hh
+example : LiouvilleWith 1 (0 : ℝ) := liouvilleWith_one 0
+#print axioms Integral287Modern.liouville_not_bound
+#print axioms Integral287Modern.exponent_iff
+#print axioms Integral287Modern.integral_modern_of_classical
+#print axioms Integral287Modern.recover_classical
+end Integral287Modern

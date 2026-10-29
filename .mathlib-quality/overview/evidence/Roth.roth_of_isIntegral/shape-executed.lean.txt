@@ -1,0 +1,53 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Integral287Shape
+open Roth
+lemma finite_iff_bound (α : ℝ) :
+    (∀ {κ : ℝ}, (approxSet α κ).Infinite → κ ≤ 2) ↔
+      ∀ κ : ℝ, 2 < κ → (approxSet α κ).Finite := by
+  constructor
+  · intro h κ hκ
+    exact Set.not_infinite.mp fun hinf ↦ (h hinf).not_gt hκ
+  · intro h κ hinf
+    exact le_of_not_gt fun hκ ↦ hinf (h κ hκ)
+lemma integral_finite {α : ℝ} (hα : Irrational α) (hint : IsIntegral ℤ α)
+    {κ : ℝ} (hκ : 2 < κ) : (approxSet α κ).Finite :=
+  (finite_iff_bound α).mp (Roth.roth_of_isIntegral hα hint) κ hκ
+lemma recover_integral {α : ℝ} (hα : Irrational α) (hint : IsIntegral ℤ α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) : κ ≤ 2 :=
+  (finite_iff_bound α).mpr (fun _ hκ ↦ integral_finite hα hint hκ) hinf
+lemma zero_infinite (κ : ℝ) : (approxSet 0 κ).Infinite := by
+  have hi : (Set.Ioi (0 : ℕ)).Infinite := Set.Ioi_infinite 0
+  refine (hi.image (f := fun q : ℕ ↦ ((0 : ℤ), q)) (by
+    intro a b hab
+    exact congrArg Prod.snd hab)).mono ?_
+  rintro _ ⟨q, hq, rfl⟩
+  exact ⟨hq, by simp only [Int.cast_zero, zero_div, sub_self, abs_zero]; positivity⟩
+example : ¬ (∀ {α : ℝ}, IsIntegral ℤ α → ∀ {κ : ℝ},
+    (approxSet α κ).Infinite → κ ≤ 2) := by
+  intro h
+  have hh := h (isIntegral_zero : IsIntegral ℤ (0 : ℝ)) (zero_infinite 3)
+  norm_num at hh
+example {α : ℝ} (hα : Irrational α) (hint : IsIntegral ℤ α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) : κ ≤ 2 := by
+  fail_if_success exact hint
+  exact Roth.roth_of_isIntegral hα hint hinf
+#print axioms Integral287Shape.finite_iff_bound
+#print axioms Integral287Shape.integral_finite
+#print axioms Integral287Shape.recover_integral
+#print axioms Integral287Shape.zero_infinite
+end Integral287Shape
