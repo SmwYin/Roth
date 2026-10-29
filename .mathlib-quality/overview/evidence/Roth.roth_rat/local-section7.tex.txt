@@ -1,0 +1,395 @@
+and the preceding construction proves the stronger assertion for each
+fixed $m>16n^2$.
+\end{proof}
+
+\lean{For each fixed $m>16n^2$, prove the stronger statement that some
+$\delta_0>0$ makes \eqref{roth:eq29} and \eqref{roth:eq30} hold for every
+$0<\delta<\delta_0$. The explicit positive-minimum construction above
+can provide this threshold. The final theorem must choose $m$ using
+$\kappa$ and may then shrink $\delta$ further, so do not fix $m$ globally
+to the special example $(4n+1)^2$.}
+
+Let $m$ and $\delta$ be as in the lemma. We choose positive integers $r_1, \dots, r_m$ such that
+\begin{equation}
+    \label{roth:eq31}
+    r_m > 10 \delta^{-1}, \quad r_{j-1}/r_j > \delta^{-1}, \quad 2 \leq j \leq m.
+\end{equation}
+This is easily arranged. Next, we pick a positive integer $q_1>1$ such that
+\begin{equation}
+    \label{roth:eq32}
+    \delta^2 \log q_1 > 2m+1 + 2m \log (1+A) + 2m \log (1 + |\alpha|),
+\end{equation}
+with $A$ as in Equation \eqref{roth:eq28}.
+
+Next, we pick positive integers $q_2, \dots, q_m$ such that
+\begin{equation}
+    \label{roth:eq33}
+    r_j \log q_j \geq r_1 \log q_1, \quad 2 \leq j \leq m.
+\end{equation}
+
+\begin{lem}\label{lem:lem7-satisfied}
+    If $m, \delta, r_1, \dots, r_m, q_1, \dots, q_m$ satisfy Equations \eqref{roth:eq29}-\eqref{roth:eq33} then they satisfy the conditions of Lemma \ref{roth:lem7}.
+\end{lem}
+\begin{proof}
+    We just need to verify $\delta \log q_1 > m (2m+1)$ but this is immediate from \eqref{roth:eq29} and \eqref{roth:eq32}.
+\end{proof}
+
+Define $\lambda, \gamma, \eta, B_1$ by
+\begin{equation}
+    \label{roth:eq34}
+    \lambda = 4(1+3 \delta)nm^{1/2},
+\end{equation}
+\begin{equation}
+    \label{roth:eq35}
+    \gamma = \frac{1}{2}(m - \lambda),
+\end{equation}
+\begin{equation}
+    \label{roth:eq36}
+    \eta = 10^m \delta^{(1/2)^m},
+\end{equation}
+\begin{equation}
+    \label{roth:eq37}
+    B_1= [q_1^{\delta r_1}].
+\end{equation}
+
+Inequality \eqref{roth:eq30} is equivalent to
+\begin{equation}
+    \label{roth:eq38}
+    \eta < \gamma.
+\end{equation}
+We also note that $B_1$ is a \emph{large} integer, because
+$$
+B_1 > q_1^{\delta r_1} -1 = (e^{\delta \log q_1})^{r_1} -1 > (e^{m(2m+1)})^{r_1}-1 >(e^{16n^2(2 \times 16 n^2+1)})^{r_1}-1
+$$
+$$
+\geq (e^{16 \times 2^2(32 \times 2^2+1)})^{r_1}-1 = e^{8256r_1} -1 > e^{82560}-1.
+$$
+In particular, writing $X=q_1^{\delta r_1}$, we have $X>4$, whence
+$B_1=\lfloor X\rfloor>X-1>\sqrt X=q_1^{\delta r_1/2}$.
+Thus
+\[
+\log B_1>\tfrac12\delta r_1\log q_1.
+\]
+Together with \eqref{roth:eq32}, this gives the three bounds used below:
+\begin{equation}\label{roth:three-small-factors}
+2^{mr_1}<B_1^\delta,\qquad
+(1+A)^{mr_1}<B_1^\delta,\qquad
+(1+|\alpha|)^{mr_1}<B_1^\delta.
+\end{equation}
+For the first, use
+$m\log2<\tfrac12\delta^2\log q_1$; for the other two, use the
+corresponding logarithmic terms in \eqref{roth:eq32}.
+\lean{Put $X=q_1^{\delta r_1}$ and isolate the floor estimate
+$\sqrt X<\lfloor X\rfloor\leq X$ for $X>4$.
+Use it to obtain $\log B_1>\tfrac12\delta r_1\log q_1$, then prove once that
+$2^{mr_1}$, $(1+A)^{mr_1}$ and $(1+|\alpha|)^{mr_1}$ are all less than
+$B_1^\delta$, with all positive-base hypotheses explicit.
+Retain the non-strict upper bound $B_1\leq X$: equality is possible when
+$X$ is an integer.}
+
+Now we come to Roth's main lemma.
+
+\begin{lem}
+\label{roth:lem9}
+    Suppose \eqref{roth:eq29}-\eqref{roth:eq33} are satisfied, and suppose $h_1, \dots, h_m$ are integers that are coprime to $q_1, \dots, q_m$ respectively. Then there exists a nonzero polynomial $Q(x_1, \dots, x_m)$ with integral coefficients, of degree at most $r_j$ in $x_j$ for $1 \leq j \leq m$, such that
+\begin{enumerate}
+    \item The index of $Q$ at the point $(\alpha, \dots, \alpha)$ relative to $r_1, \dots, r_m$ is at least $\gamma - \eta >0$;
+    \item $Q(h_1/q_1, \dots, h_m/q_m) \ne 0$;
+    \item for all non-negative integers $i_1, \dots, i_m$ we have
+    $$
+    \left| \Delta_{i_1, \dots, i_m} Q(\alpha, \dots, \alpha) \right| < B_1^{1+3 \delta}.
+    $$
+\end{enumerate}
+\end{lem}
+\begin{proof}
+    Consider the set $\mathcal W$ of all polynomials
+    $$
+    W(x_1, \dots, x_m) =\sum_{s_1=0}^{r_1} \dots \sum_{s_m=0}^{r_m} c(s_1, \dots, s_m) x_1^{s_1} \cdots x_m^{s_m}
+    $$
+    where the coefficients $c(s_1, \dots, s_m)$ are integers satisfying
+    $$
+    0 \leq c(s_1, \dots, s_m) \leq B_1.
+    $$
+    The number of such polynomials is
+    $$
+    |\mathcal W| =  (B_1+1)^r
+    $$
+    with
+     \begin{equation}
+     \label{roth:eq43}
+     r = (r_1 + 1) \cdots (r_m+1).
+ \end{equation}
+
+ For $W \in \mathcal W$ consider the derivatives
+ $$
+ \Delta_{j_1, \dots, j_m} W
+ $$
+ for integers $j_1, \dots, j_m$ satisfying
+  \begin{equation}
+     \label{roth:eq44}
+ 0 \leq j_1 \leq r_1, \dots, 0 \leq j_m \leq r_m, \quad \frac{j_1}{r_1}+ \cdots + \frac{j_m}{r_m} \leq \gamma.
+ \end{equation}
+ By Lemma \ref{roth:lem8} and Equation \eqref{roth:eq35}, the number $D$ of such derivatives satisfies
+ \begin{equation}
+     \label{roth:eq45}
+     D \leq 2m^{1/2} \lambda^{-1} r,
+ \end{equation}
+ with $r$ as in \eqref{roth:eq43}. For each such derivative let
+ $$
+ T_{j_1, \dots, j_m}(W; x)
+ $$
+ be the remainder of the division of $\Delta_{j_1, \dots, j_m}W(x, \dots, x)$ by $f(x)$.  Since $f$ is a monic polynomial, $T_{j_1, \dots, j_m}(W; x)$ will have integer coefficients, and its degree is less than or equal to $n-1$.
+
+Our first task is to find an upper bound for the sizes of the coefficients of the polynomials $T_{j_1, \dots, j_m}(W; x)$. For $W \in \mathcal W$ we have
+$$
+abc(\Delta_{j_1, \dots, j_m} W) \leq 2^{r_1 +\dots + r_m} B_1 \leq 2^{mr_1} B_1 < B_1^{1+\delta}
+$$
+by \eqref{roth:three-small-factors}. Indeed, \eqref{roth:eq32} gives
+$mr_1\log2<\tfrac12\delta^2r_1\log q_1<\delta\log B_1$.
+When we replace $x_1, \dots, x_m$ by the same variable $x$ the absolute value of the coefficients of the resulting polynomial is at most the number of terms of the polynomial, which is at most $r$, multiplied by the coefficient bound $B_1^{1+\delta}$. Now,
+$$
+r = (r_1 + 1) \cdots (r_m + 1) \leq 2^{r_1 + \dots + r_m} \leq 2^{mr_1} < B_1^\delta,
+$$
+and this implies that $rB_1^{1+ \delta} < B_1^{1 + 2 \delta}$.  Consequently, the coefficients of $\Delta_{j_1, \dots, j_m}W (x, \dots, x)$ are bounded in absolute value by $B_1^{1+ 2\delta}$. Next we examine the effect of division by $f$ on these coefficients. Write
+$$
+\Delta_{j_1, \dots, j_m}W (x, \dots, x) = w_s x^s + w_{s-1} x^{s-1} + \cdots + w_0.
+$$
+When we divide this polynomial by $f$, the first operation we do (assuming $s \geq n$) is to subtract $w_s x^{s-n} f(x)$ and this gives a new polynomial whose coefficients are either of the form $w_\nu-a_{s-\nu}w_s$ (when $1\leq s-\nu\leq n$) or of the form $w_\nu$.  Since the $a_{s-\nu}$'s
+are bounded by $A$, the absolute values of the resulting coefficients are at most $$(1 + A)  \cdot abc\, (\Delta_{j_1, \dots, j_m}W (x, \dots, x)) \leq (1+A) B_1^{1 + 2 \delta}.$$
+If the input polynomial is zero, its remainder is zero. Otherwise the
+number of leading-term eliminations is at most $\max(0,s-n+1)$: there are
+none when $s<n$, and each elimination lowers the degree by at least one.
+It follows that
+\[
+abc(T_{j_1,\dots,j_m}(W;x))
+ \leq(1+A)^{\max(0,s-n+1)}B_1^{1+2\delta}
+ \leq(1+A)^{mr_1}B_1^{1+2\delta}<B_1^{1+3\delta},
+\]
+using $s\leq\sum_jr_j\leq mr_1$ and
+\eqref{roth:three-small-factors}.
+\lean{Use
+\texttt{Polynomial.modByMonic}\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Div.html}}
+directly in $\Z[X]$, rather than dividing over $\Q$ and later recovering
+integrality. Prove the coefficient bound by induction on degree, treating
+zero and degree less than $n$ first; each leading-term elimination
+multiplies the bound by at most $1+A$ and lowers the degree.
+Handle diagonal substitution separately, since identifying variables
+can merge coefficients.}
+
+Pad each remainder with zero coefficients to length $n$. Each integer coefficient has fewer than $1+2B_1^{1+3\delta}$ possible values. Since there are $D$ derivatives, the number of possible remainder tuples is at most
+$$
+(1+ 2B_1^{1+3 \delta})^{nD}.
+$$
+By \eqref{roth:eq45} and the definition of $\lambda$ in \eqref{roth:eq34} we have
+$$
+(1 + 3 \delta) n D \leq 2(1+3 \delta) nm^{1/2} \lambda^{-1} r = \frac{1}{2}r.
+$$
+Put $c=1+3\delta>1$. Since $B_1>1$,
+\[
+1+2B_1^c<[2(1+B_1)]^c.
+\]
+Indeed, $(1+B_1)^c\geq1+B_1^c$ and $2^c\geq2$, so the right-hand side
+is at least $2+2B_1^c$. The tuple $j=0$ is allowed because $\gamma>0$,
+so $D\geq1$. Using $cnD\leq r/2$, we obtain
+\begin{align*}
+(1+2B_1^c)^{nD}
+ &<[2(1+B_1)]^{cnD}\leq[2(1+B_1)]^{r/2}\\
+ &<(1+B_1)^r=|\mathcal W|.
+\end{align*}
+The last strict inequality follows from $2(1+B_1)<(1+B_1)^2$, or
+$B_1>1$. Thus there are fewer remainder tuples than elements of $\mathcal W$.
+ By the pigeonhole principle, there are two distinct polynomials $W',W''\in\mathcal W$ such that
+$$
+\Delta_{j_1, \dots, j_m} W' (x, \dots, x) - \Delta_{j_1, \dots, j_m} W'' (x, \dots, x)
+$$
+is divisible by $f(x)$ for all $j_1, \dots, j_m$ that satisfy \eqref{roth:eq44}. Let $W^*=W'-W''$. Hasse differentiation, diagonal substitution and
+remainder modulo the fixed monic $f$ are additive, so equality of remainder
+tuples implies the stated divisibility for the difference. For all $j_1, \dots, j_m$ satisfying \eqref{roth:eq44}
+$$
+\Delta_{j_1, \dots, j_m} W^* (x_1, \dots, x_m)
+$$
+are zero when $x_1 = \dots = x_m = \alpha$. Multi-indices outside the degree box give identically zero derivatives as well. Hence the index of $W^*$ at the point $(\alpha, \dots, \alpha)$ relative to $r_1, \dots, r_m$ is at least $\gamma$. Also $W^*$ is not identically zero, and its coefficients in absolute value do not exceed $B_1$.
+
+\lean{Represent each $W$ by a coefficient array on the finite monomial
+box, with entries in $\{0,\ldots,B_1\}$, and map it to the $nD$ integer
+coefficients of its remainder tuple. Apply
+finite pigeonhole\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Pigeonhole.html}}
+using the strict cardinality estimate above. Distinct arrays give a
+nonzero difference with coefficient bound $B_1$, not $2B_1$, because both
+arrays lie in $[0,B_1]$ coordinatewise; equality of remainders then forces
+the required low-weight derivatives to vanish at $\alpha$.}
+
+This means that
+$$
+W^* (x_1, \dots, x_m) \in \mathcal R_m(q_1^{\delta r_1}; r_1, \dots, r_m).
+$$
+We noted in Lemma \ref{lem:lem7-satisfied} that the conditions of Lemma \ref{roth:lem7} are satisfied. By Lemma \ref{roth:lem7} the index of $W^*$ at $(h_1/q_1, \dots, h_m/q_m)$ relative to $r_1, \dots, r_m$ is less than $\eta$ defined in \eqref{roth:eq36}. Hence $W^*$ has some derivative
+$$
+Q(x_1, \dots, x_m) = \Delta_{k_1, \dots, k_m} W^*
+$$
+with $$
+\frac{k_1}{r_1}+ \cdots + \frac{k_m}{r_m} < \eta
+$$
+such that
+$$
+Q(h_1/q_1, \dots, h_m/q_m) \ne 0.
+$$
+By Lemma \ref{lem:index-of-derivative} the index of $Q$ at the point $(\alpha, \dots, \alpha)$ relative to $r_1, \dots, r_m$ is at least $\gamma - \eta$. This $Q$ has properties (1) and (2) of Lemma \ref{roth:lem9}. Since the coefficients of $W^*$ have absolute value at most $B_1$, the coefficients of $Q$ have absolute value at most
+$$
+2^{r_1 + \dots + r_m} B_1 \leq 2^{mr_1} B_1 < B_1^{1 + \delta}.
+$$
+Hence the coefficients of any further derivative of $Q$ have absolute value at most
+$$
+2^{r_1 + \dots + r_m}B_1^{1+ \delta} <B_1^{1+ 2 \delta}.
+$$
+To justify evaluation, for every $t\geq0$ and integer $r\geq0$,
+$\sum_{j=0}^rt^j\leq(1+t)^r$, since each binomial coefficient
+$\binom rj$ is at least $1$. Thus the coefficient bound gives
+\[
+|(\Delta_iQ)(\alpha,\dots,\alpha)|
+ \leq abc(\Delta_iQ)\prod_{j=1}^m\sum_{s=0}^{r_j}|\alpha|^s.
+\]
+For a zero derivative the desired estimate is immediate; otherwise the
+strict coefficient bound yields
+$$
+|\Delta_{i_1, \dots, i_m} Q(\alpha, \dots, \alpha)| < B_1^{1+ 2 \delta} (1 + |\alpha|)^{r_1 + \dots + r_m},
+$$
+and this implies (3), since \eqref{roth:three-small-factors} gives
+$$
+(1 + |\alpha|)^{mr_1} < B_1^\delta.
+$$
+This completes the proof of Lemma \ref{roth:lem9}.
+\lean{Keep differentiation, diagonal substitution and point evaluation
+as three separate estimates. A fixed Hasse derivative has no coefficient
+collisions; diagonal substitution may merge monomials and needs the
+factor $\prod_j(r_j+1)$. For evaluation, sum the absolute coefficients
+against powers of $|\alpha|$ and use
+$\sum_{s=0}^r t^s\leq(1+t)^r$ for $t\geq0$; this absorbs the monomial
+sum without an additional box-cardinality factor.}
+
+\end{proof}
+\section{The proof of Roth's theorem}
+In this section we complete the proof of Roth's theorem using Lemma \ref{roth:lem9}. Let $\kappa > 2$ and suppose that there are infinitely many pairs of integers $h, q$, $q>0$, such that
+\begin{equation}
+    \label{roth:eq46}
+    \left|\alpha - \frac{h}{q} \right|< \frac{1}{q^\kappa}.
+\end{equation}
+We will derive a contradiction.
+We first justify choosing reduced solutions of arbitrarily large denominator.
+Reducing $h/q$ to $a/b$ with $b>0$ and $\gcd(a,b)=1$ preserves the
+inequality, since $b\leq q$ and $\kappa>0$.
+For a fixed rational value $a/b$, irrationality gives
+$\varepsilon=|\alpha-a/b|>0$. The inequality
+$\varepsilon<q^{-\kappa}$ bounds its original denominators $q$, so only
+finitely many original pairs can represent that rational value.
+There are therefore infinitely many distinct reduced solutions.
+For bounded $b$, their numerators $a$ lie in finite intervals, so the
+reduced denominators are unbounded as well.
+We choose a positive integer $m$ large enough that $m > 4nm^{1/2}$
+and
+\begin{equation}
+    \label{roth:eq47}
+\frac{2m}{m - 4nm^{1/2}} < \kappa,
+\end{equation}
+which is possible as $\kappa > 2$. Let $\eta$ be as in \eqref{roth:eq36}. For $\delta$ small enough we have
+$$
+m - 4(1 + 3 \delta) nm^{1/2} - 2 \eta >0.
+$$
+This condition is the same as \eqref{roth:eq30}. By the fixed-$m$ form of Lemma \ref{lem:m-delta}, we can choose $\delta$ so it also satisfies \eqref{roth:eq29}. Decreasing $\delta$ further if necessary, we also arrange that
+\begin{equation}
+    \label{roth:eq48}
+    \frac{2m(1+4 \delta)}{m-4(1+3 \delta)nm^{1/2} - 2 \eta} < \kappa.
+\end{equation}
+This is possible because the left-hand side tends to the strictly smaller quantity in \eqref{roth:eq47} as $\delta\to0^+$. By the definition of $\gamma$ and $\eta$ from \eqref{roth:eq35} and \eqref{roth:eq36}, \eqref{roth:eq48} is equivalent to
+\begin{equation}
+    \label{roth:eq49}
+    \frac{m(1+ 4 \delta)}{\gamma - \eta} < \kappa.
+\end{equation}
+Next, pick a reduced solution $h_1,q_1$ of \eqref{roth:eq46} such that $q_1$ satisfies \eqref{roth:eq32}. This means $q_1$ is very large. We then choose solutions $h_2, q_2; \dots; h_m, q_m$ with $\gcd(h_j,q_j)=1$ for all $j$ to satisfy
+\begin{equation}
+    \label{roth:eq50}
+    \frac{\log q_j}{\log q_{j-1}}> \frac{2}{\delta}, \quad 2 \leq j \leq m.
+\end{equation}
+We now take $r_1$ to be any integer satisfying
+\begin{equation}
+    \label{roth:eq51}
+    r_1 > \frac{10 \log q_m}{\delta \log q_1}
+\end{equation}
+and define integers $r_2, \dots, r_m$ by
+\begin{equation}
+    \label{roth:eq52}
+    \frac{r_1 \log q_1}{\log q_j} \leq r_j < 1 + \frac{r_1 \log q_1}{\log q_j}, \quad 2 \leq j \leq m.
+\end{equation}
+Then \eqref{roth:eq33} is satisfied. Also,
+\begin{equation}
+    \label{roth:eq53}
+    \frac{r_j \log q_j}{r_1 \log q_1} < 1+ \frac{\log q_j}{r_1\log q_1}\leq 1 + \frac{\log q_m}{r_1 \log q_1} < 1+ \frac{1}{10}\delta.
+\end{equation}
+The conditions \eqref{roth:eq31} are also satisfied since
+$$
+r_m \geq \frac{r_1 \log q_1}{\log q_m }> 10 \delta^{-1},
+$$
+and
+$$
+\frac{r_{j-1}}{r_j}> \frac{\log q_j}{\log q_{j-1}}(1+ \frac{1}{10} \delta)^{-1} > \delta^{-1}
+$$
+by \eqref{roth:eq52}, \eqref{roth:eq53}, and \eqref{roth:eq50}.
+
+\lean{Start from unbounded reduced denominators and choose the finite
+sequence of approximants satisfying \eqref{roth:eq50}. After choosing
+$r_1$, define $r_j=\lceil r_1\log q_1/\log q_j\rceil$ for $j\geq2$,
+and collect positivity, \eqref{roth:eq31}, \eqref{roth:eq33} and
+\eqref{roth:eq53} in one rounding lemma. Use the
+Diophantine approximation module\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/DiophantineApproximation/Basic.html}}
+as a reference for the rational-approximation formulation, not as a
+substitute for proving these selection and rounding steps.}
+
+By Lemma \ref{roth:lem9} there exists a polynomial $Q(x_1, \dots, x_m)$ satisfying the assertions of that lemma. By (2) of Lemma \ref{roth:lem9}, $Q(h_1/q_1, \dots, h_m/q_m) \ne 0$. Also, since $Q$ has degree at most $r_j$ in $x_j$ for $1 \leq j \leq m$, the number
+$\bigl(\prod_jq_j^{r_j}\bigr)Q(h_1/q_1,\dots,h_m/q_m)$ is a nonzero
+integer: each monomial denominator divides $\prod_jq_j^{r_j}$.
+Its absolute value is at least $1$, and therefore
+\begin{equation}
+    \label{roth:eq54}
+    |Q(h_1/q_1, \dots, h_m/q_m)| \geq q_1^{-r_1} \cdots q_m^{-r_m} > q_1^{-mr_1(1+\delta)}
+\end{equation}
+by \eqref{roth:eq53}.  On the other hand,
+we have
+$$
+Q(h_1/q_1, \dots, h_m/q_m) = \sum_{i_1=0}^{r_1} \cdots \sum_{i_m =0}^{r_m} \Delta_{i_1, \dots, i_m} Q(\alpha, \dots, \alpha) (h_1/q_1-\alpha)^{i_1} \cdots (h_m/q_m-\alpha)^{i_m}.
+$$
+By (1) of Lemma \ref{roth:lem9} the terms with
+$$
+\frac{i_1}{r_1}+ \cdots + \frac{i_m}{r_m} < \gamma - \eta
+$$
+vanish. In every other term, the weight is positive, so at least one $i_j$ is positive and the product estimate is strict. We have
+$$
+\left|  (h_1/q_1-\alpha)^{i_1} \cdots (h_m/q_m-\alpha)^{i_m} \right| < \frac{1}{(q_1^{i_1} \cdots q_m^{i_m})^\kappa} \leq q_1^{-r_1(\gamma - \eta)\kappa},
+$$
+since $q_j \geq q_1^{r_1/r_j}$ by \eqref{roth:eq52}. By using (3) of Lemma \ref{roth:lem9} we have
+$$
+\left| Q(h_1/q_1, \dots, h_m/q_m)\right| < (r_1 + 1) \cdots (r_m + 1) B_1^{1+3 \delta} q_1^{-r_1(\gamma - \eta)\kappa}
+$$
+$$
+< B_1^{1+ 4 \delta} q_1^{-r_1(\gamma-\eta)\kappa}
+$$
+$$
+\leq q_1^{(1+4\delta)\delta r_1-r_1(\gamma-\eta)\kappa}.
+$$
+Here the last comparison uses $B_1\leq q_1^{\delta r_1}$; the
+preceding strict inequalities preserve a strict upper bound for $|Q|$.
+Comparing this with \eqref{roth:eq54}, and using $q_1>1$, we obtain
+$$
+- m r_1(1+\delta) < (1+4 \delta) \delta r_1 - r_1(\gamma - \eta) \kappa,
+$$
+or
+$$
+\kappa < \frac{m(1+\delta) + \delta(1+4 \delta)}{\gamma - \eta} < \frac{m(1+4 \delta)}{\gamma - \eta},
+$$
+where the second inequality uses
+$1+4\delta<3m$, which follows from $m>16n^2\geq64$ and $\delta<1/m$.
+This contradicts \eqref{roth:eq49} and finishes the proof of the theorem.
+\lean{Prove denominator clearing and the Taylor upper bound as separate lemmas.
+With $q_1>1$ and $r_1>0$, compare logarithms and cancel $r_1\log q_1$.
+For strictness, use $\gamma-\eta>0$ to ensure each surviving Taylor term
+has a positive exponent; treat zero coefficients separately.}
+

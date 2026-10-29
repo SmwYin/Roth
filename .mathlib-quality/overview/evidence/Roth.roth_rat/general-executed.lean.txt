@@ -1,0 +1,66 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
+
+#check_failure Roth.roth_rat
+#check_failure Roth.approxSet
+#check @Rat.finite_rat_abs_sub_lt_one_div_den_sq
+#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational
+#check @Real.rpow_le_rpow_of_exponent_le
+namespace Roth289General
+lemma inferred_irrational {α κ : ℝ} (hκ : 2 ≤ κ)
+    (hinf : {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite) : Irrational α := by
+  apply (Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational α).mp
+  refine hinf.mono fun x hx ↦ hx.trans_le ?_
+  apply one_div_le_one_div_of_le (by positivity)
+  rw [← Real.rpow_natCast]
+  exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast x.den_pos) hκ
+lemma generalize
+    (hR : ∀ {α : ℝ}, Irrational α → IsAlgebraic ℚ α → ∀ {κ : ℝ},
+      {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite → κ ≤ 2)
+    {α : ℝ} (halg : IsAlgebraic ℚ α) {κ : ℝ}
+    (hinf : {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite) : κ ≤ 2 := by
+  by_contra! hκ
+  exact (hR (inferred_irrational hκ.le hinf) halg hinf).not_gt hκ
+lemma recover
+    (hR : ∀ {α : ℝ}, IsAlgebraic ℚ α → ∀ {κ : ℝ},
+      {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite → κ ≤ 2)
+    {α : ℝ} (_hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+    (hinf : {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite) : κ ≤ 2 :=
+  hR halg hinf
+lemma finite_iff_bound (α : ℝ) :
+    (∀ {κ : ℝ}, {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite → κ ≤ 2) ↔
+      ∀ κ : ℝ, 2 < κ → {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Finite := by
+  constructor
+  · intro h κ hκ
+    exact Set.not_infinite.mp fun hinf ↦ (h hinf).not_gt hκ
+  · intro h κ hinf
+    exact le_of_not_gt fun hκ ↦ hinf (h κ hκ)
+example {α κ : ℝ} (_hα : Irrational α) (_halg : IsAlgebraic ℚ α)
+    (_hinf : {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite) : True := by
+  fail_if_success
+    have : κ ≤ 2 := by exact?
+  fail_if_success
+    have : κ ≤ 2 := by aesop
+  trivial
+#print axioms Roth289General.inferred_irrational
+#print axioms Roth289General.generalize
+#print axioms Roth289General.recover
+#print axioms Roth289General.finite_iff_bound
+end Roth289General

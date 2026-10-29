@@ -1,0 +1,98 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.DiophantineApproximation.Basic\n\n#check_failure Roth.roth_rat\n#check_failure Roth.approxSet\n#check @Filter.eventually_cofinite\nnamespace Roth289Modern\nopen Filter\nopen scoped Filter\nlemma cofinite_iff_finite (\u03b1 \u03ba : \u211d) :\n    (\u2200\u1da0 x : \u211a in cofinite, 1 / (x.den : \u211d) ^ \u03ba \u2264 |\u03b1 - x|) \u2194\n      {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Finite := by\n  simp only [eventually_cofinite, not_le]\nlemma exponent_iff_cofinite (\u03b1 : \u211d) :\n    (\u2200 {\u03ba : \u211d}, {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite \u2192 \u03ba \u2264 2) \u2194\n      \u2200 \u03ba : \u211d, 2 < \u03ba \u2192 \u2200\u1da0 x : \u211a in cofinite, 1 / (x.den : \u211d) ^ \u03ba \u2264 |\u03b1 - x| := by\n  constructor\n  \u00b7 intro h \u03ba h\u03ba\n    exact (cofinite_iff_finite \u03b1 \u03ba).mpr (Set.not_infinite.mp fun hinf \u21a6 (h hinf).not_gt h\u03ba)\n  \u00b7 intro h \u03ba hinf\n    exact le_of_not_gt fun h\u03ba \u21a6 hinf ((cofinite_iff_finite \u03b1 \u03ba).mp (h \u03ba h\u03ba))\nlemma cofinite_consequence\n    (hR : \u2200 {\u03b1 : \u211d}, IsAlgebraic \u211a \u03b1 \u2192 \u2200 {\u03ba : \u211d},\n      {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite \u2192 \u03ba \u2264 2)\n    {\u03b1 \u03ba\u2081 \u03ba\u2082 : \u211d} (halg : IsAlgebraic \u211a \u03b1) (h\u2081 : 2 < \u03ba\u2081) (h\u2082 : 2 < \u03ba\u2082) :\n    \u2200\u1da0 x : \u211a in cofinite,\n      1 / (x.den : \u211d) ^ \u03ba\u2081 \u2264 |\u03b1 - x| \u2227 1 / (x.den : \u211d) ^ \u03ba\u2082 \u2264 |\u03b1 - x| :=\n  ((exponent_iff_cofinite \u03b1).mp (hR halg) \u03ba\u2081 h\u2081).and\n    ((exponent_iff_cofinite \u03b1).mp (hR halg) \u03ba\u2082 h\u2082)\nlemma recover\n    (hR : \u2200 {\u03b1 : \u211d}, IsAlgebraic \u211a \u03b1 \u2192 \u2200 \u03ba : \u211d, 2 < \u03ba \u2192\n      \u2200\u1da0 x : \u211a in cofinite, 1 / (x.den : \u211d) ^ \u03ba \u2264 |\u03b1 - x|)\n    {\u03b1 \u03ba : \u211d} (_h\u03b1 : Irrational \u03b1) (halg : IsAlgebraic \u211a \u03b1)\n    (hinf : {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite) : \u03ba \u2264 2 :=\n  (exponent_iff_cofinite \u03b1).mpr (hR halg) hinf\n#print axioms Roth289Modern.cofinite_iff_finite\n#print axioms Roth289Modern.exponent_iff_cofinite\n#print axioms Roth289Modern.cofinite_consequence\n#print axioms Roth289Modern.recover\nend Roth289Modern\n"
+  },
+  "elapsed_ms": 301,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "modern01",
+      "operation": "run_code",
+      "source": "modern-executed.lean.txt",
+      "source_sha256": "b5ba36964ea95b27f7113ead9933b26752cedb36ad67534d47c2de0b0dfb3a25",
+      "receipt": "modern01-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.roth_rat/root-requests/modern01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.roth_rat/modern-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.roth_rat`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.approxSet`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Filter.eventually_cofinite : \u2200 {\u03b1 : Type u_1} {p : \u03b1 \u2192 Prop}, (\u2200\u1da0 (x : \u03b1) in Filter.cofinite, p x) \u2194 {x | \u00acp x}.Finite\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth289Modern.cofinite_iff_finite' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 53,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth289Modern.exponent_iff_cofinite' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 54,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth289Modern.cofinite_consequence' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 55,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth289Modern.recover' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 56,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.roth_rat`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.approxSet`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Filter.eventually_cofinite : \u2200 {\u03b1 : Type u_1} {p : \u03b1 \u2192 Prop}, (\u2200\u1da0 (x : \u03b1) in Filter.cofinite, p x) \u2194 {x | \u00acp x}.Finite",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Roth289Modern.cofinite_iff_finite' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 53,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Roth289Modern.exponent_iff_cofinite' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 54,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Roth289Modern.cofinite_consequence' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 55,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Roth289Modern.recover' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 56,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "declaration": "Roth.roth_rat",
+  "canonical_index": 289,
+  "completed": true,
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "source_sha256": "f774fb8e3a148b1ae42b382788eaf8d7e5bb6c76adc4b562afa01bf75f1a94a6",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 2649,
+      "native_region_start_line": 16,
+      "axiom_print_required": true
+    },
+    {
+      "label": "generality",
+      "source": "general2-executed.lean.txt",
+      "receipt": "general02-receipt.json",
+      "format": "isolated",
+      "source_sha256": "c132ea88f22664626f6c33bcf5102e5289206b02c6b5107b51d547cca7e5e778",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.DiophantineApproximation.Basic\n\n#check_failure Roth.roth_rat\n#check_failure Roth.approxSet\n#check @Rat.finite_rat_abs_sub_lt_one_div_den_sq\n#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational\n#check @Real.rpow_le_rpow_of_exponent_le\nnamespace Roth289General\nlemma inferred_irrational {\u03b1 \u03ba : \u211d} (h\u03ba : 2 \u2264 \u03ba)\n    (hinf : {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite) : Irrational \u03b1 := by\n  apply (Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational \u03b1).mp\n  refine hinf.mono ?_\n  intro x hx\n  change |\u03b1 - (x : \u211d)| < 1 / (x.den : \u211d) ^ \u03ba at hx\n  change |\u03b1 - (x : \u211d)| < 1 / (x.den : \u211d) ^ 2\n  refine hx.trans_le ?_\n  apply one_div_le_one_div_of_le (by positivity)\n  rw [\u2190 Real.rpow_natCast]\n  exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast x.den_pos) h\u03ba\nlemma generalize\n    (hR : \u2200 {\u03b1 : \u211d}, Irrational \u03b1 \u2192 IsAlgebraic \u211a \u03b1 \u2192 \u2200 {\u03ba : \u211d},\n      {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite \u2192 \u03ba \u2264 2)\n    {\u03b1 : \u211d} (halg : IsAlgebraic \u211a \u03b1) {\u03ba : \u211d}\n    (hinf : {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite) : \u03ba \u2264 2 := by\n  by_contra! h\u03ba\n  exact (hR (inferred_irrational h\u03ba.le hinf) halg hinf).not_gt h\u03ba\nlemma recover\n    (hR : \u2200 {\u03b1 : \u211d}, IsAlgebraic \u211a \u03b1 \u2192 \u2200 {\u03ba : \u211d},\n      {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite \u2192 \u03ba \u2264 2)\n    {\u03b1 : \u211d} (_h\u03b1 : Irrational \u03b1) (halg : IsAlgebraic \u211a \u03b1) {\u03ba : \u211d}\n    (hinf : {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite) : \u03ba \u2264 2 :=\n  hR halg hinf\nlemma finite_iff_bound (\u03b1 : \u211d) :\n    (\u2200 {\u03ba : \u211d}, {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite \u2192 \u03ba \u2264 2) \u2194\n      \u2200 \u03ba : \u211d, 2 < \u03ba \u2192 {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Finite := by\n  constructor\n  \u00b7 intro h \u03ba h\u03ba\n    exact Set.not_infinite.mp fun hinf \u21a6 (h hinf).not_gt h\u03ba\n  \u00b7 intro h \u03ba hinf\n    exact le_of_not_gt fun h\u03ba \u21a6 hinf (h \u03ba h\u03ba)\nexample {\u03b1 \u03ba : \u211d} (_h\u03b1 : Irrational \u03b1) (_halg : IsAlgebraic \u211a \u03b1)\n    (_hinf : {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite) : True := by\n  fail_if_success\n    have : \u03ba \u2264 2 := by exact?\n  fail_if_success\n    have : \u03ba \u2264 2 := by aesop\n  trivial\n#print axioms Roth289General.inferred_irrational\n#print axioms Roth289General.generalize\n#print axioms Roth289General.recover\n#print axioms Roth289General.finite_iff_bound\nend Roth289General\n"
+      },
+      "elapsed_ms": 2808,
+      "native_region_start_line": 20,
+      "axiom_print_required": true
+    },
+    {
+      "label": "shape-inline",
+      "source": "shape2-executed.lean.txt",
+      "receipt": "shape02-receipt.json",
+      "format": "disk",
+      "source_sha256": "ee4abab04031c64ae24146688f3e1bf4a2fbf9a1cda0412d5001c65175110774",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 1333,
+      "native_region_start_line": 16,
+      "axiom_print_required": true
+    },
+    {
+      "label": "modern",
+      "source": "modern-executed.lean.txt",
+      "receipt": "modern01-receipt.json",
+      "format": "isolated",
+      "source_sha256": "b5ba36964ea95b27f7113ead9933b26752cedb36ad67534d47c2de0b0dfb3a25",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.DiophantineApproximation.Basic\n\n#check_failure Roth.roth_rat\n#check_failure Roth.approxSet\n#check @Filter.eventually_cofinite\nnamespace Roth289Modern\nopen Filter\nopen scoped Filter\nlemma cofinite_iff_finite (\u03b1 \u03ba : \u211d) :\n    (\u2200\u1da0 x : \u211a in cofinite, 1 / (x.den : \u211d) ^ \u03ba \u2264 |\u03b1 - x|) \u2194\n      {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Finite := by\n  simp only [eventually_cofinite, not_le]\nlemma exponent_iff_cofinite (\u03b1 : \u211d) :\n    (\u2200 {\u03ba : \u211d}, {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite \u2192 \u03ba \u2264 2) \u2194\n      \u2200 \u03ba : \u211d, 2 < \u03ba \u2192 \u2200\u1da0 x : \u211a in cofinite, 1 / (x.den : \u211d) ^ \u03ba \u2264 |\u03b1 - x| := by\n  constructor\n  \u00b7 intro h \u03ba h\u03ba\n    exact (cofinite_iff_finite \u03b1 \u03ba).mpr (Set.not_infinite.mp fun hinf \u21a6 (h hinf).not_gt h\u03ba)\n  \u00b7 intro h \u03ba hinf\n    exact le_of_not_gt fun h\u03ba \u21a6 hinf ((cofinite_iff_finite \u03b1 \u03ba).mp (h \u03ba h\u03ba))\nlemma cofinite_consequence\n    (hR : \u2200 {\u03b1 : \u211d}, IsAlgebraic \u211a \u03b1 \u2192 \u2200 {\u03ba : \u211d},\n      {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite \u2192 \u03ba \u2264 2)\n    {\u03b1 \u03ba\u2081 \u03ba\u2082 : \u211d} (halg : IsAlgebraic \u211a \u03b1) (h\u2081 : 2 < \u03ba\u2081) (h\u2082 : 2 < \u03ba\u2082) :\n    \u2200\u1da0 x : \u211a in cofinite,\n      1 / (x.den : \u211d) ^ \u03ba\u2081 \u2264 |\u03b1 - x| \u2227 1 / (x.den : \u211d) ^ \u03ba\u2082 \u2264 |\u03b1 - x| :=\n  ((exponent_iff_cofinite \u03b1).mp (hR halg) \u03ba\u2081 h\u2081).and\n    ((exponent_iff_cofinite \u03b1).mp (hR halg) \u03ba\u2082 h\u2082)\nlemma recover\n    (hR : \u2200 {\u03b1 : \u211d}, IsAlgebraic \u211a \u03b1 \u2192 \u2200 \u03ba : \u211d, 2 < \u03ba \u2192\n      \u2200\u1da0 x : \u211a in cofinite, 1 / (x.den : \u211d) ^ \u03ba \u2264 |\u03b1 - x|)\n    {\u03b1 \u03ba : \u211d} (_h\u03b1 : Irrational \u03b1) (halg : IsAlgebraic \u211a \u03b1)\n    (hinf : {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite) : \u03ba \u2264 2 :=\n  (exponent_iff_cofinite \u03b1).mpr (hR halg) hinf\n#print axioms Roth289Modern.cofinite_iff_finite\n#print axioms Roth289Modern.exponent_iff_cofinite\n#print axioms Roth289Modern.cofinite_consequence\n#print axioms Roth289Modern.recover\nend Roth289Modern\n"
+      },
+      "elapsed_ms": 301,
+      "native_region_start_line": 20,
+      "axiom_print_required": true
+    },
+    {
+      "label": "edges",
+      "source": "edges-executed.lean.txt",
+      "receipt": "edges01-receipt.json",
+      "format": "isolated",
+      "source_sha256": "db6b61e17f6c4725732a2f540c71fd001fc50360d3918257c072c67de544f2a1",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.DiophantineApproximation.Basic\n\n#check_failure Roth.roth_rat\n#check_failure Roth.approxSet\n#check @Rat.finite_rat_abs_sub_lt_one_div_den_sq\n#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational\n#check @Real.rpow_le_rpow_of_exponent_le\nnamespace Roth289General\nlemma inferred_irrational {\u03b1 \u03ba : \u211d} (h\u03ba : 2 \u2264 \u03ba)\n    (hinf : {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite) : Irrational \u03b1 := by\n  apply (Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational \u03b1).mp\n  refine hinf.mono ?_\n  intro x hx\n  change |\u03b1 - (x : \u211d)| < 1 / (x.den : \u211d) ^ \u03ba at hx\n  change |\u03b1 - (x : \u211d)| < 1 / (x.den : \u211d) ^ 2\n  refine hx.trans_le ?_\n  apply one_div_le_one_div_of_le (by positivity)\n  rw [\u2190 Real.rpow_natCast]\n  exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast x.den_pos) h\u03ba\n\nlemma rational_finite (a : \u211a) {\u03ba : \u211d} (h\u03ba : 2 \u2264 \u03ba) :\n    {x : \u211a | |(a : \u211d) - x| < 1 / (x.den : \u211d) ^ \u03ba}.Finite := by\n  apply Set.not_infinite.mp\n  intro hinf\n  exact (inferred_irrational h\u03ba hinf).ne_rat a rfl\nlemma sharp {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) :\n    {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ (2 : \u211d)}.Infinite := by\n  simpa only [Real.rpow_two] using Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational h\u03b1\nlemma coefficient_le_one\n    (hR : \u2200 {\u03b1 : \u211d}, IsAlgebraic \u211a \u03b1 \u2192 \u2200 {\u03ba : \u211d},\n      {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite \u2192 \u03ba \u2264 2)\n    {\u03b1 \u03ba C : \u211d} (halg : IsAlgebraic \u211a \u03b1) (hC : C \u2264 1)\n    (hinf : {x : \u211a | |\u03b1 - x| < C / (x.den : \u211d) ^ \u03ba}.Infinite) : \u03ba \u2264 2 := by\n  apply hR halg\n  refine hinf.mono ?_\n  intro x hx\n  change |\u03b1 - (x : \u211d)| < C / (x.den : \u211d) ^ \u03ba at hx\n  change |\u03b1 - (x : \u211d)| < 1 / (x.den : \u211d) ^ \u03ba\n  exact hx.trans_le (div_le_div_of_nonneg_right hC (by positivity))\n-- The pair representation has infinitely many exact unreduced representatives of zero.\ndef pairSet (\u03b1 \u03ba : \u211d) : Set (\u2124 \u00d7 \u2115) :=\n  {hq | 0 < hq.2 \u2227 |\u03b1 - (hq.1 : \u211d) / hq.2| < 1 / (hq.2 : \u211d) ^ \u03ba}\nlemma zero_pairs_infinite (\u03ba : \u211d) : (pairSet 0 \u03ba).Infinite := by\n  have hi : (Set.Ioi (0 : \u2115)).Infinite := Set.Ioi_infinite 0\n  refine (hi.image (f := fun q : \u2115 \u21a6 ((0 : \u2124), q)) (by\n    intro a _ b _ hab\n    exact congrArg Prod.snd hab)).mono ?_\n  rintro _ \u27e8q, hq, rfl\u27e9\n  have hq0 : (0 : \u211d) < q := by exact_mod_cast hq\n  exact \u27e8hq, by simpa using one_div_pos.mpr (Real.rpow_pos_of_pos hq0 \u03ba)\u27e9\nexample : \u00ac (\u2200 {\u03b1 : \u211d}, IsAlgebraic \u211a \u03b1 \u2192 \u2200 {\u03ba : \u211d},\n    (pairSet \u03b1 \u03ba).Infinite \u2192 \u03ba \u2264 2) := by\n  intro h\n  have hh := h (isAlgebraic_zero : IsAlgebraic \u211a (0 : \u211d)) (zero_pairs_infinite 3)\n  norm_num at hh\n#print axioms Roth289General.rational_finite\n#print axioms Roth289General.sharp\n#print axioms Roth289General.coefficient_le_one\n#print axioms Roth289General.zero_pairs_infinite\nend Roth289General\n"
+      },
+      "elapsed_ms": 1930,
+      "native_region_start_line": 20,
+      "axiom_print_required": true
+    }
+  ],
+  "rejected": [
+    {
+      "source": "general-executed.lean.txt",
+      "receipt": "general01-receipt.json",
+      "source_sha256": "6b8548796e2b8bdebcfd8322bec6004042e53e7143f8f2d3252fbbbc7f32badd",
+      "status": "Rejected set-membership elaboration; recovered sorryAx; no accepted proof claim"
+    },
+    {
+      "source": "shape-executed.lean.txt",
+      "receipt": "shape01-receipt.json",
+      "source_sha256": "3dff94a85e824d3fe265e870325d7b76bffe4100062577be64e8390002559105",
+      "status": "Rejected informational PANIC from opaque ConstantInfo.value! despite success flag; no accepted audit claim"
+    }
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "root_exclusive_native": true,
+  "attempt_accounting": {
+    "native_executions": 7,
+    "accepted": 5,
+    "rejected": 2
+  },
+  "scope": "Exact original target replay/no private helpers; full native type and canonical293 audit. Zero actual callers. Isolated hR explicitly supplied for generality/modern transforms; original hR is verified separately in actual context. No project imported in isolated context.",
+  "build_gate": "Actual root literal lake build at Main end289, file-end-build.json and unchanged source17."
+}

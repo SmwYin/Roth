@@ -1,0 +1,57 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
+
+#check_failure Roth.roth_rat
+#check_failure Roth.approxSet
+#check @Filter.eventually_cofinite
+namespace Roth289Modern
+open Filter
+open scoped Filter
+lemma cofinite_iff_finite (α κ : ℝ) :
+    (∀ᶠ x : ℚ in cofinite, 1 / (x.den : ℝ) ^ κ ≤ |α - x|) ↔
+      {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Finite := by
+  simp only [eventually_cofinite, not_le]
+lemma exponent_iff_cofinite (α : ℝ) :
+    (∀ {κ : ℝ}, {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite → κ ≤ 2) ↔
+      ∀ κ : ℝ, 2 < κ → ∀ᶠ x : ℚ in cofinite, 1 / (x.den : ℝ) ^ κ ≤ |α - x| := by
+  constructor
+  · intro h κ hκ
+    exact (cofinite_iff_finite α κ).mpr (Set.not_infinite.mp fun hinf ↦ (h hinf).not_gt hκ)
+  · intro h κ hinf
+    exact le_of_not_gt fun hκ ↦ hinf ((cofinite_iff_finite α κ).mp (h κ hκ))
+lemma cofinite_consequence
+    (hR : ∀ {α : ℝ}, IsAlgebraic ℚ α → ∀ {κ : ℝ},
+      {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite → κ ≤ 2)
+    {α κ₁ κ₂ : ℝ} (halg : IsAlgebraic ℚ α) (h₁ : 2 < κ₁) (h₂ : 2 < κ₂) :
+    ∀ᶠ x : ℚ in cofinite,
+      1 / (x.den : ℝ) ^ κ₁ ≤ |α - x| ∧ 1 / (x.den : ℝ) ^ κ₂ ≤ |α - x| :=
+  ((exponent_iff_cofinite α).mp (hR halg) κ₁ h₁).and
+    ((exponent_iff_cofinite α).mp (hR halg) κ₂ h₂)
+lemma recover
+    (hR : ∀ {α : ℝ}, IsAlgebraic ℚ α → ∀ κ : ℝ, 2 < κ →
+      ∀ᶠ x : ℚ in cofinite, 1 / (x.den : ℝ) ^ κ ≤ |α - x|)
+    {α κ : ℝ} (_hα : Irrational α) (halg : IsAlgebraic ℚ α)
+    (hinf : {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite) : κ ≤ 2 :=
+  (exponent_iff_cofinite α).mpr (hR halg) hinf
+#print axioms Roth289Modern.cofinite_iff_finite
+#print axioms Roth289Modern.exponent_iff_cofinite
+#print axioms Roth289Modern.cofinite_consequence
+#print axioms Roth289Modern.recover
+end Roth289Modern

@@ -1,0 +1,116 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.DiophantineApproximation.Basic\n\n#check_failure Roth.roth_rat\n#check_failure Roth.approxSet\n#check @Rat.finite_rat_abs_sub_lt_one_div_den_sq\n#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational\n#check @Real.rpow_le_rpow_of_exponent_le\nnamespace Roth289General\nlemma inferred_irrational {\u03b1 \u03ba : \u211d} (h\u03ba : 2 \u2264 \u03ba)\n    (hinf : {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite) : Irrational \u03b1 := by\n  apply (Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational \u03b1).mp\n  refine hinf.mono ?_\n  intro x hx\n  change |\u03b1 - (x : \u211d)| < 1 / (x.den : \u211d) ^ \u03ba at hx\n  change |\u03b1 - (x : \u211d)| < 1 / (x.den : \u211d) ^ 2\n  refine hx.trans_le ?_\n  apply one_div_le_one_div_of_le (by positivity)\n  rw [\u2190 Real.rpow_natCast]\n  exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast x.den_pos) h\u03ba\n\nlemma rational_finite (a : \u211a) {\u03ba : \u211d} (h\u03ba : 2 \u2264 \u03ba) :\n    {x : \u211a | |(a : \u211d) - x| < 1 / (x.den : \u211d) ^ \u03ba}.Finite := by\n  apply Set.not_infinite.mp\n  intro hinf\n  exact (inferred_irrational h\u03ba hinf).ne_rat a rfl\nlemma sharp {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) :\n    {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ (2 : \u211d)}.Infinite := by\n  simpa only [Real.rpow_two] using Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational h\u03b1\nlemma coefficient_le_one\n    (hR : \u2200 {\u03b1 : \u211d}, IsAlgebraic \u211a \u03b1 \u2192 \u2200 {\u03ba : \u211d},\n      {x : \u211a | |\u03b1 - x| < 1 / (x.den : \u211d) ^ \u03ba}.Infinite \u2192 \u03ba \u2264 2)\n    {\u03b1 \u03ba C : \u211d} (halg : IsAlgebraic \u211a \u03b1) (hC : C \u2264 1)\n    (hinf : {x : \u211a | |\u03b1 - x| < C / (x.den : \u211d) ^ \u03ba}.Infinite) : \u03ba \u2264 2 := by\n  apply hR halg\n  refine hinf.mono ?_\n  intro x hx\n  change |\u03b1 - (x : \u211d)| < C / (x.den : \u211d) ^ \u03ba at hx\n  change |\u03b1 - (x : \u211d)| < 1 / (x.den : \u211d) ^ \u03ba\n  exact hx.trans_le (div_le_div_of_nonneg_right hC (by positivity))\n-- The pair representation has infinitely many exact unreduced representatives of zero.\ndef pairSet (\u03b1 \u03ba : \u211d) : Set (\u2124 \u00d7 \u2115) :=\n  {hq | 0 < hq.2 \u2227 |\u03b1 - (hq.1 : \u211d) / hq.2| < 1 / (hq.2 : \u211d) ^ \u03ba}\nlemma zero_pairs_infinite (\u03ba : \u211d) : (pairSet 0 \u03ba).Infinite := by\n  have hi : (Set.Ioi (0 : \u2115)).Infinite := Set.Ioi_infinite 0\n  refine (hi.image (f := fun q : \u2115 \u21a6 ((0 : \u2124), q)) (by\n    intro a _ b _ hab\n    exact congrArg Prod.snd hab)).mono ?_\n  rintro _ \u27e8q, hq, rfl\u27e9\n  have hq0 : (0 : \u211d) < q := by exact_mod_cast hq\n  exact \u27e8hq, by simpa using one_div_pos.mpr (Real.rpow_pos_of_pos hq0 \u03ba)\u27e9\nexample : \u00ac (\u2200 {\u03b1 : \u211d}, IsAlgebraic \u211a \u03b1 \u2192 \u2200 {\u03ba : \u211d},\n    (pairSet \u03b1 \u03ba).Infinite \u2192 \u03ba \u2264 2) := by\n  intro h\n  have hh := h (isAlgebraic_zero : IsAlgebraic \u211a (0 : \u211d)) (zero_pairs_infinite 3)\n  norm_num at hh\n#print axioms Roth289General.rational_finite\n#print axioms Roth289General.sharp\n#print axioms Roth289General.coefficient_le_one\n#print axioms Roth289General.zero_pairs_infinite\nend Roth289General\n"
+  },
+  "elapsed_ms": 1930,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "edges01",
+      "operation": "run_code",
+      "source": "edges-executed.lean.txt",
+      "source_sha256": "db6b61e17f6c4725732a2f540c71fd001fc50360d3918257c072c67de544f2a1",
+      "receipt": "edges01-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.roth_rat/root-requests/edges01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.roth_rat/edges-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.roth_rat`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.approxSet`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Rat.finite_rat_abs_sub_lt_one_div_den_sq : \u2200 (\u03be : \u211a), {q | |\u03be - q| < 1 / \u2191q.den ^ 2}.Finite\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational : \u2200 (\u03be : \u211d),\\n  {q | |\u03be - \u2191q| < 1 / \u2191q.den ^ 2}.Infinite \u2194 Irrational \u03be\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_le_rpow_of_exponent_le : \u2200 {x y z : \u211d}, 1 \u2264 x \u2192 y \u2264 z \u2192 x ^ y \u2264 x ^ z\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth289General.rational_finite' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 74,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth289General.sharp' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 75,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth289General.coefficient_le_one' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 76,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth289General.zero_pairs_infinite' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 77,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.roth_rat`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.approxSet`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Rat.finite_rat_abs_sub_lt_one_div_den_sq : \u2200 (\u03be : \u211a), {q | |\u03be - q| < 1 / \u2191q.den ^ 2}.Finite",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational : \u2200 (\u03be : \u211d),\n  {q | |\u03be - \u2191q| < 1 / \u2191q.den ^ 2}.Infinite \u2194 Irrational \u03be",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_le_rpow_of_exponent_le : \u2200 {x y z : \u211d}, 1 \u2264 x \u2192 y \u2264 z \u2192 x ^ y \u2264 x ^ z",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Roth289General.rational_finite' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 74,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Roth289General.sharp' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 75,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Roth289General.coefficient_le_one' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 76,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Roth289General.zero_pairs_infinite' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 77,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}
