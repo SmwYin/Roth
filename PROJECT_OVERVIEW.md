@@ -3058,10 +3058,10 @@ entries are published only after the corresponding full applicable workflow is c
             ∃ W'' ∈ Roth.boxFamily r B,
               W' ≠ W'' ∧ ∀ j ∈ J, Roth.diag ((hasseDeriv j) W') %ₘ f = Roth.diag ((hasseDeriv j) W'') %ₘ f`
 - What: Two distinct integer box polynomials share every selected diagonal Hasse derivative remainder when a strict coefficient-array budget is smaller than the box family.
-- How: Encode each polynomial by the J × Fin natDegree remainder coefficients in a finite integer interval; use Fintype.exists_ne_map_eq_of_card_lt, ncard_boxFamily, and Polynomial.sum_modByMonic_coeff to recover full remainders.
-- Hypotheses: Arbitrary variable type; finite support of natural degree bounds; natural B,C; monic integer divisor; finite selected multiindices; low coefficient absolute bounds; strict real counting budget.
+- How: Encode each polynomial by the J × Fin natDegree remainder coefficients in a finite integer interval; use Fintype.exists_ne_map_eq_of_card_lt, ncard_boxFamily, and Polynomial.sum_modByMonic_coeff to recover full remainders. Finite support is only needed by the original counting proof, not by the result: the revised proof splits support finiteness and, in the infinite case, finprod=1 allows the zero-degree constant subfamily to supply a collision.
+- Hypotheses: Original has arbitrary σ, finitely supported natural r, natural B,C, monic integer f, finite J, low remainder-coefficient bounds and a strict real budget. Finite support of r is superfluous: full unchanged conclusion compiles after deleting only that premise.
 - Project dependencies: MvPolynomial.hasseDeriv, Roth.diag, Roth.boxFamily, Roth.boxFamily_finite, Roth.ncard_boxFamily
-- Caller summary: One explicit proof caller, private Roth.exists_mem_RSet_le_index_aux at MainLemma:550, call557. No external-to-file proof callers or direct type consumers. Full caller inlining preserves its signature.
+- Caller summary: One explicit proof caller, private Roth.exists_mem_RSet_le_index_aux at MainLemma:550, call557. No external-to-file proof callers or direct type consumers. Full caller inlining preserves its signature. Additional full-module replay replaces the target by its noFinite-support strengthening, recovers the exact original type, and preserves the actual caller signature; stronger proof/caller contain no original target call.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_ne_modByMonic_eq.md).
 
 ## Part 2: Cross-file dependencies
@@ -3586,7 +3586,7 @@ Completed `Roth.floor_rpow_count_lt_aux`: Real.add_rpow_le_rpow_add gives x^c+1<
 
 Completed `Roth.pigeonhole_count`: Existing rpow/floor/order primitives are appropriate. No exact existing replacement was verified in all15 search cells; the scalar floor helper and budget theorem in scratch are new proofs, not existing mathlib API.
 
-Completed `Roth.exists_ne_modByMonic_eq`: Existing finite-map collision and low-degree monic remainder reconstruction verified; finite-ring polynomial collision is related but does not apply to integer interval alphabets. Complete original is not <=3 existing mathlib calls.
+Completed `Roth.exists_ne_modByMonic_eq`: Existing finite-map collision and low-degree monic remainder reconstruction verified; finite-ring polynomial collision is related but does not apply to integer interval alphabets. Complete original is not <=3 existing mathlib calls. Infinite-source finite-target collision is also already mathlib as Finite.exists_ne_map_eq_of_infinite; all five new abstract-form searches and pinned native checks confirm it. Finprod default semantics do not give a source cardinality for infinite boxFamily.
 
 ## Part 4: Moral duplications
 
@@ -4597,7 +4597,7 @@ Completed `Roth.floor_rpow_count_lt_aux`: No public generality claim under the p
 Completed `Roth.pigeonhole_count`: verified: theorem powerBudget {a b t : ℝ} {k N : ℕ} (ha : 0 ≤ a) (hb : 1 < b)
     (hbase : a < b ^ t) (hN : 0 < N) (hbudget : t * k ≤ N) : a ^ k < b ^ N; semantic: Arbitrary a,b,t separate count generation from exponent lifting; permits other coefficient-count bounds. Flattening nD to k alone is only representation normalization.; hypothesis localization: N positivity can be localized to k=0 in verified localizedBudget; exact target cannot drop it because nD=0 is allowed.; sharpness: B0,c0,N0/no-budget and positive c=1/2 counterexamples compile. No claim that c>=1 is sharp or that current hypotheses are globally maximal.
 
-Completed `Roth.exists_ne_modByMonic_eq`: Verified finiteObservations over arbitrary finite α,ι and dependent finite codomains; verified polynomialObservations for arbitrary finite source α and finite observation indices ι, followed by exact original recovery. The first is existing pigeonhole API with Pi cardinal normalization; the second is a newly proved helper, not an existing mathlib replacement.
+Completed `Roth.exists_ne_modByMonic_eq`: STRICTLY NARROWER THAN STANDARD: deleting [Finite (Function.support r)] alone is verified by two clean independent proofs. Preferred constants route: finite branch original proof; infinite support gives finprod(r+1)=1 and the all-zero degree subfamily suffices. Independent Xi route uses infinitely many admissible variables and existing Finite.exists_ne_map_eq_of_infinite. Abstract finite/infinite polynomial observations are both compiled; full generalized Lean type is in generalized-type.json.
 
 ## Part 6: API improvements
 
@@ -5098,7 +5098,7 @@ Completed `Roth.floor_rpow_count_lt_aux`: No new primitive is needed for this in
 
 Completed `Roth.pigeonhole_count`: Possible arbitrary strict-base/exponent-budget lifting law with explicit zero-exponent behavior; public value undecided., Possible scalar floor-count estimate; supplied project helper is not existing mathlib.
 
-Completed `Roth.exists_ne_modByMonic_eq`: Potential bounded polynomial observation collision helper / finite coefficient alphabet counting bridge; acceptance and exact packaging remain concrete upstream design questions.
+Completed `Roth.exists_ne_modByMonic_eq`: Potential finite-alphabet polynomial-observation collision bridge, with finite/infinite source handling. Both outer pigeonhole principles and low-degree monic reconstruction already exist; finite support is not a missing mathematical prerequisite.
 
 ## Part 7: Junk / removable
 
@@ -6351,7 +6351,7 @@ Completed `Roth.floor_rpow_count_lt_aux` action: Keep unchanged; complete privat
 
 Completed `Roth.pigeonhole_count` action: Retain locally while considering the three concrete upstream API questions. Assessment complete, no task blocker; production files unchanged.
 
-Completed `Roth.exists_ne_modByMonic_eq` action: Retain project-local Hasse specialization pending the three upstream API design questions; use existing Fintype collision directly in any abstract-only version. No production edits in this assessment.
+Completed `Roth.exists_ne_modByMonic_eq` action: Recommend dropping the finite-support premise using the verified constants proof and keeping the Hasse specialization project-local while deciding the public polynomial-observation API. The verified strengthening does not by itself decide mathlib audience/API grain. No production edits in this assessment.
 
 ## Recommended action plan
 

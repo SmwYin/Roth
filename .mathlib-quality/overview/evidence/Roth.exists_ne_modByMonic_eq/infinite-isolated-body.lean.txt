@@ -1,0 +1,45 @@
+#check_failure Roth.exists_ne_modByMonic_eq
+#check Finite.exists_ne_map_eq_of_infinite
+#check finprod_of_infinite_mulSupport
+namespace Collision249Infinite
+
+theorem collision {α β : Type*} [Infinite α] [Finite β] (F : α → β) :
+    ∃ x y, x ≠ y ∧ F x = F y := Finite.exists_ne_map_eq_of_infinite F
+
+theorem polynomialObservations {α ι : Type*} [Infinite α] [Fintype ι]
+    (Q : α → ι → Polynomial ℤ) {f : Polynomial ℤ} (hf : f.Monic) (C : ℕ)
+    (hC : ∀ x j i, i < f.natDegree → |(Q x j %ₘ f).coeff i| ≤ C) :
+    ∃ x y, x ≠ y ∧ ∀ j, Q x j %ₘ f = Q y j %ₘ f := by
+  classical
+  let F (x : α) (p : ι × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=
+    ⟨(Q x p.1 %ₘ f).coeff p.2, abs_le.1 (hC x p.1 p.2 p.2.2)⟩
+  obtain ⟨x, y, hne, he⟩ := Finite.exists_ne_map_eq_of_infinite F
+  refine ⟨x, y, hne, fun j ↦ ?_⟩
+  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using
+    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)
+      (g (j, i) : ℤ)) he
+
+theorem infiniteSupportFinprod {σ : Type*} (r : σ → ℕ)
+    (h : ¬ Finite (Function.support r)) : ∏ᶠ j, (r j + 1) = 1 := by
+  have hinf : (Function.support r).Infinite := fun hs ↦ h (Set.finite_coe_iff.mpr hs)
+  exact finprod_of_infinite_mulSupport (by
+    simpa [Function.mulSupport, Function.support] using hinf)
+
+theorem zeroBudgetImpossible {σ : Type*} (r : σ → ℕ) (C n : ℕ) :
+    ¬ ((2 * C + 1 : ℕ) : ℝ) ^ n < ((0 : ℝ) + 1) ^ ∏ᶠ j, (r j + 1) := by
+  simp only [zero_add, one_pow]
+  exact not_lt_of_ge (one_le_pow₀ (show (1 : ℝ) ≤ ((2 * C + 1 : ℕ) : ℝ) by
+    exact_mod_cast (show 1 ≤ 2 * C + 1 by omega)))
+
+example : ¬ Finite (Function.support (fun _ : ℕ ↦ (1 : ℕ))) := by
+  simpa only [Function.support, ne_eq, one_ne_zero, not_false_eq_true, Set.setOf_true] using
+    (not_finite_iff_infinite.mpr (inferInstance : Infinite ℕ))
+example : ∏ᶠ _ : ℕ, (1 + 1 : ℕ) = 1 := by
+  apply infiniteSupportFinprod
+  simpa only [Function.support, ne_eq, one_ne_zero, not_false_eq_true, Set.setOf_true] using
+    (not_finite_iff_infinite.mpr (inferInstance : Infinite ℕ))
+#print axioms collision
+#print axioms polynomialObservations
+#print axioms infiniteSupportFinprod
+#print axioms zeroBudgetImpossible
+end Collision249Infinite

@@ -258,6 +258,8 @@ This counts the current overview assessments, separately from the earlier code c
 | 248 | `Roth.pigeonhole_count` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.pigeonhole_count.md) |
 | 249 | `Roth.exists_ne_modByMonic_eq` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.exists_ne_modByMonic_eq.md) |
 
+Completed reassessment of `Roth.exists_ne_modByMonic_eq`: the finite-support assumption is verified removable; the detailed report and evidence supersede the earlier completed assessment. Production Lean is unchanged.
+
 **Next declaration: `Roth.sub_mem_RSet`**, `Roth/MainLemma.lean:388`.
 Only the listed assessments are complete. No partial assessment was committed.
 

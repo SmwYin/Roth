@@ -1,0 +1,61 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Collision249Constants
+open Roth MvPolynomial
+theorem noFiniteConstants {σ : Type*} (r : σ → ℕ) (B : ℕ)
+    {f : Polynomial ℤ} (hf : f.Monic) (J : Finset (σ →₀ ℕ)) (C : ℕ)
+    (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,
+      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ C)
+    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ ∏ᶠ j, (r j + 1)) :
+    ∃ W' ∈ boxFamily r B, ∃ W'' ∈ boxFamily r B, W' ≠ W'' ∧
+      ∀ j ∈ J, diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f  := by
+  classical
+  have finiteCase (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ)
+      {f : Polynomial ℤ} (hf : f.Monic) (J : Finset (σ →₀ ℕ)) (C : ℕ)
+      (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,
+        |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ C)
+      (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ ∏ᶠ j, (r j + 1)) :
+      ∃ W' ∈ boxFamily r B, ∃ W'' ∈ boxFamily r B, W' ≠ W'' ∧
+        ∀ j ∈ J, diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f := by
+    classical
+    let : Fintype (boxFamily r B) := (boxFamily_finite r B).fintype
+    let F (W : boxFamily r B) (p : J × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=
+      ⟨(diag (hasseDeriv p.1.1 W.1) %ₘ f).coeff p.2, abs_le.1 (hC W.1 W.2 p.1.1 p.1.2 p.2.1 p.2.2)⟩
+    obtain ⟨W', W'', hne, h⟩ := Fintype.exists_ne_map_eq_of_card_lt F <| by
+      simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,
+        Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, mul_comm, Set.fintypeCard_eq_ncard,
+        ncard_boxFamily, show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by lia] using
+        (show (2 * C + 1) ^ (f.natDegree * J.card) < (B + 1) ^ ∏ᶠ j, (r j + 1) by
+          exact_mod_cast hcount)
+    refine ⟨W', W'.2, W'', W''.2, Subtype.coe_ne_coe.2 hne, fun j hj ↦ ?_⟩
+    simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using
+      congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)
+        (g (⟨j, hj⟩, i) : ℤ)) h
+  by_cases hfin : Finite (Function.support r)
+  · let : Finite (Function.support r) := hfin
+    exact finiteCase r B hf J C hC hcount
+  · have hinf : (Function.support r).Infinite := fun h ↦ hfin (Set.finite_coe_iff.mpr h)
+    have hp : ∏ᶠ j, (r j + 1) = 1 := finprod_of_infinite_mulSupport (by
+      simpa [Function.mulSupport, Function.support] using hinf)
+    have liftMem {W : MvPolynomial σ ℤ} (hW : W ∈ boxFamily (fun _ ↦ 0) B) :
+        W ∈ boxFamily r B :=
+      ⟨fun j ↦ (hW.1 j).trans (Nat.zero_le _), hW.2⟩
+    obtain ⟨W', hW', W'', hW'', hne, he⟩ := finiteCase (fun _ ↦ 0) B hf J C
+      (fun W hW ↦ hC W (liftMem hW)) (by simpa [hp] using hcount)
+    exact ⟨W', liftMem hW', W'', liftMem hW'', hne, he⟩
+end Collision249Constants
+#print axioms Collision249Constants.noFiniteConstants

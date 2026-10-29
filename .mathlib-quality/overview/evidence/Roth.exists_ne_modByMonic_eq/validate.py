@@ -32,7 +32,7 @@ excluded={'copy-manifest.json','worker-copy-manifest.json','root-review.json','r
 assert {p.name for p in D.iterdir()if p.is_file()}-excluded<=seen
 assert not list(D.glob('*.lean'))
 allowed={'propext','Classical.choice','Quot.sound'}
-assert set(v['standard_axioms'])==allowed and{x['label']for x in v['accepted']}=={'original','isolated','recovery','inline','guards'}
+assert set(v['standard_axioms'])==allowed and{x['label']for x in v['accepted']}=={'original','isolated','recovery','inline','guards','nofinite','constants','revision-caller','infinite-isolated'}
 def check_run(e,accepted=True,supplementary=False):
  r=rd(e['receipt']);s=(D/e['source']).read_text();z=result(r)
  assert isinstance(r['elapsed_ms'],int)and r['elapsed_ms']>=0 and not r['result'].get('isError',False)
@@ -61,9 +61,16 @@ for e in v['accepted']:
  assert sha(D/e['source'])==e['source_sha256']and rd(e['receipt'])['request']==e['original_execution_request']
  check_run(e)
 for e in v['supplementary_successes']:check_run(e,supplementary=True)
-assert len(v['rejected'])==3
+assert len(v['rejected'])==6
 for e in v['rejected']:
  r,z,ds=check_run(e,False);assert not z['success']and any(x['severity']=='error'for x in ds)
+for e in v['rejected_warning_candidates']:
+ r,z,ds=check_run(e,False);assert z['success'] and any(x['severity']=='warning'for x in ds)
+for e in v['rejected_preparation']:
+ r,z,ds=check_run(e,False);assert z['success']
+ assert any('Collision249Constants.noFiniteConstants' in x['message']for x in ds)
+ assert not any('COLL249_REVISED_CALLER_SIGNATURE_IDENTICAL' in x['message']for x in ds)
+ assert (D/e['source']).read_bytes()==(D/'constants-initial-success-executed.lean.txt').read_bytes()
 for e in v['warming']:
  z=result(rd(e['receipt']));assert z['partial']and not z['success']and z['timed_out']
 b=rd('input-manifest.json')['sources_and_pins'];fresh=rd('inputs.json')
@@ -123,4 +130,28 @@ for href in re.findall(r'\]\(([^)]+)\)',report):
  elif not href.startswith('https://'):raise AssertionError(href)
 assert all(x in report for x in['Phase4.5','Phase4.6','Phase5.5','Phase6.0','NOT-COMPOSABLE','BORDERLINE-needs-human'])
 assert rd('secret-guard.json')['exit_code']==0
-print('PASS canonical249: current manifest, fresh17, exact293, five clean native proofs, full caller, all15formal/all literature, scratch/integrated links')
+assert a['revision']==v['revision']==2 and a['generality_status']=='STRICTLY NARROWER THAN STANDARD'
+assert a['verified_removable_hypotheses']==v['verified_removable_hypotheses']==['Finite (Function.support r)']
+g=rd('generalized-type.json')
+assert rd('native-type.json')['type'].replace(' [Finite ↑(Function.support r)]','')==g['type']
+assert g['type']==next(x['message'].split(': ',1)[1]for x in result(rd('nofinite-receipt.json'))['items']if x['message'].startswith('COLL249_NOFINITE_FULL_TYPE:'))
+assert v['full_actual_callers']['revised_signatures_verified']==1 and v['full_actual_callers']['original_recovery_verified']
+assert '[Finite (Function.support r)]'not in (D/'nofinite-executed.lean.txt').read_text().split(':= by',1)[0]
+assert '[Finite (Function.support r)]'not in (D/'constants-executed.lean.txt').read_text().split(':= by',1)[0]
+rdeps=rd('revision-dependencies.json');assert 'Finite'not in rdeps['type'] and 'finprod_of_infinite_mulSupport'in rdeps['body']
+for k in ['type','body']:
+ raw=next(x['message'].split(': ',1)[1]for x in result(rd('constants-receipt.json'))['items']if x['message'].startswith('COLL249_CONSTANTS_'+k.upper()+'_CONSTANTS:'))
+ assert [x.strip()for x in raw.strip('[]').split(',')]==rdeps[k]
+assert len(rd('formal-search-infinite-matrix.json'))==5
+for meth in ['leanfinder','loogle','leansearch','rg','local_search']:
+ q=rd('search-infinite-'+meth+'.json');assert q['request']and q['result']
+q=rd('web-infinite-supplement.json');assert q['request']and q['response']['bytes']>0 and re.fullmatch('[0-9a-f]{64}',q['response']['sha256'])
+assert rd('revision-preparation.json')['failed_preparation']['exit_code']==1
+assert rd('revision-preparation.json')['corrected_preparation']['exit_code']==0
+historical=rd('historical-initial-verification.json')
+for old in historical['accepted']:
+ assert sha(D/old['source'])==old['source_sha256']
+ assert next(x for x in v['accepted']if x['label']==old['label'])==old
+assert rd('revision.json')['completed']and rd('revision.json')['root_acceptance']in ['pending','PASS']
+assert all(t in report for t in ['finite-support premise on r is removable','STRICTLY NARROWER THAN STANDARD','One premise to remove: Finite (Function.support r)','Infinite Xi source','Preferred constants route','only a sufficient numerical budget, not the exact cardinality of an infinite boxFamily'])
+print('PASS canonical249: current manifest, fresh17, exact293, nine clean native proofs, strengthened full caller, all15formal+5infinite/all literature, scratch/integrated links')

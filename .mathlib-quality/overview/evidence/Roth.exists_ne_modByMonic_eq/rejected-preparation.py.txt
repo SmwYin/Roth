@@ -1,0 +1,55 @@
+from pathlib import Path
+D=Path(__file__).parent;R=Path('/Users/ramin/LEAN/Roth')
+m=(D/'source-MainLemma.lean.txt').read_text().split('namespace Roth\n',1)[1].rsplit('end Roth',1)[0]
+t=(D/'target-excerpt.lean.txt').read_text().rstrip()
+new=(D/'constants-executed.lean.txt').read_text().split('theorem noFiniteConstants',1)[1].split('end Collision249Constants',1)[0]
+new='theorem replay'+new
+assert m.count(t)==1
+m=m.replace(t,new.rstrip()).replace(':= exists_ne_modByMonic_eq r B hf J C hC',':= replay r B hf J C hC')
+assert 'theorem exists_ne_modByMonic_eq' not in m
+sig=t.split(':= by',1)[0].replace('theorem exists_ne_modByMonic_eq','theorem originalRecovered')
+extra='''
+end Collision249RevisedMain
+namespace Collision249RevisedRecovery
+open Roth MvPolynomial
+'''+sig+''' := Collision249RevisedMain.replay r B hf J C hC hcount
+end Collision249RevisedRecovery
+#print axioms Collision249RevisedMain.replay
+#print axioms Collision249RevisedMain.main_lemma
+#print axioms Collision249RevisedRecovery.originalRecovered
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let old ← Lean.getConstInfo `Roth.exists_ne_modByMonic_eq
+  let recovered ← Lean.getConstInfo `Collision249RevisedRecovery.originalRecovered
+  unless ← Lean.Meta.isDefEq old.type recovered.type do
+    throwError "COLL249_REVISED_ORIGINAL_SIGNATURE_CHANGED"
+  Lean.logInfo "COLL249_REVISED_ORIGINAL_SIGNATURE_IDENTICAL"
+  let stronger ← Lean.getConstInfo `Collision249RevisedMain.replay
+  Lean.withOptions (fun o ↦ o.setBool `pp.funBinderTypes true) do
+    Lean.logInfo m!"COLL249_GENERALIZED_FULL_TYPE: {stronger.type}"
+  let some value := stronger.value? (allowOpaque := true)
+    | throwError "COLL249_REVISED_TARGET_NO_VALUE"
+  if value.getUsedConstants.contains `Roth.exists_ne_modByMonic_eq then
+    throwError "COLL249_REVISED_TARGET_RETAINS_ORIGINAL"
+  Lean.logInfo "COLL249_REVISED_TARGET_NO_ORIGINAL"
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let env ← Lean.getEnv
+  let short := `Roth.exists_mem_RSet_le_index_aux
+  let oldName := Lean.mkPrivateNameCore `Roth.MainLemma short
+  let newSuffix := short.replacePrefix `Roth `Collision249RevisedMain
+  let newName := Lean.mkPrivateNameCore env.mainModule newSuffix
+  let old ← Lean.getConstInfo oldName
+  let new ← Lean.getConstInfo newName
+  unless ← Lean.Meta.isDefEq old.type new.type do
+    throwError "COLL249_REVISED_CALLER_SIGNATURE_CHANGED"
+  Lean.logInfo "COLL249_REVISED_CALLER_SIGNATURE_IDENTICAL"
+  let some value := new.value? (allowOpaque := true)
+    | throwError "COLL249_REVISED_CALLER_NO_VALUE"
+  if value.getUsedConstants.contains `Roth.exists_ne_modByMonic_eq then
+    throwError "COLL249_REVISED_CALLER_RETAINS_ORIGINAL"
+  Lean.logInfo "COLL249_REVISED_CALLER_NO_ORIGINAL"
+'''
+s=(D/'disk-prefix.lean.txt').read_text()+'namespace Collision249RevisedMain\nopen Roth\n'+m+extra
+assert max(map(len,s.splitlines()))<=100
+(D/'revision-caller-executed.lean.txt').write_text(s);(R/'.lake/roth-overview-session/GenWronskianChecks.lean').write_text(s)
+print('PASS prepared full MainLemma with strengthened theorem, original-signature recovery and actual caller')
+print(s[-3600:])

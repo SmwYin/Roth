@@ -91,6 +91,76 @@
         "Collision249Guards.zeroBoundConstant",
         "Collision249Guards.nonmonicCannotDrop"
       ]
+    },
+    {
+      "label": "nofinite",
+      "source": "nofinite-executed.lean.txt",
+      "source_sha256": "a102551f22aa715fdf5b4cc80f518b27ab87cf4261e482c14e06424740154f54",
+      "receipt": "nofinite-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "COLL249_NOFINITE_FULL_TYPE:",
+        "COLL249_NOFINITE_NO_ORIGINAL"
+      ]
+    },
+    {
+      "label": "constants",
+      "source": "constants-executed.lean.txt",
+      "source_sha256": "e802439686a55fc6915ca19b76d6c170b4afa0a841f8f469dcb1ecc6c408a32d",
+      "receipt": "constants-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "COLL249_CONSTANTS_TYPE_CONSTANTS:",
+        "COLL249_CONSTANTS_BODY_CONSTANTS:",
+        "COLL249_CONSTANTS_NO_ORIGINAL"
+      ]
+    },
+    {
+      "label": "revision-caller",
+      "source": "revision-caller-executed.lean.txt",
+      "source_sha256": "1cd5a3bf12281d9b193ccef7e2e739154a7e93374b241ce8ec9b2cd3c87ee88f",
+      "receipt": "revision-caller-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "COLL249_REVISED_ORIGINAL_SIGNATURE_IDENTICAL",
+        "COLL249_GENERALIZED_FULL_TYPE:",
+        "COLL249_REVISED_TARGET_NO_ORIGINAL",
+        "COLL249_REVISED_CALLER_SIGNATURE_IDENTICAL",
+        "COLL249_REVISED_CALLER_NO_ORIGINAL"
+      ]
+    },
+    {
+      "label": "infinite-isolated",
+      "source": "infinite-isolated-executed.lean.txt",
+      "source_sha256": "1fb314719fb912d4a491ce98141bf748fb3bdd610518f47c021f18cd6a22a23d",
+      "receipt": "infinite-isolated-receipt.json",
+      "format": "virtual",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n#check_failure Roth.exists_ne_modByMonic_eq\n#check Finite.exists_ne_map_eq_of_infinite\n#check finprod_of_infinite_mulSupport\nnamespace Collision249Infinite\n\ntheorem collision {α β : Type*} [Infinite α] [Finite β] (F : α → β) :\n    ∃ x y, x ≠ y ∧ F x = F y := Finite.exists_ne_map_eq_of_infinite F\n\ntheorem polynomialObservations {α ι : Type*} [Infinite α] [Finite ι]\n    (Q : α → ι → Polynomial ℤ) {f : Polynomial ℤ} (hf : f.Monic) (C : ℕ)\n    (hC : ∀ x j i, i < f.natDegree → |(Q x j %ₘ f).coeff i| ≤ C) :\n    ∃ x y, x ≠ y ∧ ∀ j, Q x j %ₘ f = Q y j %ₘ f := by\n  classical\n  let : Fintype ι := Fintype.ofFinite ι\n  let F (x : α) (p : ι × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=\n    ⟨(Q x p.1 %ₘ f).coeff p.2, abs_le.1 (hC x p.1 p.2 p.2.2)⟩\n  obtain ⟨x, y, hne, he⟩ := Finite.exists_ne_map_eq_of_infinite F\n  refine ⟨x, y, hne, fun j ↦ ?_⟩\n  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using\n    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)\n      (g (j, i) : ℤ)) he\n\ntheorem infiniteSupportFinprod {σ : Type*} (r : σ → ℕ)\n    (h : ¬ Finite (Function.support r)) : ∏ᶠ j, (r j + 1) = 1 := by\n  have hinf : (Function.support r).Infinite := fun hs ↦ h (Set.finite_coe_iff.mpr hs)\n  exact finprod_of_infinite_mulSupport (by\n    simpa [Function.mulSupport, Function.support] using hinf)\n\ntheorem zeroBudgetImpossible {σ : Type*} (r : σ → ℕ) (C n : ℕ) :\n    ¬ ((2 * C + 1 : ℕ) : ℝ) ^ n < ((0 : ℝ) + 1) ^ ∏ᶠ j, (r j + 1) := by\n  simp only [zero_add, one_pow]\n  exact not_lt_of_ge (one_le_pow₀ (show (1 : ℝ) ≤ ((2 * C + 1 : ℕ) : ℝ) by\n    exact_mod_cast (show 1 ≤ 2 * C + 1 by omega)))\n\ntheorem natSupportInfinite : ¬ Finite (Function.support (fun _ : ℕ ↦ (1 : ℕ))) := by\n  have hinf : (Function.support (fun _ : ℕ ↦ (1 : ℕ))).Infinite := by\n    simpa [Function.support] using (Set.infinite_univ (α := ℕ))\n  exact not_finite_iff_infinite.mpr (Set.infinite_coe_iff.mpr hinf)\nexample : ∏ᶠ _ : ℕ, (1 + 1 : ℕ) = 1 :=\n  infiniteSupportFinprod _ natSupportInfinite\n#print axioms collision\n#print axioms polynomialObservations\n#print axioms infiniteSupportFinprod\n#print axioms zeroBudgetImpossible\nend Collision249Infinite\n"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "Finite.exists_ne_map_eq_of_infinite",
+        "finprod_of_infinite_mulSupport",
+        "Collision249Infinite.polynomialObservations",
+        "Collision249Infinite.infiniteSupportFinprod",
+        "Collision249Infinite.zeroBudgetImpossible"
+      ]
     }
   ],
   "rejected": [
@@ -111,6 +181,24 @@
       "receipt": "rejected-guards-receipt.json",
       "format": "disk",
       "reason": "Unqualified constant/coeff simplification and leadingCoeff normalization; corrected explicitly."
+    },
+    {
+      "source": "rejected-nofinite-executed.lean.txt",
+      "receipt": "rejected-nofinite-receipt.json",
+      "format": "disk",
+      "reason": "Correction preparation/elaboration failure; excluded from accepted evidence."
+    },
+    {
+      "source": "rejected-constants-executed.lean.txt",
+      "receipt": "rejected-constants-receipt.json",
+      "format": "disk",
+      "reason": "Correction preparation/elaboration failure; excluded from accepted evidence."
+    },
+    {
+      "source": "rejected-infinite-isolated-executed.lean.txt",
+      "receipt": "rejected-infinite-isolated-receipt.json",
+      "format": "virtual",
+      "reason": "Correction preparation/elaboration failure; excluded from accepted evidence."
     }
   ],
   "warming": [
@@ -129,10 +217,22 @@
       "receipt": "guards-initial-success-receipt.json",
       "format": "disk",
       "width_note": "Initial successful proof had one108column line; final source wrapped identically and recompiled."
+    },
+    {
+      "source": "nofinite-initial-success-executed.lean.txt",
+      "receipt": "nofinite-initial-success-receipt.json",
+      "format": "disk"
+    },
+    {
+      "source": "constants-initial-success-executed.lean.txt",
+      "receipt": "constants-initial-success-receipt.json",
+      "format": "disk"
     }
   ],
   "full_actual_callers": {
     "original_signatures_verified": 1,
+    "revised_signatures_verified": 1,
+    "original_recovery_verified": true,
     "modules": [
       "Roth.MainLemma"
     ],
@@ -146,5 +246,26 @@
     "source_pin_count": 17,
     "canonical_entries": 293,
     "imports_unchanged": true
-  }
+  },
+  "rejected_warning_candidates": [
+    {
+      "source": "nofinite-warning-executed.lean.txt",
+      "receipt": "nofinite-warning-receipt.json",
+      "format": "disk",
+      "reason": "Successful kernel proof with style/flexible warnings; cleaned and reexecuted before acceptance."
+    }
+  ],
+  "rejected_preparation": [
+    {
+      "source": "rejected-stale-preparation-source.lean.txt",
+      "receipt": "rejected-stale-preparation-receipt.json",
+      "format": "disk",
+      "reason": "Width preparation failed; query returned preceding constants proof, not the new caller source. Excluded from caller verification."
+    }
+  ],
+  "revision": 2,
+  "root_acceptance": "pending",
+  "verified_removable_hypotheses": [
+    "Finite (Function.support r)"
+  ]
 }

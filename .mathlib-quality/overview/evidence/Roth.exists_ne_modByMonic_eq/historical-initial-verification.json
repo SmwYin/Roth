@@ -1,0 +1,150 @@
+{
+  "declaration": "Roth.exists_ne_modByMonic_eq",
+  "canonical_index": 249,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "c93f6a37765c0588b03c68c1b4efc5729069201b8f83b0bebc8a9ff16f012e41",
+      "receipt": "original-final-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "COLL249_FULL_TYPE:",
+        "COLL249_SIGNATURE_IDENTICAL",
+        "COLL249_AUDIT: requested=293; unique=293",
+        "COLL249_AUDIT_PRESENT: present=293; values=293",
+        "COLL249_TYPE_CONSTANTS:",
+        "COLL249_BODY_CONSTANTS:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "8c831c6dc5cc4d49abcf2ef6d434d974d3309f64d6ca9c3afd1dfb15538377a7",
+      "receipt": "isolated-final-receipt.json",
+      "format": "virtual",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n#check_failure Roth.exists_ne_modByMonic_eq\n#check Fintype.exists_ne_map_eq_of_card_lt\n#check Polynomial.sum_modByMonic_coeff\n#check Fintype.card_pi\n#check Int.card_Icc\nnamespace Collision249Generic\n\ntheorem finiteObservations {α ι : Type*} [Fintype α] [Fintype ι]\n    {β : ι → Type*} [∀ i, Fintype (β i)] (F : α → ∀ i, β i)\n    (h : (∏ i, Fintype.card (β i)) < Fintype.card α) :\n    ∃ x y, x ≠ y ∧ ∀ i, F x i = F y i := by\n  classical\n  obtain ⟨x, y, hne, he⟩ := Fintype.exists_ne_map_eq_of_card_lt F (by\n    simpa only [Fintype.card_pi] using h)\n  exact ⟨x, y, hne, fun i ↦ congrFun he i⟩\n\ntheorem polynomialObservations {α ι : Type*} [Fintype α] [Fintype ι]\n    (Q : α → ι → Polynomial ℤ) {f : Polynomial ℤ} (hf : f.Monic) (C : ℕ)\n    (hC : ∀ x j i, i < f.natDegree → |(Q x j %ₘ f).coeff i| ≤ C)\n    (hcount : (2 * C + 1) ^ (f.natDegree * Fintype.card ι) < Fintype.card α) :\n    ∃ x y, x ≠ y ∧ ∀ j, Q x j %ₘ f = Q y j %ₘ f := by\n  classical\n  let F (x : α) (p : ι × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=\n    ⟨(Q x p.1 %ₘ f).coeff p.2, abs_le.1 (hC x p.1 p.2 p.2.2)⟩\n  obtain ⟨x, y, hne, he⟩ := Fintype.exists_ne_map_eq_of_card_lt F (by\n    simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,\n      Fintype.card_prod, Fintype.card_fin, mul_comm,\n      show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by omega] using hcount)\n  refine ⟨x, y, hne, fun j ↦ ?_⟩\n  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using\n    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)\n      (g (j, i) : ℤ)) he\n\ntheorem remainderRecover {R : Type*} [Ring R] {f P Q : Polynomial R} (hf : f.Monic)\n    (h : ∀ i < f.natDegree, (P %ₘ f).coeff i = (Q %ₘ f).coeff i) : P %ₘ f = Q %ₘ f := by\n  rw [← Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree (p := P),\n    ← Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree (p := Q)]\n  exact Finset.sum_congr rfl fun i _ ↦ congrArg (Polynomial.monomial (i : ℕ)) (h i i.2)\n\nexample (C N : ℕ) : (2 * C + 1) ^ (0 * N) = 1 := by simp\nexample (n C : ℕ) : (2 * C + 1) ^ (n * 0) = 1 := by simp\nexample (N : ℕ) : ¬ (1 : ℝ) < ((0 : ℝ) + 1) ^ N := by simp\nexample (P : Polynomial ℤ) : P %ₘ (1 : Polynomial ℤ) = 0 := by simp\nexample : (Polynomial.X : Polynomial ℤ) %ₘ 0 ≠ 0 %ₘ 0 := by simp\nexample : ∀ i < (0 : Polynomial ℤ).natDegree,\n    ((Polynomial.X : Polynomial ℤ) %ₘ 0).coeff i = (0 %ₘ (0 : Polynomial ℤ)).coeff i := by\n  simp\nexample : ¬ ∃ x y : Fin 1, x ≠ y := by simp\n#print axioms finiteObservations\n#print axioms polynomialObservations\n#print axioms remainderRecover\nend Collision249Generic\n"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "Collision249Generic.finiteObservations",
+        "Collision249Generic.polynomialObservations",
+        "Collision249Generic.remainderRecover"
+      ]
+    },
+    {
+      "label": "recovery",
+      "source": "recovery-executed.lean.txt",
+      "source_sha256": "d1e2f309243485e0f7c2a14ed5135f93b586ad6a440a8eda9831878711da1f6f",
+      "receipt": "recovery-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "COLL249_RECOVERY_SIGNATURE_IDENTICAL"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "571607e953ecede848a8ad21e371c90051c58b010aac8d0f8717a645f21065b3",
+      "receipt": "inline-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "COLL249_INLINE_SIGNATURE_IDENTICAL",
+        "COLL249_INLINE_NO_TARGET"
+      ]
+    },
+    {
+      "label": "guards",
+      "source": "guards-executed.lean.txt",
+      "source_sha256": "ecf363fd5ba53dc516c31e2086937851a2ee632a0c8aaa1fcccb8a738498064c",
+      "receipt": "guards-receipt.json",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "Collision249Guards.zeroBoundConstant",
+        "Collision249Guards.nonmonicCannotDrop"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "rejected-isolated-executed.lean.txt",
+      "receipt": "rejected-isolated-receipt.json",
+      "format": "virtual",
+      "reason": "Missing local classical decidability for dependent Pi Fintype; corrected."
+    },
+    {
+      "source": "rejected-inline-executed.lean.txt",
+      "receipt": "rejected-inline-receipt.json",
+      "format": "disk",
+      "reason": "Local Type* introduced a fresh universe; corrected by using caller σ."
+    },
+    {
+      "source": "rejected-guards-executed.lean.txt",
+      "receipt": "rejected-guards-receipt.json",
+      "format": "disk",
+      "reason": "Unqualified constant/coeff simplification and leadingCoeff normalization; corrected explicitly."
+    }
+  ],
+  "warming": [
+    {
+      "receipt": "original-warming-receipt.json"
+    }
+  ],
+  "supplementary_successes": [
+    {
+      "source": "original-initial-success-executed.lean.txt",
+      "receipt": "original-initial-success-receipt.json",
+      "format": "disk"
+    },
+    {
+      "source": "guards-initial-success-executed.lean.txt",
+      "receipt": "guards-initial-success-receipt.json",
+      "format": "disk",
+      "width_note": "Initial successful proof had one108column line; final source wrapped identically and recompiled."
+    }
+  ],
+  "full_actual_callers": {
+    "original_signatures_verified": 1,
+    "modules": [
+      "Roth.MainLemma"
+    ],
+    "proof_calls": 1
+  },
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "fad927215a124d6928eaf99af55185c1261bcc2a834a2c2fcbda3946fa3ceafc",
+    "isolated_imports": 18,
+    "disk_imports": 9,
+    "source_pin_count": 17,
+    "canonical_entries": 293,
+    "imports_unchanged": true
+  }
+}
