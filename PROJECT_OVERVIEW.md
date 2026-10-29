@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 242/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 243/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 242; remaining: 51.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 81 BORDERLINE-needs-human, 57 SKIP.
+- Completed applicable assessments: 243; remaining: 50.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 82 BORDERLINE-needs-human, 57 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2979,6 +2979,20 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit source caller and one direct original value consumer, norm_coeff_modByMonic_le; full MainLemma induction and dependent proof replay succeeds.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_norm_coeff_reduction_aux.md).
 
+### Completed: `Roth.norm_coeff_modByMonic_le`
+
+- Type: `∀ {R : Type u_1} [inst : SeminormedRing R] {f : Polynomial R} {A : ℝ},
+  (∀ (i : ℕ), ‖f.coeff i‖ ≤ A) →
+    ∀ (P : Polynomial R) {C : ℝ},
+      (∀ (i : ℕ), ‖P.coeff i‖ ≤ C) →
+        ∀ {s : ℕ}, P.natDegree ≤ s → ∀ (i : ℕ), ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C`
+- What: Every coefficient of the monic-division remainder is bounded by (1+A)^(s+1-f.natDegree) C, with natural subtraction saturating at zero.
+- How: Strong degree induction combines private exists_norm_coeff_reduction_aux with Polynomial.div_wf_lemma: one leading-term elimination lowers degree and multiplies a coefficient bound by at most 1+A.
+- Hypotheses: An arbitrary seminormed ring, coefficient bounds A and C for f and P, and P.natDegree≤s; no monicity, nontriviality or sign premises.
+- Project dependencies: Roth.exists_norm_coeff_reduction_aux
+- Caller summary: One explicit body caller, private abs_coeff_diag_hasseDeriv_modByMonic_le_aux at MainLemma:512; zero external-to-file or direct type consumers. Fullmodule caller reroute to new generic size estimate compiles with original signature.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.norm_coeff_modByMonic_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3489,6 +3503,8 @@ Completed `Roth.three_small_factors`: Real.lt_rpow_of_log_lt, Real.log_pow, Real
 
 Completed `Roth.exists_norm_coeff_reduction_aux`: Nontriviality follows from the changed remainder. Nonmonic divisors leave P unchanged, so the divisor is monic; the same changed-remainder condition gives P nonzero and divisor degree<=P degree. Define Q by subtracting the leading monomial multiple of f. The division recursion identifies the same remainder, its well-founded degree lemma yields the strict degree drop, and coefficient formulas plus norm_sub_le/norm_mul_le give the new bound. The public coefficient-remainder theorem iterates this step by strong induction; this helper is not itself the full iterated estimate.
 
+Completed `Roth.norm_coeff_modByMonic_le`: Existing division and norm building blocks do not supply the quantitative iteration. CoeffMem gives algebraic submodule membership, not bounds on archimedean size; GaussNorm/supNorm provide alternative representations.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3974,6 +3990,8 @@ Completed `Roth.two_lt_rpow_aux`: Shares the square-comparison method with publi
 Completed `Roth.three_small_factors`: The local key repeats one power/log transport for three bases. sqrt_lt_floor and mul_log_div_two_lt_log_mainCoeffBound are prerequisite floor and logarithm estimates, not the same proposition; no independent inline rederivation found.
 
 Completed `Roth.exists_norm_coeff_reduction_aux`: One leading-term elimination and coefficient-budget step, distinct from the iterated public remainder estimate. The latter uses strong induction and a saturated natural exponent. No inherited contribution verdict.
+
+Completed `Roth.norm_coeff_modByMonic_le`: The private reduction is one step of this theorem; diagonal Hasse remainder estimate is a genuine downstream specialization, not a duplicate. Factor/root bounds are different statements.
 
 ## Part 5: Generalization opportunities
 
@@ -4471,6 +4489,8 @@ Completed `Roth.three_small_factors`: Compiled replacement of hA by 0≤Real.log
 
 Completed `Roth.exists_norm_coeff_reduction_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.norm_coeff_modByMonic_le`: Verified mathlib-only Ring R and arbitrary v:R→ℝ with v0=0, nonnegativity, sub triangle and submultiplicativity, preserving s+1-f.natDegree. This is a newly proved size_remainder, not existing mathlib. Bundled RingSeminorm alternative is source-inspected, not claimed compile-verified; no extra import authorization received.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4957,6 +4977,8 @@ Completed `Roth.two_lt_rpow_aux`: No new primitive is needed for this internal o
 Completed `Roth.three_small_factors`: Possible generic strict floor-power absorption from a non-strict half-log budget; its API boundary relative to floor/log primitives and exact Roth triple remains a future upstream design choice.
 
 Completed `Roth.exists_norm_coeff_reduction_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.norm_coeff_modByMonic_le`: Quantitative coefficient growth under iterated monic reduction; choice of direct norm, bundled seminorm or supNorm public interface remains upstream design.
 
 ## Part 7: Junk / removable
 
@@ -5447,6 +5469,8 @@ Completed `Roth.three_small_factors`: Used by3 distinct private callers with all
 
 Completed `Roth.exists_norm_coeff_reduction_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.norm_coeff_modByMonic_le`: Not removable as a ≤3-existing-mathlib-call wrapper; the only local caller can use the new generic theorem but that is a new proof. Local direct inlining hit default limits and is not a deletion recommendation.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5693,6 +5717,7 @@ Completed `Roth.exists_norm_coeff_reduction_aux`: Retain a live private proof in
 | 240 | `Roth.two_lt_rpow_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.two_lt_rpow_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.two_lt_rpow_aux/root-acceptance.json) |
 | 241 | `Roth.three_small_factors` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.three_small_factors.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.three_small_factors/root-acceptance.json) |
 | 242 | `Roth.exists_norm_coeff_reduction_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_norm_coeff_reduction_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_norm_coeff_reduction_aux/root-acceptance.json) |
+| 243 | `Roth.norm_coeff_modByMonic_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.norm_coeff_modByMonic_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.norm_coeff_modByMonic_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6176,12 +6201,14 @@ Completed `Roth.three_small_factors` action: BORDERLINE-needs-human: retain prod
 
 Completed `Roth.exists_norm_coeff_reduction_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.norm_coeff_modByMonic_le` action: Retain locally. Resolve the three concrete upstream API questions; then generalise/cleanup the selected primary estimate before proposing a quantitative polynomial-remainder PR.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.norm_coeff_modByMonic_le` next. Supporting identities receive their own applicable checks.
+   `Roth.boxFamily_eq_image_finsupp_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,134 @@
+{
+  "declaration": "Roth.norm_coeff_modByMonic_le",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "e8037f518eaf319e7006f792713f491a8d9db5251830b815751f7dcd78097ad8",
+      "receipt": "original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "REM243_FULL_TYPE:",
+        "REM243_AUDIT: requested=293; unique=293",
+        "REM243_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "raw",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "b542cfe9ff40b01f313983823aca11de0013d860c18f9190aa4c2ad936d3043c",
+      "receipt": "isolated-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.norm_coeff_modByMonic_le\nnamespace Rem243Isolated\nprivate lemma reduction {R : Type*} [Ring R] (v : R → ℝ)\n    (v0 : v 0 = 0) (vn : ∀ x, 0 ≤ v x)\n    (vsub : ∀ x y, v (x - y) ≤ v x + v y)\n    (vmul : ∀ x y, v (x * y) ≤ v x * v y) {f P : Polynomial R}\n    {A C : ℝ} (hfA : ∀ i, v (f.coeff i) ≤ A) (hP : ∀ i, v (P.coeff i) ≤ C) {s : ℕ}\n    (hs : P.natDegree ≤ s) (hf1 : f ≠ 1) (hself : P %ₘ f ≠ P) : 0 < f.natDegree ∧ f.natDegree ≤ s ∧\n    ∃ Q : Polynomial R, Q.natDegree ≤ s - 1 ∧ (∀ i, v (Q.coeff i) ≤ (1 + A) * C) ∧\n    P %ₘ f = Q %ₘ f := by\n  have : Nontrivial R := Polynomial.Nontrivial.of_polynomial_ne hself\n  have hf : f.Monic := by\n    by_contra hf\n    exact hself (Polynomial.modByMonic_eq_of_not_monic P hf)\n  have hP0 : P ≠ 0 := fun h ↦ hself (by simp [h])\n  have hdeg : f.degree ≤ P.degree := le_of_not_gt fun h ↦\n    hself ((Polynomial.modByMonic_eq_self_iff hf).2 h)\n  let Q := P - f * (Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree))\n  have hmod : P %ₘ f = Q %ₘ f := by\n    conv_lhs =>\n      rw [Polynomial.modByMonic, dite_eq_left hf, Polynomial.divModByMonicAux,\n        dite_eq_left ⟨hdeg, hP0⟩]\n    rw [Polynomial.modByMonic, dite_eq_left hf]\n  refine ⟨Nat.pos_of_ne_zero (fun hn ↦ hf1 (Polynomial.eq_one_of_monic_natDegree_zero hf hn)),\n    (Polynomial.natDegree_le_natDegree hdeg).trans hs, Q, ?_, ?_, hmod⟩\n  · by_cases hQ0 : Q = 0\n    · simp [hQ0]\n    · exact Nat.le_sub_one_of_lt ((Polynomial.natDegree_lt_natDegree hQ0\n        (Polynomial.div_wf_lemma ⟨hdeg, hP0⟩ hf)).trans_le hs)\n  · intro i\n    rw [Polynomial.coeff_sub, ← mul_assoc, Polynomial.coeff_mul_X_pow', add_mul, one_mul]\n    refine (vsub _ _).trans (add_le_add (hP i) ?_)\n    split_ifs\n    · rw [Polynomial.coeff_mul_C]\n      exact (vmul _ _).trans (mul_le_mul (hfA _) (hP _) (vn _)\n        ((vn _).trans (hfA 0)))\n    · simpa [v0] using mul_nonneg ((vn _).trans (hfA 0)) ((vn _).trans (hP 0))\n\n\ntheorem size_remainder {R : Type*} [Ring R] (v : R → ℝ)\n    (v0 : v 0 = 0) (vn : ∀ x, 0 ≤ v x)\n    (vsub : ∀ x y, v (x - y) ≤ v x + v y)\n    (vmul : ∀ x y, v (x * y) ≤ v x * v y) {f : Polynomial R} {A : ℝ}\n    (hfA : ∀ i, v (f.coeff i) ≤ A) (P : Polynomial R) {C : ℝ} (hP : ∀ i, v (P.coeff i) ≤ C) {s : ℕ}\n    (hs : P.natDegree ≤ s) (i : ℕ) :\n    v ((P %ₘ f).coeff i) ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by\n  have hA : 1 ≤ 1 + A := le_add_of_nonneg_right ((vn _).trans (hfA 0))\n  by_cases hf1 : f = 1\n  · simpa [hf1, v0] using mul_nonneg (pow_nonneg (zero_le_one.trans hA) (s + 1))\n      ((vn _).trans (hP 0))\n  induction s using Nat.strong_induction_on generalizing P C with\n  | _ s ih =>\n  by_cases hself : P %ₘ f = P\n  · simpa [hself] using (hP i).trans\n      (le_mul_of_one_le_left ((vn _).trans (hP 0)) (one_le_pow₀ hA))\n  obtain ⟨hn, hfs, Q, hQdeg, hQc, hmod⟩ := reduction v v0 vn vsub vmul hfA hP hs hf1 hself\n  rw [hmod]\n  refine (ih (s - 1) (by lia) Q hQc hQdeg).trans_eq ?_\n  rw [← mul_assoc, ← pow_succ]\n  congr 2\n  lia\n\n\n#print axioms size_remainder\n#check @Polynomial.div_wf_lemma\n#check @Polynomial.modByMonic_eq_of_not_monic\n#check @Polynomial.modByMonic_eq_self_iff\n#check @Polynomial.coeff_mul_X_pow'\n-- A degree bound alone provides no coefficient norm bound.\ntheorem degree_not_size : ¬ (∀ p : Polynomial ℝ, p.natDegree ≤ 0 → ‖p.coeff 0‖ ≤ 1) := by\n  intro h\n  have hh := h (Polynomial.C 2) (by simp)\n  norm_num at hh\n-- Natural subtraction must saturate at zero.\ntheorem saturation (s n : ℕ) (h : s + 1 ≤ n) (A C : ℝ) :\n    (1 + A) ^ (s + 1 - n) * C = C := by simp [Nat.sub_eq_zero_of_le h]\n#print axioms degree_not_size\n#print axioms saturation\nend Rem243Isolated\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Rem243Isolated.size_remainder' depends on axioms:"
+      ]
+    },
+    {
+      "label": "edge",
+      "format": "raw",
+      "source": "edge-executed.lean.txt",
+      "source_sha256": "393ffe407ebfe5b316774d1afbd48126c4dc246733fa2a598c5cc531960e2ec6",
+      "receipt": "edge-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.norm_coeff_modByMonic_le\nnamespace Rem243Isolated\nprivate lemma reduction {R : Type*} [Ring R] (v : R → ℝ)\n    (v0 : v 0 = 0) (vn : ∀ x, 0 ≤ v x)\n    (vsub : ∀ x y, v (x - y) ≤ v x + v y)\n    (vmul : ∀ x y, v (x * y) ≤ v x * v y) {f P : Polynomial R}\n    {A C : ℝ} (hfA : ∀ i, v (f.coeff i) ≤ A) (hP : ∀ i, v (P.coeff i) ≤ C) {s : ℕ}\n    (hs : P.natDegree ≤ s) (hf1 : f ≠ 1) (hself : P %ₘ f ≠ P) : 0 < f.natDegree ∧ f.natDegree ≤ s ∧\n    ∃ Q : Polynomial R, Q.natDegree ≤ s - 1 ∧ (∀ i, v (Q.coeff i) ≤ (1 + A) * C) ∧\n    P %ₘ f = Q %ₘ f := by\n  have : Nontrivial R := Polynomial.Nontrivial.of_polynomial_ne hself\n  have hf : f.Monic := by\n    by_contra hf\n    exact hself (Polynomial.modByMonic_eq_of_not_monic P hf)\n  have hP0 : P ≠ 0 := fun h ↦ hself (by simp [h])\n  have hdeg : f.degree ≤ P.degree := le_of_not_gt fun h ↦\n    hself ((Polynomial.modByMonic_eq_self_iff hf).2 h)\n  let Q := P - f * (Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree))\n  have hmod : P %ₘ f = Q %ₘ f := by\n    conv_lhs =>\n      rw [Polynomial.modByMonic, dite_eq_left hf, Polynomial.divModByMonicAux,\n        dite_eq_left ⟨hdeg, hP0⟩]\n    rw [Polynomial.modByMonic, dite_eq_left hf]\n  refine ⟨Nat.pos_of_ne_zero (fun hn ↦ hf1 (Polynomial.eq_one_of_monic_natDegree_zero hf hn)),\n    (Polynomial.natDegree_le_natDegree hdeg).trans hs, Q, ?_, ?_, hmod⟩\n  · by_cases hQ0 : Q = 0\n    · simp [hQ0]\n    · exact Nat.le_sub_one_of_lt ((Polynomial.natDegree_lt_natDegree hQ0\n        (Polynomial.div_wf_lemma ⟨hdeg, hP0⟩ hf)).trans_le hs)\n  · intro i\n    rw [Polynomial.coeff_sub, ← mul_assoc, Polynomial.coeff_mul_X_pow', add_mul, one_mul]\n    refine (vsub _ _).trans (add_le_add (hP i) ?_)\n    split_ifs\n    · rw [Polynomial.coeff_mul_C]\n      exact (vmul _ _).trans (mul_le_mul (hfA _) (hP _) (vn _)\n        ((vn _).trans (hfA 0)))\n    · simpa [v0] using mul_nonneg ((vn _).trans (hfA 0)) ((vn _).trans (hP 0))\n\n\ntheorem size_remainder {R : Type*} [Ring R] (v : R → ℝ)\n    (v0 : v 0 = 0) (vn : ∀ x, 0 ≤ v x)\n    (vsub : ∀ x y, v (x - y) ≤ v x + v y)\n    (vmul : ∀ x y, v (x * y) ≤ v x * v y) {f : Polynomial R} {A : ℝ}\n    (hfA : ∀ i, v (f.coeff i) ≤ A) (P : Polynomial R) {C : ℝ} (hP : ∀ i, v (P.coeff i) ≤ C) {s : ℕ}\n    (hs : P.natDegree ≤ s) (i : ℕ) :\n    v ((P %ₘ f).coeff i) ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by\n  have hA : 1 ≤ 1 + A := le_add_of_nonneg_right ((vn _).trans (hfA 0))\n  by_cases hf1 : f = 1\n  · simpa [hf1, v0] using mul_nonneg (pow_nonneg (zero_le_one.trans hA) (s + 1))\n      ((vn _).trans (hP 0))\n  induction s using Nat.strong_induction_on generalizing P C with\n  | _ s ih =>\n  by_cases hself : P %ₘ f = P\n  · simpa [hself] using (hP i).trans\n      (le_mul_of_one_le_left ((vn _).trans (hP 0)) (one_le_pow₀ hA))\n  obtain ⟨hn, hfs, Q, hQdeg, hQc, hmod⟩ := reduction v v0 vn vsub vmul hfA hP hs hf1 hself\n  rw [hmod]\n  refine (ih (s - 1) (by lia) Q hQc hQdeg).trans_eq ?_\n  rw [← mul_assoc, ← pow_succ]\n  congr 2\n  lia\n\n\n#print axioms size_remainder\n#check @Polynomial.div_wf_lemma\n#check @Polynomial.modByMonic_eq_of_not_monic\n#check @Polynomial.modByMonic_eq_self_iff\n#check @Polynomial.coeff_mul_X_pow'\n-- A degree bound alone provides no coefficient norm bound.\ntheorem degree_not_size : ¬ (∀ p : Polynomial ℝ, p.natDegree ≤ 0 → ‖p.coeff 0‖ ≤ 1) := by\n  intro h\n  have hh := h (Polynomial.C 2) (by simp)\n  norm_num at hh\n-- Natural subtraction must saturate at zero.\ntheorem saturation (s n : ℕ) (h : s + 1 ≤ n) (A C : ℝ) :\n    (1 + A) ^ (s + 1 - n) * C = C := by simp [Nat.sub_eq_zero_of_le h]\n#print axioms degree_not_size\n#print axioms saturation\n\n-- The original statement is recovered without any sign or commutativity premise.\ntheorem original {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}\n    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (P : Polynomial R) {C : ℝ}\n    (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ} (hs : P.natDegree ≤ s) (i : ℕ) :\n    ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C :=\n  size_remainder norm norm_zero norm_nonneg norm_sub_le norm_mul_le hfA P hP hs i\n-- Concrete bound parameters imply nonnegativity even at coefficient zero.\ntheorem signs {R : Type*} [SeminormedRing R] {f P : Polynomial R} {A C : ℝ}\n    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (hP : ∀ i, ‖P.coeff i‖ ≤ C) : 0 ≤ A ∧ 0 ≤ C :=\n  ⟨(norm_nonneg _).trans (hfA 0), (norm_nonneg _).trans (hP 0)⟩\ntheorem nonmonic {R : Type*} [SeminormedRing R] {f P : Polynomial R}\n    (hf : ¬ f.Monic) {C : ℝ} (hP : ∀ i, ‖P.coeff i‖ ≤ C) (i : ℕ) :\n    ‖(P %ₘ f).coeff i‖ ≤ C := by\n  rw [Polynomial.modByMonic_eq_of_not_monic _ hf]\n  exact hP i\ntheorem f_one {R : Type*} [SeminormedRing R] (P : Polynomial R) (i : ℕ) :\n    ‖(P %ₘ 1).coeff i‖ = 0 := by simp\ntheorem p_zero {R : Type*} [SeminormedRing R] (f : Polynomial R) (i : ℕ) :\n    ‖((0 : Polynomial R) %ₘ f).coeff i‖ = 0 := by simp\ntheorem f_zero {R : Type*} [SeminormedRing R] (P : Polynomial R) : P %ₘ 0 = P := by simp\n-- Degree data / submodule membership do not bound archimedean size.\nexample {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}\n    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (P : Polynomial R) {C : ℝ}\n    (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ} (hs : P.natDegree ≤ s) (i : ℕ) :\n    ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by\n  fail_if_success exact Polynomial.natDegree_modByMonic_le P\n  fail_if_success solve | simp only [Polynomial.modByMonic_eq_sub_mul_div]\n  exact original hfA P hP hs i\n-- Removing the final elimination from the exponent is false already for X modulo X-2.\ntheorem final_step_needed :\n    ¬ ‖(((Polynomial.X : Polynomial ℝ) %ₘ\n      (Polynomial.X - Polynomial.C 2)).coeff 0)‖ ≤ 1 := by\n  norm_num [Polynomial.modByMonic_X_sub_C_eq_C_eval]\n#print axioms original\n#print axioms signs\n#print axioms nonmonic\n#print axioms f_one\n#print axioms p_zero\n#print axioms f_zero\n#print axioms final_step_needed\nend Rem243Isolated\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Rem243Isolated.original' depends on axioms:",
+        "'Rem243Isolated.final_step_needed' depends on axioms:"
+      ]
+    },
+    {
+      "label": "project",
+      "format": "disk",
+      "source": "project-executed.lean.txt",
+      "source_sha256": "0c43753b50d94fe149408483edd10171e1c04dfc5a693e487c19d45f6df349fe",
+      "receipt": "project-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "REM243_PROJECT: actual caller re-aimed; original signature retained"
+      ]
+    },
+    {
+      "label": "availability",
+      "format": "disk",
+      "source": "availability-executed.lean.txt",
+      "source_sha256": "f4d8bc4fbe2e26636c7dd5b11cd5cdd2b39fc2f229db5832377c1fa16b95f26c",
+      "receipt": "availability-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "REM243_RINGSEMINORM_AVAILABLE: false",
+        "REM243_COEFFMEM_AVAILABLE: false"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "inline-rejected-executed.lean.txt",
+      "receipt": "inline-rejected-receipt.json",
+      "reason": "Actual fullmodule proof inlining as local have reached default200k whnf. No resource raise; rejected kernel recovery is not accepted."
+    },
+    {
+      "source": "edge-rejected-executed.lean.txt",
+      "receipt": "edge-rejected-receipt.json",
+      "reason": "fail_if_success simp checked progress rather than closure; corrected to solve wrapper, all other edge results rerun."
+    }
+  ],
+  "warming": [
+    {
+      "source": "original-executed.lean.txt",
+      "receipt": "original-warming-receipt.json"
+    }
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "_private.Roth.MainLemma.0.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux"
+  ],
+  "canonical_direct_type_consumers": [],
+  "composition": {
+    "strict_existing_mathlib_composition_verified": false,
+    "new_generic_is_existing_mathlib": false,
+    "generic_size_verified": true,
+    "original_recovery_verified": true,
+    "actual_caller_replays": 1,
+    "original_signatures_retained_by_defeq": true,
+    "full_body_inline_success": false,
+    "full_body_inline_attempted": true,
+    "imported_transitive_target_freedom_claimed": false
+  },
+  "printer_elision": {
+    "original": true,
+    "elided_characters": 82687,
+    "full_kernel_body_dump_claimed": false
+  }
+}

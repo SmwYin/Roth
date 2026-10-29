@@ -1,0 +1,165 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.norm_coeff_modByMonic_le\nnamespace Rem243Isolated\nprivate lemma reduction {R : Type*} [Ring R] (v : R → ℝ)\n    (v0 : v 0 = 0) (vn : ∀ x, 0 ≤ v x)\n    (vsub : ∀ x y, v (x - y) ≤ v x + v y)\n    (vmul : ∀ x y, v (x * y) ≤ v x * v y) {f P : Polynomial R}\n    {A C : ℝ} (hfA : ∀ i, v (f.coeff i) ≤ A) (hP : ∀ i, v (P.coeff i) ≤ C) {s : ℕ}\n    (hs : P.natDegree ≤ s) (hf1 : f ≠ 1) (hself : P %ₘ f ≠ P) : 0 < f.natDegree ∧ f.natDegree ≤ s ∧\n    ∃ Q : Polynomial R, Q.natDegree ≤ s - 1 ∧ (∀ i, v (Q.coeff i) ≤ (1 + A) * C) ∧\n    P %ₘ f = Q %ₘ f := by\n  have : Nontrivial R := Polynomial.Nontrivial.of_polynomial_ne hself\n  have hf : f.Monic := by\n    by_contra hf\n    exact hself (Polynomial.modByMonic_eq_of_not_monic P hf)\n  have hP0 : P ≠ 0 := fun h ↦ hself (by simp [h])\n  have hdeg : f.degree ≤ P.degree := le_of_not_gt fun h ↦\n    hself ((Polynomial.modByMonic_eq_self_iff hf).2 h)\n  let Q := P - f * (Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree))\n  have hmod : P %ₘ f = Q %ₘ f := by\n    conv_lhs =>\n      rw [Polynomial.modByMonic, dite_eq_left hf, Polynomial.divModByMonicAux,\n        dite_eq_left ⟨hdeg, hP0⟩]\n    rw [Polynomial.modByMonic, dite_eq_left hf]\n  refine ⟨Nat.pos_of_ne_zero (fun hn ↦ hf1 (Polynomial.eq_one_of_monic_natDegree_zero hf hn)),\n    (Polynomial.natDegree_le_natDegree hdeg).trans hs, Q, ?_, ?_, hmod⟩\n  · by_cases hQ0 : Q = 0\n    · simp [hQ0]\n    · exact Nat.le_sub_one_of_lt ((Polynomial.natDegree_lt_natDegree hQ0\n        (Polynomial.div_wf_lemma ⟨hdeg, hP0⟩ hf)).trans_le hs)\n  · intro i\n    rw [Polynomial.coeff_sub, ← mul_assoc, Polynomial.coeff_mul_X_pow', add_mul, one_mul]\n    refine (vsub _ _).trans (add_le_add (hP i) ?_)\n    split_ifs\n    · rw [Polynomial.coeff_mul_C]\n      exact (vmul _ _).trans (mul_le_mul (hfA _) (hP _) (vn _)\n        ((vn _).trans (hfA 0)))\n    · simpa [v0] using mul_nonneg ((vn _).trans (hfA 0)) ((vn _).trans (hP 0))\n\n\ntheorem size_remainder {R : Type*} [Ring R] (v : R → ℝ)\n    (v0 : v 0 = 0) (vn : ∀ x, 0 ≤ v x)\n    (vsub : ∀ x y, v (x - y) ≤ v x + v y)\n    (vmul : ∀ x y, v (x * y) ≤ v x * v y) {f : Polynomial R} {A : ℝ}\n    (hfA : ∀ i, v (f.coeff i) ≤ A) (P : Polynomial R) {C : ℝ} (hP : ∀ i, v (P.coeff i) ≤ C) {s : ℕ}\n    (hs : P.natDegree ≤ s) (i : ℕ) :\n    v ((P %ₘ f).coeff i) ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by\n  have hA : 1 ≤ 1 + A := le_add_of_nonneg_right ((vn _).trans (hfA 0))\n  by_cases hf1 : f = 1\n  · simpa [hf1, v0] using mul_nonneg (pow_nonneg (zero_le_one.trans hA) (s + 1))\n      ((vn _).trans (hP 0))\n  induction s using Nat.strong_induction_on generalizing P C with\n  | _ s ih =>\n  by_cases hself : P %ₘ f = P\n  · simpa [hself] using (hP i).trans\n      (le_mul_of_one_le_left ((vn _).trans (hP 0)) (one_le_pow₀ hA))\n  obtain ⟨hn, hfs, Q, hQdeg, hQc, hmod⟩ := reduction v v0 vn vsub vmul hfA hP hs hf1 hself\n  rw [hmod]\n  refine (ih (s - 1) (by lia) Q hQc hQdeg).trans_eq ?_\n  rw [← mul_assoc, ← pow_succ]\n  congr 2\n  lia\n\n\n#print axioms size_remainder\n#check @Polynomial.div_wf_lemma\n#check @Polynomial.modByMonic_eq_of_not_monic\n#check @Polynomial.modByMonic_eq_self_iff\n#check @Polynomial.coeff_mul_X_pow'\n-- A degree bound alone provides no coefficient norm bound.\ntheorem degree_not_size : ¬ (∀ p : Polynomial ℝ, p.natDegree ≤ 0 → ‖p.coeff 0‖ ≤ 1) := by\n  intro h\n  have hh := h (Polynomial.C 2) (by simp)\n  norm_num at hh\n-- Natural subtraction must saturate at zero.\ntheorem saturation (s n : ℕ) (h : s + 1 ≤ n) (A C : ℝ) :\n    (1 + A) ^ (s + 1 - n) * C = C := by simp [Nat.sub_eq_zero_of_le h]\n#print axioms degree_not_size\n#print axioms saturation\n\n-- The original statement is recovered without any sign or commutativity premise.\ntheorem original {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}\n    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (P : Polynomial R) {C : ℝ}\n    (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ} (hs : P.natDegree ≤ s) (i : ℕ) :\n    ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C :=\n  size_remainder norm norm_zero norm_nonneg norm_sub_le norm_mul_le hfA P hP hs i\n-- Concrete bound parameters imply nonnegativity even at coefficient zero.\ntheorem signs {R : Type*} [SeminormedRing R] {f P : Polynomial R} {A C : ℝ}\n    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (hP : ∀ i, ‖P.coeff i‖ ≤ C) : 0 ≤ A ∧ 0 ≤ C :=\n  ⟨(norm_nonneg _).trans (hfA 0), (norm_nonneg _).trans (hP 0)⟩\ntheorem nonmonic {R : Type*} [SeminormedRing R] {f P : Polynomial R}\n    (hf : ¬ f.Monic) {C : ℝ} (hP : ∀ i, ‖P.coeff i‖ ≤ C) (i : ℕ) :\n    ‖(P %ₘ f).coeff i‖ ≤ C := by\n  rw [Polynomial.modByMonic_eq_of_not_monic _ hf]\n  exact hP i\ntheorem f_one {R : Type*} [SeminormedRing R] (P : Polynomial R) (i : ℕ) :\n    ‖(P %ₘ 1).coeff i‖ = 0 := by simp\ntheorem p_zero {R : Type*} [SeminormedRing R] (f : Polynomial R) (i : ℕ) :\n    ‖((0 : Polynomial R) %ₘ f).coeff i‖ = 0 := by simp\ntheorem f_zero {R : Type*} [SeminormedRing R] (P : Polynomial R) : P %ₘ 0 = P := by simp\n-- Degree data / submodule membership do not bound archimedean size.\nexample {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}\n    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (P : Polynomial R) {C : ℝ}\n    (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ} (hs : P.natDegree ≤ s) (i : ℕ) :\n    ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by\n  fail_if_success exact Polynomial.natDegree_modByMonic_le P\n  fail_if_success simp only [Polynomial.modByMonic_eq_sub_mul_div]\n  exact original hfA P hP hs i\n-- Removing the final elimination from the exponent is false already for X modulo X-2.\ntheorem final_step_needed :\n    ¬ ‖(((Polynomial.X : Polynomial ℝ) %ₘ\n      (Polynomial.X - Polynomial.C 2)).coeff 0)‖ ≤ 1 := by\n  norm_num [Polynomial.modByMonic_X_sub_C_eq_C_eval]\n#print axioms original\n#print axioms signs\n#print axioms nonmonic\n#print axioms f_one\n#print axioms p_zero\n#print axioms f_zero\n#print axioms final_step_needed\nend Rem243Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.norm_coeff_modByMonic_le`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.size_remainder' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 83,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.div_wf_lemma : ∀ {R : Type u_1} [inst : Ring R] {p q : Polynomial R},\\n  q.degree ≤ p.degree ∧ p ≠ 0 →\\n    q.Monic → (p - q * (Polynomial.C p.leadingCoeff * Polynomial.X ^ (p.natDegree - q.natDegree))).degree < p.degree\",\n      \"line\": 84,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.modByMonic_eq_of_not_monic : ∀ {R : Type u_1} [inst : Ring R] {q : Polynomial R} (p : Polynomial R),\\n  ¬q.Monic → p %ₘ q = p\",\n      \"line\": 85,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.modByMonic_eq_self_iff : ∀ {R : Type u_1} [inst : Ring R] {p q : Polynomial R} [Nontrivial R],\\n  q.Monic → (p %ₘ q = p ↔ p.degree < q.degree)\",\n      \"line\": 86,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.coeff_mul_X_pow' : ∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n d : ℕ),\\n  (p * Polynomial.X ^ n).coeff d = if n ≤ d then p.coeff (d - n) else 0\",\n      \"line\": 87,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.degree_not_size' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 96,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.saturation' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 97,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"The tactic provided to `fail_if_success` succeeded but was expected to fail:\\n  simp only [Polynomial.modByMonic_eq_sub_mul_div]\",\n      \"line\": 125,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 132,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.signs' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 133,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.nonmonic' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 134,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.f_one' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 135,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.p_zero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 136,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.f_zero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 137,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Rem243Isolated.final_step_needed' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 138,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.norm_coeff_modByMonic_le`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.size_remainder' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 83,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.div_wf_lemma : ∀ {R : Type u_1} [inst : Ring R] {p q : Polynomial R},\n  q.degree ≤ p.degree ∧ p ≠ 0 →\n    q.Monic → (p - q * (Polynomial.C p.leadingCoeff * Polynomial.X ^ (p.natDegree - q.natDegree))).degree < p.degree",
+          "line": 84,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.modByMonic_eq_of_not_monic : ∀ {R : Type u_1} [inst : Ring R] {q : Polynomial R} (p : Polynomial R),\n  ¬q.Monic → p %ₘ q = p",
+          "line": 85,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.modByMonic_eq_self_iff : ∀ {R : Type u_1} [inst : Ring R] {p q : Polynomial R} [Nontrivial R],\n  q.Monic → (p %ₘ q = p ↔ p.degree < q.degree)",
+          "line": 86,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.coeff_mul_X_pow' : ∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n d : ℕ),\n  (p * Polynomial.X ^ n).coeff d = if n ≤ d then p.coeff (d - n) else 0",
+          "line": 87,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.degree_not_size' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 96,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.saturation' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 97,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "The tactic provided to `fail_if_success` succeeded but was expected to fail:\n  simp only [Polynomial.modByMonic_eq_sub_mul_div]",
+          "line": 125,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 132,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.signs' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 133,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.nonmonic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 134,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.f_one' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 135,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.p_zero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 136,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.f_zero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 137,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Rem243Isolated.final_step_needed' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 138,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 902
+}

@@ -1,0 +1,85 @@
+{
+  "executable_occurrences": 1,
+  "distinct_declarations": 1,
+  "external_to_file": 0,
+  "callers": [
+    {
+      "file": "Roth/MainLemma.lean",
+      "line": 497,
+      "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "short": "abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "kind": "lemma",
+      "visibility": "private",
+      "end_line": 513,
+      "source": "private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ}\n    {P : MvPolynomial σ ℤ} {r : σ → ℕ} {A B : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)\n    (hd : ∀ k, degreeOf k P ≤ r k) (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (j : σ →₀ ℕ) (i : ℕ) :\n    |((diag (hasseDeriv j P) %ₘ f).coeff i : ℝ)| ≤ (1 + A) ^ ((∑ k, r k) + 1 - f.natDegree) *\n      (((∏ k, (r k + 1) : ℕ) : ℝ) * (2 ^ (∑ k, r k) * B)) := by\n  have hB : 0 ≤ B := (abs_nonneg _).trans (hc 0)\n  have hdP : ∀ k, degreeOf k (hasseDeriv j P) ≤ r k := fun k ↦\n    (degreeOf_hasseDeriv_le k j P).trans (hd k)\n  have hsupp : ((hasseDeriv j P).support.card : ℝ) ≤ ((∏ k, (r k + 1) : ℕ) : ℝ) := by\n    exact_mod_cast card_le_card_box fun d he k ↦ (monomial_le_degreeOf k he).trans (hdP k)\n  have hcD : ∀ k, |((diag (hasseDeriv j P)).coeff k : ℝ)| ≤\n      ((∏ k, (r k + 1) : ℕ) : ℝ) * (2 ^ (∑ k, r k) * B) := fun k ↦\n    (abs_coeff_diag_le _ (abs_coeff_hasseDeriv_le j P hd hc) k).trans\n      (mul_le_mul_of_nonneg_right hsupp (by positivity))\n  simpa only [Int.norm_eq_abs, Nat.cast_prod, Nat.cast_add, Nat.cast_one] using\n    norm_coeff_modByMonic_le (by simpa [Int.norm_eq_abs] using hA) _\n      (by simpa [Int.norm_eq_abs] using hcD) (natDegree_diag_le _ hdP) i",
+      "signature": "private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ}\n    {P : MvPolynomial σ ℤ} {r : σ → ℕ} {A B : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)\n    (hd : ∀ k, degreeOf k P ≤ r k) (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (j : σ →₀ ℕ) (i : ℕ) :\n    |((diag (hasseDeriv j P) %ₘ f).coeff i : ℝ)| ≤ (1 + A) ^ ((∑ k, r k) + 1 - f.natDegree) *\n      (((∏ k, (r k + 1) : ℕ) : ℝ) * (2 ^ (∑ k, r k) * B))",
+      "body": "by\n  have hB : 0 ≤ B := (abs_nonneg _).trans (hc 0)\n  have hdP : ∀ k, degreeOf k (hasseDeriv j P) ≤ r k := fun k ↦\n    (degreeOf_hasseDeriv_le k j P).trans (hd k)\n  have hsupp : ((hasseDeriv j P).support.card : ℝ) ≤ ((∏ k, (r k + 1) : ℕ) : ℝ) := by\n    exact_mod_cast card_le_card_box fun d he k ↦ (monomial_le_degreeOf k he).trans (hdP k)\n  have hcD : ∀ k, |((diag (hasseDeriv j P)).coeff k : ℝ)| ≤\n      ((∏ k, (r k + 1) : ℕ) : ℝ) * (2 ^ (∑ k, r k) * B) := fun k ↦\n    (abs_coeff_diag_le _ (abs_coeff_hasseDeriv_le j P hd hc) k).trans\n      (mul_le_mul_of_nonneg_right hsupp (by positivity))\n  simpa only [Int.norm_eq_abs, Nat.cast_prod, Nat.cast_add, Nat.cast_one] using\n    norm_coeff_modByMonic_le (by simpa [Int.norm_eq_abs] using hA) _\n      (by simpa [Int.norm_eq_abs] using hcD) (natDegree_diag_le _ hdP) i",
+      "proof_lines": 13,
+      "sha256": "4379fff6892510f6d08274e4961f1953d72b6151d470de57f6f83b9a4e50c704",
+      "what": "Diagonal derivative remainders have an explicit coefficient bound in terms of support size, derivative inflation and monic division loss.",
+      "how": "Combine card_le_card_box, abs_coeff_diag_le and abs_coeff_hasseDeriv_le, then apply norm_coeff_modByMonic_le and natDegree_diag_le.",
+      "hypotheses": "Finite variables, degree bounds and coefficient bounds for the input and divisor.",
+      "source_body_refs": [
+        "MvPolynomial.degreeOf_hasseDeriv_le",
+        "MvPolynomial.hasseDeriv",
+        "Roth.abs_coeff_diag_le",
+        "Roth.abs_coeff_hasseDeriv_le",
+        "Roth.card_le_card_box",
+        "Roth.diag",
+        "Roth.natDegree_diag_le",
+        "Roth.norm_coeff_modByMonic_le"
+      ],
+      "source_type_refs": [
+        "MvPolynomial.hasseDeriv",
+        "Roth.diag"
+      ],
+      "source_callers": [
+        {
+          "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+          "file": "Roth/MainLemma.lean",
+          "line": 515
+        }
+      ],
+      "notes": [],
+      "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+      "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+      "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+      "uses_from_project": [
+        "MvPolynomial.degreeOf_hasseDeriv_le",
+        "MvPolynomial.hasseDeriv",
+        "Roth.abs_coeff_diag_le",
+        "Roth.abs_coeff_hasseDeriv_le",
+        "Roth.card_le_card_box",
+        "Roth.diag",
+        "Roth.natDegree_diag_le",
+        "Roth.norm_coeff_modByMonic_le"
+      ],
+      "used_by_in_file": [
+        "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux"
+      ],
+      "used_by_other_files": [],
+      "assignment_offset": 428,
+      "project_body_refs": [
+        "MvPolynomial.degreeOf_hasseDeriv_le",
+        "MvPolynomial.hasseDeriv",
+        "Roth.abs_coeff_diag_le",
+        "Roth.abs_coeff_hasseDeriv_le",
+        "Roth.card_le_card_box",
+        "Roth.diag",
+        "Roth.natDegree_diag_le",
+        "Roth.norm_coeff_modByMonic_le"
+      ],
+      "project_type_refs": [
+        "MvPolynomial.hasseDeriv",
+        "Roth.diag"
+      ],
+      "project_callers": [
+        {
+          "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+          "file": "Roth/MainLemma.lean",
+          "line": 515
+        }
+      ]
+    }
+  ]
+}

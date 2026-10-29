@@ -1,0 +1,52 @@
+ \end{equation}
+ By Lemma \ref{roth:lem8} and Equation \eqref{roth:eq35}, the number $D$ of such derivatives satisfies
+ \begin{equation}
+     \label{roth:eq45}
+     D \leq 2m^{1/2} \lambda^{-1} r,
+ \end{equation}
+ with $r$ as in \eqref{roth:eq43}. For each such derivative let
+ $$
+ T_{j_1, \dots, j_m}(W; x)
+ $$
+ be the remainder of the division of $\Delta_{j_1, \dots, j_m}W(x, \dots, x)$ by $f(x)$.  Since $f$ is a monic polynomial, $T_{j_1, \dots, j_m}(W; x)$ will have integer coefficients, and its degree is less than or equal to $n-1$.
+
+Our first task is to find an upper bound for the sizes of the coefficients of the polynomials $T_{j_1, \dots, j_m}(W; x)$. For $W \in \mathcal W$ we have
+$$
+abc(\Delta_{j_1, \dots, j_m} W) \leq 2^{r_1 +\dots + r_m} B_1 \leq 2^{mr_1} B_1 < B_1^{1+\delta}
+$$
+by \eqref{roth:three-small-factors}. Indeed, \eqref{roth:eq32} gives
+$mr_1\log2<\tfrac12\delta^2r_1\log q_1<\delta\log B_1$.
+When we replace $x_1, \dots, x_m$ by the same variable $x$ the absolute value of the coefficients of the resulting polynomial is at most the number of terms of the polynomial, which is at most $r$, multiplied by the coefficient bound $B_1^{1+\delta}$. Now,
+$$
+r = (r_1 + 1) \cdots (r_m + 1) \leq 2^{r_1 + \dots + r_m} \leq 2^{mr_1} < B_1^\delta,
+$$
+and this implies that $rB_1^{1+ \delta} < B_1^{1 + 2 \delta}$.  Consequently, the coefficients of $\Delta_{j_1, \dots, j_m}W (x, \dots, x)$ are bounded in absolute value by $B_1^{1+ 2\delta}$. Next we examine the effect of division by $f$ on these coefficients. Write
+$$
+\Delta_{j_1, \dots, j_m}W (x, \dots, x) = w_s x^s + w_{s-1} x^{s-1} + \cdots + w_0.
+$$
+When we divide this polynomial by $f$, the first operation we do (assuming $s \geq n$) is to subtract $w_s x^{s-n} f(x)$ and this gives a new polynomial whose coefficients are either of the form $w_\nu-a_{s-\nu}w_s$ (when $1\leq s-\nu\leq n$) or of the form $w_\nu$.  Since the $a_{s-\nu}$'s
+are bounded by $A$, the absolute values of the resulting coefficients are at most $$(1 + A)  \cdot abc\, (\Delta_{j_1, \dots, j_m}W (x, \dots, x)) \leq (1+A) B_1^{1 + 2 \delta}.$$
+If the input polynomial is zero, its remainder is zero. Otherwise the
+number of leading-term eliminations is at most $\max(0,s-n+1)$: there are
+none when $s<n$, and each elimination lowers the degree by at least one.
+It follows that
+\[
+abc(T_{j_1,\dots,j_m}(W;x))
+ \leq(1+A)^{\max(0,s-n+1)}B_1^{1+2\delta}
+ \leq(1+A)^{mr_1}B_1^{1+2\delta}<B_1^{1+3\delta},
+\]
+using $s\leq\sum_jr_j\leq mr_1$ and
+\eqref{roth:three-small-factors}.
+\lean{Use
+\texttt{Polynomial.modByMonic}\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Div.html}}
+directly in $\Z[X]$, rather than dividing over $\Q$ and later recovering
+integrality. Prove the coefficient bound by induction on degree, treating
+zero and degree less than $n$ first; each leading-term elimination
+multiplies the bound by at most $1+A$ and lowers the degree.
+Handle diagonal substitution separately, since identifying variables
+can merge coefficients.}
+
+Pad each remainder with zero coefficients to length $n$. Each integer coefficient has fewer than $1+2B_1^{1+3\delta}$ possible values. Since there are $D$ derivatives, the number of possible remainder tuples is at most
+$$
+(1+ 2B_1^{1+3 \delta})^{nD}.
+$$

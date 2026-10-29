@@ -1,0 +1,139 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.norm_coeff_modByMonic_le
+namespace Rem243Isolated
+private lemma reduction {R : Type*} [Ring R] (v : R → ℝ)
+    (v0 : v 0 = 0) (vn : ∀ x, 0 ≤ v x)
+    (vsub : ∀ x y, v (x - y) ≤ v x + v y)
+    (vmul : ∀ x y, v (x * y) ≤ v x * v y) {f P : Polynomial R}
+    {A C : ℝ} (hfA : ∀ i, v (f.coeff i) ≤ A) (hP : ∀ i, v (P.coeff i) ≤ C) {s : ℕ}
+    (hs : P.natDegree ≤ s) (hf1 : f ≠ 1) (hself : P %ₘ f ≠ P) : 0 < f.natDegree ∧ f.natDegree ≤ s ∧
+    ∃ Q : Polynomial R, Q.natDegree ≤ s - 1 ∧ (∀ i, v (Q.coeff i) ≤ (1 + A) * C) ∧
+    P %ₘ f = Q %ₘ f := by
+  have : Nontrivial R := Polynomial.Nontrivial.of_polynomial_ne hself
+  have hf : f.Monic := by
+    by_contra hf
+    exact hself (Polynomial.modByMonic_eq_of_not_monic P hf)
+  have hP0 : P ≠ 0 := fun h ↦ hself (by simp [h])
+  have hdeg : f.degree ≤ P.degree := le_of_not_gt fun h ↦
+    hself ((Polynomial.modByMonic_eq_self_iff hf).2 h)
+  let Q := P - f * (Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree))
+  have hmod : P %ₘ f = Q %ₘ f := by
+    conv_lhs =>
+      rw [Polynomial.modByMonic, dite_eq_left hf, Polynomial.divModByMonicAux,
+        dite_eq_left ⟨hdeg, hP0⟩]
+    rw [Polynomial.modByMonic, dite_eq_left hf]
+  refine ⟨Nat.pos_of_ne_zero (fun hn ↦ hf1 (Polynomial.eq_one_of_monic_natDegree_zero hf hn)),
+    (Polynomial.natDegree_le_natDegree hdeg).trans hs, Q, ?_, ?_, hmod⟩
+  · by_cases hQ0 : Q = 0
+    · simp [hQ0]
+    · exact Nat.le_sub_one_of_lt ((Polynomial.natDegree_lt_natDegree hQ0
+        (Polynomial.div_wf_lemma ⟨hdeg, hP0⟩ hf)).trans_le hs)
+  · intro i
+    rw [Polynomial.coeff_sub, ← mul_assoc, Polynomial.coeff_mul_X_pow', add_mul, one_mul]
+    refine (vsub _ _).trans (add_le_add (hP i) ?_)
+    split_ifs
+    · rw [Polynomial.coeff_mul_C]
+      exact (vmul _ _).trans (mul_le_mul (hfA _) (hP _) (vn _)
+        ((vn _).trans (hfA 0)))
+    · simpa [v0] using mul_nonneg ((vn _).trans (hfA 0)) ((vn _).trans (hP 0))
+
+
+theorem size_remainder {R : Type*} [Ring R] (v : R → ℝ)
+    (v0 : v 0 = 0) (vn : ∀ x, 0 ≤ v x)
+    (vsub : ∀ x y, v (x - y) ≤ v x + v y)
+    (vmul : ∀ x y, v (x * y) ≤ v x * v y) {f : Polynomial R} {A : ℝ}
+    (hfA : ∀ i, v (f.coeff i) ≤ A) (P : Polynomial R) {C : ℝ} (hP : ∀ i, v (P.coeff i) ≤ C) {s : ℕ}
+    (hs : P.natDegree ≤ s) (i : ℕ) :
+    v ((P %ₘ f).coeff i) ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by
+  have hA : 1 ≤ 1 + A := le_add_of_nonneg_right ((vn _).trans (hfA 0))
+  by_cases hf1 : f = 1
+  · simpa [hf1, v0] using mul_nonneg (pow_nonneg (zero_le_one.trans hA) (s + 1))
+      ((vn _).trans (hP 0))
+  induction s using Nat.strong_induction_on generalizing P C with
+  | _ s ih =>
+  by_cases hself : P %ₘ f = P
+  · simpa [hself] using (hP i).trans
+      (le_mul_of_one_le_left ((vn _).trans (hP 0)) (one_le_pow₀ hA))
+  obtain ⟨hn, hfs, Q, hQdeg, hQc, hmod⟩ := reduction v v0 vn vsub vmul hfA hP hs hf1 hself
+  rw [hmod]
+  refine (ih (s - 1) (by lia) Q hQc hQdeg).trans_eq ?_
+  rw [← mul_assoc, ← pow_succ]
+  congr 2
+  lia
+
+
+#print axioms size_remainder
+#check @Polynomial.div_wf_lemma
+#check @Polynomial.modByMonic_eq_of_not_monic
+#check @Polynomial.modByMonic_eq_self_iff
+#check @Polynomial.coeff_mul_X_pow'
+-- A degree bound alone provides no coefficient norm bound.
+theorem degree_not_size : ¬ (∀ p : Polynomial ℝ, p.natDegree ≤ 0 → ‖p.coeff 0‖ ≤ 1) := by
+  intro h
+  have hh := h (Polynomial.C 2) (by simp)
+  norm_num at hh
+-- Natural subtraction must saturate at zero.
+theorem saturation (s n : ℕ) (h : s + 1 ≤ n) (A C : ℝ) :
+    (1 + A) ^ (s + 1 - n) * C = C := by simp [Nat.sub_eq_zero_of_le h]
+#print axioms degree_not_size
+#print axioms saturation
+
+-- The original statement is recovered without any sign or commutativity premise.
+theorem original {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}
+    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (P : Polynomial R) {C : ℝ}
+    (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ} (hs : P.natDegree ≤ s) (i : ℕ) :
+    ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C :=
+  size_remainder norm norm_zero norm_nonneg norm_sub_le norm_mul_le hfA P hP hs i
+-- Concrete bound parameters imply nonnegativity even at coefficient zero.
+theorem signs {R : Type*} [SeminormedRing R] {f P : Polynomial R} {A C : ℝ}
+    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (hP : ∀ i, ‖P.coeff i‖ ≤ C) : 0 ≤ A ∧ 0 ≤ C :=
+  ⟨(norm_nonneg _).trans (hfA 0), (norm_nonneg _).trans (hP 0)⟩
+theorem nonmonic {R : Type*} [SeminormedRing R] {f P : Polynomial R}
+    (hf : ¬ f.Monic) {C : ℝ} (hP : ∀ i, ‖P.coeff i‖ ≤ C) (i : ℕ) :
+    ‖(P %ₘ f).coeff i‖ ≤ C := by
+  rw [Polynomial.modByMonic_eq_of_not_monic _ hf]
+  exact hP i
+theorem f_one {R : Type*} [SeminormedRing R] (P : Polynomial R) (i : ℕ) :
+    ‖(P %ₘ 1).coeff i‖ = 0 := by simp
+theorem p_zero {R : Type*} [SeminormedRing R] (f : Polynomial R) (i : ℕ) :
+    ‖((0 : Polynomial R) %ₘ f).coeff i‖ = 0 := by simp
+theorem f_zero {R : Type*} [SeminormedRing R] (P : Polynomial R) : P %ₘ 0 = P := by simp
+-- Degree data / submodule membership do not bound archimedean size.
+example {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}
+    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (P : Polynomial R) {C : ℝ}
+    (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ} (hs : P.natDegree ≤ s) (i : ℕ) :
+    ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by
+  fail_if_success exact Polynomial.natDegree_modByMonic_le P
+  fail_if_success simp only [Polynomial.modByMonic_eq_sub_mul_div]
+  exact original hfA P hP hs i
+-- Removing the final elimination from the exponent is false already for X modulo X-2.
+theorem final_step_needed :
+    ¬ ‖(((Polynomial.X : Polynomial ℝ) %ₘ
+      (Polynomial.X - Polynomial.C 2)).coeff 0)‖ ≤ 1 := by
+  norm_num [Polynomial.modByMonic_X_sub_C_eq_C_eval]
+#print axioms original
+#print axioms signs
+#print axioms nonmonic
+#print axioms f_one
+#print axioms p_zero
+#print axioms f_zero
+#print axioms final_step_needed
+end Rem243Isolated

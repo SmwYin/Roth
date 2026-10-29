@@ -1,0 +1,17 @@
+{
+  "kind": "theorem",
+  "type": "∀ {R : Type u_1} [inst : SeminormedRing R] {f : Polynomial R} {A : ℝ},\n  (∀ (i : ℕ), ‖f.coeff i‖ ≤ A) →\n    ∀ (P : Polynomial R) {C : ℝ},\n      (∀ (i : ℕ), ‖P.coeff i‖ ≤ C) →\n        ∀ {s : ℕ}, P.natDegree ≤ s → ∀ (i : ℕ), ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C",
+  "what": "Every coefficient of the monic-division remainder is bounded by (1+A)^(s+1-f.natDegree) C, with natural subtraction saturating at zero.",
+  "how": "Strong degree induction combines private exists_norm_coeff_reduction_aux with Polynomial.div_wf_lemma: one leading-term elimination lowers degree and multiplies a coefficient bound by at most 1+A.",
+  "hypotheses": "An arbitrary seminormed ring, coefficient bounds A and C for f and P, and P.natDegree≤s; no monicity, nontriviality or sign premises.",
+  "project_dependencies": [
+    "Roth.exists_norm_coeff_reduction_aux"
+  ],
+  "caller_summary": "One explicit body caller, private abs_coeff_diag_hasseDeriv_modByMonic_le_aux at MainLemma:512; zero external-to-file or direct type consumers. Fullmodule caller reroute to new generic size estimate compiles with original signature.",
+  "mathlib_api_audit": "Existing division and norm building blocks do not supply the quantitative iteration. CoeffMem gives algebraic submodule membership, not bounds on archimedean size; GaussNorm/supNorm provide alternative representations.",
+  "moral_duplications": "The private reduction is one step of this theorem; diagonal Hasse remainder estimate is a genuine downstream specialization, not a duplicate. Factor/root bounds are different statements.",
+  "generalization": "Verified mathlib-only Ring R and arbitrary v:R→ℝ with v0=0, nonnegativity, sub triangle and submultiplicativity, preserving s+1-f.natDegree. This is a newly proved size_remainder, not existing mathlib. Bundled RingSeminorm alternative is source-inspected, not claimed compile-verified; no extra import authorization received.",
+  "missing_api": "Quantitative coefficient growth under iterated monic reduction; choice of direct norm, bundled seminorm or supNorm public interface remains upstream design.",
+  "junk": "Not removable as a ≤3-existing-mathlib-call wrapper; the only local caller can use the new generic theorem but that is a new proof. Local direct inlining hit default limits and is not a deletion recommendation.",
+  "action": "Retain locally. Resolve the three concrete upstream API questions; then generalise/cleanup the selected primary estimate before proposing a quantitative polynomial-remainder PR."
+}

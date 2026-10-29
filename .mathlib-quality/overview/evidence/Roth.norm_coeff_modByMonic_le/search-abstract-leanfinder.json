@@ -1,0 +1,84 @@
+{
+  "request": {
+    "query": "ring seminorm submultiplicative size polynomial remainder coefficient bound",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.cauchyBound\",\n      \"informal_name\": \"Cauchy bound for polynomial roots\",\n      \"kind\": \"definition\",\n      \"type\": \"{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal\",\n      \"informal_description\": \"The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\\\frac{\\\\sup_{0 \\\\leq i < \\\\deg p} \\\\|\\\\text{coeff}_i(p)\\\\|}{\\\\|\\\\text{leadingCoeff}(p)\\\\|} $, where $ \\\\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\\\|\\\\cdot\\\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.CauchyBound\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"spectralValueTerms_bddAbove\",\n      \"informal_name\": \"Boundedness of Spectral Value Terms for Polynomials over Seminormed Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R), BddAbove (Set.range (spectralValueTerms p))\",\n      \"informal_description\": \"For any polynomial $ p $ over a seminormed ring $ R $, the set of spectral value terms $\\\\{ \\\\|p_n\\\\|^{1/(d - n)} \\\\mid n < d \\\\} \\\\cup \\\\{0\\\\} $ (where $ d $ is the degree of $ p $ and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $) is bounded above in $ \\\\mathbb{R} $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"spectralValueTerms_of_lt_natDegree\",\n      \"informal_name\": \"Spectral Value Terms for Polynomials at Indices Less Than Natural Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R) {n : ℕ},\\n  n < p.natDegree → spectralValueTerms p n = ‖p.coeff n‖ ^ (1 / (↑p.natDegree - ↑n))\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $ with natural degree $ d $, if $ n < d $, the $ n $-th term of the spectral value terms sequence is given by $ \\\\|p_n\\\\|^{1/(d - n)} $, where $ p_n $ denotes the coefficient of $ X^n $ in $ p $ and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This term quantifies the growth rate of the coefficient's norm relative to its distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_succ\",\n      \"informal_name\": \"Successor Case of Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n\",\n      \"informal_description\": \"For natural numbers $k, n$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\\\text{numBound}(k, D, n+1) = \\\\text{numBound}(k, D, n) \\\\cdot \\\\text{degBound}(k, D, n) \\\\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "spectralValueTerms",
+          "informal_name": "Spectral value terms sequence",
+          "kind": "definition",
+          "type": "{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ",
+          "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+          "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+        },
+        {
+          "formal_name": "Polynomial.cauchyBound",
+          "informal_name": "Cauchy bound for polynomial roots",
+          "kind": "definition",
+          "type": "{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal",
+          "informal_description": "The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\frac{\\sup_{0 \\leq i < \\deg p} \\|\\text{coeff}_i(p)\\|}{\\|\\text{leadingCoeff}(p)\\|} $, where $ \\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\|\\cdot\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.",
+          "path": "Mathlib.Analysis.Polynomial.CauchyBound"
+        },
+        {
+          "formal_name": "Polynomial.le_gaussNorm",
+          "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+          "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+          "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+        },
+        {
+          "formal_name": "spectralValueTerms_bddAbove",
+          "informal_name": "Boundedness of Spectral Value Terms for Polynomials over Seminormed Rings",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R), BddAbove (Set.range (spectralValueTerms p))",
+          "informal_description": "For any polynomial $ p $ over a seminormed ring $ R $, the set of spectral value terms $\\{ \\|p_n\\|^{1/(d - n)} \\mid n < d \\} \\cup \\{0\\} $ (where $ d $ is the degree of $ p $ and $ \\|\\cdot\\| $ is the seminorm on $ R $) is bounded above in $ \\mathbb{R} $.",
+          "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+        },
+        {
+          "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+          "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+          "kind": "definition",
+          "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+          "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+          "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+        },
+        {
+          "formal_name": "spectralValueTerms_of_lt_natDegree",
+          "informal_name": "Spectral Value Terms for Polynomials at Indices Less Than Natural Degree",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R) {n : ℕ},\n  n < p.natDegree → spectralValueTerms p n = ‖p.coeff n‖ ^ (1 / (↑p.natDegree - ↑n))",
+          "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $ with natural degree $ d $, if $ n < d $, the $ n $-th term of the spectral value terms sequence is given by $ \\|p_n\\|^{1/(d - n)} $, where $ p_n $ denotes the coefficient of $ X^n $ in $ p $ and $ \\|\\cdot\\| $ is the seminorm on $ R $. This term quantifies the growth rate of the coefficient's norm relative to its distance from the polynomial's degree.",
+          "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+        },
+        {
+          "formal_name": "ChevalleyThm.MvPolynomialC.numBound_succ",
+          "informal_name": "Successor Case of Numerical Bound in Chevalley's Theorem",
+          "kind": "theorem",
+          "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n",
+          "informal_description": "For natural numbers $k, n$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\text{numBound}(k, D, n+1) = \\text{numBound}(k, D, n) \\cdot \\text{degBound}(k, D, n) \\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.",
+          "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+        },
+        {
+          "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+          "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+          "kind": "definition",
+          "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+          "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+          "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1429
+}

@@ -1,0 +1,18 @@
+theorem norm_coeff_modByMonic_le {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}
+    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (P : Polynomial R) {C : ℝ} (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ}
+    (hs : P.natDegree ≤ s) (i : ℕ) : ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by
+  have hA : 1 ≤ 1 + A := le_add_of_nonneg_right ((norm_nonneg _).trans (hfA 0))
+  by_cases hf1 : f = 1
+  · simpa [hf1] using mul_nonneg (pow_nonneg (zero_le_one.trans hA) (s + 1))
+      ((norm_nonneg _).trans (hP 0))
+  induction s using Nat.strong_induction_on generalizing P C with
+  | _ s ih =>
+  by_cases hself : P %ₘ f = P
+  · simpa [hself] using (hP i).trans
+      (le_mul_of_one_le_left ((norm_nonneg _).trans (hP 0)) (one_le_pow₀ hA))
+  obtain ⟨hn, hfs, Q, hQdeg, hQc, hmod⟩ := exists_norm_coeff_reduction_aux hfA hP hs hf1 hself
+  rw [hmod]
+  refine (ih (s - 1) (by lia) Q hQc hQdeg).trans_eq ?_
+  rw [← mul_assoc, ← pow_succ]
+  congr 2
+  lia
