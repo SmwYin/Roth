@@ -1,0 +1,25 @@
+{
+  "declaration": "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+  "kind": "lemma",
+  "type": "∀ {f : Polynomial ℤ} {α A : ℝ},\n  f.Monic →\n    (Polynomial.aeval α) f = 0 →\n      (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →\n        ∀ {m q₁ r₁ : ℕ},\n          0 < m →\n            ∀ (r : Fin m → ℕ),\n              (∀ (j : Fin m), 0 < r j) →\n                ∑ j : Fin m, r j ≤ m * r₁ →\n                  ∀ {δ : ℝ},\n                    0 ≤ δ →\n                      2 * ↑m + 1 + 2 * ↑m * Real.log (1 + A) + 2 * ↑m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log ↑q₁ →\n                        ∃ P ∈ Roth.RSet (↑q₁ ^ (δ * ↑r₁)) r,\n                          Roth.gam δ f.natDegree m ≤ Roth.index ((map (Int.castRingHom ℝ)) P) (fun (x : Fin m) ↦ α) r ∧\n                            ∀ (i k : Fin m →₀ ℕ),\n                              |(eval fun (x : Fin m) ↦ α)\n                                    ((map (Int.castRingHom ℝ)) ((hasseDeriv i) ((hasseDeriv k) P)))| <\n                                ↑(Roth.mainCoeffBound δ q₁ r₁) ^ (1 + 3 * δ)",
+  "what": "Produces an auxiliary polynomial with high diagonal-root index, a real-power coefficient bound, and uniform evaluated double-Hasse-derivative height bounds.",
+  "how": "Obtain the polynomial from exists_mem_RSet_le_index_of_log_bound_aux, use three_small_factors and abs_eval_iterated_hasseDeriv_lt_aux, and increase the floor coefficient bound to its real power.",
+  "hypotheses": "Monic integer equation, bounded coefficients, positive degree vector, total degree bound and combined logarithmic condition. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.RSet",
+    "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+    "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+    "Roth.gam",
+    "Roth.index",
+    "Roth.mainCoeffBound",
+    "Roth.three_small_factors"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Obtain P and its index from the log-budget helper after dropping the nonnegative alpha logarithm term. Use three_small_factors for powers of2 and 1+abs(alpha), deduce positivity of B from a nonzero coefficient of P, and identify B*(B^delta)^3 with B^(1+3delta). Use Nat.floor_le to enlarge RSet and abs_eval_iterated_hasseDeriv_lt_aux for the uniform evaluation estimate, then linear_combination closes the power identity. The sole index-gap caller additionally bounds Theta by eta; it is not part of this helper.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

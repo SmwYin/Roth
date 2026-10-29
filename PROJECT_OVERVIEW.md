@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 262/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 263/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 262; remaining: 31.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 67 SKIP.
+- Completed applicable assessments: 263; remaining: 30.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 68 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3286,6 +3286,33 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_of_log_bound_aux.md).
 
+### Completed: `Roth.exists_auxiliary_polynomial_of_log_bound_aux`
+
+- Type: `∀ {f : Polynomial ℤ} {α A : ℝ},
+  f.Monic →
+    (Polynomial.aeval α) f = 0 →
+      (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →
+        ∀ {m q₁ r₁ : ℕ},
+          0 < m →
+            ∀ (r : Fin m → ℕ),
+              (∀ (j : Fin m), 0 < r j) →
+                ∑ j : Fin m, r j ≤ m * r₁ →
+                  ∀ {δ : ℝ},
+                    0 ≤ δ →
+                      2 * ↑m + 1 + 2 * ↑m * Real.log (1 + A) + 2 * ↑m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log ↑q₁ →
+                        ∃ P ∈ Roth.RSet (↑q₁ ^ (δ * ↑r₁)) r,
+                          Roth.gam δ f.natDegree m ≤ Roth.index ((map (Int.castRingHom ℝ)) P) (fun (x : Fin m) ↦ α) r ∧
+                            ∀ (i k : Fin m →₀ ℕ),
+                              |(eval fun (x : Fin m) ↦ α)
+                                    ((map (Int.castRingHom ℝ)) ((hasseDeriv i) ((hasseDeriv k) P)))| <
+                                ↑(Roth.mainCoeffBound δ q₁ r₁) ^ (1 + 3 * δ)`
+- What: Produces an auxiliary polynomial with high diagonal-root index, a real-power coefficient bound, and uniform evaluated double-Hasse-derivative height bounds.
+- How: Obtain the polynomial from exists_mem_RSet_le_index_of_log_bound_aux, use three_small_factors and abs_eval_iterated_hasseDeriv_lt_aux, and increase the floor coefficient bound to its real power.
+- Hypotheses: Monic integer equation, bounded coefficients, positive degree vector, total degree bound and combined logarithmic condition. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: MvPolynomial.hasseDeriv, Roth.RSet, Roth.abs_eval_iterated_hasseDeriv_lt_aux, Roth.exists_mem_RSet_le_index_of_log_bound_aux, Roth.gam, Roth.index, Roth.mainCoeffBound, Roth.three_small_factors
+- Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_auxiliary_polynomial_of_log_bound_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3836,6 +3863,8 @@ Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: Monicity gives A>=1
 
 Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: Use monicity to obtain A>=1, degree positivity and the sum bound to obtain r1>0, and the logarithmic threshold to derive the hypothesis for four_lt_rpow. Invoke three_small_factors at alpha0 to control (1+A)^(m*r1). Rewrite B^(1+3delta)=B*(B^delta)^3 using Real.rpow_add_of_nonneg and Real.rpow_mul_natCast, prove the floor bound B positive, and invoke the rpow-budget helper. Unfold gam and lam to match its index cutoff. The sole auxiliary-polynomial caller adds evaluation control and weakens the floor coefficient bound to the real power bound.
 
+Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: Obtain P and its index from the log-budget helper after dropping the nonnegative alpha logarithm term. Use three_small_factors for powers of2 and 1+abs(alpha), deduce positivity of B from a nonzero coefficient of P, and identify B*(B^delta)^3 with B^(1+3delta). Use Nat.floor_le to enlarge RSet and abs_eval_iterated_hasseDeriv_lt_aux for the uniform evaluation estimate, then linear_combination closes the power identity. The sole index-gap caller additionally bounds Theta by eta; it is not part of this helper.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4361,6 +4390,8 @@ Completed `Roth.mul_card_filter_weight_le_aux`: The structural review distinguis
 Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -4899,6 +4930,8 @@ Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: No public generalit
 
 Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5425,6 +5458,8 @@ Completed `Roth.mul_card_filter_weight_le_aux`: No new primitive is needed for t
 Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -5955,6 +5990,8 @@ Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: Retain a live priva
 
 Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6221,6 +6258,7 @@ Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: Retain a live privat
 | 260 | `Roth.mul_card_filter_weight_le_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_card_filter_weight_le_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_card_filter_weight_le_aux/root-acceptance.json) |
 | 261 | `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_of_rpow_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_mem_RSet_le_index_of_rpow_bound_aux/root-acceptance.json) |
 | 262 | `Roth.exists_mem_RSet_le_index_of_log_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_of_log_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_mem_RSet_le_index_of_log_bound_aux/root-acceptance.json) |
+| 263 | `Roth.exists_auxiliary_polynomial_of_log_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_auxiliary_polynomial_of_log_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_auxiliary_polynomial_of_log_bound_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6744,12 +6782,14 @@ Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux` action: Keep unchang
 
 Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_auxiliary_polynomial_of_log_bound_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.theta_lt_eta_of_sq_log_bound_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
