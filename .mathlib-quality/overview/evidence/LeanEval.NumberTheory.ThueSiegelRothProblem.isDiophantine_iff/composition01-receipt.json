@@ -1,0 +1,107 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff\n#check_failure Roth.approxSet\nnamespace Equivalence292Composition\nopen Real\ndef UniformBound (t x : \u211d) : Prop :=\n  \u2200 \u03b5 : \u211d, 0 < \u03b5 \u2192 \u2203 C : \u211d, 0 < C \u2227\n    \u2200 p q : \u2124, 0 < q \u2192 C / (q : \u211d) ^ (t + \u03b5) < |x - (p : \u211d) / q|\ndef pairSet (\u03b1 \u03ba : \u211d) : Set (\u2124 \u00d7 \u2115) :=\n  {hq | 0 < hq.2 \u2227 |\u03b1 - (hq.1 : \u211d) / hq.2| < 1 / (hq.2 : \u211d) ^ \u03ba}\n-- These probes precede every authored equivalence/helper theorem.\nexample (x : \u211d) (hx : Irrational x) : True := by\n  fail_if_success\n    have : UniformBound 2 x \u2194 \u2200 {\u03ba : \u211d}, (pairSet x \u03ba).Infinite \u2192 \u03ba \u2264 2 := by\n      exact?\n  fail_if_success\n    have : UniformBound 2 x \u2194 \u2200 {\u03ba : \u211d}, (pairSet x \u03ba).Infinite \u2192 \u03ba \u2264 2 := by\n      simp only [UniformBound, pairSet]\n  exact (show True from (fun (_ : Irrational x) \u21a6 True.intro) hx)\nexample (t x : \u211d) : True := by\n  fail_if_success\n    have : UniformBound t x \u2194 \u2200 {\u03ba : \u211d}, (pairSet x \u03ba).Infinite \u2192 \u03ba \u2264 t := by\n      exact?\n  fail_if_success\n    have : UniformBound t x \u2194\n        Irrational x \u2227 \u2200 {p : \u211d}, LiouvilleWith p x \u2192 p \u2264 t := by\n      exact?\n  trivial\n#check @Set.exists_min_image\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#check @Set.Infinite.sdiff\n#check @Real.tendsto_rpow_atTop\nend Equivalence292Composition\n"
+  },
+  "elapsed_ms": 2302,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "composition01",
+      "operation": "run_code",
+      "source": "composition-executed.lean.txt",
+      "source_sha256": "615b1411694835e2b7da5490c2c6220e4a004154ab24e2ad8fc859fa592b927c",
+      "receipt": "composition01-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff/root-requests/composition01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff/composition-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.approxSet`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Set.exists_min_image : \u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} [inst : LinearOrder \u03b2] (s : Set \u03b1) (f : \u03b1 \u2192 \u03b2),\\n  s.Finite \u2192 s.Nonempty \u2192 \u2203 a \u2208 s, \u2200 b \u2208 s, f a \u2264 f b\",\n      \"line\": 48,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in Filter.atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)\",\n      \"line\": 49,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Set.Infinite.sdiff : \u2200 {\u03b1 : Type u_1} {s t : Set \u03b1}, s.Infinite \u2192 t.Finite \u2192 (s \\\\ t).Infinite\",\n      \"line\": 50,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Real.tendsto_rpow_atTop`\",\n      \"line\": 51,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `t` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _t\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 39,\n      \"column\": 10,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `x` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _x\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 39,\n      \"column\": 12,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.approxSet`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Set.exists_min_image : \u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} [inst : LinearOrder \u03b2] (s : Set \u03b1) (f : \u03b1 \u2192 \u03b2),\n  s.Finite \u2192 s.Nonempty \u2192 \u2203 a \u2208 s, \u2200 b \u2208 s, f a \u2264 f b",
+          "line": 48,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in Filter.atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)",
+          "line": 49,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Set.Infinite.sdiff : \u2200 {\u03b1 : Type u_1} {s t : Set \u03b1}, s.Infinite \u2192 t.Finite \u2192 (s \\ t).Infinite",
+          "line": 50,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Real.tendsto_rpow_atTop`",
+          "line": 51,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `t` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _t\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 39,
+          "column": 10,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `x` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _x\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 39,
+          "column": 12,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "kind": "theorem",
+  "type": "\u2200 {x : \u211d},\n  Irrational x \u2192\n    (LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine x \u2194 \u2200 {\u03ba : \u211d}, (Roth.approxSet x \u03ba).Infinite \u2192 \u03ba \u2264 2)",
+  "what": "For an irrational real number, uniform positive lower bounds at every exponent2+epsilon are equivalent to an upper bound2 on all exponents having infinitely many unreduced approximation pairs.",
+  "how": "Uses Roth.eventually_div_rpow_lt to absorb a positive constant into an epsilon half-gap, removes finitely many bounded-denominator pairs with Roth.approxSet_den_le_finite, and uses the private finite-positive-minimum helper for the reverse implication.",
+  "hypotheses": "The original has Irrational x; fresh all-real proof derives it from either side and removes that binder. Real powers and positive denominators remain.",
+  "project_dependencies": [
+    "LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine",
+    "Roth.approxSet",
+    "Roth.eventually_div_rpow_lt",
+    "Roth.approxSet_den_le_finite",
+    "LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux"
+  ],
+  "caller_summary": "One explicit same-file caller thueSiegelRoth at LeanEval:63; zero external-to-file. Complete original inlining and new all-real recovery preserve its exact signature and eliminate target reference.",
+  "mathlib_api_audit": "LiouvilleWith and its frequently_lt_rpow_neg/affine API are relevant building blocks; no direct uniform-bound/cutoff equivalence hit was verified. The generic bridge is authored proof, not an existing mathlib call.",
+  "moral_duplications": "Shares exponent-gap and finite-denominator tools with Main.reduction; these serve different statements. Private positive-minimum helper supplies one direction; no duplicate full equivalence found.",
+  "generalization": {
+    "verified": true,
+    "drop": "hx",
+    "all_real_type": "\u2200 {x : \u211d}, IsDiophantine x \u2194 \u2200 {\u03ba : \u211d}, (Roth.approxSet x \u03ba).Infinite \u2192 \u03ba \u2264 2",
+    "generic_type": "\u2200 {t x : \u211d}, UniformBound t x \u2194 \u2200 {\u03ba : \u211d}, (pairSet x \u03ba).Infinite \u2192 \u03ba \u2264 t",
+    "modern_type": "\u2200 {t x : \u211d}, UniformBound t x \u2194 Irrational x \u2227 \u2200 {p : \u211d}, LiouvilleWith p x \u2192 p \u2264 t",
+    "conditions": "No positivity condition on t; Liouville bridge retains irrationality; fixed2 recovered without assumption"
+  },
+  "missing_api": "Generic finite-exception/uniform-bound and exponent-cutoff bridges; decide normal form before exporting new definitions.",
+  "junk": "Not dead: actual final caller. One caller alone does not turn its nontrivial proof into a mathlib composition.",
+  "action": {
+    "verdict": "BORDERLINE-needs-human",
+    "retain_local": true,
+    "immediate": "The mathematically justified local cleanup is to remove hx from the pair equivalence and use all_real.mpr at the existing caller; no production edit made.",
+    "questions": [
+      "Should upstream expose a named UniformBound t x predicate, or keep the lower-bound quantifiers inside equivalences to Irrational x \u2227 \u2200p, LiouvilleWith p x \u2192 p \u2264 t?",
+      "Should the canonical public bridge use denominator-frequency LiouvilleWith directly, keeping unreduced pairSet and its equivalence in a secondary interface module?",
+      "Should the generic finite-exception strictification and rational-pair irrationality lemmas ship together with the cutoff equivalence, with fixed2 LeanEval wrappers remaining project-local?"
+    ],
+    "upstream_home_provisional": "Mathlib/NumberTheory/Transcendental/Liouville/Diophantine.lean (new module importing LiouvilleWith)",
+    "cost_based": false
+  },
+  "project_dependency_scopes": {
+    "statement": [
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine",
+      "Roth.approxSet"
+    ],
+    "body": [
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine",
+      "Roth.approxSet",
+      "Roth.eventually_div_rpow_lt",
+      "Roth.approxSet_den_le_finite",
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux"
+    ],
+    "private_helper_visibility": "last helper is private in Roth.LeanEval; shown using canonical source name, not raw kernel private name",
+    "new_proof_credit": "Generic uniform/cutoff/Liouville theorem is authored proof, replayed from accepted290modern3 and extended here; none is asserted to be an existing mathlib theorem"
+  }
+}
