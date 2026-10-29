@@ -1,0 +1,65 @@
+[
+  {
+    "file": "Roth/LeanEval.lean",
+    "line": 42,
+    "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+    "short": "isDiophantine_iff",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 56,
+    "source": "theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :\n    IsDiophantine x ↔ ∀ {κ : ℝ}, (Roth.approxSet x κ).Infinite → κ ≤ 2 := by\n  refine ⟨fun h κ hinf ↦ le_of_not_gt fun hκ ↦ ?_, fun h ε hε ↦ ?_⟩\n  · obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)\n    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (M := 1 / C)\n      (by linarith : 2 + (κ - 2) / 2 < κ)\n    obtain ⟨⟨p, q⟩, hpq, hq⟩ :=\n      (hinf.sdiff (Roth.approxSet_den_le_finite x κ Q)).nonempty\n    have hgap : 1 / (q : ℝ) ^ κ < C / (q : ℝ) ^ (2 + (κ - 2) / 2) := by\n      simpa [div_eq_mul_inv, ← mul_assoc, hC.ne'] using\n        mul_lt_mul_of_pos_left (hQ q (lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩)) hC\n    exact (hpq.2.trans hgap).not_gt (by simpa using hbound p q (by exact_mod_cast hpq.1))\n  · apply exists_pos_div_rpow_lt_aux hx\n    exact Set.not_infinite.mp fun hinf ↦\n      (by linarith : ¬ (2 + ε ≤ 2)) (h hinf)",
+    "signature": "theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :\n    IsDiophantine x ↔ ∀ {κ : ℝ}, (Roth.approxSet x κ).Infinite → κ ≤ 2",
+    "body": "by\n  refine ⟨fun h κ hinf ↦ le_of_not_gt fun hκ ↦ ?_, fun h ε hε ↦ ?_⟩\n  · obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)\n    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (M := 1 / C)\n      (by linarith : 2 + (κ - 2) / 2 < κ)\n    obtain ⟨⟨p, q⟩, hpq, hq⟩ :=\n      (hinf.sdiff (Roth.approxSet_den_le_finite x κ Q)).nonempty\n    have hgap : 1 / (q : ℝ) ^ κ < C / (q : ℝ) ^ (2 + (κ - 2) / 2) := by\n      simpa [div_eq_mul_inv, ← mul_assoc, hC.ne'] using\n        mul_lt_mul_of_pos_left (hQ q (lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩)) hC\n    exact (hpq.2.trans hgap).not_gt (by simpa using hbound p q (by exact_mod_cast hpq.1))\n  · apply exists_pos_div_rpow_lt_aux hx\n    exact Set.not_infinite.mp fun hinf ↦\n      (by linarith : ¬ (2 + ε ≤ 2)) (h hinf)",
+    "proof_lines": 14,
+    "sha256": "54e081eecaeee818fa833b2c269be2cb5141617ed84cb4318d2ecd782cc198f0",
+    "what": "For irrational numbers, the uniform lower-bound formulation is equivalent to the infinite-approximation exponent bound.",
+    "how": "Forward, absorb a positive constant via Roth.eventually_div_rpow_lt and remove Roth.approxSet_den_le_finite; reverse, infer finite exceptional sets and apply exists_pos_div_rpow_lt_aux.",
+    "hypotheses": "Irrational real number.",
+    "source_body_refs": [
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux",
+      "Roth.approxSet_den_le_finite",
+      "Roth.eventually_div_rpow_lt"
+    ],
+    "source_type_refs": [
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine",
+      "Roth.approxSet"
+    ],
+    "source_callers": [
+      {
+        "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth",
+        "file": "Roth/LeanEval.lean",
+        "line": 61
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "70a3808e57b5251e725dfe6a93fbb064a2fb1f88b0c5d68659be924447417b65",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace LeanEval.NumberTheory.ThueSiegelRothProblem; open Real. All mathematical binders are explicit in the source signature.",
+    "uses_from_project": [
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux",
+      "Roth.approxSet_den_le_finite",
+      "Roth.eventually_div_rpow_lt"
+    ],
+    "used_by_in_file": [
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 127,
+    "project_body_refs": [
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux",
+      "Roth.approxSet_den_le_finite",
+      "Roth.eventually_div_rpow_lt"
+    ],
+    "project_type_refs": [
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine",
+      "Roth.approxSet"
+    ],
+    "project_callers": [
+      {
+        "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth",
+        "file": "Roth/LeanEval.lean",
+        "line": 61
+      }
+    ]
+  }
+]

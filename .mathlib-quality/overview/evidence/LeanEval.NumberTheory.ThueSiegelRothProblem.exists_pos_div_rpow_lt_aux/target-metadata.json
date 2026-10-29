@@ -1,0 +1,55 @@
+{
+  "file": "Roth/LeanEval.lean",
+  "line": 20,
+  "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux",
+  "short": "exists_pos_div_rpow_lt_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 39,
+  "source": "private lemma exists_pos_div_rpow_lt_aux {x κ : ℝ} (hx : Irrational x)\n    (hs : (Roth.approxSet x κ).Finite) :\n    ∃ C : ℝ, 0 < C ∧ ∀ (p q : ℤ), 0 < q → C / (q : ℝ) ^ κ < |x - (p : ℝ) / q| := by\n  let f : ℤ × ℕ → ℝ := fun a ↦ |x - (a.1 : ℝ) / a.2| * (a.2 : ℝ) ^ κ\n  obtain ⟨a, ha, hmin⟩ := Set.exists_min_image _ f (hs.insert (0, 1))\n    (Set.insert_nonempty (0, 1) _)\n  have haq : 0 < a.2 := by\n    rcases ha with rfl | ha <;> first | exact ha.1 | norm_num\n  have hfa : 0 < f a := mul_pos\n    (abs_pos.mpr (sub_ne_zero.mpr (by simpa using hx.ne_rational a.1 a.2)))\n    (rpow_pos_of_pos (by positivity) _)\n  refine ⟨min (1 / 2) (f a / 2), by positivity, fun p q hq ↦ ?_⟩\n  lift q to ℕ using hq.le\n  have hq' : 0 < (q : ℝ) ^ κ := rpow_pos_of_pos (by exact_mod_cast hq) _\n  rw [Int.cast_natCast, div_lt_iff₀ hq']\n  by_cases hmem : (p, q) ∈ Roth.approxSet x κ\n  · exact (min_le_right _ _).trans_lt\n      ((half_lt_self hfa).trans_le (hmin (p, q) (Set.mem_insert_of_mem _ hmem)))\n  · apply ((min_le_left _ _).trans_lt (by norm_num : (1 : ℝ) / 2 < 1)).trans_le\n    exact le_of_not_gt fun h ↦ hmem ⟨by exact_mod_cast hq, (lt_div_iff₀ hq').mpr h⟩",
+  "signature": "private lemma exists_pos_div_rpow_lt_aux {x κ : ℝ} (hx : Irrational x)\n    (hs : (Roth.approxSet x κ).Finite) :\n    ∃ C : ℝ, 0 < C ∧ ∀ (p q : ℤ), 0 < q → C / (q : ℝ) ^ κ < |x - (p : ℝ) / q|",
+  "body": "by\n  let f : ℤ × ℕ → ℝ := fun a ↦ |x - (a.1 : ℝ) / a.2| * (a.2 : ℝ) ^ κ\n  obtain ⟨a, ha, hmin⟩ := Set.exists_min_image _ f (hs.insert (0, 1))\n    (Set.insert_nonempty (0, 1) _)\n  have haq : 0 < a.2 := by\n    rcases ha with rfl | ha <;> first | exact ha.1 | norm_num\n  have hfa : 0 < f a := mul_pos\n    (abs_pos.mpr (sub_ne_zero.mpr (by simpa using hx.ne_rational a.1 a.2)))\n    (rpow_pos_of_pos (by positivity) _)\n  refine ⟨min (1 / 2) (f a / 2), by positivity, fun p q hq ↦ ?_⟩\n  lift q to ℕ using hq.le\n  have hq' : 0 < (q : ℝ) ^ κ := rpow_pos_of_pos (by exact_mod_cast hq) _\n  rw [Int.cast_natCast, div_lt_iff₀ hq']\n  by_cases hmem : (p, q) ∈ Roth.approxSet x κ\n  · exact (min_le_right _ _).trans_lt\n      ((half_lt_self hfa).trans_le (hmin (p, q) (Set.mem_insert_of_mem _ hmem)))\n  · apply ((min_le_left _ _).trans_lt (by norm_num : (1 : ℝ) / 2 < 1)).trans_le\n    exact le_of_not_gt fun h ↦ hmem ⟨by exact_mod_cast hq, (lt_div_iff₀ hq').mpr h⟩",
+  "proof_lines": 18,
+  "sha256": "6479c0ef81f4fa64cfc67c656c7e73bbb4107a69695e102d549bfcbf030b9a5a",
+  "what": "A finite approximation set for an irrational number yields a uniform positive lower bound for the scaled error.",
+  "how": "Minimize the scaled error over the finite exceptional set augmented by a fixed pair using Set.exists_min_image; take half its minimum and half of one, treating exceptional and nonexceptional pairs separately.",
+  "hypotheses": "Irrational real and finiteness of the approximation set for the chosen real exponent.",
+  "source_body_refs": [
+    "Roth.approxSet"
+  ],
+  "source_type_refs": [
+    "Roth.approxSet"
+  ],
+  "source_callers": [
+    {
+      "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+      "file": "Roth/LeanEval.lean",
+      "line": 42
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "70a3808e57b5251e725dfe6a93fbb064a2fb1f88b0c5d68659be924447417b65",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace LeanEval.NumberTheory.ThueSiegelRothProblem; open Real. All mathematical binders are explicit in the source signature.",
+  "uses_from_project": [
+    "Roth.approxSet"
+  ],
+  "used_by_in_file": [
+    "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 190,
+  "project_body_refs": [
+    "Roth.approxSet"
+  ],
+  "project_type_refs": [
+    "Roth.approxSet"
+  ],
+  "project_callers": [
+    {
+      "name": "LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+      "file": "Roth/LeanEval.lean",
+      "line": 42
+    }
+  ]
+}

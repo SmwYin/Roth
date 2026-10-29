@@ -1,0 +1,18 @@
+{
+  "declaration": "LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux",
+  "kind": "lemma",
+  "type": "∀ {x κ : ℝ},\n  Irrational x → (Roth.approxSet x κ).Finite → ∃ (C : ℝ), 0 < C ∧ ∀ (p q : ℤ), 0 < q → C / ↑q ^ κ < |x - ↑p / ↑q|",
+  "what": "For an irrational real x and any real exponent kappa, finiteness of the exceptional approximation pairs gives one positive uniform strict lower-bound constant for all integer numerators and positive integer denominators.",
+  "how": "Minimize the scaled error over the finite exceptional set augmented by a fixed pair using Set.exists_min_image; take half its minimum and half of one, treating exceptional and nonexceptional pairs separately.",
+  "hypotheses": "Irrational real and finiteness of the approximation set for the chosen real exponent. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.approxSet"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in LeanEval.lean; 1 direct original value consumers. Exact separate lists retained. Entire LeanEval module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Define the scaled error f(p,q)=abs(x-p/q)*q^kappa. Add the sentinel pair(0,1) to the finite exceptional set and choose a minimum by Set.exists_min_image. Irrationality and positive denominator make that minimum positive. Choose C=min(1/2,f(a)/2). Inside the exceptional set use its finite positive minimum; outside it the failure of approxSet membership gives scaled error at least1, hence strictly greater than C. Lift a positive integer denominator to a natural one before clearing the positive real-power denominator. The sole isDiophantine_iff caller uses this for exponent2+epsilon after ruling out an infinite exceptional set. This is the finite-exception-to-uniform-constant step, not Roth theorem itself.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

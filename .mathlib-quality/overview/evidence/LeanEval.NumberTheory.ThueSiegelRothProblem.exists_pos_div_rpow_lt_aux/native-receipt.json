@@ -1,0 +1,126 @@
+{
+  "request": {
+    "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+    "timeout_s": 45
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"partial\": false,\n  \"still_elaborating_lines\": null,\n  \"success\": true,\n  \"timed_out\": false,\n  \"items\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LeanEvalPrivate291.IsDiophantine' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 77,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LeanEvalPrivate291.replay' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 78,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LeanEvalPrivate291.isDiophantine_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 79,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LeanEvalPrivate291.thueSiegelRoth' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 80,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux\u271d {x \u03ba : \u211d} (hx : Irrational x)\\n  (hs : (Roth.approxSet x \u03ba).Finite) : \u2203 C, 0 < C \u2227 \u2200 (p q : \u2124), 0 < q \u2192 C / \u2191q ^ \u03ba < |x - \u2191p / \u2191q|\",\n      \"line\": 81,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"private theorem LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux : \u2200 {x \u03ba : \u211d},\\n  Irrational x \u2192 (Roth.approxSet x \u03ba).Finite \u2192 \u2203 C, 0 < C \u2227 \u2200 (p q : \u2124), 0 < q \u2192 C / \u2191q ^ \u03ba < |x - \u2191p / \u2191q| :=\\nfun {x \u03ba} hx hs \u21a6\\n  let f := fun a \u21a6 |x - \u2191a.1 / \u2191a.2| * \u2191a.2 ^ \u03ba;\\n  Exists.casesOn\\n    (Set.exists_min_image (insert (0, 1) (Roth.approxSet x \u03ba)) f (Set.Finite.insert (0, 1) hs)\\n      (Set.insert_nonempty (0, 1) (Roth.approxSet x \u03ba)))\\n    fun a h \u21a6\\n    And.casesOn h fun ha hmin \u21a6\\n      have haq :=\\n        Or.casesOn ha\\n          (fun h \u21a6\\n            Eq.ndrec (motive := fun a \u21a6 (\u2200 b \u2208 insert (0, 1) (Roth.approxSet x \u03ba), f a \u2264 f b) \u2192 0 < a.2)\\n              (fun hmin \u21a6\\n                Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat \u2115 (Eq.refl 0))\\n                  (Mathlib.Meta.NormNum.isNat_ofNat \u2115 (Eq.refl 1)) (Eq.refl false))\\n              (Eq.symm h) hmin)\\n          fun ha \u21a6 ha.left;\\n      have hfa :=\\n        mul_pos\\n          (abs_pos.mpr\\n            (sub_ne_zero.mpr\\n              (id\\n                (Eq.mp (congrArg (Ne x) (congrArg (HDiv.hDiv \u2191a.1) (Int.cast_natCast a.2)))\\n                  (Irrational.ne_rational hx a.1 \u2191a.2)))))\\n          (Real.rpow_pos_of_pos (Nat.cast_pos'.mpr haq) \u03ba);\\n      Exists.intro (min (1 / 2) (f a / 2))\\n        \u27e8lt_min\\n            (div_pos\\n              (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat \u211d Nat.cast_one)\\n                (Eq.refl (Nat.ble 1 1)))\\n              (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat \u211d (Eq.refl 2))\\n                (Eq.refl (Nat.ble 1 2))))\\n            (div_pos hfa\\n              (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat \u211d (Eq.refl 2))\\n                (Eq.refl (Nat.ble 1 2)))),\\n          fun p q hq \u21a6\\n          Exists.casesOn (CanLift.prf q (LT.lt.le hq)) fun q_1 h \u21a6\\n            Eq.ndrec (motive := fun q \u21a6 0 < q \u2192 min (1 / 2) (f a / 2) / \u2191q ^ \u03ba < |x - \u2191p / \u2191q|)\\n              (fun hq \u21a6\\n                have hq' :=\\n                  Real.rpow_pos_of_pos\\n                    (cast\\n                      (Eq.trans (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) \u2191q_1) Nat.cast_lt._simp_1)\\n                        (Eq.symm\\n                          (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) \u2191q_1) Nat.cast_lt._simp_1)))\\n                      hq)\\n                    \u03ba;\\n                Eq.mpr (id (congrArg (fun _a \u21a6 min (1 / 2) (f a / 2) / _a ^ \u03ba < |x - \u2191p / _a|) (Int.cast_natCast q_1)))\\n                  (Eq.mpr (id (congrArg (fun _a \u21a6 _a) (propext (div_lt_iff\u2080 hq'))))\\n                    (if hmem : (p, q_1) \u2208 Roth.approxSet x \u03ba then\\n                      LE.le.trans_lt (min_le_right (1 / 2) (f a / 2))\\n                        (LT.lt.trans_le (half_lt_self hfa) (hmin (p, q_1) (Set.mem_insert_of_mem (0, 1) hmem)))\\n                    else\\n                      LT.lt.trans_le\\n                        (LE.le.trans_lt (min_le_left (1 / 2) (f a / 2))\\n                          (Mathlib.Meta.NormNum.isNNRat_lt_true\\n                            (Mathlib.Meta.NormNum.isNNRat_div\\n                              (Mathlib.Meta.NormNum.isNNRat_mul (Eq.refl HMul.hMul)\\n                                (Mathlib.Meta.NormNum.IsNat.to_isNNRat\\n                                  (Mathlib.Meta.NormNum.isNat_ofNat \u211d Nat.cast_one))\\n                                (Mathlib.Meta.NormNum.isNNRat_inv_pos\\n                                  (Mathlib.Meta.NormNum.IsNat.to_isNNRat\\n                                    (Mathlib.Meta.NormNum.isNat_ofNat \u211d (Eq.refl 2))))\\n                                (Eq.refl (Nat.mul 1 1)) (Eq.refl 2)))\\n                            (Mathlib.Meta.NormNum.IsNat.to_isNNRat (Mathlib.Meta.NormNum.isNat_ofNat \u211d Nat.cast_one))\\n                            (Eq.refl true)))\\n                        (le_of_not_gt fun h \u21a6\\n                          hmem\\n                            \u27e8cast\\n                                (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) \u2191q_1) Nat.cast_lt._simp_1)\\n                                hq,\\n                              (lt_div_iff\u2080 hq').mpr h\u27e9))))\\n              h hq\u27e9\",\n      \"line\": 81,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'_private.Roth.LeanEval.0.LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux' depends on axioms: [propext,\\n Classical.choice,\\n Quot.sound]\",\n      \"line\": 81,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEANEVAL_PRIVATE291_FULL_TYPE: \u2200 {x \u03ba : \u211d},\\n  Irrational x \u2192 (Roth.approxSet x \u03ba).Finite \u2192 \u2203 (C : \u211d), 0 < C \u2227 \u2200 (p q : \u2124), 0 < q \u2192 C / \u2191q ^ \u03ba < |x - \u2191p / \u2191q|\",\n      \"line\": 87,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEANEVAL_PRIVATE291_DIRECT_CONSUMER: LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff\",\n      \"line\": 94,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEANEVAL_PRIVATE291_AUDIT: requested=293; unique=293\",\n      \"line\": 94,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEANEVAL_PRIVATE291_AUDIT_PRESENT: present=293; values=293\",\n      \"line\": 94,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ],\n  \"failed_dependencies\": []\n}"
+      }
+    ],
+    "structuredContent": {
+      "result": {
+        "partial": false,
+        "still_elaborating_lines": null,
+        "success": true,
+        "timed_out": false,
+        "items": [
+          {
+            "severity": "info",
+            "message": "'LeanEvalPrivate291.IsDiophantine' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 77,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LeanEvalPrivate291.replay' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 78,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LeanEvalPrivate291.isDiophantine_iff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 79,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LeanEvalPrivate291.thueSiegelRoth' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 80,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux\u271d {x \u03ba : \u211d} (hx : Irrational x)\n  (hs : (Roth.approxSet x \u03ba).Finite) : \u2203 C, 0 < C \u2227 \u2200 (p q : \u2124), 0 < q \u2192 C / \u2191q ^ \u03ba < |x - \u2191p / \u2191q|",
+            "line": 81,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "private theorem LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux : \u2200 {x \u03ba : \u211d},\n  Irrational x \u2192 (Roth.approxSet x \u03ba).Finite \u2192 \u2203 C, 0 < C \u2227 \u2200 (p q : \u2124), 0 < q \u2192 C / \u2191q ^ \u03ba < |x - \u2191p / \u2191q| :=\nfun {x \u03ba} hx hs \u21a6\n  let f := fun a \u21a6 |x - \u2191a.1 / \u2191a.2| * \u2191a.2 ^ \u03ba;\n  Exists.casesOn\n    (Set.exists_min_image (insert (0, 1) (Roth.approxSet x \u03ba)) f (Set.Finite.insert (0, 1) hs)\n      (Set.insert_nonempty (0, 1) (Roth.approxSet x \u03ba)))\n    fun a h \u21a6\n    And.casesOn h fun ha hmin \u21a6\n      have haq :=\n        Or.casesOn ha\n          (fun h \u21a6\n            Eq.ndrec (motive := fun a \u21a6 (\u2200 b \u2208 insert (0, 1) (Roth.approxSet x \u03ba), f a \u2264 f b) \u2192 0 < a.2)\n              (fun hmin \u21a6\n                Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat \u2115 (Eq.refl 0))\n                  (Mathlib.Meta.NormNum.isNat_ofNat \u2115 (Eq.refl 1)) (Eq.refl false))\n              (Eq.symm h) hmin)\n          fun ha \u21a6 ha.left;\n      have hfa :=\n        mul_pos\n          (abs_pos.mpr\n            (sub_ne_zero.mpr\n              (id\n                (Eq.mp (congrArg (Ne x) (congrArg (HDiv.hDiv \u2191a.1) (Int.cast_natCast a.2)))\n                  (Irrational.ne_rational hx a.1 \u2191a.2)))))\n          (Real.rpow_pos_of_pos (Nat.cast_pos'.mpr haq) \u03ba);\n      Exists.intro (min (1 / 2) (f a / 2))\n        \u27e8lt_min\n            (div_pos\n              (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat \u211d Nat.cast_one)\n                (Eq.refl (Nat.ble 1 1)))\n              (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat \u211d (Eq.refl 2))\n                (Eq.refl (Nat.ble 1 2))))\n            (div_pos hfa\n              (Mathlib.Meta.Positivity.pos_of_isNat (Mathlib.Meta.NormNum.isNat_ofNat \u211d (Eq.refl 2))\n                (Eq.refl (Nat.ble 1 2)))),\n          fun p q hq \u21a6\n          Exists.casesOn (CanLift.prf q (LT.lt.le hq)) fun q_1 h \u21a6\n            Eq.ndrec (motive := fun q \u21a6 0 < q \u2192 min (1 / 2) (f a / 2) / \u2191q ^ \u03ba < |x - \u2191p / \u2191q|)\n              (fun hq \u21a6\n                have hq' :=\n                  Real.rpow_pos_of_pos\n                    (cast\n                      (Eq.trans (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) \u2191q_1) Nat.cast_lt._simp_1)\n                        (Eq.symm\n                          (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) \u2191q_1) Nat.cast_lt._simp_1)))\n                      hq)\n                    \u03ba;\n                Eq.mpr (id (congrArg (fun _a \u21a6 min (1 / 2) (f a / 2) / _a ^ \u03ba < |x - \u2191p / _a|) (Int.cast_natCast q_1)))\n                  (Eq.mpr (id (congrArg (fun _a \u21a6 _a) (propext (div_lt_iff\u2080 hq'))))\n                    (if hmem : (p, q_1) \u2208 Roth.approxSet x \u03ba then\n                      LE.le.trans_lt (min_le_right (1 / 2) (f a / 2))\n                        (LT.lt.trans_le (half_lt_self hfa) (hmin (p, q_1) (Set.mem_insert_of_mem (0, 1) hmem)))\n                    else\n                      LT.lt.trans_le\n                        (LE.le.trans_lt (min_le_left (1 / 2) (f a / 2))\n                          (Mathlib.Meta.NormNum.isNNRat_lt_true\n                            (Mathlib.Meta.NormNum.isNNRat_div\n                              (Mathlib.Meta.NormNum.isNNRat_mul (Eq.refl HMul.hMul)\n                                (Mathlib.Meta.NormNum.IsNat.to_isNNRat\n                                  (Mathlib.Meta.NormNum.isNat_ofNat \u211d Nat.cast_one))\n                                (Mathlib.Meta.NormNum.isNNRat_inv_pos\n                                  (Mathlib.Meta.NormNum.IsNat.to_isNNRat\n                                    (Mathlib.Meta.NormNum.isNat_ofNat \u211d (Eq.refl 2))))\n                                (Eq.refl (Nat.mul 1 1)) (Eq.refl 2)))\n                            (Mathlib.Meta.NormNum.IsNat.to_isNNRat (Mathlib.Meta.NormNum.isNat_ofNat \u211d Nat.cast_one))\n                            (Eq.refl true)))\n                        (le_of_not_gt fun h \u21a6\n                          hmem\n                            \u27e8cast\n                                (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) \u2191q_1) Nat.cast_lt._simp_1)\n                                hq,\n                              (lt_div_iff\u2080 hq').mpr h\u27e9))))\n              h hq\u27e9",
+            "line": 81,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'_private.Roth.LeanEval.0.LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]",
+            "line": 81,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEANEVAL_PRIVATE291_FULL_TYPE: \u2200 {x \u03ba : \u211d},\n  Irrational x \u2192 (Roth.approxSet x \u03ba).Finite \u2192 \u2203 (C : \u211d), 0 < C \u2227 \u2200 (p q : \u2124), 0 < q \u2192 C / \u2191q ^ \u03ba < |x - \u2191p / \u2191q|",
+            "line": 87,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEANEVAL_PRIVATE291_DIRECT_CONSUMER: LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff",
+            "line": 94,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEANEVAL_PRIVATE291_AUDIT: requested=293; unique=293",
+            "line": 94,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEANEVAL_PRIVATE291_AUDIT_PRESENT: present=293; values=293",
+            "line": 94,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          }
+        ],
+        "failed_dependencies": []
+      }
+    },
+    "isError": false
+  },
+  "elapsed_ms": 2703
+}
