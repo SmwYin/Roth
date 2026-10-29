@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.mul_card_filter_weight_le_aux",
+  "kind": "lemma",
+  "type": "∀ {m : ℕ},\n  0 < m →\n    ∀ (r : Fin m → ℕ),\n      (∀ (j : Fin m), 0 < r j) →\n        ∀ (a : ℝ), a * ↑{d ∈ Roth.box r | Roth.weight r d ≤ (↑m - 4 * a * √↑m) / 2}.card ≤ ↑(∏ j : Fin m, (r j + 1)) / 2",
+  "what": "For arbitrary real scale a, bounds a times the number of lattice indices below the corresponding centered cutoff by half the coordinate box cardinality.",
+  "how": "For positive scale apply card_filter_weight_le and cancel the square-root factors; for nonpositive scale compare signs directly.",
+  "hypotheses": "Positive dimension and positive degree vector; arbitrary real scale. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.box",
+    "Roth.card_filter_weight_le",
+    "Roth.weight"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Split on a>0. In the positive branch use card_filter_weight_le with loss4*a*sqrt(m), multiply by a, and clear the nonzero factors using m>0 and Real.sqrt_pos before ring normalization. In the nonpositive branch the left side is nonpositive while the cardinality half is nonnegative. The sole rpow-bound existence caller chooses a=c*f.natDegree to supply the counting-budget premise of pigeonhole_count. This all-real-scale helper is stronger in scope than the positive-scale cancellation probe from the lambda assessment.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

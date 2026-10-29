@@ -1,0 +1,11 @@
+private lemma mul_card_filter_weight_le_aux {m : ℕ} (hm : 0 < m) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j)
+    (a : ℝ) : a * (((box r).filter fun d ↦ weight r d ≤ ((m : ℝ) - 4 * a * √(m : ℝ)) / 2).card : ℝ)
+      ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) / 2 := by
+  by_cases ha : 0 < a
+  · refine (mul_le_mul_of_nonneg_left
+      (card_filter_weight_le m r hr (by positivity)) ha.le).trans_eq ?_
+    push_cast
+    field_simp [ha.ne', (Real.sqrt_pos.2 (Nat.cast_pos.2 hm)).ne']
+    ring
+  · exact (mul_nonpos_of_nonpos_of_nonneg (le_of_not_gt ha) (Nat.cast_nonneg _)).trans
+      (by positivity)
