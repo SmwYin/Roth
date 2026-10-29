@@ -1,0 +1,29 @@
+{
+  "declaration": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+  "kind": "lemma",
+  "type": "∀ {f : Polynomial ℤ} {α A : ℝ},\n  f.Monic →\n    (Polynomial.aeval α) f = 0 →\n      (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →\n        ∀ {m : ℕ},\n          0 < m →\n            ∀ (r : Fin m → ℕ),\n              (∀ (j : Fin m), 0 < r j) →\n                ∀ {c β : ℝ} {B s : ℕ},\n                  0 < B →\n                    ∑ j : Fin m, r j ≤ s →\n                      (1 + A) ^ s ≤ β →\n                        ↑B * β ^ 3 ≤ ↑B ^ c →\n                          ∃ P ∈ Roth.RSet (↑B) r,\n                            (↑m - 4 * c * ↑f.natDegree * √↑m) / 2 ≤\n                              Roth.index ((map (Int.castRingHom ℝ)) P) (fun (x : Fin m) ↦ α) r",
+  "what": "Constructs a bounded nonzero integer polynomial of high diagonal-root index from a power-based coefficient budget and positive coordinate degree bounds.",
+  "how": "Derive exponent positivity, obtain floor bounds with abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux, bound the derivative count using mul_card_filter_weight_le_aux and pigeonhole_count, then apply exists_mem_RSet_le_index_aux.",
+  "hypotheses": "Monic equation, positive dimension/degrees/coefficient bound and compatible coefficient-growth estimates. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.RSet",
+    "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+    "Roth.box",
+    "Roth.boxFamily",
+    "Roth.diag",
+    "Roth.exists_mem_RSet_le_index_aux",
+    "Roth.index",
+    "Roth.mem_box",
+    "Roth.mul_card_filter_weight_le_aux",
+    "Roth.pigeonhole_count",
+    "Roth.weight"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Monicity gives A>=1, hence 2^s<=beta; positivity of m and the degrees gives s>0. The power budget then forces c>=1, allowing pigeonhole_count. Use the floor remainder estimate with Cn=floor(B^c), choose J as the coordinate box filtered by the centered weight cutoff, and get its budget from mul_card_filter_weight_le_aux at a=c*f.natDegree. Feed these into exists_mem_RSet_le_index_aux. The sole log-bound caller specializes c=1+3delta, B=mainCoeffBound and beta=B^delta; this general helper has no gamma or logarithmic hypotheses.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

@@ -1,0 +1,86 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 581,
+  "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+  "short": "exists_mem_RSet_le_index_of_rpow_bound_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 616,
+  "source": "private lemma exists_mem_RSet_le_index_of_rpow_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} (hm : 0 < m)\n    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {c β : ℝ} {B s : ℕ} (hB : 0 < B) (hs : ∑ j, r j ≤ s)\n    (hAβ : (1 + A) ^ s ≤ β) (hpow : (B : ℝ) * β ^ 3 ≤ (B : ℝ) ^ c) : ∃ P : MvPolynomial (Fin m) ℤ,\n      P ∈ RSet B r ∧ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2 ≤\n        index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by\n  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have h2 : (2 : ℝ) ^ s ≤ β :=\n    (pow_le_pow_left₀ (by norm_num) (by linarith : (2 : ℝ) ≤ 1 + A) s).trans hAβ\n  have hc : 1 ≤ c := by\n    by_contra! hc\n    have hBc : (B : ℝ) ^ c ≤ B := by\n      simpa using Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hB) hc.le\n    have hs0 : 0 < s := (hr ⟨0, hm⟩).trans_le\n      ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n    have hβ : 1 < β := (one_lt_pow₀ (by norm_num : (1 : ℝ) < 2) hs0.ne').trans_le h2\n    exact (not_lt_of_ge hBc) ((lt_mul_of_one_lt_right (Nat.cast_pos.2 hB)\n      (one_lt_pow₀ hβ (by decide : 3 ≠ 0))).trans_le hpow)\n  -- the bound `C` for the remainders\n  let Cn := ⌊(B : ℝ) ^ c⌋₊\n  have hC : ∀ W ∈ boxFamily r B, ∀ j i,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (Cn : ℤ) := by\n    intro W hW j i\n    have hcW : ∀ e, |(W.coeff e : ℝ)| ≤ B := fun e ↦ by\n      exact_mod_cast (abs_of_nonneg (hW.2 e).1).trans_le (hW.2 e).2\n    exact (abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux\n      hA hW.1 hcW hs h2 hAβ j i).trans (by exact_mod_cast Nat.floor_mono hpow)\n  let J := (box r).filter fun d ↦\n    weight r d ≤ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2\n  -- the counting inequality\n  have hD : c * f.natDegree * J.card ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) / 2 := by\n    simpa [J, mul_assoc] using mul_card_filter_weight_le_aux hm r hr (c * f.natDegree)\n  exact exists_mem_RSet_le_index_aux hf hfα r B Cn J\n    (fun W hW j _ i _ ↦ hC W hW j i)\n    (pigeonhole_count (Nat.cast_pos.2 hB) hc (Finset.prod_pos fun j _ ↦ Nat.succ_pos _) hD)\n    (fun d hd hw ↦ Finset.mem_filter.2 ⟨mem_box.2 hd, hw.le⟩)",
+  "signature": "private lemma exists_mem_RSet_le_index_of_rpow_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} (hm : 0 < m)\n    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {c β : ℝ} {B s : ℕ} (hB : 0 < B) (hs : ∑ j, r j ≤ s)\n    (hAβ : (1 + A) ^ s ≤ β) (hpow : (B : ℝ) * β ^ 3 ≤ (B : ℝ) ^ c) : ∃ P : MvPolynomial (Fin m) ℤ,\n      P ∈ RSet B r ∧ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2 ≤\n        index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r",
+  "body": "by\n  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have h2 : (2 : ℝ) ^ s ≤ β :=\n    (pow_le_pow_left₀ (by norm_num) (by linarith : (2 : ℝ) ≤ 1 + A) s).trans hAβ\n  have hc : 1 ≤ c := by\n    by_contra! hc\n    have hBc : (B : ℝ) ^ c ≤ B := by\n      simpa using Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hB) hc.le\n    have hs0 : 0 < s := (hr ⟨0, hm⟩).trans_le\n      ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n    have hβ : 1 < β := (one_lt_pow₀ (by norm_num : (1 : ℝ) < 2) hs0.ne').trans_le h2\n    exact (not_lt_of_ge hBc) ((lt_mul_of_one_lt_right (Nat.cast_pos.2 hB)\n      (one_lt_pow₀ hβ (by decide : 3 ≠ 0))).trans_le hpow)\n  -- the bound `C` for the remainders\n  let Cn := ⌊(B : ℝ) ^ c⌋₊\n  have hC : ∀ W ∈ boxFamily r B, ∀ j i,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (Cn : ℤ) := by\n    intro W hW j i\n    have hcW : ∀ e, |(W.coeff e : ℝ)| ≤ B := fun e ↦ by\n      exact_mod_cast (abs_of_nonneg (hW.2 e).1).trans_le (hW.2 e).2\n    exact (abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux\n      hA hW.1 hcW hs h2 hAβ j i).trans (by exact_mod_cast Nat.floor_mono hpow)\n  let J := (box r).filter fun d ↦\n    weight r d ≤ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2\n  -- the counting inequality\n  have hD : c * f.natDegree * J.card ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) / 2 := by\n    simpa [J, mul_assoc] using mul_card_filter_weight_le_aux hm r hr (c * f.natDegree)\n  exact exists_mem_RSet_le_index_aux hf hfα r B Cn J\n    (fun W hW j _ i _ ↦ hC W hW j i)\n    (pigeonhole_count (Nat.cast_pos.2 hB) hc (Finset.prod_pos fun j _ ↦ Nat.succ_pos _) hD)\n    (fun d hd hw ↦ Finset.mem_filter.2 ⟨mem_box.2 hd, hw.le⟩)",
+  "proof_lines": 31,
+  "sha256": "d35def09cffea3966d19da542844f090f77e574715d58bf15e9275290b95d73e",
+  "what": "Explicit growth bounds produce an admissible polynomial with a dimension-minus-square-root index threshold.",
+  "how": "Derive exponent positivity, obtain floor bounds with abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux, bound the derivative count using mul_card_filter_weight_le_aux and pigeonhole_count, then apply exists_mem_RSet_le_index_aux.",
+  "hypotheses": "Monic equation, positive dimension/degrees/coefficient bound and compatible coefficient-growth estimates.",
+  "source_body_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+    "Roth.box",
+    "Roth.boxFamily",
+    "Roth.diag",
+    "Roth.exists_mem_RSet_le_index_aux",
+    "Roth.mem_box",
+    "Roth.mul_card_filter_weight_le_aux",
+    "Roth.pigeonhole_count",
+    "Roth.weight"
+  ],
+  "source_type_refs": [
+    "Roth.RSet",
+    "Roth.index"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 618
+    }
+  ],
+  "notes": [
+    "proof/body >30 lines"
+  ],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+    "Roth.box",
+    "Roth.boxFamily",
+    "Roth.diag",
+    "Roth.exists_mem_RSet_le_index_aux",
+    "Roth.mem_box",
+    "Roth.mul_card_filter_weight_le_aux",
+    "Roth.pigeonhole_count",
+    "Roth.weight"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_mem_RSet_le_index_of_log_bound_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 511,
+  "project_body_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+    "Roth.box",
+    "Roth.boxFamily",
+    "Roth.diag",
+    "Roth.exists_mem_RSet_le_index_aux",
+    "Roth.mem_box",
+    "Roth.mul_card_filter_weight_le_aux",
+    "Roth.pigeonhole_count",
+    "Roth.weight"
+  ],
+  "project_type_refs": [
+    "Roth.RSet",
+    "Roth.index"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 618
+    }
+  ]
+}

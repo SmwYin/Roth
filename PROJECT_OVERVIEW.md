@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 260/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 261/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 260; remaining: 33.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 65 SKIP.
+- Completed applicable assessments: 261; remaining: 32.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 66 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3238,6 +3238,31 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.mul_card_filter_weight_le_aux.md).
 
+### Completed: `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`
+
+- Type: `∀ {f : Polynomial ℤ} {α A : ℝ},
+  f.Monic →
+    (Polynomial.aeval α) f = 0 →
+      (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →
+        ∀ {m : ℕ},
+          0 < m →
+            ∀ (r : Fin m → ℕ),
+              (∀ (j : Fin m), 0 < r j) →
+                ∀ {c β : ℝ} {B s : ℕ},
+                  0 < B →
+                    ∑ j : Fin m, r j ≤ s →
+                      (1 + A) ^ s ≤ β →
+                        ↑B * β ^ 3 ≤ ↑B ^ c →
+                          ∃ P ∈ Roth.RSet (↑B) r,
+                            (↑m - 4 * c * ↑f.natDegree * √↑m) / 2 ≤
+                              Roth.index ((map (Int.castRingHom ℝ)) P) (fun (x : Fin m) ↦ α) r`
+- What: Constructs a bounded nonzero integer polynomial of high diagonal-root index from a power-based coefficient budget and positive coordinate degree bounds.
+- How: Derive exponent positivity, obtain floor bounds with abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux, bound the derivative count using mul_card_filter_weight_le_aux and pigeonhole_count, then apply exists_mem_RSet_le_index_aux.
+- Hypotheses: Monic equation, positive dimension/degrees/coefficient bound and compatible coefficient-growth estimates. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: MvPolynomial.hasseDeriv, Roth.RSet, Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux, Roth.box, Roth.boxFamily, Roth.diag, Roth.exists_mem_RSet_le_index_aux, Roth.index, Roth.mem_box, Roth.mul_card_filter_weight_le_aux, Roth.pigeonhole_count, Roth.weight
+- Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_of_rpow_bound_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3784,6 +3809,8 @@ Completed `Roth.exists_mem_RSet_le_index_aux`: Apply exists_ne_modByMonic_eq to 
 
 Completed `Roth.mul_card_filter_weight_le_aux`: Split on a>0. In the positive branch use card_filter_weight_le with loss4*a*sqrt(m), multiply by a, and clear the nonzero factors using m>0 and Real.sqrt_pos before ring normalization. In the nonpositive branch the left side is nonpositive while the cardinality half is nonnegative. The sole rpow-bound existence caller chooses a=c*f.natDegree to supply the counting-budget premise of pigeonhole_count. This all-real-scale helper is stronger in scope than the positive-scale cancellation probe from the lambda assessment.
 
+Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: Monicity gives A>=1, hence 2^s<=beta; positivity of m and the degrees gives s>0. The power budget then forces c>=1, allowing pigeonhole_count. Use the floor remainder estimate with Cn=floor(B^c), choose J as the coordinate box filtered by the centered weight cutoff, and get its budget from mul_card_filter_weight_le_aux at a=c*f.natDegree. Feed these into exists_mem_RSet_le_index_aux. The sole log-bound caller specializes c=1+3delta, B=mainCoeffBound and beta=B^delta; this general helper has no gamma or logarithmic hypotheses.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4305,6 +4332,8 @@ Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux`: The structur
 Completed `Roth.exists_mem_RSet_le_index_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.mul_card_filter_weight_le_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -4839,6 +4868,8 @@ Completed `Roth.exists_mem_RSet_le_index_aux`: No public generality claim under 
 
 Completed `Roth.mul_card_filter_weight_le_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5361,6 +5392,8 @@ Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux`: No new primi
 Completed `Roth.exists_mem_RSet_le_index_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.mul_card_filter_weight_le_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -5887,6 +5920,8 @@ Completed `Roth.exists_mem_RSet_le_index_aux`: Retain a live private proof inter
 
 Completed `Roth.mul_card_filter_weight_le_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6151,6 +6186,7 @@ Completed `Roth.mul_card_filter_weight_le_aux`: Retain a live private proof inte
 | 258 | `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux/root-acceptance.json) |
 | 259 | `Roth.exists_mem_RSet_le_index_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_mem_RSet_le_index_aux/root-acceptance.json) |
 | 260 | `Roth.mul_card_filter_weight_le_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_card_filter_weight_le_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_card_filter_weight_le_aux/root-acceptance.json) |
+| 261 | `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_of_rpow_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_mem_RSet_le_index_of_rpow_bound_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6670,12 +6706,14 @@ Completed `Roth.exists_mem_RSet_le_index_aux` action: Keep unchanged; complete p
 
 Completed `Roth.mul_card_filter_weight_le_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_mem_RSet_le_index_of_log_bound_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

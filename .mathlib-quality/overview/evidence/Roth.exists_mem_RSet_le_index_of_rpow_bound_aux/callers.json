@@ -1,0 +1,78 @@
+[
+  {
+    "file": "Roth/MainLemma.lean",
+    "line": 618,
+    "name": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+    "short": "exists_mem_RSet_le_index_of_log_bound_aux",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 641,
+    "source": "private lemma exists_mem_RSet_le_index_of_log_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m q₁ r₁ : ℕ} (hm : 0 < m)\n    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) (hs : ∑ j, r j ≤ m * r₁) {δ : ℝ} (hδ0 : 0 ≤ δ)\n    (hL : 2 * m + 1 + 2 * m * Real.log (1 + A) ≤ δ ^ 2 * Real.log q₁) :\n    ∃ P : MvPolynomial (Fin m) ℤ, P ∈ RSet (mainCoeffBound δ q₁ r₁) r ∧\n      gam δ f.natDegree m ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by\n  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have hr₁ : 0 < r₁ := Nat.pos_of_mul_pos_left <| (hr ⟨0, hm⟩).trans_le\n    ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n  have hq : 3 ≤ δ ^ 2 * Real.log q₁ := by\n    have hmR : (1 : ℝ) ≤ m := by exact_mod_cast hm\n    nlinarith only [hL, hmR, mul_nonneg (by positivity : (0 : ℝ) ≤ 2 * m)\n      (Real.log_nonneg (by linarith : 1 ≤ 1 + A))]\n  obtain ⟨_, hTA, _⟩ := three_small_factors (m := m) (q₁ := q₁) (α := 0)\n    hδ0 hr₁ (zero_le_one.trans hA1) (by simpa using hL)\n  have hpow : (mainCoeffBound δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) =\n      mainCoeffBound δ q₁ r₁ * ((mainCoeffBound δ q₁ r₁ : ℝ) ^ δ) ^ 3 := by\n    rw [Real.rpow_add_of_nonneg (by positivity) zero_le_one (by positivity), Real.rpow_one,\n      ← Real.rpow_mul_natCast (by positivity)]\n    simp [mul_comm]\n  simpa only [gam, lam] using\n    exists_mem_RSet_le_index_of_rpow_bound_aux (B := mainCoeffBound δ q₁ r₁) hf hfα hA\n    hm r hr (Nat.floor_pos.2 <| (by norm_num : (1 : ℝ) ≤ 4).trans\n      (four_lt_rpow hδ0 hr₁ hq).le) hs hTA.le hpow.ge",
+    "signature": "private lemma exists_mem_RSet_le_index_of_log_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m q₁ r₁ : ℕ} (hm : 0 < m)\n    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) (hs : ∑ j, r j ≤ m * r₁) {δ : ℝ} (hδ0 : 0 ≤ δ)\n    (hL : 2 * m + 1 + 2 * m * Real.log (1 + A) ≤ δ ^ 2 * Real.log q₁) :\n    ∃ P : MvPolynomial (Fin m) ℤ, P ∈ RSet (mainCoeffBound δ q₁ r₁) r ∧\n      gam δ f.natDegree m ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r",
+    "body": "by\n  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have hr₁ : 0 < r₁ := Nat.pos_of_mul_pos_left <| (hr ⟨0, hm⟩).trans_le\n    ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n  have hq : 3 ≤ δ ^ 2 * Real.log q₁ := by\n    have hmR : (1 : ℝ) ≤ m := by exact_mod_cast hm\n    nlinarith only [hL, hmR, mul_nonneg (by positivity : (0 : ℝ) ≤ 2 * m)\n      (Real.log_nonneg (by linarith : 1 ≤ 1 + A))]\n  obtain ⟨_, hTA, _⟩ := three_small_factors (m := m) (q₁ := q₁) (α := 0)\n    hδ0 hr₁ (zero_le_one.trans hA1) (by simpa using hL)\n  have hpow : (mainCoeffBound δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) =\n      mainCoeffBound δ q₁ r₁ * ((mainCoeffBound δ q₁ r₁ : ℝ) ^ δ) ^ 3 := by\n    rw [Real.rpow_add_of_nonneg (by positivity) zero_le_one (by positivity), Real.rpow_one,\n      ← Real.rpow_mul_natCast (by positivity)]\n    simp [mul_comm]\n  simpa only [gam, lam] using\n    exists_mem_RSet_le_index_of_rpow_bound_aux (B := mainCoeffBound δ q₁ r₁) hf hfα hA\n    hm r hr (Nat.floor_pos.2 <| (by norm_num : (1 : ℝ) ≤ 4).trans\n      (four_lt_rpow hδ0 hr₁ hq).le) hs hTA.le hpow.ge",
+    "proof_lines": 19,
+    "sha256": "2b3c3b22619e7274526ca173fbf320dfcbfa59e5ec26d5033617ff490d16beaf",
+    "what": "The logarithmic growth condition gives an admissible polynomial of index at least gamma.",
+    "how": "Use three_small_factors and four_lt_rpow to establish the coefficient growth needed by exists_mem_RSet_le_index_of_rpow_bound_aux; unfold gam and lam.",
+    "hypotheses": "Monic integer equation, bounded coefficients, positive dimension/degrees, total degree bound and nonnegative delta with logarithmic bound.",
+    "source_body_refs": [
+      "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+      "Roth.four_lt_rpow",
+      "Roth.gam",
+      "Roth.lam",
+      "Roth.mainCoeffBound",
+      "Roth.three_small_factors"
+    ],
+    "source_type_refs": [
+      "Roth.RSet",
+      "Roth.gam",
+      "Roth.index",
+      "Roth.mainCoeffBound"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 643
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+    "uses_from_project": [
+      "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+      "Roth.four_lt_rpow",
+      "Roth.gam",
+      "Roth.lam",
+      "Roth.mainCoeffBound",
+      "Roth.three_small_factors"
+    ],
+    "used_by_in_file": [
+      "Roth.exists_auxiliary_polynomial_of_log_bound_aux"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 505,
+    "project_body_refs": [
+      "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+      "Roth.four_lt_rpow",
+      "Roth.gam",
+      "Roth.lam",
+      "Roth.mainCoeffBound",
+      "Roth.three_small_factors"
+    ],
+    "project_type_refs": [
+      "Roth.RSet",
+      "Roth.gam",
+      "Roth.index",
+      "Roth.mainCoeffBound"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 643
+      }
+    ]
+  }
+]
