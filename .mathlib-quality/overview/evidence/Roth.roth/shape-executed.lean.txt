@@ -1,0 +1,49 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Roth288Shape
+open Roth
+lemma finite_iff_bound (α : ℝ) :
+    (∀ {κ : ℝ}, (approxSet α κ).Infinite → κ ≤ 2) ↔
+      ∀ κ : ℝ, 2 < κ → (approxSet α κ).Finite := by
+  constructor
+  · intro h κ hκ
+    exact Set.not_infinite.mp fun hinf ↦ (h hinf).not_gt hκ
+  · intro h κ hinf
+    exact le_of_not_gt fun hκ ↦ hinf (h κ hκ)
+lemma algebraic_finite {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α)
+    {κ : ℝ} (hκ : 2 < κ) : (approxSet α κ).Finite :=
+  (finite_iff_bound α).mp (Roth.roth hα halg) κ hκ
+lemma recover {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) : κ ≤ 2 :=
+  (finite_iff_bound α).mpr (fun _ hκ ↦ algebraic_finite hα halg hκ) hinf
+lemma zero_infinite (κ : ℝ) : (approxSet 0 κ).Infinite := by
+  have hi : (Set.Ioi (0 : ℕ)).Infinite := Set.Ioi_infinite 0
+  refine (hi.image (f := fun q : ℕ ↦ ((0 : ℤ), q)) (by
+    intro a b hab
+    exact congrArg Prod.snd hab)).mono ?_
+  rintro _ ⟨q, hq, rfl⟩
+  exact ⟨hq, by simp only [Int.cast_zero, zero_div, sub_self, abs_zero]; positivity⟩
+example : ¬ (∀ {α : ℝ}, IsAlgebraic ℚ α → ∀ {κ : ℝ},
+    (approxSet α κ).Infinite → κ ≤ 2) := by
+  intro h
+  have hh := h (isAlgebraic_zero : IsAlgebraic ℚ (0 : ℝ)) (zero_infinite 3)
+  norm_num at hh
+#print axioms Roth288Shape.finite_iff_bound
+#print axioms Roth288Shape.algebraic_finite
+#print axioms Roth288Shape.recover
+#print axioms Roth288Shape.zero_infinite
+end Roth288Shape

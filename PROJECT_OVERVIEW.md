@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 287/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 288/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 287; remaining: 6.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 32 YES-but-generalise-first, 46 NO-mathlib-has-it, 98 BORDERLINE-needs-human, 77 SKIP.
+- Completed applicable assessments: 288; remaining: 5.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 33 YES-but-generalise-first, 46 NO-mathlib-has-it, 98 BORDERLINE-needs-human, 77 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3750,6 +3750,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One direct source/kernel-value caller Roth.roth at Main577; no direct type consumer or external-to-file proof call. Full caller inlining plus complete roth_rat and LeanEval bodies verified.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.roth_of_isIntegral.md).
 
+### Completed: `Roth.roth`
+
+- Type: `∀ {α : ℝ}, Irrational α → IsAlgebraic ℚ α → ∀ {κ : ℝ}, (Roth.approxSet α κ).Infinite → κ ≤ 2`
+- What: Roth’s theorem for irrational real algebraic numbers: infinitely many unreduced positive-denominator pair approximations force exponent at most2.
+- How: Assume κ>2, clear denominators to obtain a positive integer multiple of α integral over ℤ, absorb that factor by lowering κ to κ′∈(2,κ), then contradict the integral Roth theorem. Its underlying multivariate auxiliary-polynomial argument compares integral lower and Taylor upper bounds.
+- Hypotheses: Irrational real α, α algebraic over ℚ, Infinite set of integer/natural pairs with q>0 and |α−h/q|<q^(−κ), arbitrary real κ
+- Project dependencies: Roth.approxSet, Roth.reduction, Roth.roth_of_isIntegral
+- Caller summary: Two actual proof/body consumers: Roth.roth_rat Main583 and LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth LeanEval64; no kernel type consumers. Full caller bodies and full LeanEval replay with target proof inlined, original signatures retained, target-free assertions verified.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.roth.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4350,6 +4360,8 @@ Completed `Roth.roth_log_bound_aux`: Use the strict balance inequality at index0
 
 Completed `Roth.roth_of_isIntegral`: Pinned LiouvilleWith is the useful existing predicate; current mathlib Liouville bound depends on polynomial degree and Dirichlet proves exponent2 existence, neither proves Roth exponent≤2. All15 actual search cells executed; local index:error honestly limited.
 
+Completed `Roth.roth`: All15 search cells executed; local current/standard errors and abstract warming are limitations. Liouville degree-dependent bound and Dirichlet exponent2 existence do not supply Roth’s sharp upper bound. Pinned LiouvilleWith doc explicitly names the missing p>2 transcendence implication.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4925,6 +4937,8 @@ Completed `Roth.roth_product_bound_aux`: The structural review distinguishes thi
 Completed `Roth.roth_log_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.roth_of_isIntegral`: Roth.roth is reduction-based algebraic extension; Roth.roth_rat and LeanEval endpoint are equivalent public formulations with genuine representation bridges, not independent copies of the proof.
+
+Completed `Roth.roth`: Integral Roth is the proof core, general algebraic endpoint adds substantive scaling/exponent-loss transport; rational-value and uniform lower-bound endpoints are equivalent formulations for irrational α through genuine bridges.
 
 ## Part 5: Generalization opportunities
 
@@ -5552,6 +5566,8 @@ Completed `Roth.roth_log_bound_aux`: No public generality claim under the privat
 
 Completed `Roth.roth_of_isIntegral`: verified: True; reason: MODERN-IDIOM; proposed type: ∀ {α p : ℝ}, IsIntegral ℤ α → LiouvilleWith p α → p ≤ 2; exact equivalence: For irrational α, classical all-exponent pair bound iff ∀ {p}, LiouvilleWith p α → p≤2; modern integral theorem derives irrationality only in p>2 branch.; native scope: Mathlib-only new conditional bridge plus original exact proof/type agreement; no independent mathlib Roth proof claimed.
 
+Completed `Roth.roth`: verified: True; reason: MODERN-IDIOM; proposed type: ∀ {α p : ℝ}, IsAlgebraic ℚ α → LiouvilleWith p α → p ≤ 2; exact equivalence: For irrational α, the all-exponent pair-bound property iff ∀ {p}, LiouvilleWith p α → p≤2; modern algebraic endpoint derives irrationality only in p>2 case.; native scope: Fresh conditional bridge adapted from287, compiled independently with algebraicity premises; original proof replay validates the mathematical premise. No independent mathlib Roth proof claimed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -6128,6 +6144,8 @@ Completed `Roth.roth_product_bound_aux`: No new primitive is needed for this int
 Completed `Roth.roth_log_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.roth_of_isIntegral`: New exponent-family LiouvilleWith bridge and bounded-denominator/frequently transport, Actual Roth exponent2 exclusion for algebraic integers; pinned LiouvilleWith doc names this missing theorem, Staged Hasse/Taylor/index and main-lemma dependencies
+
+Completed `Roth.roth`: Sharp exponent2 exclusion for algebraic real LiouvilleWith values, New bounded-denominator/frequently transport and exponent-family equivalence, Staged auxiliary polynomial/Hasse/Taylor/index/Roth-main-lemma prerequisites
 
 ## Part 7: Junk / removable
 
@@ -6708,6 +6726,8 @@ Completed `Roth.roth_log_bound_aux`: Retain a live private proof interface. No p
 
 Completed `Roth.roth_of_isIntegral`: Keep the mathematical result; one direct caller and short orchestration do not erase a named main theorem. No deletion based on generic order closure.
 
+Completed `Roth.roth`: Keep the named BIG endpoint; four-line assembly and two callers do not reduce the theorem to existing mathlib content.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6999,6 +7019,7 @@ Completed `Roth.roth_of_isIntegral`: Keep the mathematical result; one direct ca
 | 285 | `Roth.roth_product_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.roth_product_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.roth_product_bound_aux/root-acceptance.json) |
 | 286 | `Roth.roth_log_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.roth_log_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.roth_log_bound_aux/root-acceptance.json) |
 | 287 | `Roth.roth_of_isIntegral` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.roth_of_isIntegral.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.roth_of_isIntegral/root-acceptance.json) |
+| 288 | `Roth.roth` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.roth.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.roth/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7572,12 +7593,14 @@ Completed `Roth.roth_log_bound_aux` action: Keep unchanged; complete private-pre
 
 Completed `Roth.roth_of_isIntegral` action: Upstream LiouvilleWith integral exponent theorem with classical finite/pair corollaries; /generalise and /cleanup before PR, stage after accepted main_lemma and prerequisite API.
 
+Completed `Roth.roth` action: Expose the verified algebraic LiouvilleWith exponent bound, retain classical finite/pair corollaries, and stage after accepted integral Roth/main-lemma prerequisites; /generalise and /cleanup before PR.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.roth` next. Supporting identities receive their own applicable checks.
+   `Roth.roth_rat` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

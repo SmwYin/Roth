@@ -1,0 +1,124 @@
+\section{The proof of Roth's theorem}
+In this section we complete the proof of Roth's theorem using Lemma \ref{roth:lem9}. Let $\kappa > 2$ and suppose that there are infinitely many pairs of integers $h, q$, $q>0$, such that
+\begin{equation}
+    \label{roth:eq46}
+    \left|\alpha - \frac{h}{q} \right|< \frac{1}{q^\kappa}.
+\end{equation}
+We will derive a contradiction.
+We first justify choosing reduced solutions of arbitrarily large denominator.
+Reducing $h/q$ to $a/b$ with $b>0$ and $\gcd(a,b)=1$ preserves the
+inequality, since $b\leq q$ and $\kappa>0$.
+For a fixed rational value $a/b$, irrationality gives
+$\varepsilon=|\alpha-a/b|>0$. The inequality
+$\varepsilon<q^{-\kappa}$ bounds its original denominators $q$, so only
+finitely many original pairs can represent that rational value.
+There are therefore infinitely many distinct reduced solutions.
+For bounded $b$, their numerators $a$ lie in finite intervals, so the
+reduced denominators are unbounded as well.
+We choose a positive integer $m$ large enough that $m > 4nm^{1/2}$
+and
+\begin{equation}
+    \label{roth:eq47}
+\frac{2m}{m - 4nm^{1/2}} < \kappa,
+\end{equation}
+which is possible as $\kappa > 2$. Let $\eta$ be as in \eqref{roth:eq36}. For $\delta$ small enough we have
+$$
+m - 4(1 + 3 \delta) nm^{1/2} - 2 \eta >0.
+$$
+This condition is the same as \eqref{roth:eq30}. By the fixed-$m$ form of Lemma \ref{lem:m-delta}, we can choose $\delta$ so it also satisfies \eqref{roth:eq29}. Decreasing $\delta$ further if necessary, we also arrange that
+\begin{equation}
+    \label{roth:eq48}
+    \frac{2m(1+4 \delta)}{m-4(1+3 \delta)nm^{1/2} - 2 \eta} < \kappa.
+\end{equation}
+This is possible because the left-hand side tends to the strictly smaller quantity in \eqref{roth:eq47} as $\delta\to0^+$. By the definition of $\gamma$ and $\eta$ from \eqref{roth:eq35} and \eqref{roth:eq36}, \eqref{roth:eq48} is equivalent to
+\begin{equation}
+    \label{roth:eq49}
+    \frac{m(1+ 4 \delta)}{\gamma - \eta} < \kappa.
+\end{equation}
+Next, pick a reduced solution $h_1,q_1$ of \eqref{roth:eq46} such that $q_1$ satisfies \eqref{roth:eq32}. This means $q_1$ is very large. We then choose solutions $h_2, q_2; \dots; h_m, q_m$ with $\gcd(h_j,q_j)=1$ for all $j$ to satisfy
+\begin{equation}
+    \label{roth:eq50}
+    \frac{\log q_j}{\log q_{j-1}}> \frac{2}{\delta}, \quad 2 \leq j \leq m.
+\end{equation}
+We now take $r_1$ to be any integer satisfying
+\begin{equation}
+    \label{roth:eq51}
+    r_1 > \frac{10 \log q_m}{\delta \log q_1}
+\end{equation}
+and define integers $r_2, \dots, r_m$ by
+\begin{equation}
+    \label{roth:eq52}
+    \frac{r_1 \log q_1}{\log q_j} \leq r_j < 1 + \frac{r_1 \log q_1}{\log q_j}, \quad 2 \leq j \leq m.
+\end{equation}
+Then \eqref{roth:eq33} is satisfied. Also,
+\begin{equation}
+    \label{roth:eq53}
+    \frac{r_j \log q_j}{r_1 \log q_1} < 1+ \frac{\log q_j}{r_1\log q_1}\leq 1 + \frac{\log q_m}{r_1 \log q_1} < 1+ \frac{1}{10}\delta.
+\end{equation}
+The conditions \eqref{roth:eq31} are also satisfied since
+$$
+r_m \geq \frac{r_1 \log q_1}{\log q_m }> 10 \delta^{-1},
+$$
+and
+$$
+\frac{r_{j-1}}{r_j}> \frac{\log q_j}{\log q_{j-1}}(1+ \frac{1}{10} \delta)^{-1} > \delta^{-1}
+$$
+by \eqref{roth:eq52}, \eqref{roth:eq53}, and \eqref{roth:eq50}.
+
+\lean{Start from unbounded reduced denominators and choose the finite
+sequence of approximants satisfying \eqref{roth:eq50}. After choosing
+$r_1$, define $r_j=\lceil r_1\log q_1/\log q_j\rceil$ for $j\geq2$,
+and collect positivity, \eqref{roth:eq31}, \eqref{roth:eq33} and
+\eqref{roth:eq53} in one rounding lemma. Use the
+Diophantine approximation module\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/DiophantineApproximation/Basic.html}}
+as a reference for the rational-approximation formulation, not as a
+substitute for proving these selection and rounding steps.}
+
+By Lemma \ref{roth:lem9} there exists a polynomial $Q(x_1, \dots, x_m)$ satisfying the assertions of that lemma. By (2) of Lemma \ref{roth:lem9}, $Q(h_1/q_1, \dots, h_m/q_m) \ne 0$. Also, since $Q$ has degree at most $r_j$ in $x_j$ for $1 \leq j \leq m$, the number
+$\bigl(\prod_jq_j^{r_j}\bigr)Q(h_1/q_1,\dots,h_m/q_m)$ is a nonzero
+integer: each monomial denominator divides $\prod_jq_j^{r_j}$.
+Its absolute value is at least $1$, and therefore
+\begin{equation}
+    \label{roth:eq54}
+    |Q(h_1/q_1, \dots, h_m/q_m)| \geq q_1^{-r_1} \cdots q_m^{-r_m} > q_1^{-mr_1(1+\delta)}
+\end{equation}
+by \eqref{roth:eq53}.  On the other hand,
+we have
+$$
+Q(h_1/q_1, \dots, h_m/q_m) = \sum_{i_1=0}^{r_1} \cdots \sum_{i_m =0}^{r_m} \Delta_{i_1, \dots, i_m} Q(\alpha, \dots, \alpha) (h_1/q_1-\alpha)^{i_1} \cdots (h_m/q_m-\alpha)^{i_m}.
+$$
+By (1) of Lemma \ref{roth:lem9} the terms with
+$$
+\frac{i_1}{r_1}+ \cdots + \frac{i_m}{r_m} < \gamma - \eta
+$$
+vanish. In every other term, the weight is positive, so at least one $i_j$ is positive and the product estimate is strict. We have
+$$
+\left|  (h_1/q_1-\alpha)^{i_1} \cdots (h_m/q_m-\alpha)^{i_m} \right| < \frac{1}{(q_1^{i_1} \cdots q_m^{i_m})^\kappa} \leq q_1^{-r_1(\gamma - \eta)\kappa},
+$$
+since $q_j \geq q_1^{r_1/r_j}$ by \eqref{roth:eq52}. By using (3) of Lemma \ref{roth:lem9} we have
+$$
+\left| Q(h_1/q_1, \dots, h_m/q_m)\right| < (r_1 + 1) \cdots (r_m + 1) B_1^{1+3 \delta} q_1^{-r_1(\gamma - \eta)\kappa}
+$$
+$$
+< B_1^{1+ 4 \delta} q_1^{-r_1(\gamma-\eta)\kappa}
+$$
+$$
+\leq q_1^{(1+4\delta)\delta r_1-r_1(\gamma-\eta)\kappa}.
+$$
+Here the last comparison uses $B_1\leq q_1^{\delta r_1}$; the
+preceding strict inequalities preserve a strict upper bound for $|Q|$.
+Comparing this with \eqref{roth:eq54}, and using $q_1>1$, we obtain
+$$
+- m r_1(1+\delta) < (1+4 \delta) \delta r_1 - r_1(\gamma - \eta) \kappa,
+$$
+or
+$$
+\kappa < \frac{m(1+\delta) + \delta(1+4 \delta)}{\gamma - \eta} < \frac{m(1+4 \delta)}{\gamma - \eta},
+$$
+where the second inequality uses
+$1+4\delta<3m$, which follows from $m>16n^2\geq64$ and $\delta<1/m$.
+This contradicts \eqref{roth:eq49} and finishes the proof of the theorem.
+\lean{Prove denominator clearing and the Taylor upper bound as separate lemmas.
+With $q_1>1$ and $r_1>0$, compare logarithms and cancel $r_1\log q_1$.
+For strictness, use $\gamma-\eta>0$ to ensure each surviving Taylor term
+has a positive exponent; treat zero coefficients separately.}

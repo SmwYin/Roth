@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,hashlib
+D=Path('/private/tmp/roth-overview/assess/Roth.roth');R=Path('/Users/ramin/LEAN/Roth');N='Roth.roth'
+def dump(n,x):(D/n).write_text(json.dumps(x,indent=2)+'\n')
+def rd(n):return json.loads((D/n).read_text())
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+accepted=[]
+for label,src,receipt,fmt,ax in [('original','original-executed.lean.txt','original-receipt.json','disk',True),('callers-first','callers-executed.lean.txt','callers01-receipt.json','disk',True),('shape','shape2-executed.lean.txt','shape02-receipt.json','disk',True),('callers','callers2-executed.lean.txt','callers02-receipt.json','disk',True),('modern','modern2-executed.lean.txt','modern02-receipt.json','isolated',True)]:
+ q=rd(receipt);accepted.append(dict(label=label,source=src,receipt=receipt,format=fmt,source_sha256=sha(D/src),original_execution_request=q['request'],elapsed_ms=q['elapsed_ms'],native_region_start_line=16 if fmt=='disk' else 20,axiom_print_required=ax))
+rejected=[]
+for src,receipt in [('shape-executed.lean.txt','shape01-receipt.json'),('modern-executed.lean.txt','modern01-receipt.json')]:rejected.append(dict(source=src,receipt=receipt,source_sha256=sha(D/src),status='rejected: diagnostics error and recovered sorryAx; not accepted proof evidence'))
+dump('verification.json',dict(declaration=N,canonical_index=288,completed=False,unresolved=[],accepted=accepted,rejected=rejected,standard_axioms=['propext','Classical.choice','Quot.sound'],root_exclusive_native=True,attempt_accounting=dict(native_executions=7,accepted=5,rejected=2),scope='Focused exact target only; full actual rat and entire LeanEval caller module with target proof inlined. Isolated modern bridge conditional on explicitly supplied Roth theorem, combined with original type agreement and identical pair predicate.',build_gate='Shared clean2467 baseline reused with fresh17; no fileend build at288, next289.'))
+inputs=rd('inputs.json');assert all(sha(R/x['path'])==x['sha256']for x in inputs);dump('fresh-final-inputs.json',dict(inputs=inputs,unchanged=True))
+paths=['.mathlib-quality/references/clean.tex','.mathlib-quality/overview/declaration-order.json','Roth/Main.lean','Roth/LeanEval.lean','/Users/ramin/.codex/skills/mathlib-quality/SKILL.md','/Users/ramin/.codex/skills/lean4/SKILL.md','/Users/ramin/.local/share/roth-mathlib-quality/commands/mathlibable.md','/Users/ramin/.local/share/roth-mathlib-quality/commands/overview.md']
+dump('additional-inputs.json',[dict(path=p,sha256=sha(Path(p)if p.startswith('/')else R/p))for p in paths])
+dump('mathlib-inputs.json',[dict(path='.lake/packages/mathlib/Mathlib/'+p,archive=f'mathlib-source-{i}.lean.txt',sha256=sha(D/f'mathlib-source-{i}.lean.txt'))for i,p in enumerate(['NumberTheory/Transcendental/Liouville/LiouvilleWith.lean','NumberTheory/Transcendental/Liouville/Basic.lean','NumberTheory/DiophantineApproximation/Basic.lean'])])
+dump('prefix-authorization.json',dict(owner='root',canonical_index=288,header_read=True,extra_import='Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith',authorized_isolated_prefix_sha256='effedd80b74beb9109429be8d2df4cc70926d98f957a0867a7a2f9fc10dcd4cc',scope='Only canonical288 isolated19; disk9 unchanged',authorization='Root message: registry authorizes exactstable18+LiouvilleWith singleimport prefixSHA effedd80b74beb9109429be8d2df4cc70926d98f957a0867a7a2f9fc10dcd4cc for288 only.'))
+dump('preparation-only.json',dict(rejected_preparations=['Web metadata archive preparations failed before a valid archive was written; no native source was executed from a failed preparation'],executed_sources_immutable=True,no_persistent_worker_writes=True,proof_reuse='Mathlib-only conditional bridge adapted from287 and freshly compiled for algebraic endpoint; shape02 uses accepted287 explicit image/rpow syntax. Verdict and mathematics independently assessed.'))
+print('Verification ledger5accepted+2rejected prepared')

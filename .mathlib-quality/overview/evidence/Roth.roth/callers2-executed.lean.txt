@@ -1,0 +1,109 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Roth288Callers
+open Roth
+theorem rat_inline {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+    (hinf : {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite) : κ ≤ 2 := by
+  have roth_inline {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+      (hinf : (approxSet α κ).Infinite) : κ ≤ 2 := by
+      by_contra! hκ
+      obtain ⟨α', κ', hα', hint', hκ', hinf'⟩ := reduction hα halg hκ hinf
+      exact (roth_of_isIntegral hα' hint' hinf').not_gt hκ'
+  refine roth_inline hα halg ((hinf.image (f := fun x : ℚ ↦ (x.num, x.den))
+    (fun _ _ _ _ hxy ↦ Rat.ext (congrArg Prod.fst hxy) (congrArg Prod.snd hxy))).mono ?_)
+  rintro _ ⟨x, hx, rfl⟩
+  exact ⟨x.den_pos, by rwa [← Rat.cast_def]⟩
+example : @Roth.roth_rat = @rat_inline := Subsingleton.elim _ _
+#print axioms Roth288Callers.rat_inline
+end Roth288Callers
+
+namespace Roth288LeanEval
+
+open Real
+
+/-- For every positive `ε`, the rational-approximation error times `q ^ (2 + ε)` has a uniform
+positive lower bound over integer numerators and positive integer denominators. -/
+def IsDiophantine (x : ℝ) : Prop :=
+  ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
+    ∀ (p q : ℤ), 0 < q → C / (q : ℝ) ^ ((2 : ℝ) + ε) < |x - (p : ℝ) / (q : ℝ)|
+
+private lemma exists_pos_div_rpow_lt_aux {x κ : ℝ} (hx : Irrational x)
+    (hs : (Roth.approxSet x κ).Finite) :
+    ∃ C : ℝ, 0 < C ∧ ∀ (p q : ℤ), 0 < q → C / (q : ℝ) ^ κ < |x - (p : ℝ) / q| := by
+  let f : ℤ × ℕ → ℝ := fun a ↦ |x - (a.1 : ℝ) / a.2| * (a.2 : ℝ) ^ κ
+  obtain ⟨a, ha, hmin⟩ := Set.exists_min_image _ f (hs.insert (0, 1))
+    (Set.insert_nonempty (0, 1) _)
+  have haq : 0 < a.2 := by
+    rcases ha with rfl | ha <;> first | exact ha.1 | norm_num
+  have hfa : 0 < f a := mul_pos
+    (abs_pos.mpr (sub_ne_zero.mpr (by simpa using hx.ne_rational a.1 a.2)))
+    (rpow_pos_of_pos (by positivity) _)
+  refine ⟨min (1 / 2) (f a / 2), by positivity, fun p q hq ↦ ?_⟩
+  lift q to ℕ using hq.le
+  have hq' : 0 < (q : ℝ) ^ κ := rpow_pos_of_pos (by exact_mod_cast hq) _
+  rw [Int.cast_natCast, div_lt_iff₀ hq']
+  by_cases hmem : (p, q) ∈ Roth.approxSet x κ
+  · exact (min_le_right _ _).trans_lt
+      ((half_lt_self hfa).trans_le (hmin (p, q) (Set.mem_insert_of_mem _ hmem)))
+  · apply ((min_le_left _ _).trans_lt (by norm_num : (1 : ℝ) / 2 < 1)).trans_le
+    exact le_of_not_gt fun h ↦ hmem ⟨by exact_mod_cast hq, (lt_div_iff₀ hq').mpr h⟩
+
+/-- For irrational `x`, the LeanEval bounds are equivalent to the exponent bound in `Roth.roth`. -/
+theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :
+    IsDiophantine x ↔ ∀ {κ : ℝ}, (Roth.approxSet x κ).Infinite → κ ≤ 2 := by
+  refine ⟨fun h κ hinf ↦ le_of_not_gt fun hκ ↦ ?_, fun h ε hε ↦ ?_⟩
+  · obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)
+    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (M := 1 / C)
+      (by linarith : 2 + (κ - 2) / 2 < κ)
+    obtain ⟨⟨p, q⟩, hpq, hq⟩ :=
+      (hinf.sdiff (Roth.approxSet_den_le_finite x κ Q)).nonempty
+    have hgap : 1 / (q : ℝ) ^ κ < C / (q : ℝ) ^ (2 + (κ - 2) / 2) := by
+      simpa [div_eq_mul_inv, ← mul_assoc, hC.ne'] using
+        mul_lt_mul_of_pos_left (hQ q (lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩)) hC
+    exact (hpq.2.trans hgap).not_gt (by simpa using hbound p q (by exact_mod_cast hpq.1))
+  · apply exists_pos_div_rpow_lt_aux hx
+    exact Set.not_infinite.mp fun hinf ↦
+      (by linarith : ¬ (2 + ε ≤ 2)) (h hinf)
+
+/-- **Thue–Siegel–Roth theorem** (Klaus Roth, 1955). Every irrational
+algebraic real is Diophantine: its irrationality measure is at most
+`2`. -/
+theorem thueSiegelRoth (x : ℝ) (_h_irr : Irrational x) (_h_alg : IsAlgebraic ℤ x) :
+    IsDiophantine x :=
+  (isDiophantine_iff _h_irr).mpr
+    ((by
+      intro α hα halg κ hinf
+      by_contra! hκ
+      obtain ⟨α', κ', hα', hint', hκ', hinf'⟩ := Roth.reduction hα halg hκ hinf
+      exact (Roth.roth_of_isIntegral hα' hint' hinf').not_gt hκ' :
+      ∀ {α : ℝ}, Irrational α → IsAlgebraic ℚ α →
+        ∀ {κ : ℝ}, (Roth.approxSet α κ).Infinite → κ ≤ 2)
+      _h_irr (_h_alg.extendScalars (FaithfulSMul.algebraMap_injective ℤ ℚ)))
+
+end Roth288LeanEval
+
+example : @LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth =
+    @Roth288LeanEval.thueSiegelRoth := Subsingleton.elim _ _
+#print axioms Roth288LeanEval.thueSiegelRoth
+
+run_cmd Lean.Elab.Command.liftTermElabM do
+  for n in [`Roth288Callers.rat_inline, `Roth288LeanEval.thueSiegelRoth] do
+    let ci ← Lean.getConstInfo n
+    let some val := ci.value? (allowOpaque := true) | throwError "missing value"
+    if val.getUsedConstants.contains `Roth.roth then
+      throwError "Inlining retained target: {n}"
+    Lean.logInfo m!"ROTH288_CALLER_TARGET_FREE: {n}"
