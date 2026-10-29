@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 257/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 258/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 257; remaining: 36.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 62 SKIP.
+- Completed applicable assessments: 258; remaining: 35.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 63 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3190,6 +3190,23 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux.md).
 
+### Completed: `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] {f : Polynomial ℤ} {P : MvPolynomial σ ℤ}
+  {r : σ → ℕ} {A B β : ℝ} {s : ℕ},
+  (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →
+    (∀ (k : σ), degreeOf k P ≤ r k) →
+      (∀ (d : σ →₀ ℕ), |↑(P.coeff d)| ≤ B) →
+        ∑ k : σ, r k ≤ s →
+          2 ^ s ≤ β →
+            (1 + A) ^ s ≤ β → ∀ (j : σ →₀ ℕ) (i : ℕ), |(Roth.diag ((hasseDeriv j) P) %ₘ f).coeff i| ≤ ↑⌊B * β ^ 3⌋₊`
+- What: Bounds integer remainder coefficients of diagonal Hasse derivatives by the natural floor of B times beta cubed under common exponential bounds.
+- How: Use abs_coeff_diag_hasseDeriv_modByMonic_le_aux, bound box cardinality by a power of two, handle zero-degree/nonmonic divisors and convert with Int.le_floor.
+- Hypotheses: Finite variables; total degree bound, divisor/input coefficient bounds and common growth-factor bounds. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: MvPolynomial.hasseDeriv, Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux, Roth.diag
+- Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3730,6 +3747,8 @@ Completed `Roth.exists_hasseDeriv_index_eval_bound_aux`: Use exists_hasseDeriv_e
 
 Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux`: Combine degreeOf_hasseDeriv_le with card_le_card_box to bound derivative support by the coordinate box. Apply abs_coeff_hasseDeriv_le and abs_coeff_diag_le, then norm_coeff_modByMonic_le with natDegree_diag_le; Int.norm_eq_abs and cast simplifications convert the seminormed-ring result. The sole floor-bound caller next absorbs each of the three multiplicative costs into beta and converts the real bound into an integer floor. This helper retains the precise divisor-degree exponent, unlike that coarser floor bound.
 
+Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux`: Derive beta>=1 from the powers-of-two bound. Bound the box product by 2^(sum r), and invoke the precise preceding coefficient estimate, absorbing the box, Hasse and remainder-elimination factors into beta. Treat divisor natural degree zero separately: monic constant is1 and has zero remainder, while nonmonic modByMonic returns the input and the zero-divisor estimate applies. Finish with Int.natCast_floor_eq_floor and Int.le_floor. The sole rpow-bound existence caller compares this floor with floor(B^c) before pigeonholing; no monicity premise is needed by this bound itself.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4245,6 +4264,8 @@ Completed `Roth.abs_eval_iterated_hasseDeriv_lt_aux`: The structural review dist
 Completed `Roth.exists_hasseDeriv_index_eval_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -4773,6 +4794,8 @@ Completed `Roth.exists_hasseDeriv_index_eval_bound_aux`: No public generality cl
 
 Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5289,6 +5312,8 @@ Completed `Roth.abs_eval_iterated_hasseDeriv_lt_aux`: No new primitive is needed
 Completed `Roth.exists_hasseDeriv_index_eval_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -5809,6 +5834,8 @@ Completed `Roth.exists_hasseDeriv_index_eval_bound_aux`: Retain a live private p
 
 Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6070,6 +6097,7 @@ Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux`: Retain a live priv
 | 255 | `Roth.abs_eval_iterated_hasseDeriv_lt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_iterated_hasseDeriv_lt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_eval_iterated_hasseDeriv_lt_aux/root-acceptance.json) |
 | 256 | `Roth.exists_hasseDeriv_index_eval_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_hasseDeriv_index_eval_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_hasseDeriv_index_eval_bound_aux/root-acceptance.json) |
 | 257 | `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux/root-acceptance.json) |
+| 258 | `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6583,12 +6611,14 @@ Completed `Roth.exists_hasseDeriv_index_eval_bound_aux` action: Keep unchanged; 
 
 Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_mem_RSet_le_index_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

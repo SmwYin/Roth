@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+  "kind": "lemma",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {f : Polynomial ℤ} {P : MvPolynomial σ ℤ}\n  {r : σ → ℕ} {A B β : ℝ} {s : ℕ},\n  (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →\n    (∀ (k : σ), degreeOf k P ≤ r k) →\n      (∀ (d : σ →₀ ℕ), |↑(P.coeff d)| ≤ B) →\n        ∑ k : σ, r k ≤ s →\n          2 ^ s ≤ β →\n            (1 + A) ^ s ≤ β → ∀ (j : σ →₀ ℕ) (i : ℕ), |(Roth.diag ((hasseDeriv j) P) %ₘ f).coeff i| ≤ ↑⌊B * β ^ 3⌋₊",
+  "what": "Bounds integer remainder coefficients of diagonal Hasse derivatives by the natural floor of B times beta cubed under common exponential bounds.",
+  "how": "Use abs_coeff_diag_hasseDeriv_modByMonic_le_aux, bound box cardinality by a power of two, handle zero-degree/nonmonic divisors and convert with Int.le_floor.",
+  "hypotheses": "Finite variables; total degree bound, divisor/input coefficient bounds and common growth-factor bounds. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+    "Roth.diag"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Derive beta>=1 from the powers-of-two bound. Bound the box product by 2^(sum r), and invoke the precise preceding coefficient estimate, absorbing the box, Hasse and remainder-elimination factors into beta. Treat divisor natural degree zero separately: monic constant is1 and has zero remainder, while nonmonic modByMonic returns the input and the zero-divisor estimate applies. Finish with Int.natCast_floor_eq_floor and Int.le_floor. The sole rpow-bound existence caller compares this floor with floor(B^c) before pigeonholing; no monicity premise is needed by this bound itself.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
