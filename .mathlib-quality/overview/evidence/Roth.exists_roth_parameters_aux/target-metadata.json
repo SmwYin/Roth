@@ -1,0 +1,63 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 410,
+  "name": "Roth.exists_roth_parameters_aux",
+  "short": "exists_roth_parameters_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 426,
+  "source": "private lemma exists_roth_parameters_aux {α κ : ℝ} (hint : IsIntegral ℤ α) (hκ : 2 < κ) :\n    ∃ (f : Polynomial ℤ) (A : ℝ) (m : ℕ) (δ : ℝ), f.Monic ∧ Polynomial.aeval α f = 0 ∧ 1 ≤ A ∧\n      (∀ i, |(f.coeff i : ℝ)| ≤ A) ∧ 2 ≤ m ∧ 0 < δ ∧ δ < 1 / m ∧\n      eta δ m + 2 * (1 + 3 * δ) * f.natDegree * √(m : ℝ) < m / 2 ∧\n      (m : ℝ) * (1 + 4 * δ) / (gam δ f.natDegree m - eta δ m) < κ := by\n  obtain ⟨f, hf, hfα, hdeg⟩ := exists_monic_aeval_eq_zero hint\n  -- a bound for the coefficients of `f`\n  let A : ℝ := 1 + ∑ i ∈ f.support, |(f.coeff i : ℝ)|\n  -- choice of `m` and `δ`\n  obtain ⟨m, hm, -, h47'⟩ := exists_m (n := f.natDegree) hκ\n  obtain ⟨δ, hδ0, hδm, h30, h49⟩ := exists_delta hm h47'\n  refine ⟨f, A, m, δ, hf, hfα, ?_, ?_, ?_, hδ0, hδm, h30, h49⟩\n  · exact le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ ↦ abs_nonneg _)\n  · intro i\n    exact (Finsupp.single_eval_le_sum f.toFinsupp.coeff (g := fun z : ℤ ↦ |(z : ℝ)|)\n      (by simp) (fun _ ↦ abs_nonneg _) i).trans (le_add_of_nonneg_left zero_le_one)\n  · nlinarith only [hm, hdeg]",
+  "signature": "private lemma exists_roth_parameters_aux {α κ : ℝ} (hint : IsIntegral ℤ α) (hκ : 2 < κ) :\n    ∃ (f : Polynomial ℤ) (A : ℝ) (m : ℕ) (δ : ℝ), f.Monic ∧ Polynomial.aeval α f = 0 ∧ 1 ≤ A ∧\n      (∀ i, |(f.coeff i : ℝ)| ≤ A) ∧ 2 ≤ m ∧ 0 < δ ∧ δ < 1 / m ∧\n      eta δ m + 2 * (1 + 3 * δ) * f.natDegree * √(m : ℝ) < m / 2 ∧\n      (m : ℝ) * (1 + 4 * δ) / (gam δ f.natDegree m - eta δ m) < κ",
+  "body": "by\n  obtain ⟨f, hf, hfα, hdeg⟩ := exists_monic_aeval_eq_zero hint\n  -- a bound for the coefficients of `f`\n  let A : ℝ := 1 + ∑ i ∈ f.support, |(f.coeff i : ℝ)|\n  -- choice of `m` and `δ`\n  obtain ⟨m, hm, -, h47'⟩ := exists_m (n := f.natDegree) hκ\n  obtain ⟨δ, hδ0, hδm, h30, h49⟩ := exists_delta hm h47'\n  refine ⟨f, A, m, δ, hf, hfα, ?_, ?_, ?_, hδ0, hδm, h30, h49⟩\n  · exact le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ ↦ abs_nonneg _)\n  · intro i\n    exact (Finsupp.single_eval_le_sum f.toFinsupp.coeff (g := fun z : ℤ ↦ |(z : ℝ)|)\n      (by simp) (fun _ ↦ abs_nonneg _) i).trans (le_add_of_nonneg_left zero_le_one)\n  · nlinarith only [hm, hdeg]",
+  "proof_lines": 13,
+  "sha256": "2ec3dfadf62b0e5446991d3c4201b4438bbdd2d06a3a022b136aae2d022fd87f",
+  "what": "Choose the integer equation, coefficient bound, dimension and delta needed in the Roth contradiction.",
+  "how": "Use exists_monic_aeval_eq_zero, bound all coefficients by their absolute sum plus one, and combine exists_m with exists_delta.",
+  "hypotheses": "Real algebraic integer and exponent above two.",
+  "source_body_refs": [
+    "Roth.exists_delta",
+    "Roth.exists_m",
+    "Roth.exists_monic_aeval_eq_zero"
+  ],
+  "source_type_refs": [
+    "Roth.eta",
+    "Roth.gam"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.roth_of_isIntegral",
+      "file": "Roth/Main.lean",
+      "line": 547
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.exists_delta",
+    "Roth.exists_m",
+    "Roth.exists_monic_aeval_eq_zero"
+  ],
+  "used_by_in_file": [
+    "Roth.roth_of_isIntegral"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 383,
+  "project_body_refs": [
+    "Roth.exists_delta",
+    "Roth.exists_m",
+    "Roth.exists_monic_aeval_eq_zero"
+  ],
+  "project_type_refs": [
+    "Roth.eta",
+    "Roth.gam"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.roth_of_isIntegral",
+      "file": "Roth/Main.lean",
+      "line": 547
+    }
+  ]
+}

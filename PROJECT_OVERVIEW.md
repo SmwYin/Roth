@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 281/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 282/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 281; remaining: 12.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 31 YES-but-generalise-first, 46 NO-mathlib-has-it, 98 BORDERLINE-needs-human, 72 SKIP.
+- Completed applicable assessments: 282; remaining: 11.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 31 YES-but-generalise-first, 46 NO-mathlib-has-it, 98 BORDERLINE-needs-human, 73 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3612,6 +3612,28 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit proof callers: {'name': 'Roth.one_lt_roth_eval_bound_aux', 'private': True, 'file': 'Roth/Main.lean', 'start': 453, 'end': 478, 'call': 477, 'uses': 1}; source scopes: Main39 documentary reference,380 declaration,477 actual call; no other tracked production source occurrences; full files read: Roth/Main.lean:1-588, Roth/LeanEval.lean:1-66; external to file count: 0; same file count: 1; transitive public chain: Roth.roth_of_isIntegral, Roth.roth, Roth.roth_rat, LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth; simp scope: No target simp attribute; direct source refs and exact canonical direct kernel refs separately audited; arbitrary tactic/transitive closure not claimed; inline derivations: Taylor expansion and finite sum primitives occur in target and Taylor.lean; no duplicate full quantitative weighted upper estimate found; skill count excluding declaring file: 0
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_lt_of_le_index.md).
 
+### Completed: `Roth.exists_roth_parameters_aux`
+
+- Type: `∀ {α κ : ℝ},
+  IsIntegral ℤ α →
+    2 < κ →
+      ∃ (f : Polynomial ℤ) (A : ℝ) (m : ℕ) (δ : ℝ),
+        f.Monic ∧
+          (Polynomial.aeval α) f = 0 ∧
+            1 ≤ A ∧
+              (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) ∧
+                2 ≤ m ∧
+                  0 < δ ∧
+                    δ < 1 / ↑m ∧
+                      Roth.eta δ m + 2 * (1 + 3 * δ) * ↑f.natDegree * √↑m < ↑m / 2 ∧
+                        ↑m * (1 + 4 * δ) / (Roth.gam δ f.natDegree m - Roth.eta δ m) < κ`
+- What: Packages a monic integer equation, coefficient bound, dimension and small positive delta satisfying the numerical constraints for the final contradiction.
+- How: Use exists_monic_aeval_eq_zero, bound all coefficients by their absolute sum plus one, and combine exists_m with exists_delta.
+- Hypotheses: Real algebraic integer and exponent above two. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.eta, Roth.exists_delta, Roth.exists_m, Roth.exists_monic_aeval_eq_zero, Roth.gam
+- Caller summary: 1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_roth_parameters_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4200,6 +4222,8 @@ Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: Use Finset.abs_prod and abs_
 
 Completed `Roth.abs_eval_lt_of_le_index`: existing: Finset.abs_sum_le_sum_abs, Finset.sum_lt_sum_of_nonempty, Real.rpow_mul, Real.rpow_sum_of_pos, Real.rpow_le_rpow_of_nonpos, Polynomial.taylor_coeff, MvPowerSeries.weightedOrder_le; search: 15 cells actual plus corrected current Loogle and local retries; local indices error/warming, no absence claim; new helpers: Generic finite-expansion/cost theorem and recovery are newly proved, not preexisting mathlib.
 
+Completed `Roth.exists_roth_parameters_aux`: Use exists_monic_aeval_eq_zero for f of degree at least2. Choose A=1 plus the sum of absolute coefficients, so A>=1 and every coefficient is bounded via Finsupp.single_eval_le_sum. Invoke exists_m and exists_delta for m/delta; the degree lower bound gives m>=2. The supplied integral alpha need not be irrational for this internal parameter package.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4763,6 +4787,8 @@ Completed `Roth.one_le_prod_pow_mul_abs_eval`: Shares discrete integer separatio
 Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.abs_eval_lt_of_le_index`: Finite triangle/strict sum/rpow components only. Univariate Taylor and natural-weight ENat power-series order do not supply the quantitative finite multivariate upper estimate. Distinct from simple abs_eval_le and denominator lower bound.
+
+Completed `Roth.exists_roth_parameters_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -5378,6 +5404,8 @@ Completed `Roth.abs_eval_lt_of_le_index`: verified: True; proposed type: lemma e
     ‖eval x (∑ d ∈ s, MvPolynomial.C (A d) * ∏ j, (X j - MvPolynomial.C (a j)) ^ d j)‖
       < (s.card : ℝ) * C * b ^ (-c) ; original recovery: Exact original statement recovered after restricting hC to box; arbitrary zero/mixed-zero r preserved.; semantic parameters: arbitrary real μ and b≥1, arbitrary center/evaluation, finite variable type; positive radii b^(-μ) are semantic data, not renamed integer denominators.; limit: Project Hasse/index not ported to arbitrary coefficient ring; normed expansion theorem is independently mathlib-only.
 
+Completed `Roth.exists_roth_parameters_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5942,6 +5970,8 @@ Completed `Roth.one_le_prod_pow_mul_abs_eval`: Coordinatewise multivariate polyn
 Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.abs_eval_lt_of_le_index`: Reusable weighted finite expansion decay plus an eventual multivariate Taylor/order interface; no current verified exact mathlib replacement.
+
+Completed `Roth.exists_roth_parameters_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -6510,6 +6540,8 @@ Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: Retain a live private proof 
 
 Completed `Roth.abs_eval_lt_of_le_index`: Not junk: sole direct proof caller participates in final Roth contradiction; namespace/export decision remains separate.
 
+Completed `Roth.exists_roth_parameters_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6795,6 +6827,7 @@ Completed `Roth.abs_eval_lt_of_le_index`: Not junk: sole direct proof caller par
 | 279 | `Roth.one_le_prod_pow_mul_abs_eval` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.one_le_prod_pow_mul_abs_eval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_le_prod_pow_mul_abs_eval/root-acceptance.json) |
 | 280 | `Roth.abs_prod_pow_le_rpow_of_le_weight` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_prod_pow_le_rpow_of_le_weight.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_prod_pow_le_rpow_of_le_weight/root-acceptance.json) |
 | 281 | `Roth.abs_eval_lt_of_le_index` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_lt_of_le_index.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_eval_lt_of_le_index/root-acceptance.json) |
+| 282 | `Roth.exists_roth_parameters_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_roth_parameters_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_roth_parameters_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7356,12 +7389,14 @@ Completed `Roth.abs_prod_pow_le_rpow_of_le_weight` action: Keep unchanged; compl
 
 Completed `Roth.abs_eval_lt_of_le_index` action: verdict: BORDERLINE-needs-human; questions: Should a strict finite shifted-expansion estimate with coordinate cost decay be named in mathlib, or remain a local lemma of a future Roth proof?, If upstreamed, should the public interface use a finite expansion with a nonzero-coefficient cost predicate, or a weighted support/order API with an explicit translation bridge?, Should the multivariate Taylor/index corollary and the rational denominator growth bridge remain in the Roth development while only the normed-ring expansion core enters general polynomial analysis?; next: Retain theorem locally; upstream design review can choose finite expansion versus weighted support API. Assessment is complete, these are future design questions, not user blockers.; alternative destination: Roth/Main.lean or a future Roth/TaylorBounds.lean; candidate upstream norm core Mathlib/Analysis/MvPolynomial/Bounds.lean (new file, provisional layering); not cost based: True
 
+Completed `Roth.exists_roth_parameters_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_roth_parameters_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_roth_approximants_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,22 @@
+{
+  "declaration": "Roth.exists_roth_parameters_aux",
+  "kind": "lemma",
+  "type": "∀ {α κ : ℝ},\n  IsIntegral ℤ α →\n    2 < κ →\n      ∃ (f : Polynomial ℤ) (A : ℝ) (m : ℕ) (δ : ℝ),\n        f.Monic ∧\n          (Polynomial.aeval α) f = 0 ∧\n            1 ≤ A ∧\n              (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) ∧\n                2 ≤ m ∧\n                  0 < δ ∧\n                    δ < 1 / ↑m ∧\n                      Roth.eta δ m + 2 * (1 + 3 * δ) * ↑f.natDegree * √↑m < ↑m / 2 ∧\n                        ↑m * (1 + 4 * δ) / (Roth.gam δ f.natDegree m - Roth.eta δ m) < κ",
+  "what": "Packages a monic integer equation, coefficient bound, dimension and small positive delta satisfying the numerical constraints for the final contradiction.",
+  "how": "Use exists_monic_aeval_eq_zero, bound all coefficients by their absolute sum plus one, and combine exists_m with exists_delta.",
+  "hypotheses": "Real algebraic integer and exponent above two. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.eta",
+    "Roth.exists_delta",
+    "Roth.exists_m",
+    "Roth.exists_monic_aeval_eq_zero",
+    "Roth.gam"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Use exists_monic_aeval_eq_zero for f of degree at least2. Choose A=1 plus the sum of absolute coefficients, so A>=1 and every coefficient is bounded via Finsupp.single_eval_le_sum. Invoke exists_m and exists_delta for m/delta; the degree lower bound gives m>=2. The supplied integral alpha need not be irrational for this internal parameter package.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
