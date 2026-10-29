@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 283/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 284/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 283; remaining: 10.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 31 YES-but-generalise-first, 46 NO-mathlib-has-it, 98 BORDERLINE-needs-human, 74 SKIP.
+- Completed applicable assessments: 284; remaining: 9.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 31 YES-but-generalise-first, 46 NO-mathlib-has-it, 98 BORDERLINE-needs-human, 75 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3663,6 +3663,41 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_roth_approximants_aux.md).
 
+### Completed: `Roth.one_lt_roth_eval_bound_aux`
+
+- Type: `∀ {α κ : ℝ} {f : Polynomial ℤ},
+  f.Monic →
+    (Polynomial.aeval α) f = 0 →
+      ∀ {A : ℝ},
+        (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →
+          ∀ {m : ℕ} [inst : NeZero m] {δ : ℝ},
+            0 ≤ δ →
+              δ ≤ 1 / ↑m →
+                ∀ {r : Fin m → ℕ},
+                  (∀ (j : Fin m), 0 < r j) →
+                    3 ≤ r (Fin.rev 0) →
+                      (∀ (i j : Fin m), ↑i + 1 = ↑j → ↑(r j) / δ ≤ ↑(r i)) →
+                        ∀ {q : Fin m → ℕ},
+                          (∀ (j : Fin m), 0 < q j) →
+                            0 ≤ κ →
+                              ∀ {h : Fin m → ℤ},
+                                (∀ (j : Fin m), |α - ↑(h j) / ↑(q j)| ≤ 1 / ↑(q j) ^ κ) →
+                                  (∀ (j : Fin m), IsCoprime (h j) ↑(q j)) →
+                                    2 * ↑m + 1 + 2 * ↑m * Real.log (1 + A) + 2 * ↑m * Real.log (1 + |α|) ≤
+                                        δ ^ 2 * Real.log ↑(q 0) →
+                                      (∀ (j : Fin m), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →
+                                        1 <
+                                          (∏ j : Fin m, ↑(q j) ^ r j) *
+                                            ((∏ j : Fin m, (↑(r j) + 1)) *
+                                                ↑(Roth.mainCoeffBound δ (q 0) (r 0)) ^ (1 + 3 * δ) *
+                                              ↑(q 0) ^ (-↑(r 0) * (Roth.gam δ f.natDegree m - Roth.eta δ m) * κ))`
+- What: Combines the nonzero integer-value lower bound with the Taylor upper bound for the auxiliary polynomial, giving a strict scalar product bound greater than1.
+- How: Apply main_lemma, derive denominator-growth powers via Real.rpow_le_iff_le_log, then combine one_le_prod_pow_mul_abs_eval with abs_eval_lt_of_le_index.
+- Hypotheses: Monic integer equation, coefficient bounds, positive degrees/denominators, small delta, coprime approximants, nonnegative exponent and numerical parameter bounds. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.abs_eval_lt_of_le_index, Roth.eta, Roth.gam, Roth.mainCoeffBound, Roth.main_lemma, Roth.one_le_prod_pow_mul_abs_eval
+- Caller summary: 1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.one_lt_roth_eval_bound_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4255,6 +4290,8 @@ Completed `Roth.exists_roth_parameters_aux`: Use exists_monic_aeval_eq_zero for 
 
 Completed `Roth.exists_roth_approximants_aux`: Apply exists_approximants at the required logarithmic threshold divided by delta squared and exists_degrees for the rounding construction. Show Antitone r from the adjacent degree ratio and delta<=1 using Fin.antitone_iff_succ_le. Bound every degree by r0, convert the first logarithm inequality by div_lt_iff, and infer the last degree at least3 from its stronger 10/delta lower bound.
 
+Completed `Roth.one_lt_roth_eval_bound_aux`: Invoke main_lemma to get Q, coordinate degree bounds, strict index bound, rational-point nonvanishing and derivative bounds. Transfer coordinate degrees across the injective integer coefficient map via support_map_of_injective. Derive the real-power denominator comparison from the balanced-log hypothesis using Real.rpow_le_iff_le_log and positive degrees. Multiply abs_eval_lt_of_le_index by the positive denominator product and combine one_le_prod_pow_mul_abs_eval.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4822,6 +4859,8 @@ Completed `Roth.abs_eval_lt_of_le_index`: Finite triangle/strict sum/rpow compon
 Completed `Roth.exists_roth_parameters_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.exists_roth_approximants_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.one_lt_roth_eval_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -5441,6 +5480,8 @@ Completed `Roth.exists_roth_parameters_aux`: No public generality claim under th
 
 Completed `Roth.exists_roth_approximants_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.one_lt_roth_eval_bound_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -6009,6 +6050,8 @@ Completed `Roth.abs_eval_lt_of_le_index`: Reusable weighted finite expansion dec
 Completed `Roth.exists_roth_parameters_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.exists_roth_approximants_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.one_lt_roth_eval_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -6581,6 +6624,8 @@ Completed `Roth.exists_roth_parameters_aux`: Retain a live private proof interfa
 
 Completed `Roth.exists_roth_approximants_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.one_lt_roth_eval_bound_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6868,6 +6913,7 @@ Completed `Roth.exists_roth_approximants_aux`: Retain a live private proof inter
 | 281 | `Roth.abs_eval_lt_of_le_index` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_lt_of_le_index.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_eval_lt_of_le_index/root-acceptance.json) |
 | 282 | `Roth.exists_roth_parameters_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_roth_parameters_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_roth_parameters_aux/root-acceptance.json) |
 | 283 | `Roth.exists_roth_approximants_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_roth_approximants_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_roth_approximants_aux/root-acceptance.json) |
+| 284 | `Roth.one_lt_roth_eval_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.one_lt_roth_eval_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_lt_roth_eval_bound_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7433,12 +7479,14 @@ Completed `Roth.exists_roth_parameters_aux` action: Keep unchanged; complete pri
 
 Completed `Roth.exists_roth_approximants_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.one_lt_roth_eval_bound_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.one_lt_roth_eval_bound_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.roth_product_bound_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
