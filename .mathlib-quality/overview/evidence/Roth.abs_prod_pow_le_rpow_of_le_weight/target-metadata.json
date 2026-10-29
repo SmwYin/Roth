@@ -1,0 +1,55 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 347,
+  "name": "Roth.abs_prod_pow_le_rpow_of_le_weight",
+  "short": "abs_prod_pow_le_rpow_of_le_weight",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 371,
+  "source": "private lemma abs_prod_pow_le_rpow_of_le_weight {m : ℕ} [NeZero m] {r q : Fin m → ℕ}\n    (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ) {x : Fin m → ℝ} (hx : ∀ j, |x j| ≤ 1 / (q j : ℝ) ^ κ)\n    (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) (d : Fin m →₀ ℕ) {c : ℝ} (hw : c ≤ weight r d)\n    : |∏ j, x j ^ d j| ≤ (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by\n  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq j\n  have hq1 : (1 : ℝ) ≤ q 0 := by exact_mod_cast hq 0\n  rw [Finset.abs_prod]\n  calc ∏ j, |x j ^ d j|\n      ≤ ∏ j, (q j : ℝ) ^ (-κ * d j) := by\n        refine Finset.prod_le_prod₀ (fun j _ ↦ abs_nonneg _) fun j _ ↦ ?_\n        rw [abs_pow, Real.rpow_mul (hqR j).le, Real.rpow_natCast,\n          Real.rpow_neg (hqR j).le, ← one_div]\n        exact pow_le_pow_left₀ (abs_nonneg _) (hx j) _\n    _ ≤ ∏ j, ((q 0 : ℝ) ^ ((r 0 : ℝ) / r j)) ^ (-κ * d j) := by\n        refine Finset.prod_le_prod₀ (fun j _ ↦ by positivity) fun j _ ↦ ?_\n        exact Real.rpow_le_rpow_of_nonpos (by positivity) (hqr j)\n          (mul_nonpos_of_nonpos_of_nonneg (neg_nonpos.2 hκ) (Nat.cast_nonneg _))\n    _ = (q 0 : ℝ) ^ (-(r 0 : ℝ) * κ * weight r d) := by\n        simp_rw [← Real.rpow_mul (hqR 0).le]\n        rw [← Real.rpow_sum_of_pos (hqR 0), weight, Finset.mul_sum]\n        exact congrArg _ (Finset.sum_congr rfl fun j _ ↦ by ring)\n    _ ≤ (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by\n        apply Real.rpow_le_rpow_of_exponent_le hq1\n        convert mul_le_mul_of_nonpos_left hw\n          (neg_nonpos.2 (mul_nonneg (Nat.cast_nonneg (r 0)) hκ)) using 1 <;> ring",
+  "signature": "private lemma abs_prod_pow_le_rpow_of_le_weight {m : ℕ} [NeZero m] {r q : Fin m → ℕ}\n    (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ) {x : Fin m → ℝ} (hx : ∀ j, |x j| ≤ 1 / (q j : ℝ) ^ κ)\n    (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) (d : Fin m →₀ ℕ) {c : ℝ} (hw : c ≤ weight r d)\n    : |∏ j, x j ^ d j| ≤ (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ)",
+  "body": "by\n  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq j\n  have hq1 : (1 : ℝ) ≤ q 0 := by exact_mod_cast hq 0\n  rw [Finset.abs_prod]\n  calc ∏ j, |x j ^ d j|\n      ≤ ∏ j, (q j : ℝ) ^ (-κ * d j) := by\n        refine Finset.prod_le_prod₀ (fun j _ ↦ abs_nonneg _) fun j _ ↦ ?_\n        rw [abs_pow, Real.rpow_mul (hqR j).le, Real.rpow_natCast,\n          Real.rpow_neg (hqR j).le, ← one_div]\n        exact pow_le_pow_left₀ (abs_nonneg _) (hx j) _\n    _ ≤ ∏ j, ((q 0 : ℝ) ^ ((r 0 : ℝ) / r j)) ^ (-κ * d j) := by\n        refine Finset.prod_le_prod₀ (fun j _ ↦ by positivity) fun j _ ↦ ?_\n        exact Real.rpow_le_rpow_of_nonpos (by positivity) (hqr j)\n          (mul_nonpos_of_nonpos_of_nonneg (neg_nonpos.2 hκ) (Nat.cast_nonneg _))\n    _ = (q 0 : ℝ) ^ (-(r 0 : ℝ) * κ * weight r d) := by\n        simp_rw [← Real.rpow_mul (hqR 0).le]\n        rw [← Real.rpow_sum_of_pos (hqR 0), weight, Finset.mul_sum]\n        exact congrArg _ (Finset.sum_congr rfl fun j _ ↦ by ring)\n    _ ≤ (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by\n        apply Real.rpow_le_rpow_of_exponent_le hq1\n        convert mul_le_mul_of_nonpos_left hw\n          (neg_nonpos.2 (mul_nonneg (Nat.cast_nonneg (r 0)) hκ)) using 1 <;> ring",
+  "proof_lines": 22,
+  "sha256": "60419828e4448e15c2eea97d74b1cdf7c5775d2b57e26472659d63ba8fa34d8d",
+  "what": "Coordinate approximation errors yield a monomial bound determined by its weighted degree.",
+  "how": "Compare products coordinatewise, use Real.rpow_le_rpow_of_nonpos for denominator growth, combine exponents with Real.rpow_sum_of_pos and use the weight cutoff.",
+  "hypotheses": "Nonzero dimension, positive denominators, nonnegative approximation exponent and coordinate error/denominator-growth bounds.",
+  "source_body_refs": [
+    "Roth.weight"
+  ],
+  "source_type_refs": [
+    "Roth.weight"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.abs_eval_lt_of_le_index",
+      "file": "Roth/Main.lean",
+      "line": 380
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.weight"
+  ],
+  "used_by_in_file": [
+    "Roth.abs_eval_lt_of_le_index"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 342,
+  "project_body_refs": [
+    "Roth.weight"
+  ],
+  "project_type_refs": [
+    "Roth.weight"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.abs_eval_lt_of_le_index",
+      "file": "Roth/Main.lean",
+      "line": 380
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+[
+  {
+    "file": "Roth/Main.lean",
+    "line": 380,
+    "name": "Roth.abs_eval_lt_of_le_index",
+    "short": "abs_eval_lt_of_le_index",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 407,
+    "source": "theorem abs_eval_lt_of_le_index {m : ℕ} [NeZero m] {Q : MvPolynomial (Fin m) ℝ} {r : Fin m → ℕ}\n    (hd : ∀ j, degreeOf j Q ≤ r j) {α c : ℝ} (hidx : c ≤ index Q (fun _ ↦ α) r) {h : Fin m → ℤ}\n    {q : Fin m → ℕ} (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ)\n    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ)\n    (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) {C : ℝ}\n    (hC : ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i Q)| < C) :\n    |eval (fun j ↦ (h j : ℝ) / q j) Q| < (∏ j, ((r j : ℝ) + 1)) * C *\n      (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by\n  have hT : 0 < (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) :=\n    Real.rpow_pos_of_pos (by exact_mod_cast hq 0) _\n  rw [eval_eq_sum_box (fun _ ↦ α) (fun j ↦ (h j : ℝ) / q j) r Q hd]\n  -- each term of the Taylor expansion is small\n  have hterm : ∀ d ∈ box r, |eval (fun _ ↦ α) (hasseDeriv d Q) *\n      ∏ j, ((h j : ℝ) / q j - α) ^ d j| < C * (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by\n    intro d _\n    by_cases h0 : eval (fun _ ↦ α) (hasseDeriv d Q) = 0\n    · rw [h0, zero_mul, abs_zero]\n      exact mul_pos (lt_of_le_of_lt (abs_nonneg _) (hC 0)) hT\n    rw [abs_mul]\n    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d)\n      (abs_prod_pow_le_rpow_of_le_weight hq hκ (fun j ↦ by\n        simpa only [abs_sub_comm] using happ j) hqr d (hidx.trans (index_le_weight h0)))\n      (abs_nonneg _) hT\n  refine (Finset.abs_sum_le_sum_abs _ _).trans_lt ?_\n  convert Finset.sum_lt_sum_of_nonempty ⟨0, mem_box.2 fun j ↦ Nat.zero_le _⟩ hterm using 1\n  rw [Finset.sum_const, card_box, nsmul_eq_mul]\n  push_cast\n  ring",
+    "signature": "theorem abs_eval_lt_of_le_index {m : ℕ} [NeZero m] {Q : MvPolynomial (Fin m) ℝ} {r : Fin m → ℕ}\n    (hd : ∀ j, degreeOf j Q ≤ r j) {α c : ℝ} (hidx : c ≤ index Q (fun _ ↦ α) r) {h : Fin m → ℤ}\n    {q : Fin m → ℕ} (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ)\n    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ)\n    (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) {C : ℝ}\n    (hC : ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i Q)| < C) :\n    |eval (fun j ↦ (h j : ℝ) / q j) Q| < (∏ j, ((r j : ℝ) + 1)) * C *\n      (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ)",
+    "body": "by\n  have hT : 0 < (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) :=\n    Real.rpow_pos_of_pos (by exact_mod_cast hq 0) _\n  rw [eval_eq_sum_box (fun _ ↦ α) (fun j ↦ (h j : ℝ) / q j) r Q hd]\n  -- each term of the Taylor expansion is small\n  have hterm : ∀ d ∈ box r, |eval (fun _ ↦ α) (hasseDeriv d Q) *\n      ∏ j, ((h j : ℝ) / q j - α) ^ d j| < C * (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by\n    intro d _\n    by_cases h0 : eval (fun _ ↦ α) (hasseDeriv d Q) = 0\n    · rw [h0, zero_mul, abs_zero]\n      exact mul_pos (lt_of_le_of_lt (abs_nonneg _) (hC 0)) hT\n    rw [abs_mul]\n    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d)\n      (abs_prod_pow_le_rpow_of_le_weight hq hκ (fun j ↦ by\n        simpa only [abs_sub_comm] using happ j) hqr d (hidx.trans (index_le_weight h0)))\n      (abs_nonneg _) hT\n  refine (Finset.abs_sum_le_sum_abs _ _).trans_lt ?_\n  convert Finset.sum_lt_sum_of_nonempty ⟨0, mem_box.2 fun j ↦ Nat.zero_le _⟩ hterm using 1\n  rw [Finset.sum_const, card_box, nsmul_eq_mul]\n  push_cast\n  ring",
+    "proof_lines": 21,
+    "sha256": "dc42d91df45a6e30b8d9fd069da6a2a2565c8a3c0c1b7aa5797e55c9ee3dda3b",
+    "what": "High polynomial index and small derivatives give a strict rational-point evaluation bound.",
+    "how": "Expand using eval_eq_sum_box, ignore vanishing derivatives, bound each surviving monomial with abs_prod_pow_le_rpow_of_le_weight and index_le_weight, then sum strictly over the nonempty box.",
+    "hypotheses": "Nonzero dimension, coordinate degree bounds, lower index bound, positive denominators, nonnegative exponent, approximation/growth bounds and uniform strict derivative bound.",
+    "source_body_refs": [
+      "MvPolynomial.eval_eq_sum_box",
+      "MvPolynomial.hasseDeriv",
+      "Roth.abs_prod_pow_le_rpow_of_le_weight",
+      "Roth.box",
+      "Roth.card_box",
+      "Roth.index_le_weight",
+      "Roth.mem_box"
+    ],
+    "source_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.index"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.one_lt_roth_eval_bound_aux",
+        "file": "Roth/Main.lean",
+        "line": 453
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+    "uses_from_project": [
+      "MvPolynomial.eval_eq_sum_box",
+      "MvPolynomial.hasseDeriv",
+      "Roth.abs_prod_pow_le_rpow_of_le_weight",
+      "Roth.box",
+      "Roth.card_box",
+      "Roth.index_le_weight",
+      "Roth.mem_box"
+    ],
+    "used_by_in_file": [
+      "Roth.one_lt_roth_eval_bound_aux"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 554,
+    "project_body_refs": [
+      "MvPolynomial.eval_eq_sum_box",
+      "MvPolynomial.hasseDeriv",
+      "Roth.abs_prod_pow_le_rpow_of_le_weight",
+      "Roth.box",
+      "Roth.card_box",
+      "Roth.index_le_weight",
+      "Roth.mem_box"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.index"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.one_lt_roth_eval_bound_aux",
+        "file": "Roth/Main.lean",
+        "line": 453
+      }
+    ]
+  }
+]

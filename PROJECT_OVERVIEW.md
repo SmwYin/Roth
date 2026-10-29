@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 279/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 280/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 279; remaining: 14.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 31 YES-but-generalise-first, 46 NO-mathlib-has-it, 97 BORDERLINE-needs-human, 71 SKIP.
+- Completed applicable assessments: 280; remaining: 13.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 31 YES-but-generalise-first, 46 NO-mathlib-has-it, 97 BORDERLINE-needs-human, 72 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3572,6 +3572,23 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit proof use, same file private one_lt_roth_eval_bound_aux at Main:476 (full453–478); zero external-file source calls. One direct canonical body consumer, no type consumers. Full original Main proof replay with literal inlining succeeds; LeanEval is a transitive consumer only.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.one_le_prod_pow_mul_abs_eval.md).
 
+### Completed: `Roth.abs_prod_pow_le_rpow_of_le_weight`
+
+- Type: `∀ {m : ℕ} [inst : NeZero m] {r q : Fin m → ℕ},
+  (∀ (j : Fin m), 0 < q j) →
+    ∀ {κ : ℝ},
+      0 ≤ κ →
+        ∀ {x : Fin m → ℝ},
+          (∀ (j : Fin m), |x j| ≤ 1 / ↑(q j) ^ κ) →
+            (∀ (j : Fin m), ↑(q 0) ^ (↑(r 0) / ↑(r j)) ≤ ↑(q j)) →
+              ∀ (d : Fin m →₀ ℕ) {c : ℝ}, c ≤ Roth.weight r d → |∏ j : Fin m, x j ^ d j| ≤ ↑(q 0) ^ (-↑(r 0) * c * κ)`
+- What: Converts coordinatewise rational-approximation errors and denominator growth into decay of a monomial controlled by its weighted degree.
+- How: Compare products coordinatewise, use Real.rpow_le_rpow_of_nonpos for denominator growth, combine exponents with Real.rpow_sum_of_pos and use the weight cutoff.
+- Hypotheses: Nonzero dimension, positive denominators, nonnegative approximation exponent and coordinate error/denominator-growth bounds. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.weight
+- Caller summary: 1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_prod_pow_le_rpow_of_le_weight.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4156,6 +4173,8 @@ Completed `Roth.exists_degrees`: Existing Nat.ceil_lt_mul is scalar rounding; te
 
 Completed `Roth.one_le_prod_pow_mul_abs_eval`: Existing one_le_pow_mul_abs_eval_div and DenomsClearable are univariate; MvPolynomial.isLocalization localizes coefficient rings but does not supply coordinatewise denominator degree clearing or its separation estimate.
 
+Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: Use Finset.abs_prod and abs_pow for pointwise absolute-value estimates. Rewrite reciprocal powers as negative real powers; Real.rpow_le_rpow_of_nonpos and the denominator growth comparison replace all bases by powers of q0. Collapse the product with Real.rpow_sum_of_pos and the weight formula. Finally use q0>=1 and the nonpositive exponent multiplier to replace weight by its lower bound c. Zero coordinate degrees are allowed because real division is total; no positive r premise is silently added.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4715,6 +4734,8 @@ Completed `Roth.exists_approximants`: Reduced selector supplies arithmetic exist
 Completed `Roth.exists_degrees`: {'a': 'Roth.exists_degrees', 'b': 'Roth.exists_approximants', 'same_statement': False, 'same_proof': False, 'verdict': 'Complementary denominator selection versus degree rounding; do not unify.'}, {'a': 'Roth.exists_degrees', 'b': 'Nat.ceil_lt_mul', 'same_statement': False, 'same_proof': 'Partial ceiling estimate only', 'verdict': 'Reuse scalar candidate in future cleanup; finite synchronization/separation is new proof.'}, {'a': 'Roth.exists_degrees', 'b': 'tendsto_nat_ceil_mul_div_atTop', 'same_statement': False, 'same_proof': 'Asymptotic version of one-coordinate rounding', 'verdict': 'A finite quantitative theorem still needs scale selection and arithmetic assembly.'}
 
 Completed `Roth.one_le_prod_pow_mul_abs_eval`: Shares discrete integer separation with Theta coefficient estimates and univariate Liouville bound; not the same statement. Taylor upper bound is complementary, not duplicate.
+
+Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -5309,6 +5330,8 @@ Completed `Roth.one_le_prod_pow_mul_abs_eval`: verified: True; reason: LITERATUR
     (hbi : ∀ j, bi j * f (b j) = 1) :
     ∃ N : R, f N = (∏ j, f (b j) ^ r j) * eval₂ f (fun j ↦ f (a j) * bi j) Q; algebraic generality: Verified arbitrary commutative semirings and ring hom with coordinate denominator inverses, no CharZero/injective map/field/order. Numeric bound requires integer separation separately.
 
+Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5869,6 +5892,8 @@ Completed `Roth.exists_approximants`: Possible cofinal real-height recursive-gro
 Completed `Roth.exists_degrees`: Finite simultaneous positive-weight natural rounding with an arbitrary relative error, lower degree bound and strict separation margin.
 
 Completed `Roth.one_le_prod_pow_mul_abs_eval`: Coordinatewise multivariate polynomial denominator-clearing equality at arbitrary rational points with individual degree bounds, and nonzero integer lower-bound corollary.
+
+Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -6433,6 +6458,8 @@ Completed `Roth.exists_degrees`: Not dead: one complete actual private caller an
 
 Completed `Roth.one_le_prod_pow_mul_abs_eval`: KEEP: substantive clearing argument, used in the Roth contradiction. No dead-code or trivial existing-mathlib composition justification for deletion.
 
+Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6716,6 +6743,7 @@ Completed `Roth.one_le_prod_pow_mul_abs_eval`: KEEP: substantive clearing argume
 | 277 | `Roth.exists_approximants` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_approximants.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_approximants/root-acceptance.json) |
 | 278 | `Roth.exists_degrees` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_degrees.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_degrees/root-acceptance.json) |
 | 279 | `Roth.one_le_prod_pow_mul_abs_eval` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.one_le_prod_pow_mul_abs_eval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_le_prod_pow_mul_abs_eval/root-acceptance.json) |
+| 280 | `Roth.abs_prod_pow_le_rpow_of_le_weight` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_prod_pow_le_rpow_of_le_weight.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_prod_pow_le_rpow_of_le_weight/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7273,12 +7301,14 @@ Completed `Roth.exists_degrees` action: verdict: YES-but-generalise-first; home:
 
 Completed `Roth.one_le_prod_pow_mul_abs_eval` action: Generalize and split clearing equality from ordered-field estimate, retain natural-positive convenience theorem for current caller. Proposed new Mathlib/Algebra/MvPolynomial/DenomsClearable.lean; use eval₂ normal form; review independent algebraic PR before replacing project wrapper.
 
+Completed `Roth.abs_prod_pow_le_rpow_of_le_weight` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.abs_prod_pow_le_rpow_of_le_weight` next. Supporting identities receive their own applicable checks.
+   `Roth.abs_eval_lt_of_le_index` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

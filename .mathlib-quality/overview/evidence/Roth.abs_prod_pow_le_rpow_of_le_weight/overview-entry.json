@@ -1,0 +1,18 @@
+{
+  "declaration": "Roth.abs_prod_pow_le_rpow_of_le_weight",
+  "kind": "lemma",
+  "type": "∀ {m : ℕ} [inst : NeZero m] {r q : Fin m → ℕ},\n  (∀ (j : Fin m), 0 < q j) →\n    ∀ {κ : ℝ},\n      0 ≤ κ →\n        ∀ {x : Fin m → ℝ},\n          (∀ (j : Fin m), |x j| ≤ 1 / ↑(q j) ^ κ) →\n            (∀ (j : Fin m), ↑(q 0) ^ (↑(r 0) / ↑(r j)) ≤ ↑(q j)) →\n              ∀ (d : Fin m →₀ ℕ) {c : ℝ}, c ≤ Roth.weight r d → |∏ j : Fin m, x j ^ d j| ≤ ↑(q 0) ^ (-↑(r 0) * c * κ)",
+  "what": "Converts coordinatewise rational-approximation errors and denominator growth into decay of a monomial controlled by its weighted degree.",
+  "how": "Compare products coordinatewise, use Real.rpow_le_rpow_of_nonpos for denominator growth, combine exponents with Real.rpow_sum_of_pos and use the weight cutoff.",
+  "hypotheses": "Nonzero dimension, positive denominators, nonnegative approximation exponent and coordinate error/denominator-growth bounds. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.weight"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Use Finset.abs_prod and abs_pow for pointwise absolute-value estimates. Rewrite reciprocal powers as negative real powers; Real.rpow_le_rpow_of_nonpos and the denominator growth comparison replace all bases by powers of q0. Collapse the product with Real.rpow_sum_of_pos and the weight formula. Finally use q0>=1 and the nonpositive exponent multiplier to replace weight by its lower bound c. Zero coordinate degrees are allowed because real division is total; no positive r premise is silently added.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
