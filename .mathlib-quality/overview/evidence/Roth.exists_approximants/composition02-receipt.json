@@ -1,0 +1,116 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.exists_approximants\n\nnamespace Approximants277CompositionGeneric\n-- An arbitrary step threshold, arbitrary objects, and a real height.\ntheorem sequence {A : Type*} (s : Set A) (height : A \u2192 \u211d)\n    (hs : \u2200 B : \u211d, \u2203 a \u2208 s, B < height a) (F : \u2115 \u2192 \u211d \u2192 \u211d) (L : \u211d) :\n    \u2203 f : \u2115 \u2192 A, (\u2200 k, f k \u2208 s) \u2227 (\u2200 k, 0 < height (f k)) \u2227\n      L < height (f 0) \u2227 \u2200 k, F k (height (f k)) < height (f (k + 1)) := by\n  fail_if_success solve | simp\n  fail_if_success solve | exact?\n  choose g hgmem hglt using fun B : \u211d \u21a6 hs (max B 0)\n  let f : \u2115 \u2192 A := Nat.rec (g L) (fun k a \u21a6 g (F k (height a)))\n  have hf : \u2200 k, f k \u2208 s \u2227 0 < height (f k) := by\n    rintro (_ | k) <;> exact \u27e8hgmem _, (le_max_right _ _).trans_lt (hglt _)\u27e9\n  exact \u27e8f, fun k \u21a6 (hf k).1, fun k \u21a6 (hf k).2,\n    (le_max_left _ _).trans_lt (hglt _), fun k \u21a6 (le_max_left _ _).trans_lt (hglt _)\u27e9\ntheorem finite_chain {A : Type*} (s : Set A) (height : A \u2192 \u211d)\n    (hs : \u2200 B : \u211d, \u2203 a \u2208 s, B < height a) (m : \u2115) [NeZero m]\n    (c L : \u211d) : \u2203 f : Fin m \u2192 A, (\u2200 j, f j \u2208 s) \u2227 (\u2200 j, 0 < height (f j)) \u2227\n      L < height (f 0) \u2227 \u2200 i j : Fin m, i.val + 1 = j.val \u2192\n        c * height (f i) < height (f j) := by\n  obtain \u27e8f, hm, hp, hL, hstep\u27e9 := sequence s height hs (fun _ t \u21a6 c * t) L\n  refine \u27e8fun j \u21a6 f j, fun j \u21a6 hm j, fun j \u21a6 hp j, hL, ?_\u27e9\n  intro i j hij\n  simpa only [\u2190 hij] using hstep i\n-- Empty finite chains have no first element; expose the exact no-start form separately.\ntheorem finite_chain_empty {A : Type*} (s : Set A) (height : A \u2192 \u211d) (c : \u211d) :\n    \u2203 f : Fin 0 \u2192 A, (\u2200 j, f j \u2208 s) \u2227 \u2200 i j : Fin 0,\n      i.val + 1 = j.val \u2192 c * height (f i) < height (f j) := by\n  exact \u27e8Fin.elim0, fun j \u21a6 Fin.elim0 j, fun i \u21a6 Fin.elim0 i\u27e9\n#print axioms Approximants277CompositionGeneric.sequence\n#print axioms Approximants277CompositionGeneric.finite_chain\n#print axioms Approximants277CompositionGeneric.finite_chain_empty\nend Approximants277CompositionGeneric\n\n#check @Set.seq_of_forall_finite_exists\n#check @Nat.exists_strictMono_subsequence\n#check @Filter.extraction_forall_of_frequently\n#check @not_bddAbove_iff\n#check @Real.lt_log_of_rpow_lt\nnamespace Approximants277Composition\n-- Explicitly verify the cofinality normal form rather than equating it to infinitude.\nexample {A : Type*} (s : Set A) (height : A \u2192 \u211d) :\n    (\u2200 B : \u211d, \u2203 a \u2208 s, B < height a) \u2194 \u00ac BddAbove (height '' s) := by\n  simp only [not_bddAbove_iff, Set.mem_image, exists_exists_and_eq_and]\nend Approximants277Composition\n"
+  },
+  "elapsed_ms": 10054,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "composition02",
+      "operation": "run_code",
+      "source": "composition2-executed.lean.txt",
+      "source_sha256": "20d38897ea7459d84d641c6a4c7bf593da09c567a3437417e421b1403a948811",
+      "receipt": "composition02-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.exists_approximants/root-requests/composition02.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.exists_approximants/composition2-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_approximants`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277CompositionGeneric.sequence' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 50,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277CompositionGeneric.finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 51,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277CompositionGeneric.finite_chain_empty' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 52,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Set.seq_of_forall_finite_exists : \u2200 {\u03b3 : Type u_1} {P : \u03b3 \u2192 Set \u03b3 \u2192 Prop},\\n  (\u2200 (t : Set \u03b3), t.Finite \u2192 \u2203 c, P c t) \u2192 \u2203 u, \u2200 (n : \u2115), P (u n) (u '' Set.Iio n)\",\n      \"line\": 55,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.exists_strictMono_subsequence : \u2200 {P : \u2115 \u2192 Prop},\\n  (\u2200 (N : \u2115), \u2203 n > N, P n) \u2192 \u2203 \u03c6, StrictMono \u03c6 \u2227 \u2200 (n : \u2115), P (\u03c6 n)\",\n      \"line\": 56,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Filter.extraction_forall_of_frequently : \u2200 {P : \u2115 \u2192 \u2115 \u2192 Prop},\\n  (\u2200 (n : \u2115), \u2203\u1da0 (k : \u2115) in Filter.atTop, P n k) \u2192 \u2203 \u03c6, StrictMono \u03c6 \u2227 \u2200 (n : \u2115), P n (\u03c6 n)\",\n      \"line\": 57,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@not_bddAbove_iff : \u2200 {\u03b1 : Type u_1} [inst : LinearOrder \u03b1] {s : Set \u03b1}, \u00acBddAbove s \u2194 \u2200 (x : \u03b1), \u2203 y \u2208 s, x < y\",\n      \"line\": 58,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.lt_log_of_rpow_lt : \u2200 {x y z : \u211d}, 0 < x \u2192 x ^ z < y \u2192 z * Real.log x < Real.log y\",\n      \"line\": 59,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_approximants`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277CompositionGeneric.sequence' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 50,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277CompositionGeneric.finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 51,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277CompositionGeneric.finite_chain_empty' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 52,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Set.seq_of_forall_finite_exists : \u2200 {\u03b3 : Type u_1} {P : \u03b3 \u2192 Set \u03b3 \u2192 Prop},\n  (\u2200 (t : Set \u03b3), t.Finite \u2192 \u2203 c, P c t) \u2192 \u2203 u, \u2200 (n : \u2115), P (u n) (u '' Set.Iio n)",
+          "line": 55,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.exists_strictMono_subsequence : \u2200 {P : \u2115 \u2192 Prop},\n  (\u2200 (N : \u2115), \u2203 n > N, P n) \u2192 \u2203 \u03c6, StrictMono \u03c6 \u2227 \u2200 (n : \u2115), P (\u03c6 n)",
+          "line": 56,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Filter.extraction_forall_of_frequently : \u2200 {P : \u2115 \u2192 \u2115 \u2192 Prop},\n  (\u2200 (n : \u2115), \u2203\u1da0 (k : \u2115) in Filter.atTop, P n k) \u2192 \u2203 \u03c6, StrictMono \u03c6 \u2227 \u2200 (n : \u2115), P n (\u03c6 n)",
+          "line": 57,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@not_bddAbove_iff : \u2200 {\u03b1 : Type u_1} [inst : LinearOrder \u03b1] {s : Set \u03b1}, \u00acBddAbove s \u2194 \u2200 (x : \u03b1), \u2203 y \u2208 s, x < y",
+          "line": 58,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.lt_log_of_rpow_lt : \u2200 {x y z : \u211d}, 0 < x \u2192 x ^ z < y \u2192 z * Real.log x < Real.log y",
+          "line": 59,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

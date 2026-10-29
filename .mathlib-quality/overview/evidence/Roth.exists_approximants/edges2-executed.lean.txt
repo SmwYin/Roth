@@ -1,0 +1,248 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
+
+#check_failure Roth.exists_approximants
+
+namespace Approximants277Generic
+-- An arbitrary step threshold, arbitrary objects, and a real height.
+theorem sequence {A : Type*} (s : Set A) (height : A → ℝ)
+    (hs : ∀ B : ℝ, ∃ a ∈ s, B < height a) (F : ℕ → ℝ → ℝ) (L : ℝ) :
+    ∃ f : ℕ → A, (∀ k, f k ∈ s) ∧ (∀ k, 0 < height (f k)) ∧
+      L < height (f 0) ∧ ∀ k, F k (height (f k)) < height (f (k + 1)) := by
+  choose g hgmem hglt using fun B : ℝ ↦ hs (max B 0)
+  let f : ℕ → A := Nat.rec (g L) (fun k a ↦ g (F k (height a)))
+  have hf : ∀ k, f k ∈ s ∧ 0 < height (f k) := by
+    rintro (_ | k) <;> exact ⟨hgmem _, (le_max_right _ _).trans_lt (hglt _)⟩
+  exact ⟨f, fun k ↦ (hf k).1, fun k ↦ (hf k).2,
+    (le_max_left _ _).trans_lt (hglt _), fun k ↦ (le_max_left _ _).trans_lt (hglt _)⟩
+theorem finite_chain {A : Type*} (s : Set A) (height : A → ℝ)
+    (hs : ∀ B : ℝ, ∃ a ∈ s, B < height a) (m : ℕ) [NeZero m]
+    (c L : ℝ) : ∃ f : Fin m → A, (∀ j, f j ∈ s) ∧ (∀ j, 0 < height (f j)) ∧
+      L < height (f 0) ∧ ∀ i j : Fin m, i.val + 1 = j.val →
+        c * height (f i) < height (f j) := by
+  obtain ⟨f, hm, hp, hL, hstep⟩ := sequence s height hs (fun _ t ↦ c * t) L
+  refine ⟨fun j ↦ f j, fun j ↦ hm j, fun j ↦ hp j, hL, ?_⟩
+  intro i j hij
+  simpa only [← hij] using hstep i
+-- Empty finite chains have no first element; expose the exact no-start form separately.
+theorem finite_chain_empty {A : Type*} (s : Set A) (height : A → ℝ) (c : ℝ) :
+    ∃ f : Fin 0 → A, (∀ j, f j ∈ s) ∧ ∀ i j : Fin 0,
+      i.val + 1 = j.val → c * height (f i) < height (f j) := by
+  exact ⟨Fin.elim0, fun j ↦ Fin.elim0 j, fun i ↦ Fin.elim0 i⟩
+#print axioms Approximants277Generic.sequence
+#print axioms Approximants277Generic.finite_chain
+#print axioms Approximants277Generic.finite_chain_empty
+end Approximants277Generic
+namespace Approximants277SignedSelector
+def approxSet (α κ : ℝ) : Set (ℤ × ℕ) :=
+  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}
+theorem approxSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
+  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ
+  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉
+  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_
+  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩
+  simp only at hq0 happ hqQ
+  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0
+  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by
+    rw [abs_sub_comm] at happ
+    linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,
+      Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)
+        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]
+  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by
+    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ
+    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv
+    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans
+      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))
+  have hK' : |h| ≤ K := by
+    have : ((|h| : ℤ) : ℝ) ≤ K := by
+      rw [Int.cast_abs]
+      exact habs.trans (Int.le_ceil _)
+    exact_mod_cast this
+  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]
+  exact ⟨abs_le.1 hK', hq0, hqQ⟩
+theorem eventually_div_rpow_lt {M κ κ' : ℝ} (hκ : κ' < κ) :
+    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' := by
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1
+    (((tendsto_rpow_atTop (sub_pos.2 hκ)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)
+  refine ⟨N, fun q hq ↦ ?_⟩
+  have hq0 : (0 : ℝ) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq
+  rw [div_lt_iff₀ (Real.rpow_pos_of_pos hq0 κ), one_div_mul_eq_div, ← Real.rpow_sub hq0]
+  exact hN q hq.le
+theorem approxSet_num_den_mem_aux {α κ : ℝ} (hκ : 0 ≤ κ) {h : ℤ} {q : ℕ}
+    (hq : (h, q) ∈ approxSet α κ) : (((h : ℚ) / q).num, ((h : ℚ) / q).den) ∈ approxSet α κ := by
+  set x : ℚ := (h : ℚ) / q
+  have hden : x.den ≤ q := Nat.le_of_dvd hq.1 <| Int.natCast_dvd_natCast.1 <| by
+    simpa [x, Rat.divInt_eq_div] using Rat.den_dvd h q
+  refine ⟨x.den_pos, ?_⟩
+  rw [← Rat.cast_def, Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast]
+  exact hq.2.trans_le (by gcongr)
+theorem positive {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : 0 < κ)
+    (hinf : (approxSet α κ).Infinite) (Q₀ : ℕ) : ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧
+    IsCoprime hq.1 (hq.2 : ℤ) := by
+  by_contra! hcon
+  set ρ : ℤ × ℕ → ℚ := fun hq ↦ (hq.1 : ℚ) / hq.2
+  have hV : (ρ '' approxSet α κ).Finite := by
+    refine ((approxSet_den_le_finite α κ Q₀).image ρ).subset ?_
+    rintro _ ⟨hq, hmem, rfl⟩
+    -- the reduced form of a solution is a reduced solution
+    have hm : ((ρ hq).num, (ρ hq).den) ∈ approxSet α κ :=
+      approxSet_num_den_mem_aux hκ.le hmem
+    refine ⟨((ρ hq).num, (ρ hq).den), ⟨hm, ?_⟩, ?_⟩
+    · by_contra! hc
+      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (ρ hq).reduced)
+    · exact Rat.num_div_den (ρ hq)
+  have hfib : ∀ x ∈ ρ '' approxSet α κ, {hq ∈ approxSet α κ | ρ hq = x}.Finite := by
+    intro x _
+    obtain ⟨N, hN⟩ := eventually_div_rpow_lt (M := 1 / |α - (x : ℝ)|) hκ
+    refine (approxSet_den_le_finite α κ N).subset ?_
+    rintro ⟨h, q⟩ ⟨hm, hρx⟩
+    refine ⟨hm, le_of_not_gt fun hq ↦ ?_⟩
+    have hbound := hN q hq
+    rw [Real.rpow_zero, div_one, div_right_comm,
+      div_lt_iff₀ (abs_pos.2 (sub_ne_zero.2 (hα.ne_rat x))), one_mul] at hbound
+    exact not_lt_of_gt hbound <| by simpa [← hρx, ρ] using hm.2
+  exact hinf (Set.Finite.of_finite_fibers ρ hV hfib)
+
+-- Generic image/fiber transfer is independent of rational arithmetic.
+theorem infinite_image_of_finite_fibers {A B : Type*} {s : Set A} (f : A → B)
+    (hs : s.Infinite) (hf : ∀ b ∈ f '' s, {a ∈ s | f a = b}.Finite) :
+    (f '' s).Infinite := fun hi ↦ hs (Set.Finite.of_finite_fibers f hi hf)
+
+-- The irrational Dirichlet theorem supplies reduced pairs directly.
+theorem dirichlet_pairs {α : ℝ} (hα : Irrational α) : (approxSet α 2).Infinite := by
+  refine ((Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational hα).image
+    (f := fun x : ℚ ↦ (x.num, x.den))
+    (fun _ _ _ _ hxy ↦ Rat.ext (congrArg Prod.fst hxy) (congrArg Prod.snd hxy))).mono ?_
+  rintro _ ⟨x, hx, rfl⟩
+  refine ⟨x.den_pos, ?_⟩
+  have hx' : |α - (x : ℝ)| < 1 / (x.den : ℝ) ^ (2 : ℕ) := hx
+  simpa only [← Rat.cast_def, Real.rpow_ofNat] using hx'
+
+-- For the entire subcritical range the conclusion does not need supplied infinitude.
+theorem subcritical {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : κ ≤ 2) (Q₀ : ℕ) :
+    ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧ IsCoprime hq.1 (hq.2 : ℤ) := by
+  obtain ⟨hq, hm, hlt, hcop⟩ := positive hα (by norm_num : (0 : ℝ) < 2)
+    (dirichlet_pairs hα) Q₀
+  refine ⟨hq, ⟨hm.1, hm.2.trans_le ?_⟩, hlt, hcop⟩
+  have hq1 : (1 : ℝ) ≤ hq.2 := by exact_mod_cast hm.1
+  gcongr
+
+-- All real exponents are allowed; above2 the supplied infinitude is still conditional.
+theorem unrestricted {α : ℝ} (hα : Irrational α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) (Q₀ : ℕ) :
+    ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧ IsCoprime hq.1 (hq.2 : ℤ) := by
+  by_cases hκ : 0 < κ
+  · exact positive hα hκ hinf Q₀
+  · exact subcritical hα ((le_of_not_gt hκ).trans (by norm_num)) Q₀
+
+-- Exact current signature recovered from the unrestricted theorem.
+example {α : ℝ} (hα : Irrational α) {κ : ℝ} (_hκ : 0 < κ)
+    (hinf : (approxSet α κ).Infinite) (Q₀ : ℕ) :
+    ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧ IsCoprime hq.1 (hq.2 : ℤ) :=
+  unrestricted hα hinf Q₀
+
+-- Test the threshold edge case and the normalized rational form explicitly.
+example {α κ : ℝ} (hα : Irrational α) (hi : (approxSet α κ).Infinite) :
+    ∃ hq ∈ approxSet α κ, 0 < hq.2 ∧ IsCoprime hq.1 (hq.2 : ℤ) :=
+  unrestricted hα hi 0
+#check @Set.Finite.of_finite_fibers
+#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational
+#check @Rat.den_dvd
+#check @Rat.num_div_den
+#print axioms Approximants277SignedSelector.positive
+#print axioms Approximants277SignedSelector.subcritical
+#print axioms Approximants277SignedSelector.unrestricted
+#print axioms Approximants277SignedSelector.infinite_image_of_finite_fibers
+end Approximants277SignedSelector
+
+namespace Approximants277Signed
+open Approximants277SignedSelector
+-- Cofinality in log height absorbs all representation-specific exp/ceiling operations.
+theorem from_selector {α κ : ℝ}
+    (hsel : ∀ Q : ℕ, ∃ hq ∈ approxSet α κ, Q < hq.2 ∧
+      IsCoprime hq.1 (hq.2 : ℤ)) (m : ℕ) [NeZero m] {δ : ℝ} (L : ℝ) :
+    ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧
+      ∀ i j : Fin m, i.val + 1 = j.val →
+        2 / δ * Real.log (q i) < Real.log (q j) := by
+  let s : Set (ℤ × ℕ) := {hq | hq ∈ approxSet α κ ∧
+    IsCoprime hq.1 (hq.2 : ℤ) ∧ 1 < hq.2}
+  have hs : ∀ B : ℝ, ∃ a ∈ s, B < Real.log a.2 := by
+    intro B
+    obtain ⟨a, hm, hlt, hc⟩ := hsel (max ⌈Real.exp B⌉₊ 1)
+    have he : Real.exp B < (a.2 : ℝ) :=
+      (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt hlt)
+    exact ⟨a, ⟨hm, hc, (le_max_right _ _).trans_lt hlt⟩,
+      (Real.lt_log_iff_exp_lt ((Real.exp_pos B).trans he)).2 he⟩
+  obtain ⟨f, hm, -, hL, hstep⟩ := Approximants277Generic.finite_chain
+    s (fun a ↦ Real.log a.2) hs m (2 / δ) L
+  exact ⟨fun j ↦ (f j).1, fun j ↦ (f j).2, fun j ↦ (hm j).1,
+    fun j ↦ (hm j).2.1, fun j ↦ (hm j).2.2, hL, hstep⟩
+theorem recovered {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : 0 < κ)
+    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] {δ : ℝ} (L : ℝ) :
+    ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧
+      ∀ i j : Fin m, i.val + 1 = j.val →
+        2 / δ * Real.log (q i) < Real.log (q j) :=
+  from_selector (positive hα hκ hinf) m L
+#print axioms Approximants277Signed.from_selector
+#print axioms Approximants277Signed.recovered
+theorem unrestricted {α : ℝ} (hα : Irrational α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] {δ : ℝ} (L : ℝ) :
+    ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧
+      ∀ i j : Fin m, i.val + 1 = j.val →
+        2 / δ * Real.log (q i) < Real.log (q j) :=
+  from_selector (Approximants277SignedSelector.unrestricted hα hinf) m L
+theorem subcritical {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : κ ≤ 2)
+    (m : ℕ) [NeZero m] {δ : ℝ} (L : ℝ) :
+    ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧
+      ∀ i j : Fin m, i.val + 1 = j.val →
+        2 / δ * Real.log (q i) < Real.log (q j) :=
+  from_selector (Approximants277SignedSelector.subcritical hα hκ) m L
+#print axioms Approximants277Signed.unrestricted
+#print axioms Approximants277Signed.subcritical
+end Approximants277Signed
+
+namespace Approximants277Edges
+open Approximants277SignedSelector
+theorem old_from_unrestricted {α : ℝ} (hα : Irrational α) {κ : ℝ} (_hκ : 0 < κ)
+    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] {δ : ℝ} (L : ℝ) :
+    ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧ ∀ i j : Fin m,
+      i.val + 1 = j.val → 2 / δ * Real.log (q i) < Real.log (q j) :=
+  Approximants277Signed.unrestricted hα hinf m L
+theorem zero {α : ℝ} (hα : Irrational α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] (L : ℝ) :
+    ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧ ∀ i j : Fin m,
+      i.val + 1 = j.val → 2 / (0 : ℝ) * Real.log (q i) < Real.log (q j) :=
+  Approximants277Signed.unrestricted (δ := 0) hα hinf m L
+theorem negative {α : ℝ} (hα : Irrational α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] (L : ℝ) :
+    ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧ ∀ i j : Fin m,
+      i.val + 1 = j.val → 2 / (-1 : ℝ) * Real.log (q i) < Real.log (q j) :=
+  Approximants277Signed.unrestricted (δ := -1) hα hinf m L
+#print axioms Approximants277Edges.old_from_unrestricted
+#print axioms Approximants277Edges.zero
+#print axioms Approximants277Edges.negative
+end Approximants277Edges

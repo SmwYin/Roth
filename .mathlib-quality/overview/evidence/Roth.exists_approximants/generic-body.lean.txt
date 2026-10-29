@@ -1,0 +1,31 @@
+
+namespace Approximants277Generic
+-- An arbitrary step threshold, arbitrary objects, and a real height.
+theorem sequence {A : Type*} (s : Set A) (height : A → ℝ)
+    (hs : ∀ B : ℝ, ∃ a ∈ s, B < height a) (F : ℕ → ℝ → ℝ) (L : ℝ) :
+    ∃ f : ℕ → A, (∀ k, f k ∈ s) ∧ (∀ k, 0 < height (f k)) ∧
+      L < height (f 0) ∧ ∀ k, F k (height (f k)) < height (f (k + 1)) := by
+  choose g hgmem hglt using fun B : ℝ ↦ hs (max B 0)
+  let f : ℕ → A := Nat.rec (g L) (fun k a ↦ g (F k (height a)))
+  have hf : ∀ k, f k ∈ s ∧ 0 < height (f k) := by
+    rintro (_ | k) <;> exact ⟨hgmem _, (le_max_right _ _).trans_lt (hglt _)⟩
+  exact ⟨f, fun k ↦ (hf k).1, fun k ↦ (hf k).2,
+    (le_max_left _ _).trans_lt (hglt _), fun k ↦ (le_max_left _ _).trans_lt (hglt _)⟩
+theorem finite_chain {A : Type*} (s : Set A) (height : A → ℝ)
+    (hs : ∀ B : ℝ, ∃ a ∈ s, B < height a) (m : ℕ) [NeZero m]
+    (c L : ℝ) : ∃ f : Fin m → A, (∀ j, f j ∈ s) ∧ (∀ j, 0 < height (f j)) ∧
+      L < height (f 0) ∧ ∀ i j : Fin m, i.val + 1 = j.val →
+        c * height (f i) < height (f j) := by
+  obtain ⟨f, hm, hp, hL, hstep⟩ := sequence s height hs (fun _ t ↦ c * t) L
+  refine ⟨fun j ↦ f j, fun j ↦ hm j, fun j ↦ hp j, hL, ?_⟩
+  intro i j hij
+  simpa only [← hij] using hstep i
+-- Empty finite chains have no first element; expose the exact no-start form separately.
+theorem finite_chain_empty {A : Type*} (s : Set A) (height : A → ℝ) (c : ℝ) :
+    ∃ f : Fin 0 → A, (∀ j, f j ∈ s) ∧ ∀ i j : Fin 0,
+      i.val + 1 = j.val → c * height (f i) < height (f j) := by
+  exact ⟨Fin.elim0, fun j ↦ Fin.elim0 j, fun i ↦ Fin.elim0 i⟩
+#print axioms Approximants277Generic.sequence
+#print axioms Approximants277Generic.finite_chain
+#print axioms Approximants277Generic.finite_chain_empty
+end Approximants277Generic

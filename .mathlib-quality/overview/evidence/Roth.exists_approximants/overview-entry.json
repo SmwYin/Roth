@@ -1,0 +1,26 @@
+{
+  "type": "∀ {α : ℝ},\n  Irrational α →\n    ∀ {κ : ℝ},\n      0 < κ →\n        (Roth.approxSet α κ).Infinite →\n          ∀ (m : ℕ) [inst : NeZero m] {δ : ℝ} (L : ℝ),\n            ∃ (h : Fin m → ℤ) (q : Fin m → ℕ),\n              (∀ (j : Fin m), (h j, q j) ∈ Roth.approxSet α κ) ∧\n                (∀ (j : Fin m), IsCoprime (h j) ↑(q j)) ∧\n                  (∀ (j : Fin m), 1 < q j) ∧\n                    L < Real.log ↑(q 0) ∧ ∀ (i j : Fin m), ↑i + 1 = ↑j → 2 / δ * Real.log ↑(q i) < Real.log ↑(q j)",
+  "kind": "theorem",
+  "what": "Selects a nonempty finite family of reduced approximants with q>1, arbitrary strict initial log threshold and consecutive log-gap factor2/δ; δ may be any real.",
+  "how": "Use exists_reduced_approx as an unbounded-denominator selector, recurse beyond ceil(exp L) initially and beyond each powered denominator, then transport strict denominator bounds through Real.lt_log_of_rpow_lt.",
+  "hypotheses": [
+    "Irrational real α, positive κ and infinitely many pairs in approxSet α κ in current signature; positivity ofκ verified removable.",
+    "Nonzero natural m; arbitrary realδ andL."
+  ],
+  "project_dependencies": [
+    "Roth.approxSet",
+    "Roth.exists_reduced_approx"
+  ],
+  "caller_summary": "One actual source caller: Roth.exists_roth_approximants_aux at Main438; zero external-to-file callers. One direct native kernel-value consumer, no direct type consumers, five canonical transitive consumers. Complete caller proof tested with literal inline and generic recovered replacement.",
+  "mathlib_api_audit": "Set.seq_of_forall_finite_exists, Nat.exists_strictMono_subsequence, Filter.extraction_forall_of_frequently and log monotonicity are primitives, not a verified ≤3-call exact chain replacement. Dirichlet supplies subcritical reduced rational infinitude. LiouvilleWith has existential constantC and excludes exact equality, so is not the same fixed1 predicate.",
+  "moral_duplications": "Reduced selector supplies arithmetic existence; target adds recursive finite selection and strict log growth. exists_degrees consumes that output and has a different rounding/balancing argument. No separate source inline rederivation found.",
+  "generalization": {
+    "verified": true,
+    "proposed_type": "∀ {A : Type*} (s : Set A) (height : A → ℝ), (∀ B : ℝ, ∃ a ∈ s, B < height a) → ∀ (F : ℕ → ℝ → ℝ) (L : ℝ), ∃ f : ℕ → A, (∀ k, f k ∈ s) ∧ (∀ k, 0 < height (f k)) ∧ L < height (f 0) ∧ ∀ k, F k (height (f k)) < height (f (k+1))",
+    "kappa": "Remove0<κ: newly proved unrestricted selector yields full chain; κ≤2 also drops supplied infinitude.",
+    "recovery": "Exact original full signature recovered from generic cofinal-height finite selection, with native type equality. Explicit δ0,-1 and full old positiveκ type through unrestricted theorem verified."
+  },
+  "missing_api": "Possible cofinal real-height recursive-growth selection theorem, with finite-chain corollary. Generic scratch theorem is new proof; upstream API granularity remains a future design question.",
+  "junk": "Used theorem, complete proof can inline into sole caller but no ≤3-call mathlib replacement established. Keep project-local while assessing generic upstream selection API.",
+  "action": "BORDERLINE-needs-human: keep this arithmetic packaging local; three concrete future public-API questions remain, without blocking completion of the assessment."
+}

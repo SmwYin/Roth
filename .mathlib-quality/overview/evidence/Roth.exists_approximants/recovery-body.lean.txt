@@ -1,0 +1,35 @@
+
+namespace Approximants277Recovery
+open Roth
+-- Cofinality in log height absorbs all representation-specific exp/ceiling operations.
+theorem from_selector {α κ : ℝ}
+    (hsel : ∀ Q : ℕ, ∃ hq ∈ approxSet α κ, Q < hq.2 ∧
+      IsCoprime hq.1 (hq.2 : ℤ)) (m : ℕ) [NeZero m] {δ : ℝ} (L : ℝ) :
+    ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧
+      ∀ i j : Fin m, i.val + 1 = j.val →
+        2 / δ * Real.log (q i) < Real.log (q j) := by
+  let s : Set (ℤ × ℕ) := {hq | hq ∈ approxSet α κ ∧
+    IsCoprime hq.1 (hq.2 : ℤ) ∧ 1 < hq.2}
+  have hs : ∀ B : ℝ, ∃ a ∈ s, B < Real.log a.2 := by
+    intro B
+    obtain ⟨a, hm, hlt, hc⟩ := hsel (max ⌈Real.exp B⌉₊ 1)
+    have he : Real.exp B < (a.2 : ℝ) :=
+      (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt hlt)
+    exact ⟨a, ⟨hm, hc, (le_max_right _ _).trans_lt hlt⟩,
+      (Real.lt_log_iff_exp_lt ((Real.exp_pos B).trans he)).2 he⟩
+  obtain ⟨f, hm, -, hL, hstep⟩ := Approximants277Generic.finite_chain
+    s (fun a ↦ Real.log a.2) hs m (2 / δ) L
+  exact ⟨fun j ↦ (f j).1, fun j ↦ (f j).2, fun j ↦ (hm j).1,
+    fun j ↦ (hm j).2.1, fun j ↦ (hm j).2.2, hL, hstep⟩
+theorem recovered {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : 0 < κ)
+    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] {δ : ℝ} (L : ℝ) :
+    ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧
+      ∀ i j : Fin m, i.val + 1 = j.val →
+        2 / δ * Real.log (q i) < Real.log (q j) :=
+  from_selector (exists_reduced_approx hα hκ hinf) m L
+example : @Roth.exists_approximants = @recovered := Subsingleton.elim _ _
+#print axioms Approximants277Recovery.from_selector
+#print axioms Approximants277Recovery.recovered
+end Approximants277Recovery

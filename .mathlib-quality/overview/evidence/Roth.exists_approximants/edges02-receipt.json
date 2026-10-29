@@ -1,0 +1,206 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.DiophantineApproximation.Basic\n\n#check_failure Roth.exists_approximants\n\nnamespace Approximants277Generic\n-- An arbitrary step threshold, arbitrary objects, and a real height.\ntheorem sequence {A : Type*} (s : Set A) (height : A \u2192 \u211d)\n    (hs : \u2200 B : \u211d, \u2203 a \u2208 s, B < height a) (F : \u2115 \u2192 \u211d \u2192 \u211d) (L : \u211d) :\n    \u2203 f : \u2115 \u2192 A, (\u2200 k, f k \u2208 s) \u2227 (\u2200 k, 0 < height (f k)) \u2227\n      L < height (f 0) \u2227 \u2200 k, F k (height (f k)) < height (f (k + 1)) := by\n  choose g hgmem hglt using fun B : \u211d \u21a6 hs (max B 0)\n  let f : \u2115 \u2192 A := Nat.rec (g L) (fun k a \u21a6 g (F k (height a)))\n  have hf : \u2200 k, f k \u2208 s \u2227 0 < height (f k) := by\n    rintro (_ | k) <;> exact \u27e8hgmem _, (le_max_right _ _).trans_lt (hglt _)\u27e9\n  exact \u27e8f, fun k \u21a6 (hf k).1, fun k \u21a6 (hf k).2,\n    (le_max_left _ _).trans_lt (hglt _), fun k \u21a6 (le_max_left _ _).trans_lt (hglt _)\u27e9\ntheorem finite_chain {A : Type*} (s : Set A) (height : A \u2192 \u211d)\n    (hs : \u2200 B : \u211d, \u2203 a \u2208 s, B < height a) (m : \u2115) [NeZero m]\n    (c L : \u211d) : \u2203 f : Fin m \u2192 A, (\u2200 j, f j \u2208 s) \u2227 (\u2200 j, 0 < height (f j)) \u2227\n      L < height (f 0) \u2227 \u2200 i j : Fin m, i.val + 1 = j.val \u2192\n        c * height (f i) < height (f j) := by\n  obtain \u27e8f, hm, hp, hL, hstep\u27e9 := sequence s height hs (fun _ t \u21a6 c * t) L\n  refine \u27e8fun j \u21a6 f j, fun j \u21a6 hm j, fun j \u21a6 hp j, hL, ?_\u27e9\n  intro i j hij\n  simpa only [\u2190 hij] using hstep i\n-- Empty finite chains have no first element; expose the exact no-start form separately.\ntheorem finite_chain_empty {A : Type*} (s : Set A) (height : A \u2192 \u211d) (c : \u211d) :\n    \u2203 f : Fin 0 \u2192 A, (\u2200 j, f j \u2208 s) \u2227 \u2200 i j : Fin 0,\n      i.val + 1 = j.val \u2192 c * height (f i) < height (f j) := by\n  exact \u27e8Fin.elim0, fun j \u21a6 Fin.elim0 j, fun i \u21a6 Fin.elim0 i\u27e9\n#print axioms Approximants277Generic.sequence\n#print axioms Approximants277Generic.finite_chain\n#print axioms Approximants277Generic.finite_chain_empty\nend Approximants277Generic\nnamespace Approximants277SignedSelector\ndef approxSet (\u03b1 \u03ba : \u211d) : Set (\u2124 \u00d7 \u2115) :=\n  {hq | 0 < hq.2 \u2227 |\u03b1 - (hq.1 : \u211d) / hq.2| < 1 / (hq.2 : \u211d) ^ \u03ba}\ntheorem approxSet_den_le_finite (\u03b1 \u03ba : \u211d) (Q\u2080 : \u2115) : {hq \u2208 approxSet \u03b1 \u03ba | hq.2 \u2264 Q\u2080}.Finite := by\n  set S : \u211d := \u2211 q \u2208 Finset.Icc 1 Q\u2080, 1 / (q : \u211d) ^ \u03ba\n  set K : \u2124 := \u2308(Q\u2080 : \u211d) * (|\u03b1| + S)\u2309\n  refine (Finset.finite_toSet (Finset.Icc (-K) K \u00d7\u02e2 Finset.Icc 1 Q\u2080)).subset ?_\n  rintro \u27e8h, q\u27e9 \u27e8\u27e8hq0, happ\u27e9, hqQ\u27e9\n  simp only at hq0 happ hqQ\n  have hqR : (0 : \u211d) < q := by exact_mod_cast hq0\n  have hdiv : |(h : \u211d) / q| \u2264 |\u03b1| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, abs_sub_abs_le_abs_sub ((h : \u211d) / q) \u03b1,\n      Finset.single_le_sum (f := fun q : \u2115 \u21a6 1 / (q : \u211d) ^ \u03ba) (fun i _ \u21a6 by positivity)\n        (Finset.mem_Icc.2 \u27e8hq0, hqQ\u27e9)]\n  have habs : |(h : \u211d)| \u2264 Q\u2080 * (|\u03b1| + S) := by\n    have hqQR : (q : \u211d) \u2264 Q\u2080 := by exact_mod_cast hqQ\n    have hh : |(h : \u211d)| / q \u2264 |\u03b1| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff\u2080 hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| \u2264 K := by\n    have : ((|h| : \u2124) : \u211d) \u2264 K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact \u27e8abs_le.1 hK', hq0, hqQ\u27e9\ntheorem eventually_div_rpow_lt {M \u03ba \u03ba' : \u211d} (h\u03ba : \u03ba' < \u03ba) :\n    \u2203 Q\u2080 : \u2115, \u2200 q : \u2115, Q\u2080 < q \u2192 M / (q : \u211d) ^ \u03ba < 1 / (q : \u211d) ^ \u03ba' := by\n  obtain \u27e8N, hN\u27e9 := Filter.eventually_atTop.1\n    (((tendsto_rpow_atTop (sub_pos.2 h\u03ba)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)\n  refine \u27e8N, fun q hq \u21a6 ?_\u27e9\n  have hq0 : (0 : \u211d) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq\n  rw [div_lt_iff\u2080 (Real.rpow_pos_of_pos hq0 \u03ba), one_div_mul_eq_div, \u2190 Real.rpow_sub hq0]\n  exact hN q hq.le\ntheorem approxSet_num_den_mem_aux {\u03b1 \u03ba : \u211d} (h\u03ba : 0 \u2264 \u03ba) {h : \u2124} {q : \u2115}\n    (hq : (h, q) \u2208 approxSet \u03b1 \u03ba) : (((h : \u211a) / q).num, ((h : \u211a) / q).den) \u2208 approxSet \u03b1 \u03ba := by\n  set x : \u211a := (h : \u211a) / q\n  have hden : x.den \u2264 q := Nat.le_of_dvd hq.1 <| Int.natCast_dvd_natCast.1 <| by\n    simpa [x, Rat.divInt_eq_div] using Rat.den_dvd h q\n  refine \u27e8x.den_pos, ?_\u27e9\n  rw [\u2190 Rat.cast_def, Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast]\n  exact hq.2.trans_le (by gcongr)\ntheorem positive {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (h\u03ba : 0 < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (Q\u2080 : \u2115) : \u2203 hq \u2208 approxSet \u03b1 \u03ba, Q\u2080 < hq.2 \u2227\n    IsCoprime hq.1 (hq.2 : \u2124) := by\n  by_contra! hcon\n  set \u03c1 : \u2124 \u00d7 \u2115 \u2192 \u211a := fun hq \u21a6 (hq.1 : \u211a) / hq.2\n  have hV : (\u03c1 '' approxSet \u03b1 \u03ba).Finite := by\n    refine ((approxSet_den_le_finite \u03b1 \u03ba Q\u2080).image \u03c1).subset ?_\n    rintro _ \u27e8hq, hmem, rfl\u27e9\n    -- the reduced form of a solution is a reduced solution\n    have hm : ((\u03c1 hq).num, (\u03c1 hq).den) \u2208 approxSet \u03b1 \u03ba :=\n      approxSet_num_den_mem_aux h\u03ba.le hmem\n    refine \u27e8((\u03c1 hq).num, (\u03c1 hq).den), \u27e8hm, ?_\u27e9, ?_\u27e9\n    \u00b7 by_contra! hc\n      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (\u03c1 hq).reduced)\n    \u00b7 exact Rat.num_div_den (\u03c1 hq)\n  have hfib : \u2200 x \u2208 \u03c1 '' approxSet \u03b1 \u03ba, {hq \u2208 approxSet \u03b1 \u03ba | \u03c1 hq = x}.Finite := by\n    intro x _\n    obtain \u27e8N, hN\u27e9 := eventually_div_rpow_lt (M := 1 / |\u03b1 - (x : \u211d)|) h\u03ba\n    refine (approxSet_den_le_finite \u03b1 \u03ba N).subset ?_\n    rintro \u27e8h, q\u27e9 \u27e8hm, h\u03c1x\u27e9\n    refine \u27e8hm, le_of_not_gt fun hq \u21a6 ?_\u27e9\n    have hbound := hN q hq\n    rw [Real.rpow_zero, div_one, div_right_comm,\n      div_lt_iff\u2080 (abs_pos.2 (sub_ne_zero.2 (h\u03b1.ne_rat x))), one_mul] at hbound\n    exact not_lt_of_gt hbound <| by simpa [\u2190 h\u03c1x, \u03c1] using hm.2\n  exact hinf (Set.Finite.of_finite_fibers \u03c1 hV hfib)\n\n-- Generic image/fiber transfer is independent of rational arithmetic.\ntheorem infinite_image_of_finite_fibers {A B : Type*} {s : Set A} (f : A \u2192 B)\n    (hs : s.Infinite) (hf : \u2200 b \u2208 f '' s, {a \u2208 s | f a = b}.Finite) :\n    (f '' s).Infinite := fun hi \u21a6 hs (Set.Finite.of_finite_fibers f hi hf)\n\n-- The irrational Dirichlet theorem supplies reduced pairs directly.\ntheorem dirichlet_pairs {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) : (approxSet \u03b1 2).Infinite := by\n  refine ((Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational h\u03b1).image\n    (f := fun x : \u211a \u21a6 (x.num, x.den))\n    (fun _ _ _ _ hxy \u21a6 Rat.ext (congrArg Prod.fst hxy) (congrArg Prod.snd hxy))).mono ?_\n  rintro _ \u27e8x, hx, rfl\u27e9\n  refine \u27e8x.den_pos, ?_\u27e9\n  have hx' : |\u03b1 - (x : \u211d)| < 1 / (x.den : \u211d) ^ (2 : \u2115) := hx\n  simpa only [\u2190 Rat.cast_def, Real.rpow_ofNat] using hx'\n\n-- For the entire subcritical range the conclusion does not need supplied infinitude.\ntheorem subcritical {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (h\u03ba : \u03ba \u2264 2) (Q\u2080 : \u2115) :\n    \u2203 hq \u2208 approxSet \u03b1 \u03ba, Q\u2080 < hq.2 \u2227 IsCoprime hq.1 (hq.2 : \u2124) := by\n  obtain \u27e8hq, hm, hlt, hcop\u27e9 := positive h\u03b1 (by norm_num : (0 : \u211d) < 2)\n    (dirichlet_pairs h\u03b1) Q\u2080\n  refine \u27e8hq, \u27e8hm.1, hm.2.trans_le ?_\u27e9, hlt, hcop\u27e9\n  have hq1 : (1 : \u211d) \u2264 hq.2 := by exact_mod_cast hm.1\n  gcongr\n\n-- All real exponents are allowed; above2 the supplied infinitude is still conditional.\ntheorem unrestricted {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d}\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (Q\u2080 : \u2115) :\n    \u2203 hq \u2208 approxSet \u03b1 \u03ba, Q\u2080 < hq.2 \u2227 IsCoprime hq.1 (hq.2 : \u2124) := by\n  by_cases h\u03ba : 0 < \u03ba\n  \u00b7 exact positive h\u03b1 h\u03ba hinf Q\u2080\n  \u00b7 exact subcritical h\u03b1 ((le_of_not_gt h\u03ba).trans (by norm_num)) Q\u2080\n\n-- Exact current signature recovered from the unrestricted theorem.\nexample {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (_h\u03ba : 0 < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (Q\u2080 : \u2115) :\n    \u2203 hq \u2208 approxSet \u03b1 \u03ba, Q\u2080 < hq.2 \u2227 IsCoprime hq.1 (hq.2 : \u2124) :=\n  unrestricted h\u03b1 hinf Q\u2080\n\n-- Test the threshold edge case and the normalized rational form explicitly.\nexample {\u03b1 \u03ba : \u211d} (h\u03b1 : Irrational \u03b1) (hi : (approxSet \u03b1 \u03ba).Infinite) :\n    \u2203 hq \u2208 approxSet \u03b1 \u03ba, 0 < hq.2 \u2227 IsCoprime hq.1 (hq.2 : \u2124) :=\n  unrestricted h\u03b1 hi 0\n#check @Set.Finite.of_finite_fibers\n#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational\n#check @Rat.den_dvd\n#check @Rat.num_div_den\n#print axioms Approximants277SignedSelector.positive\n#print axioms Approximants277SignedSelector.subcritical\n#print axioms Approximants277SignedSelector.unrestricted\n#print axioms Approximants277SignedSelector.infinite_image_of_finite_fibers\nend Approximants277SignedSelector\n\nnamespace Approximants277Signed\nopen Approximants277SignedSelector\n-- Cofinality in log height absorbs all representation-specific exp/ceiling operations.\ntheorem from_selector {\u03b1 \u03ba : \u211d}\n    (hsel : \u2200 Q : \u2115, \u2203 hq \u2208 approxSet \u03b1 \u03ba, Q < hq.2 \u2227\n      IsCoprime hq.1 (hq.2 : \u2124)) (m : \u2115) [NeZero m] {\u03b4 : \u211d} (L : \u211d) :\n    \u2203 (h : Fin m \u2192 \u2124) (q : Fin m \u2192 \u2115), (\u2200 j, (h j, q j) \u2208 approxSet \u03b1 \u03ba) \u2227\n      (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227 (\u2200 j, 1 < q j) \u2227 L < Real.log (q 0) \u2227\n      \u2200 i j : Fin m, i.val + 1 = j.val \u2192\n        2 / \u03b4 * Real.log (q i) < Real.log (q j) := by\n  let s : Set (\u2124 \u00d7 \u2115) := {hq | hq \u2208 approxSet \u03b1 \u03ba \u2227\n    IsCoprime hq.1 (hq.2 : \u2124) \u2227 1 < hq.2}\n  have hs : \u2200 B : \u211d, \u2203 a \u2208 s, B < Real.log a.2 := by\n    intro B\n    obtain \u27e8a, hm, hlt, hc\u27e9 := hsel (max \u2308Real.exp B\u2309\u208a 1)\n    have he : Real.exp B < (a.2 : \u211d) :=\n      (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt hlt)\n    exact \u27e8a, \u27e8hm, hc, (le_max_right _ _).trans_lt hlt\u27e9,\n      (Real.lt_log_iff_exp_lt ((Real.exp_pos B).trans he)).2 he\u27e9\n  obtain \u27e8f, hm, -, hL, hstep\u27e9 := Approximants277Generic.finite_chain\n    s (fun a \u21a6 Real.log a.2) hs m (2 / \u03b4) L\n  exact \u27e8fun j \u21a6 (f j).1, fun j \u21a6 (f j).2, fun j \u21a6 (hm j).1,\n    fun j \u21a6 (hm j).2.1, fun j \u21a6 (hm j).2.2, hL, hstep\u27e9\ntheorem recovered {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (h\u03ba : 0 < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (m : \u2115) [NeZero m] {\u03b4 : \u211d} (L : \u211d) :\n    \u2203 (h : Fin m \u2192 \u2124) (q : Fin m \u2192 \u2115), (\u2200 j, (h j, q j) \u2208 approxSet \u03b1 \u03ba) \u2227\n      (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227 (\u2200 j, 1 < q j) \u2227 L < Real.log (q 0) \u2227\n      \u2200 i j : Fin m, i.val + 1 = j.val \u2192\n        2 / \u03b4 * Real.log (q i) < Real.log (q j) :=\n  from_selector (positive h\u03b1 h\u03ba hinf) m L\n#print axioms Approximants277Signed.from_selector\n#print axioms Approximants277Signed.recovered\ntheorem unrestricted {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d}\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (m : \u2115) [NeZero m] {\u03b4 : \u211d} (L : \u211d) :\n    \u2203 (h : Fin m \u2192 \u2124) (q : Fin m \u2192 \u2115), (\u2200 j, (h j, q j) \u2208 approxSet \u03b1 \u03ba) \u2227\n      (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227 (\u2200 j, 1 < q j) \u2227 L < Real.log (q 0) \u2227\n      \u2200 i j : Fin m, i.val + 1 = j.val \u2192\n        2 / \u03b4 * Real.log (q i) < Real.log (q j) :=\n  from_selector (Approximants277SignedSelector.unrestricted h\u03b1 hinf) m L\ntheorem subcritical {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (h\u03ba : \u03ba \u2264 2)\n    (m : \u2115) [NeZero m] {\u03b4 : \u211d} (L : \u211d) :\n    \u2203 (h : Fin m \u2192 \u2124) (q : Fin m \u2192 \u2115), (\u2200 j, (h j, q j) \u2208 approxSet \u03b1 \u03ba) \u2227\n      (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227 (\u2200 j, 1 < q j) \u2227 L < Real.log (q 0) \u2227\n      \u2200 i j : Fin m, i.val + 1 = j.val \u2192\n        2 / \u03b4 * Real.log (q i) < Real.log (q j) :=\n  from_selector (Approximants277SignedSelector.subcritical h\u03b1 h\u03ba) m L\n#print axioms Approximants277Signed.unrestricted\n#print axioms Approximants277Signed.subcritical\nend Approximants277Signed\n\nnamespace Approximants277Edges\nopen Approximants277SignedSelector\ntheorem old_from_unrestricted {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (_h\u03ba : 0 < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (m : \u2115) [NeZero m] {\u03b4 : \u211d} (L : \u211d) :\n    \u2203 (h : Fin m \u2192 \u2124) (q : Fin m \u2192 \u2115), (\u2200 j, (h j, q j) \u2208 approxSet \u03b1 \u03ba) \u2227\n      (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227 (\u2200 j, 1 < q j) \u2227 L < Real.log (q 0) \u2227 \u2200 i j : Fin m,\n      i.val + 1 = j.val \u2192 2 / \u03b4 * Real.log (q i) < Real.log (q j) :=\n  Approximants277Signed.unrestricted h\u03b1 hinf m L\ntheorem zero {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d}\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (m : \u2115) [NeZero m] (L : \u211d) :\n    \u2203 (h : Fin m \u2192 \u2124) (q : Fin m \u2192 \u2115), (\u2200 j, (h j, q j) \u2208 approxSet \u03b1 \u03ba) \u2227\n      (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227 (\u2200 j, 1 < q j) \u2227 L < Real.log (q 0) \u2227 \u2200 i j : Fin m,\n      i.val + 1 = j.val \u2192 2 / (0 : \u211d) * Real.log (q i) < Real.log (q j) :=\n  Approximants277Signed.unrestricted (\u03b4 := 0) h\u03b1 hinf m L\ntheorem negative {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d}\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (m : \u2115) [NeZero m] (L : \u211d) :\n    \u2203 (h : Fin m \u2192 \u2124) (q : Fin m \u2192 \u2115), (\u2200 j, (h j, q j) \u2208 approxSet \u03b1 \u03ba) \u2227\n      (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227 (\u2200 j, 1 < q j) \u2227 L < Real.log (q 0) \u2227 \u2200 i j : Fin m,\n      i.val + 1 = j.val \u2192 2 / (-1 : \u211d) * Real.log (q i) < Real.log (q j) :=\n  Approximants277Signed.unrestricted (\u03b4 := -1) h\u03b1 hinf m L\n#print axioms Approximants277Edges.old_from_unrestricted\n#print axioms Approximants277Edges.zero\n#print axioms Approximants277Edges.negative\nend Approximants277Edges\n"
+  },
+  "elapsed_ms": 1162,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "edges02",
+      "operation": "run_code",
+      "source": "edges2-executed.lean.txt",
+      "source_sha256": "acd90612fc527c2edf47ad9e766474d2cb2efa44d96e04f09d76382511c6a120",
+      "receipt": "edges02-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.exists_approximants/root-requests/edges02.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.exists_approximants/edges2-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_approximants`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Generic.sequence' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 49,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Generic.finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 50,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Generic.finite_chain_empty' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 51,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Set.Finite.of_finite_fibers : \u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} (f : \u03b1 \u2192 \u03b2) {s : Set \u03b1},\\n  (f '' s).Finite \u2192 (\u2200 x \u2208 f '' s, (s \u2229 f \u207b\u00b9' {x}).Finite) \u2192 s.Finite\",\n      \"line\": 165,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational : \u2200 {\u03be : \u211d},\\n  Irrational \u03be \u2192 {q | |\u03be - \u2191q| < 1 / \u2191q.den ^ 2}.Infinite\",\n      \"line\": 166,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Rat.den_dvd : \u2200 (a b : \u2124), \u2191(Rat.divInt a b).den \u2223 b\",\n      \"line\": 167,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Rat.num_div_den : \u2200 (r : \u211a), \u2191r.num / \u2191r.den = r\",\n      \"line\": 168,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277SignedSelector.positive' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 169,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277SignedSelector.subcritical' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 170,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277SignedSelector.unrestricted' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 171,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277SignedSelector.infinite_image_of_finite_fibers' depends on axioms: [propext,\\n Classical.choice,\\n Quot.sound]\",\n      \"line\": 172,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Signed.from_selector' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 205,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Signed.recovered' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 206,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Signed.unrestricted' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 221,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Signed.subcritical' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 222,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Edges.old_from_unrestricted' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 245,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Edges.zero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 246,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approximants277Edges.negative' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 247,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_approximants`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Generic.sequence' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 49,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Generic.finite_chain' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 50,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Generic.finite_chain_empty' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 51,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Set.Finite.of_finite_fibers : \u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} (f : \u03b1 \u2192 \u03b2) {s : Set \u03b1},\n  (f '' s).Finite \u2192 (\u2200 x \u2208 f '' s, (s \u2229 f \u207b\u00b9' {x}).Finite) \u2192 s.Finite",
+          "line": 165,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational : \u2200 {\u03be : \u211d},\n  Irrational \u03be \u2192 {q | |\u03be - \u2191q| < 1 / \u2191q.den ^ 2}.Infinite",
+          "line": 166,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Rat.den_dvd : \u2200 (a b : \u2124), \u2191(Rat.divInt a b).den \u2223 b",
+          "line": 167,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Rat.num_div_den : \u2200 (r : \u211a), \u2191r.num / \u2191r.den = r",
+          "line": 168,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277SignedSelector.positive' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 169,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277SignedSelector.subcritical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 170,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277SignedSelector.unrestricted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 171,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277SignedSelector.infinite_image_of_finite_fibers' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]",
+          "line": 172,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Signed.from_selector' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 205,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Signed.recovered' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 206,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Signed.unrestricted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 221,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Signed.subcritical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 222,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Edges.old_from_unrestricted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 245,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Edges.zero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 246,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approximants277Edges.negative' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 247,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

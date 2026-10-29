@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 276/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 277/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 276; remaining: 17.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 29 YES-but-generalise-first, 46 NO-mathlib-has-it, 96 BORDERLINE-needs-human, 71 SKIP.
+- Completed applicable assessments: 277; remaining: 16.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 29 YES-but-generalise-first, 46 NO-mathlib-has-it, 97 BORDERLINE-needs-human, 71 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3516,6 +3516,26 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One actual source caller: private Roth.exists_roth_parameters_aux at Main420. One direct kernel-value consumer, no direct type consumers; five canonical transitive consumers through Roth and LeanEval. Full private caller literal-proof inline and full Main continuation recovery tested.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_delta.md).
 
+### Completed: `Roth.exists_approximants`
+
+- Type: `∀ {α : ℝ},
+  Irrational α →
+    ∀ {κ : ℝ},
+      0 < κ →
+        (Roth.approxSet α κ).Infinite →
+          ∀ (m : ℕ) [inst : NeZero m] {δ : ℝ} (L : ℝ),
+            ∃ (h : Fin m → ℤ) (q : Fin m → ℕ),
+              (∀ (j : Fin m), (h j, q j) ∈ Roth.approxSet α κ) ∧
+                (∀ (j : Fin m), IsCoprime (h j) ↑(q j)) ∧
+                  (∀ (j : Fin m), 1 < q j) ∧
+                    L < Real.log ↑(q 0) ∧ ∀ (i j : Fin m), ↑i + 1 = ↑j → 2 / δ * Real.log ↑(q i) < Real.log ↑(q j)`
+- What: Selects a nonempty finite family of reduced approximants with q>1, arbitrary strict initial log threshold and consecutive log-gap factor2/δ; δ may be any real.
+- How: Use exists_reduced_approx as an unbounded-denominator selector, recurse beyond ceil(exp L) initially and beyond each powered denominator, then transport strict denominator bounds through Real.lt_log_of_rpow_lt.
+- Hypotheses: Irrational real α, positive κ and infinitely many pairs in approxSet α κ in current signature; positivity ofκ verified removable., Nonzero natural m; arbitrary realδ andL.
+- Project dependencies: Roth.approxSet, Roth.exists_reduced_approx
+- Caller summary: One actual source caller: Roth.exists_roth_approximants_aux at Main438; zero external-to-file callers. One direct native kernel-value consumer, no direct type consumers, five canonical transitive consumers. Complete caller proof tested with literal inline and generic recovered replacement.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_approximants.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4094,6 +4114,8 @@ Completed `Roth.exists_m`: Existing Archimedean exists_nat_gt/Nat.le_ceil, Real.
 
 Completed `Roth.exists_delta`: ContinuousAt.eventually_lt, Filter.Eventually.and/exists_gt, ContinuousAt.div and Real.continuousAt_rpow_const supply primitives. Generic cap/two-envelope selection compiles isolated; exact full arithmetic recovery is a new bridge, not ≤3 verified existing calls.
 
+Completed `Roth.exists_approximants`: Set.seq_of_forall_finite_exists, Nat.exists_strictMono_subsequence, Filter.extraction_forall_of_frequently and log monotonicity are primitives, not a verified ≤3-call exact chain replacement. Dirichlet supplies subcritical reduced rational infinitude. LiouvilleWith has existential constantC and excludes exact equality, so is not the same fixed1 predicate.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4647,6 +4669,8 @@ Completed `Roth.exists_reduced_approx`: Rat.num_div_den/Rat.reduced cover repres
 Completed `Roth.exists_m`: Shares small-parameter selection theme with exists_delta/exists_delta_bound, but chooses natural dimension at infinity rather than a realδ near0; no duplicate conclusion.
 
 Completed `Roth.exists_delta`: Shares neighborhood shrinking with exists_delta_bound, but adds independent quotient continuity and slack. No separate actual inline reconstruction found.
+
+Completed `Roth.exists_approximants`: Reduced selector supplies arithmetic existence; target adds recursive finite selection and strict log growth. exists_degrees consumes that output and has a different rounding/balancing argument. No separate source inline rederivation found.
 
 ## Part 5: Generalization opportunities
 
@@ -5216,6 +5240,8 @@ Completed `Roth.exists_m`: verified: True; status: Verified semantic parameter w
 
 Completed `Roth.exists_delta`: verified: True; proposed type: ∀ {f p q : ℝ → ℝ} {U B K : ℝ}, 0<U → ContinuousAt f 0 → ContinuousAt p 0 → ContinuousAt q 0 → q 0≠0 → f 0<B → p 0/q 0<K → ∃ δ : ℝ, 0<δ ∧ δ<U ∧ f δ<B ∧ p δ/q δ<K; recovery: Exact original type recovered with f=eta+square-root expression, p=m(1+4δ), q=gam-eta; supplies square-root gap, positive cap, exponent continuity and value-at0.; quantitative envelope type: ∀ {A e M s U K : ℝ}, 0<e → 4*s<M → 0<U → 2*M/(M-4*s)<K → ∃ δ : ℝ, 0<δ ∧ δ<U ∧ A*δ^e+2*(1+3*δ)*s<M/2 ∧ M*(1+4*δ)/((M-4*(1+3*δ)*s)/2-A*δ^e)<K; quantitative recovery: Verified mathlib-only19: A=10^m, e=(1/2)^m, M=m, s=n*sqrt m, U=1/m; reconstructs both old quantitative envelopes from genuine mathlib operations. Native ambient bridge uses only [eta,gam,lam] and exact original type equality.
 
+Completed `Roth.exists_approximants`: verified: True; proposed type: ∀ {A : Type*} (s : Set A) (height : A → ℝ), (∀ B : ℝ, ∃ a ∈ s, B < height a) → ∀ (F : ℕ → ℝ → ℝ) (L : ℝ), ∃ f : ℕ → A, (∀ k, f k ∈ s) ∧ (∀ k, 0 < height (f k)) ∧ L < height (f 0) ∧ ∀ k, F k (height (f k)) < height (f (k+1)); kappa: Remove0<κ: newly proved unrestricted selector yields full chain; κ≤2 also drops supplied infinitude.; recovery: Exact original full signature recovered from generic cofinal-height finite selection, with native type equality. Explicit δ0,-1 and full old positiveκ type through unrestricted theorem verified.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5770,6 +5796,8 @@ Completed `Roth.exists_reduced_approx`: Finite fixed-rational-value fibers for d
 Completed `Roth.exists_m`: Possible reusable generic scalar dimension selector, own signed-a,b proof verified; upstream home/publicness remains design question.
 
 Completed `Roth.exists_delta`: Potential simultaneous quantitative perturbation convenience lemma; generic point selection itself already exists. Public API scope remains a future question.
+
+Completed `Roth.exists_approximants`: Possible cofinal real-height recursive-growth selection theorem, with finite-chain corollary. Generic scratch theorem is new proof; upstream API granularity remains a future design question.
 
 ## Part 7: Junk / removable
 
@@ -6328,6 +6356,8 @@ Completed `Roth.exists_m`: Used once directly and by5canonical transitive consum
 
 Completed `Roth.exists_delta`: Used theorem; sole caller can inline it but requires full proof, so not established junk or redundant.
 
+Completed `Roth.exists_approximants`: Used theorem, complete proof can inline into sole caller but no ≤3-call mathlib replacement established. Keep project-local while assessing generic upstream selection API.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6608,6 +6638,7 @@ Completed `Roth.exists_delta`: Used theorem; sole caller can inline it but requi
 | 274 | `Roth.exists_reduced_approx` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_reduced_approx.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_reduced_approx/root-acceptance.json) |
 | 275 | `Roth.exists_m` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_m.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_m/root-acceptance.json) |
 | 276 | `Roth.exists_delta` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_delta.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_delta/root-acceptance.json) |
+| 277 | `Roth.exists_approximants` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_approximants.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_approximants/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7159,12 +7190,14 @@ Completed `Roth.exists_m` action: verdict: BORDERLINE-needs-human; questions: Sh
 
 Completed `Roth.exists_delta` action: BORDERLINE-needs-human: keep project-local pending three concrete future upstream API decisions; completed assessment is not a user blocker.
 
+Completed `Roth.exists_approximants` action: BORDERLINE-needs-human: keep this arithmetic packaging local; three concrete future public-API questions remain, without blocking completion of the assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_approximants` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_degrees` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

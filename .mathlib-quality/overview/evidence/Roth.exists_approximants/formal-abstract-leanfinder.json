@@ -1,0 +1,68 @@
+{
+  "request": {
+    "query": "cofinal height function choose sequence above arbitrary recursive bounds",
+    "num_results": 6
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Order.sequenceOfCofinals\",\n      \"informal_name\": \"Cofinal Sequence Construction\",\n      \"kind\": \"definition\",\n      \"type\": \"{P : Type u_1} → [inst : Preorder P] → P → {ι : Type u_2} → [Encodable ι] → (ι → Order.Cofinal P) → ℕ → P\",\n      \"informal_description\": \"A sequence in a preordered set $ P $ defined recursively: starting with an initial element $ p $, each subsequent term is either the previous term or an element from a cofinal subset $ \\\\mathcal{D}(i) $ that is greater than or equal to the previous term. Specifically, for $ n+1 $, if the decoding of $ n $ yields an index $ i $, the next term is chosen as an element above the current term in the cofinal subset $ \\\\mathcal{D}(i) $; otherwise, it repeats the previous term.\",\n      \"path\": \"Mathlib.Order.Ideal\"\n    },\n    {\n      \"formal_name\": \"Order.sequenceOfCofinals.encode_mem\",\n      \"informal_name\": \"Membership of Encoded Index in Cofinal Subset for Sequence Construction\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {P : Type u_1} [inst : Preorder P] (p : P) {ι : Type u_2} [inst_1 : Encodable ι] (𝒟 : ι → Order.Cofinal P) (i : ι),\\n  Order.sequenceOfCofinals p 𝒟 (Encodable.encode i + 1) ∈ 𝒟 i\",\n      \"informal_description\": \"For any index $i$, the $(\\\\text{encode}(i) + 1)$-th term of the sequence constructed from $p$ and $\\\\mathcal{D}$ is an element of the cofinal subset $\\\\mathcal{D}(i)$.\",\n      \"path\": \"Mathlib.Order.Ideal\"\n    },\n    {\n      \"formal_name\": \"Order.Cofinal.above\",\n      \"informal_name\": \"Element above a given element in a cofinal subset\",\n      \"kind\": \"definition\",\n      \"type\": \"{P : Type u_1} → [inst : Preorder P] → Order.Cofinal P → P → P\",\n      \"informal_description\": \"Given a cofinal subset $ S $ of a preordered set $ P $ and an element $ x \\\\in P $, this function returns an element $ s \\\\in S $ such that $ x \\\\le s $, using the axiom of choice to select such an $ s $.\",\n      \"path\": \"Mathlib.Order.Ideal\"\n    },\n    {\n      \"formal_name\": \"Order.exists_series_of_le_coheight\",\n      \"informal_name\": \"Existence of Strict Order Series Bounded by Coheight\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : Preorder α] (a : α) {n : ℕ}, ↑n ≤ Order.coheight a → ∃ p, RelSeries.head p = a ∧ p.length = n\",\n      \"informal_description\": \"For any element $a$ in a preorder $\\\\alpha$ and any natural number $n$ satisfying $n \\\\le \\\\text{coheight}(a)$, there exists a strict order relation series $p$ of length $n$ with $p.head = a$.\",\n      \"path\": \"Mathlib.Order.KrullDimension\"\n    },\n    {\n      \"formal_name\": \"Order.exists_series_of_le_height\",\n      \"informal_name\": \"Existence of Strict Order Chains of Bounded Length in Preorders\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : Preorder α] (a : α) {n : ℕ}, ↑n ≤ Order.height a → ∃ p, RelSeries.last p = a ∧ p.length = n\",\n      \"informal_description\": \"For any element $ a $ in a preorder $ \\\\alpha $ and natural number $ n $ satisfying $ n \\\\leq \\\\text{height}(a) $, there exists a finite chain of strict order relations $ <$ of length $ n $ whose last element is $ a $. The height of $ a $ is defined as the supremum of lengths of all such chains ending at elements $ \\\\leq a $.\",\n      \"path\": \"Mathlib.Order.KrullDimension\"\n    },\n    {\n      \"formal_name\": \"exists_seq_covby_of_forall_covby_finite\",\n      \"informal_name\": \"König's Lemma for Partial Orders: Infinite Chains from Finitely Many Successors\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : PartialOrder α] [IsStronglyAtomic α] {b : α},\\n  (∀ (a : α), {x | a ⋖ x}.Finite) → (Set.Ici b).Infinite → ∃ f, f 0 = b ∧ ∀ (i : ℕ), f i ⋖ f (i + 1)\",\n      \"informal_description\": \"Let $ (\\\\alpha, \\\\leq) $ be a partially ordered set. Suppose that for every element $ a \\\\in \\\\alpha $, the set of immediate successors $ \\\\{x \\\\in \\\\alpha \\\\mid a \\\\lessdot x\\\\} $ is finite, and that the upward-closed interval $ [b, \\\\infty) = \\\\{x \\\\in \\\\alpha \\\\mid b \\\\leq x\\\\} $ is infinite. Then there exists an infinite sequence $ (f_n)_{n \\\\in \\\\mathbb{N}} $ in $ \\\\alpha $ such that $ f_0 = b $ and $ f_n \\\\lessdot f_{n+1} $ for all $ n \\\\in \\\\mathbb{N} $.\",\n      \"path\": \"Mathlib.Order.KonigLemma\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Order.sequenceOfCofinals",
+          "informal_name": "Cofinal Sequence Construction",
+          "kind": "definition",
+          "type": "{P : Type u_1} → [inst : Preorder P] → P → {ι : Type u_2} → [Encodable ι] → (ι → Order.Cofinal P) → ℕ → P",
+          "informal_description": "A sequence in a preordered set $ P $ defined recursively: starting with an initial element $ p $, each subsequent term is either the previous term or an element from a cofinal subset $ \\mathcal{D}(i) $ that is greater than or equal to the previous term. Specifically, for $ n+1 $, if the decoding of $ n $ yields an index $ i $, the next term is chosen as an element above the current term in the cofinal subset $ \\mathcal{D}(i) $; otherwise, it repeats the previous term.",
+          "path": "Mathlib.Order.Ideal"
+        },
+        {
+          "formal_name": "Order.sequenceOfCofinals.encode_mem",
+          "informal_name": "Membership of Encoded Index in Cofinal Subset for Sequence Construction",
+          "kind": "theorem",
+          "type": "∀ {P : Type u_1} [inst : Preorder P] (p : P) {ι : Type u_2} [inst_1 : Encodable ι] (𝒟 : ι → Order.Cofinal P) (i : ι),\n  Order.sequenceOfCofinals p 𝒟 (Encodable.encode i + 1) ∈ 𝒟 i",
+          "informal_description": "For any index $i$, the $(\\text{encode}(i) + 1)$-th term of the sequence constructed from $p$ and $\\mathcal{D}$ is an element of the cofinal subset $\\mathcal{D}(i)$.",
+          "path": "Mathlib.Order.Ideal"
+        },
+        {
+          "formal_name": "Order.Cofinal.above",
+          "informal_name": "Element above a given element in a cofinal subset",
+          "kind": "definition",
+          "type": "{P : Type u_1} → [inst : Preorder P] → Order.Cofinal P → P → P",
+          "informal_description": "Given a cofinal subset $ S $ of a preordered set $ P $ and an element $ x \\in P $, this function returns an element $ s \\in S $ such that $ x \\le s $, using the axiom of choice to select such an $ s $.",
+          "path": "Mathlib.Order.Ideal"
+        },
+        {
+          "formal_name": "Order.exists_series_of_le_coheight",
+          "informal_name": "Existence of Strict Order Series Bounded by Coheight",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} [inst : Preorder α] (a : α) {n : ℕ}, ↑n ≤ Order.coheight a → ∃ p, RelSeries.head p = a ∧ p.length = n",
+          "informal_description": "For any element $a$ in a preorder $\\alpha$ and any natural number $n$ satisfying $n \\le \\text{coheight}(a)$, there exists a strict order relation series $p$ of length $n$ with $p.head = a$.",
+          "path": "Mathlib.Order.KrullDimension"
+        },
+        {
+          "formal_name": "Order.exists_series_of_le_height",
+          "informal_name": "Existence of Strict Order Chains of Bounded Length in Preorders",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} [inst : Preorder α] (a : α) {n : ℕ}, ↑n ≤ Order.height a → ∃ p, RelSeries.last p = a ∧ p.length = n",
+          "informal_description": "For any element $ a $ in a preorder $ \\alpha $ and natural number $ n $ satisfying $ n \\leq \\text{height}(a) $, there exists a finite chain of strict order relations $ <$ of length $ n $ whose last element is $ a $. The height of $ a $ is defined as the supremum of lengths of all such chains ending at elements $ \\leq a $.",
+          "path": "Mathlib.Order.KrullDimension"
+        },
+        {
+          "formal_name": "exists_seq_covby_of_forall_covby_finite",
+          "informal_name": "König's Lemma for Partial Orders: Infinite Chains from Finitely Many Successors",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} [inst : PartialOrder α] [IsStronglyAtomic α] {b : α},\n  (∀ (a : α), {x | a ⋖ x}.Finite) → (Set.Ici b).Infinite → ∃ f, f 0 = b ∧ ∀ (i : ℕ), f i ⋖ f (i + 1)",
+          "informal_description": "Let $ (\\alpha, \\leq) $ be a partially ordered set. Suppose that for every element $ a \\in \\alpha $, the set of immediate successors $ \\{x \\in \\alpha \\mid a \\lessdot x\\} $ is finite, and that the upward-closed interval $ [b, \\infty) = \\{x \\in \\alpha \\mid b \\leq x\\} $ is infinite. Then there exists an infinite sequence $ (f_n)_{n \\in \\mathbb{N}} $ in $ \\alpha $ such that $ f_0 = b $ and $ f_n \\lessdot f_{n+1} $ for all $ n \\in \\mathbb{N} $.",
+          "path": "Mathlib.Order.KonigLemma"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1375
+}

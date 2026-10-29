@@ -1,0 +1,58 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 256,
+  "name": "Roth.exists_approximants",
+  "short": "exists_approximants",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 275,
+  "source": "theorem exists_approximants {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (h\u03ba : 0 < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (m : \u2115) [NeZero m] {\u03b4 : \u211d} (L : \u211d) :\n    \u2203 (h : Fin m \u2192 \u2124) (q : Fin m \u2192 \u2115), (\u2200 j, (h j, q j) \u2208 approxSet \u03b1 \u03ba) \u2227\n      (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227 (\u2200 j, 1 < q j) \u2227 L < Real.log (q 0) \u2227 \u2200 i j : Fin m,\n      i.val + 1 = j.val \u2192 2 / \u03b4 * Real.log (q i) < Real.log (q j) := by\n  choose g hgmem hglt hgcop using fun Q\u2080 : \u2115 \u21a6 exists_reduced_approx h\u03b1 h\u03ba hinf Q\u2080\n  let s : \u2115 \u2192 \u2124 \u00d7 \u2115 := Nat.rec (g (max \u2308Real.exp L\u2309\u208a 1))\n    (fun _ p \u21a6 g (max \u2308(p.2 : \u211d) ^ (2 / \u03b4)\u2309\u208a 1))\n  have hmem : \u2200 k, s k \u2208 approxSet \u03b1 \u03ba \u2227 IsCoprime (s k).1 ((s k).2 : \u2124) \u2227 1 < (s k).2 := by\n    rintro (_ | k) <;> exact \u27e8hgmem _, hgcop _, (le_max_right _ _).trans_lt (hglt _)\u27e9\n  refine \u27e8fun j \u21a6 (s j).1, fun j \u21a6 (s j).2, fun j \u21a6 (hmem j).1, fun j \u21a6 (hmem j).2.1,\n    fun j \u21a6 (hmem j).2.2, ?_, ?_\u27e9\n  \u00b7 have hlt : Real.exp L < ((g (max \u2308Real.exp L\u2309\u208a 1)).2 : \u211d) :=\n      (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt (hglt _))\n    exact (Real.lt_log_iff_exp_lt ((Real.exp_pos L).trans hlt)).2 hlt\n  \u00b7 intro i j hij\n    change 2 / \u03b4 * Real.log ((s i).2) < Real.log ((s j).2)\n    rw [hij.symm]\n    apply Real.lt_log_of_rpow_lt (by exact_mod_cast zero_lt_one.trans (hmem i).2.2)\n    exact (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt (hglt _))",
+  "signature": "theorem exists_approximants {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) {\u03ba : \u211d} (h\u03ba : 0 < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) (m : \u2115) [NeZero m] {\u03b4 : \u211d} (L : \u211d) :\n    \u2203 (h : Fin m \u2192 \u2124) (q : Fin m \u2192 \u2115), (\u2200 j, (h j, q j) \u2208 approxSet \u03b1 \u03ba) \u2227\n      (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227 (\u2200 j, 1 < q j) \u2227 L < Real.log (q 0) \u2227 \u2200 i j : Fin m,\n      i.val + 1 = j.val \u2192 2 / \u03b4 * Real.log (q i) < Real.log (q j)",
+  "body": "by\n  choose g hgmem hglt hgcop using fun Q\u2080 : \u2115 \u21a6 exists_reduced_approx h\u03b1 h\u03ba hinf Q\u2080\n  let s : \u2115 \u2192 \u2124 \u00d7 \u2115 := Nat.rec (g (max \u2308Real.exp L\u2309\u208a 1))\n    (fun _ p \u21a6 g (max \u2308(p.2 : \u211d) ^ (2 / \u03b4)\u2309\u208a 1))\n  have hmem : \u2200 k, s k \u2208 approxSet \u03b1 \u03ba \u2227 IsCoprime (s k).1 ((s k).2 : \u2124) \u2227 1 < (s k).2 := by\n    rintro (_ | k) <;> exact \u27e8hgmem _, hgcop _, (le_max_right _ _).trans_lt (hglt _)\u27e9\n  refine \u27e8fun j \u21a6 (s j).1, fun j \u21a6 (s j).2, fun j \u21a6 (hmem j).1, fun j \u21a6 (hmem j).2.1,\n    fun j \u21a6 (hmem j).2.2, ?_, ?_\u27e9\n  \u00b7 have hlt : Real.exp L < ((g (max \u2308Real.exp L\u2309\u208a 1)).2 : \u211d) :=\n      (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt (hglt _))\n    exact (Real.lt_log_iff_exp_lt ((Real.exp_pos L).trans hlt)).2 hlt\n  \u00b7 intro i j hij\n    change 2 / \u03b4 * Real.log ((s i).2) < Real.log ((s j).2)\n    rw [hij.symm]\n    apply Real.lt_log_of_rpow_lt (by exact_mod_cast zero_lt_one.trans (hmem i).2.2)\n    exact (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt (hglt _))",
+  "proof_lines": 16,
+  "sha256": "b8c40114967ea938dd0a218f463d6062989a3de5359b8cd89ef9f8d1fa8a4487",
+  "what": "Choose finitely many reduced approximants with denominators above one and prescribed rapidly growing logarithms.",
+  "how": "Use exists_reduced_approx recursively beyond exponential/power ceilings; Real.lt_log_iff_exp_lt and Real.lt_log_of_rpow_lt establish the growth inequalities.",
+  "hypotheses": "Irrational number, positive exponent, infinite approximation set and nonzero finite number of approximants.",
+  "source_body_refs": [
+    "Roth.approxSet",
+    "Roth.exists_reduced_approx"
+  ],
+  "source_type_refs": [
+    "Roth.approxSet"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_roth_approximants_aux",
+      "file": "Roth/Main.lean",
+      "line": 429
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.approxSet",
+    "Roth.exists_reduced_approx"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_roth_approximants_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 387,
+  "project_body_refs": [
+    "Roth.approxSet",
+    "Roth.exists_reduced_approx"
+  ],
+  "project_type_refs": [
+    "Roth.approxSet"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_roth_approximants_aux",
+      "file": "Roth/Main.lean",
+      "line": 429
+    }
+  ]
+}
