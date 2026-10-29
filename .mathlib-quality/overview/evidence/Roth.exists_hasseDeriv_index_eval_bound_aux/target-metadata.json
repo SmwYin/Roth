@@ -1,0 +1,69 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 477,
+  "name": "Roth.exists_hasseDeriv_index_eval_bound_aux",
+  "short": "exists_hasseDeriv_index_eval_bound_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 495,
+  "source": "private lemma exists_hasseDeriv_index_eval_bound_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}\n    {r : σ → ℕ} {α z : σ → ℝ} {C γ c : ℝ} (hP : P ≠ 0) (hd : ∀ j, degreeOf j P ≤ r j)\n    (hbound : ∀ i k : σ →₀ ℕ,\n      |eval α (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| < C)\n    (hγ : γ ≤ index (map (Int.castRingHom ℝ) P) α r)\n    (hz : index (map (Int.castRingHom ℝ) P) z r < c) : ∃ Q : MvPolynomial σ ℤ, Q ≠ 0 ∧\n      (∀ j, degreeOf j Q ≤ r j) ∧ γ - c < index (map (Int.castRingHom ℝ) Q) α r ∧\n      eval z (map (Int.castRingHom ℝ) Q) ≠ 0 ∧ ∀ i : σ →₀ ℕ,\n        |eval α (hasseDeriv i (map (Int.castRingHom ℝ) Q))| < C := by\n  obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero\n    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP) z r hz\n  have hQev : eval z (map (Int.castRingHom ℝ) (hasseDeriv k P)) ≠ 0 := by\n    simpa [hasseDeriv_map] using hkev\n  refine ⟨hasseDeriv k P, fun h0 ↦ hQev (by rw [h0, map_zero, map_zero]),\n    fun j ↦ (degreeOf_hasseDeriv_le j k P).trans (hd j), ?_, hQev, fun i ↦ ?_⟩\n  · rw [← hasseDeriv_map]\n    exact ((sub_lt_sub_left hkw γ).trans_le (sub_le_sub_right hγ _)).trans_le\n      (index_sub_weight_le_index_hasseDeriv (fun h0 ↦ hkev (by rw [h0, map_zero])) α r)\n  · simpa [hasseDeriv_map] using hbound i k",
+  "signature": "private lemma exists_hasseDeriv_index_eval_bound_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}\n    {r : σ → ℕ} {α z : σ → ℝ} {C γ c : ℝ} (hP : P ≠ 0) (hd : ∀ j, degreeOf j P ≤ r j)\n    (hbound : ∀ i k : σ →₀ ℕ,\n      |eval α (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| < C)\n    (hγ : γ ≤ index (map (Int.castRingHom ℝ) P) α r)\n    (hz : index (map (Int.castRingHom ℝ) P) z r < c) : ∃ Q : MvPolynomial σ ℤ, Q ≠ 0 ∧\n      (∀ j, degreeOf j Q ≤ r j) ∧ γ - c < index (map (Int.castRingHom ℝ) Q) α r ∧\n      eval z (map (Int.castRingHom ℝ) Q) ≠ 0 ∧ ∀ i : σ →₀ ℕ,\n        |eval α (hasseDeriv i (map (Int.castRingHom ℝ) Q))| < C",
+  "body": "by\n  obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero\n    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP) z r hz\n  have hQev : eval z (map (Int.castRingHom ℝ) (hasseDeriv k P)) ≠ 0 := by\n    simpa [hasseDeriv_map] using hkev\n  refine ⟨hasseDeriv k P, fun h0 ↦ hQev (by rw [h0, map_zero, map_zero]),\n    fun j ↦ (degreeOf_hasseDeriv_le j k P).trans (hd j), ?_, hQev, fun i ↦ ?_⟩\n  · rw [← hasseDeriv_map]\n    exact ((sub_lt_sub_left hkw γ).trans_le (sub_le_sub_right hγ _)).trans_le\n      (index_sub_weight_le_index_hasseDeriv (fun h0 ↦ hkev (by rw [h0, map_zero])) α r)\n  · simpa [hasseDeriv_map] using hbound i k",
+  "proof_lines": 11,
+  "sha256": "63e6429a55f067af408844aeb3e7c69da271b087f26f6b3c218df78bcca1b8b6",
+  "what": "A derivative selected at a second point preserves a strict index gap at the first point and all derivative evaluation bounds.",
+  "how": "Choose k with exists_hasseDeriv_eval_ne_zero, set Q to its derivative and apply index_sub_weight_le_index_hasseDeriv with hasseDeriv_map.",
+  "hypotheses": "Nonzero integral polynomial with degree bounds, high first index, low second index and uniform iterated derivative bound.",
+  "source_body_refs": [
+    "MvPolynomial.degreeOf_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.exists_hasseDeriv_eval_ne_zero",
+    "Roth.index_sub_weight_le_index_hasseDeriv"
+  ],
+  "source_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.index"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.main_lemma",
+      "file": "Roth/MainLemma.lean",
+      "line": 735
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "MvPolynomial.degreeOf_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.exists_hasseDeriv_eval_ne_zero",
+    "Roth.index_sub_weight_le_index_hasseDeriv"
+  ],
+  "used_by_in_file": [
+    "Roth.main_lemma"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 641,
+  "project_body_refs": [
+    "MvPolynomial.degreeOf_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.exists_hasseDeriv_eval_ne_zero",
+    "Roth.index_sub_weight_le_index_hasseDeriv"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.index"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.main_lemma",
+      "file": "Roth/MainLemma.lean",
+      "line": 735
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+[
+  {
+    "file": "Roth/MainLemma.lean",
+    "line": 735,
+    "name": "Roth.main_lemma",
+    "short": "main_lemma",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 760,
+    "source": "theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polynomial.aeval α f = 0)\n    {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ)\n    (hδm : δ ≤ 1 / m) {r : Fin m → ℕ} (hrlast : 3 ≤ r (Fin.rev 0))\n    (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i) {q : Fin m → ℕ}\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))\n    {h : Fin m → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) : ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧\n      (∀ j, degreeOf j Q ≤ r j) ∧\n      gam δ f.natDegree m - eta δ m < index (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧\n      eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧\n      ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i (map (Int.castRingHom ℝ) Q))| <\n        (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by\n  obtain ⟨W, hW, hgap, hbound⟩ := exists_auxiliary_polynomial_with_index_gap_aux hf hfα hA hδ0 hδm\n    hrlast h31b h32 h33\n  let c := (index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r -\n    (gam δ f.natDegree m - eta δ m) + Θ ((q 0 : ℝ) ^ (δ * r 0)) q r) / 2\n  simpa only [add_sub_cancel_right] using\n    exists_hasseDeriv_index_eval_bound_aux hW.1 hW.2.1 hbound\n      (γ := gam δ f.natDegree m - eta δ m + c) (c := c)\n      (z := fun j ↦ (h j : ℝ) / q j)\n      (by\n        dsimp only [c]\n        linarith only [hgap])\n      (by\n        dsimp only [c]\n        linarith only [hgap, index_le_Θ hW hh])",
+    "signature": "theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polynomial.aeval α f = 0)\n    {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ)\n    (hδm : δ ≤ 1 / m) {r : Fin m → ℕ} (hrlast : 3 ≤ r (Fin.rev 0))\n    (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i) {q : Fin m → ℕ}\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))\n    {h : Fin m → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) : ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧\n      (∀ j, degreeOf j Q ≤ r j) ∧\n      gam δ f.natDegree m - eta δ m < index (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧\n      eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧\n      ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i (map (Int.castRingHom ℝ) Q))| <\n        (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ)",
+    "body": "by\n  obtain ⟨W, hW, hgap, hbound⟩ := exists_auxiliary_polynomial_with_index_gap_aux hf hfα hA hδ0 hδm\n    hrlast h31b h32 h33\n  let c := (index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r -\n    (gam δ f.natDegree m - eta δ m) + Θ ((q 0 : ℝ) ^ (δ * r 0)) q r) / 2\n  simpa only [add_sub_cancel_right] using\n    exists_hasseDeriv_index_eval_bound_aux hW.1 hW.2.1 hbound\n      (γ := gam δ f.natDegree m - eta δ m + c) (c := c)\n      (z := fun j ↦ (h j : ℝ) / q j)\n      (by\n        dsimp only [c]\n        linarith only [hgap])\n      (by\n        dsimp only [c]\n        linarith only [hgap, index_le_Θ hW hh])",
+    "proof_lines": 15,
+    "sha256": "3d05f16252754a8903b9436f62c934c186ec0f433e50df171fa800b37c102aa7",
+    "what": "Roth's main lemma constructs a nonzero integral polynomial with high algebraic-point index, nonzero rational-point value and small derivatives.",
+    "how": "Start with exists_auxiliary_polynomial_with_index_gap_aux; choose a cutoff midway across the strict gap, bound the rational-point index by index_le_Θ and apply exists_hasseDeriv_index_eval_bound_aux.",
+    "hypotheses": "Monic integer equation, bounded coefficients, nonzero dimension, small nonnegative delta, final degree at least three, weak degree-ratio/logarithm bounds and coprime numerators.",
+    "source_body_refs": [
+      "Roth.eta",
+      "Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+      "Roth.exists_hasseDeriv_index_eval_bound_aux",
+      "Roth.gam",
+      "Roth.index",
+      "Roth.index_le_Θ",
+      "Roth.Θ"
+    ],
+    "source_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.eta",
+      "Roth.gam",
+      "Roth.index",
+      "Roth.mainCoeffBound"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.one_lt_roth_eval_bound_aux",
+        "file": "Roth/Main.lean",
+        "line": 453
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+    "uses_from_project": [
+      "Roth.eta",
+      "Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+      "Roth.exists_hasseDeriv_index_eval_bound_aux",
+      "Roth.gam",
+      "Roth.index",
+      "Roth.index_le_Θ",
+      "Roth.Θ"
+    ],
+    "used_by_in_file": [],
+    "used_by_other_files": [
+      {
+        "name": "Roth.one_lt_roth_eval_bound_aux",
+        "file": "Roth/Main.lean",
+        "line": 453
+      }
+    ],
+    "assignment_offset": 940,
+    "project_body_refs": [
+      "Roth.eta",
+      "Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+      "Roth.exists_hasseDeriv_index_eval_bound_aux",
+      "Roth.gam",
+      "Roth.index",
+      "Roth.index_le_Θ",
+      "Roth.Θ"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.eta",
+      "Roth.gam",
+      "Roth.index",
+      "Roth.mainCoeffBound"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.one_lt_roth_eval_bound_aux",
+        "file": "Roth/Main.lean",
+        "line": 453
+      }
+    ]
+  }
+]

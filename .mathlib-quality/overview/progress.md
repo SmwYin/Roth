@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 255 / 293 written declarations.**
+**Completed: 256 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -263,8 +263,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 253 | `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul.md) |
 | 254 | `Roth.exists_hasseDeriv_eval_ne_zero` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.exists_hasseDeriv_eval_ne_zero.md) |
 | 255 | `Roth.abs_eval_iterated_hasseDeriv_lt_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.abs_eval_iterated_hasseDeriv_lt_aux.md) |
+| 256 | `Roth.exists_hasseDeriv_index_eval_bound_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.exists_hasseDeriv_index_eval_bound_aux.md) |
 
-**Next declaration: `Roth.exists_hasseDeriv_index_eval_bound_aux`**, `Roth/MainLemma.lean:477`.
+**Next declaration: `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux`**, `Roth/MainLemma.lean:497`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

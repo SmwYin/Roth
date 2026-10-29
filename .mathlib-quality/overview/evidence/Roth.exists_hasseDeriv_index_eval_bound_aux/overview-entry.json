@@ -1,0 +1,23 @@
+{
+  "declaration": "Roth.exists_hasseDeriv_index_eval_bound_aux",
+  "kind": "lemma",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {P : MvPolynomial σ ℤ} {r : σ → ℕ} {α z : σ → ℝ}\n  {C γ c : ℝ},\n  P ≠ 0 →\n    (∀ (j : σ), degreeOf j P ≤ r j) →\n      (∀ (i k : σ →₀ ℕ), |(eval α) ((map (Int.castRingHom ℝ)) ((hasseDeriv i) ((hasseDeriv k) P)))| < C) →\n        γ ≤ Roth.index ((map (Int.castRingHom ℝ)) P) α r →\n          Roth.index ((map (Int.castRingHom ℝ)) P) z r < c →\n            ∃ (Q : MvPolynomial σ ℤ),\n              Q ≠ 0 ∧\n                (∀ (j : σ), degreeOf j Q ≤ r j) ∧\n                  γ - c < Roth.index ((map (Int.castRingHom ℝ)) Q) α r ∧\n                    (eval z) ((map (Int.castRingHom ℝ)) Q) ≠ 0 ∧\n                      ∀ (i : σ →₀ ℕ), |(eval α) ((hasseDeriv i) ((map (Int.castRingHom ℝ)) Q))| < C",
+  "what": "Selects one nonzero integer Hasse derivative that is nonvanishing at a second point, loses less than a specified cutoff in its index at the first point, and retains all derivative evaluation bounds.",
+  "how": "Choose k with exists_hasseDeriv_eval_ne_zero, set Q to its derivative and apply index_sub_weight_le_index_hasseDeriv with hasseDeriv_map.",
+  "hypotheses": "Nonzero integral polynomial with degree bounds, high first index, low second index and uniform iterated derivative bound. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "MvPolynomial.degreeOf_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.exists_hasseDeriv_eval_ne_zero",
+    "Roth.index",
+    "Roth.index_sub_weight_le_index_hasseDeriv"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Use exists_hasseDeriv_eval_ne_zero after injectively mapping integer coefficients into the reals. Set Q=hasseDeriv k P; nonvanishing of its evaluation ensures Q is nonzero, degreeOf_hasseDeriv_le preserves coordinate degrees, and index_sub_weight_le_index_hasseDeriv controls index loss. Commute coefficient maps with Hasse derivatives to transfer the supplied double-derivative height bound. The sole main_lemma caller chooses a midpoint cutoff c between the second-point index upper bound Theta and the available first-point gap. This is a selection/transport result, distinct from the numerical estimate supplying the height bound.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
