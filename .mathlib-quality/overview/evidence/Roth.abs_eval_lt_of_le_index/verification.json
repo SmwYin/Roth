@@ -1,0 +1,181 @@
+{
+  "declaration": "Roth.abs_eval_lt_of_le_index",
+  "canonical_index": 281,
+  "completed": true,
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "source_sha256": "4c12ea42b12c47410129016dacb0a4e6b2990fb2ba3354049136fb22c5f42d49",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 3293,
+      "native_region_start_line": 16,
+      "required_info": [
+        "TAY281_FULL_TYPE:",
+        "TAY281_AUDIT: requested=293; unique=293",
+        "TAY281_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "generic",
+      "source": "generic-executed.lean.txt",
+      "receipt": "generic01-receipt.json",
+      "format": "isolated",
+      "source_sha256": "6876f0858f1d9221a3497547e9b188533c397238fb85c94379c24b638da3303e",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nnamespace Taylor281Generic\nopen MvPolynomial\nlemma monomial_decay {σ : Type*} [Fintype σ] {b : ℝ} (hb : 1 ≤ b)\n    {μ x : σ → ℝ} (hx : ∀ j, |x j| ≤ b ^ (-μ j)) (d : σ →₀ ℕ) {c : ℝ}\n    (hc : c ≤ ∑ j, μ j * d j) : |∏ j, x j ^ d j| ≤ b ^ (-c) := by\n  have hb0 : 0 < b := zero_lt_one.trans_le hb\n  rw [Finset.abs_prod]\n  calc ∏ j, |x j ^ d j|\n      ≤ ∏ j, b ^ (-μ j * d j) := by\n        apply Finset.prod_le_prod₀ (fun j _ ↦ abs_nonneg _)\n        intro j _\n        rw [abs_pow, Real.rpow_mul hb0.le, Real.rpow_natCast]\n        exact pow_le_pow_left₀ (abs_nonneg _) (hx j) _\n    _ = b ^ (-(∑ j, μ j * d j)) := by\n        rw [← Real.rpow_sum_of_pos hb0]\n        congr 1\n        simp only [neg_mul, Finset.sum_neg_distrib]\n    _ ≤ b ^ (-c) := Real.rpow_le_rpow_of_exponent_le hb (neg_le_neg hc)\n\nlemma expansion_bound {σ : Type*} [Fintype σ] {s : Finset (σ →₀ ℕ)} (hs : s.Nonempty)\n    {a x μ : σ → ℝ} {A : (σ →₀ ℕ) → ℝ} {b c C : ℝ} (hb : 1 ≤ b)\n    (hC : ∀ d ∈ s, |A d| < C) (hx : ∀ j, |x j - a j| ≤ b ^ (-μ j))\n    (hvanish : ∀ d ∈ s, A d ≠ 0 → c ≤ ∑ j, μ j * d j) :\n    |eval x (∑ d ∈ s, MvPolynomial.C (A d) * ∏ j, (X j - MvPolynomial.C (a j)) ^ d j)|\n      < (s.card : ℝ) * C * b ^ (-c) := by\n  classical\n  have hT : 0 < b ^ (-c) := Real.rpow_pos_of_pos (zero_lt_one.trans_le hb) _\n  have hC0 : 0 < C := by\n    obtain ⟨d, hd⟩ := hs\n    exact (abs_nonneg _).trans_lt (hC d hd)\n  simp only [map_sum, map_mul, map_prod, map_pow, map_sub, eval_X, eval_C]\n  apply (Finset.abs_sum_le_sum_abs _ _).trans_lt\n  have hterm : ∀ d ∈ s, |A d * ∏ j, (x j - a j) ^ d j| < C * b ^ (-c) := by\n    intro d hd\n    by_cases h0 : A d = 0\n    · simpa [h0] using mul_pos hC0 hT\n    rw [abs_mul]\n    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d hd)\n      (monomial_decay hb hx d (hvanish d hd h0)) (abs_nonneg _) hT\n  simpa only [Finset.sum_const, nsmul_eq_mul, mul_assoc] using\n    Finset.sum_lt_sum_of_nonempty hs hterm\nend Taylor281Generic\n#print axioms Taylor281Generic.expansion_bound\n#check_failure Roth.abs_eval_lt_of_le_index\n#check Finset.sum_lt_sum_of_nonempty\n#check Real.rpow_le_rpow_of_nonpos\n#check Polynomial.taylor_coeff\n#check MvPowerSeries.weightedOrder_le\n"
+      },
+      "elapsed_ms": 1655,
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Taylor281Generic.expansion_bound' depends on axioms"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "project",
+      "source": "project2-executed.lean.txt",
+      "receipt": "project02-receipt.json",
+      "format": "disk",
+      "source_sha256": "8ad06f947106adb8274967461773a051795a3b8ea6d84e5a2d5eae1918372806",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 948,
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Taylor281Project.cost_bound' depends on axioms",
+        "'Taylor281Project.original_recovery' depends on axioms"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "normed-field",
+      "source": "normed2-executed.lean.txt",
+      "receipt": "normed02-receipt.json",
+      "format": "isolated",
+      "source_sha256": "42b01325a3383159eb47fdcc68677a15754171534e3bd7a4af2c1fc3153c720d",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nnamespace Taylor281Normed\nopen MvPolynomial\nlemma monomial_decay {σ K : Type*} [Fintype σ] [NormedField K] {b : ℝ} (hb : 1 ≤ b)\n    {μ : σ → ℝ} {x : σ → K} (hx : ∀ j, ‖x j‖ ≤ b ^ (-μ j)) (d : σ →₀ ℕ) {c : ℝ}\n    (hc : c ≤ ∑ j, μ j * d j) : ‖∏ j, x j ^ d j‖ ≤ b ^ (-c) := by\n  have hb0 : 0 < b := zero_lt_one.trans_le hb\n  rw [norm_prod]\n  calc ∏ j, ‖x j ^ d j‖\n      ≤ ∏ j, b ^ (-μ j * d j) := by\n        apply Finset.prod_le_prod₀ (fun j _ ↦ norm_nonneg _)\n        intro j _\n        rw [norm_pow, Real.rpow_mul hb0.le, Real.rpow_natCast]\n        exact pow_le_pow_left₀ (norm_nonneg _) (hx j) _\n    _ = b ^ (-(∑ j, μ j * d j)) := by\n        rw [← Real.rpow_sum_of_pos hb0]\n        congr 1\n        simp only [neg_mul, Finset.sum_neg_distrib]\n    _ ≤ b ^ (-c) := Real.rpow_le_rpow_of_exponent_le hb (neg_le_neg hc)\n\nlemma expansion_bound {σ K : Type*} [Fintype σ] [NormedField K]\n    {s : Finset (σ →₀ ℕ)} (hs : s.Nonempty)\n    {a x : σ → K} {μ : σ → ℝ} {A : (σ →₀ ℕ) → K} {b c C : ℝ} (hb : 1 ≤ b)\n    (hC : ∀ d ∈ s, ‖A d‖ < C) (hx : ∀ j, ‖x j - a j‖ ≤ b ^ (-μ j))\n    (hvanish : ∀ d ∈ s, A d ≠ 0 → c ≤ ∑ j, μ j * d j) :\n    ‖eval x (∑ d ∈ s, MvPolynomial.C (A d) * ∏ j, (X j - MvPolynomial.C (a j)) ^ d j)‖\n      < (s.card : ℝ) * C * b ^ (-c) := by\n  classical\n  have hT : 0 < b ^ (-c) := Real.rpow_pos_of_pos (zero_lt_one.trans_le hb) _\n  have hC0 : 0 < C := by\n    obtain ⟨d, hd⟩ := hs\n    exact (norm_nonneg _).trans_lt (hC d hd)\n  simp only [map_sum, map_mul, map_prod, map_pow, map_sub, eval_X, eval_C]\n  apply (norm_sum_le _ _).trans_lt\n  have hterm : ∀ d ∈ s, ‖A d * ∏ j, (x j - a j) ^ d j‖ < C * b ^ (-c) := by\n    intro d hd\n    by_cases h0 : A d = 0\n    · simpa [h0] using mul_pos hC0 hT\n    rw [norm_mul]\n    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d hd)\n      (monomial_decay hb hx d (hvanish d hd h0)) (norm_nonneg _) hT\n  simpa only [Finset.sum_const, nsmul_eq_mul, mul_assoc] using\n    Finset.sum_lt_sum_of_nonempty hs hterm\nend Taylor281Normed\n\n#print axioms Taylor281Normed.expansion_bound\n#check_failure Roth.abs_eval_lt_of_le_index\n"
+      },
+      "elapsed_ms": 1331,
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Taylor281Normed.expansion_bound' depends on axioms"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "normed-ring",
+      "source": "normedring-executed.lean.txt",
+      "receipt": "normedring01-receipt.json",
+      "format": "isolated",
+      "source_sha256": "dda26357cd5f57f1b67c5a11328996377a21b208647fa98a56a190c26f970214",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nnamespace Taylor281Ring\nopen MvPolynomial\nlemma monomial_decay {σ K : Type*} [Fintype σ] [NormedCommRing K] [NormOneClass K]\n    {b : ℝ} (hb : 1 ≤ b)\n    {μ : σ → ℝ} {x : σ → K} (hx : ∀ j, ‖x j‖ ≤ b ^ (-μ j)) (d : σ →₀ ℕ) {c : ℝ}\n    (hc : c ≤ ∑ j, μ j * d j) : ‖∏ j, x j ^ d j‖ ≤ b ^ (-c) := by\n  have hb0 : 0 < b := zero_lt_one.trans_le hb\n  apply (Finset.norm_prod_le _ _).trans\n  calc ∏ j, ‖x j ^ d j‖\n      ≤ ∏ j, b ^ (-μ j * d j) := by\n        apply Finset.prod_le_prod₀ (fun j _ ↦ norm_nonneg _)\n        intro j _\n        apply (norm_pow_le _ _).trans\n        rw [Real.rpow_mul hb0.le, Real.rpow_natCast]\n        exact pow_le_pow_left₀ (norm_nonneg _) (hx j) _\n    _ = b ^ (-(∑ j, μ j * d j)) := by\n        rw [← Real.rpow_sum_of_pos hb0]\n        congr 1\n        simp only [neg_mul, Finset.sum_neg_distrib]\n    _ ≤ b ^ (-c) := Real.rpow_le_rpow_of_exponent_le hb (neg_le_neg hc)\n\nlemma expansion_bound {σ K : Type*} [Fintype σ] [NormedCommRing K] [NormOneClass K]\n    {s : Finset (σ →₀ ℕ)} (hs : s.Nonempty)\n    {a x : σ → K} {μ : σ → ℝ} {A : (σ →₀ ℕ) → K} {b c C : ℝ} (hb : 1 ≤ b)\n    (hC : ∀ d ∈ s, ‖A d‖ < C) (hx : ∀ j, ‖x j - a j‖ ≤ b ^ (-μ j))\n    (hvanish : ∀ d ∈ s, A d ≠ 0 → c ≤ ∑ j, μ j * d j) :\n    ‖eval x (∑ d ∈ s, MvPolynomial.C (A d) * ∏ j, (X j - MvPolynomial.C (a j)) ^ d j)‖\n      < (s.card : ℝ) * C * b ^ (-c) := by\n  classical\n  have hT : 0 < b ^ (-c) := Real.rpow_pos_of_pos (zero_lt_one.trans_le hb) _\n  have hC0 : 0 < C := by\n    obtain ⟨d, hd⟩ := hs\n    exact (norm_nonneg _).trans_lt (hC d hd)\n  simp only [map_sum, map_mul, map_prod, map_pow, map_sub, eval_X, eval_C]\n  apply (norm_sum_le _ _).trans_lt\n  have hterm : ∀ d ∈ s, ‖A d * ∏ j, (x j - a j) ^ d j‖ < C * b ^ (-c) := by\n    intro d hd\n    by_cases h0 : A d = 0\n    · simpa [h0] using mul_pos hC0 hT\n    apply (norm_mul_le _ _).trans_lt\n    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d hd)\n      (monomial_decay hb hx d (hvanish d hd h0)) (norm_nonneg _) hT\n  simpa only [Finset.sum_const, nsmul_eq_mul, mul_assoc] using\n    Finset.sum_lt_sum_of_nonempty hs hterm\nend Taylor281Ring\n\n#print axioms Taylor281Ring.expansion_bound\n#check_failure Roth.abs_eval_lt_of_le_index\n"
+      },
+      "elapsed_ms": 1722,
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Taylor281Ring.expansion_bound' depends on axioms"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "callers",
+      "source": "callers2-executed.lean.txt",
+      "receipt": "callers02-receipt.json",
+      "format": "disk",
+      "source_sha256": "65d13419e7646ae97863c0c56d713cb29b4a1c18225d5572108764f9f84e0bdc",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 2618,
+      "native_region_start_line": 16,
+      "required_info": [
+        "TAY281_CALLER_TARGET_FREE: Taylor281Caller.caller_inline",
+        "TAY281_CALLER_TARGET_FREE: Taylor281Caller.caller_generic"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "shape",
+      "source": "shape2-executed.lean.txt",
+      "receipt": "shape02-receipt.json",
+      "format": "disk",
+      "source_sha256": "5b17d0589f8ea42a00766ed1b9b56340b48de72bfcd99e69d0139bdcae833c21",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 2124,
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Taylor281Shape.zero_polynomial' depends on axioms",
+        "'Taylor281Shape.exact_original' depends on axioms"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "fullMain",
+      "source": "fullmain2-executed.lean.txt",
+      "receipt": "fullmain02-receipt.json",
+      "format": "disk",
+      "source_sha256": "809378fc1ed116b051c5cc08052c938f0f95acc92dc0e26c2f523f3dd5716f02",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "elapsed_ms": 2733,
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Taylor281Full.roth_rat' depends on axioms"
+      ],
+      "axiom_print_required": true
+    }
+  ],
+  "other_executions": [
+    {
+      "source": "project-executed.lean.txt",
+      "receipt": "project01-receipt.json",
+      "source_sha256": "c805e31dfaceb2cb51c7f119d82d8ddb86c3edf18ed4630d0405b603d849f3bc",
+      "reason": "Successful mathematical elaboration with warnings, rejected from accepted gates; warning-free new source and receipt retained."
+    },
+    {
+      "source": "shape-executed.lean.txt",
+      "receipt": "shape01-receipt.json",
+      "source_sha256": "ec5489bd6f6f8396ff77d939e3adc05f9917b9272af63ec2ff3f8db967638b16",
+      "reason": "Successful mathematical elaboration with warnings, rejected from accepted gates; warning-free new source and receipt retained."
+    },
+    {
+      "source": "fullmain-executed.lean.txt",
+      "receipt": "fullmain01-receipt.json",
+      "source_sha256": "05dcc8f3d01f4d7cd643185246d69cae45acbb3b68c008a71abfeb4e641588ef",
+      "reason": "Successful mathematical elaboration with warnings, rejected from accepted gates; warning-free new source and receipt retained."
+    }
+  ],
+  "attempt_accounting": {
+    "native_executions": 11,
+    "accepted": 8,
+    "warning_rejected": 3,
+    "preexecution_only": 2
+  },
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "native_executor": "root persistent session only",
+  "no_extra_imports": true,
+  "actual_scope": "focused exact target/private-helper original replay; whole original Main and LeanEval read; complete original sole caller twice target-free; fullMain inline replay",
+  "build": "shared baseline2467 jobs with fresh17 hashes; next fileendbuild289; no declaration281 build required"
+}

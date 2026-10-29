@@ -1,0 +1,243 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Taylor281Generic
+open MvPolynomial
+lemma monomial_decay {σ : Type*} [Fintype σ] {b : ℝ} (hb : 1 ≤ b)
+    {μ x : σ → ℝ} (hx : ∀ j, |x j| ≤ b ^ (-μ j)) (d : σ →₀ ℕ) {c : ℝ}
+    (hc : c ≤ ∑ j, μ j * d j) : |∏ j, x j ^ d j| ≤ b ^ (-c) := by
+  have hb0 : 0 < b := zero_lt_one.trans_le hb
+  rw [Finset.abs_prod]
+  calc ∏ j, |x j ^ d j|
+      ≤ ∏ j, b ^ (-μ j * d j) := by
+        apply Finset.prod_le_prod₀ (fun j _ ↦ abs_nonneg _)
+        intro j _
+        rw [abs_pow, Real.rpow_mul hb0.le, Real.rpow_natCast]
+        exact pow_le_pow_left₀ (abs_nonneg _) (hx j) _
+    _ = b ^ (-(∑ j, μ j * d j)) := by
+        rw [← Real.rpow_sum_of_pos hb0]
+        congr 1
+        simp only [neg_mul, Finset.sum_neg_distrib]
+    _ ≤ b ^ (-c) := Real.rpow_le_rpow_of_exponent_le hb (neg_le_neg hc)
+
+lemma expansion_bound {σ : Type*} [Fintype σ] {s : Finset (σ →₀ ℕ)} (hs : s.Nonempty)
+    {a x μ : σ → ℝ} {A : (σ →₀ ℕ) → ℝ} {b c C : ℝ} (hb : 1 ≤ b)
+    (hC : ∀ d ∈ s, |A d| < C) (hx : ∀ j, |x j - a j| ≤ b ^ (-μ j))
+    (hvanish : ∀ d ∈ s, A d ≠ 0 → c ≤ ∑ j, μ j * d j) :
+    |eval x (∑ d ∈ s, MvPolynomial.C (A d) * ∏ j, (X j - MvPolynomial.C (a j)) ^ d j)|
+      < (s.card : ℝ) * C * b ^ (-c) := by
+  classical
+  have hT : 0 < b ^ (-c) := Real.rpow_pos_of_pos (zero_lt_one.trans_le hb) _
+  have hC0 : 0 < C := by
+    obtain ⟨d, hd⟩ := hs
+    exact (abs_nonneg _).trans_lt (hC d hd)
+  simp only [map_sum, map_mul, map_prod, map_pow, map_sub, eval_X, eval_C]
+  apply (Finset.abs_sum_le_sum_abs _ _).trans_lt
+  have hterm : ∀ d ∈ s, |A d * ∏ j, (x j - a j) ^ d j| < C * b ^ (-c) := by
+    intro d hd
+    by_cases h0 : A d = 0
+    · simpa [h0] using mul_pos hC0 hT
+    rw [abs_mul]
+    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d hd)
+      (monomial_decay hb hx d (hvanish d hd h0)) (abs_nonneg _) hT
+  simpa only [Finset.sum_const, nsmul_eq_mul, mul_assoc] using
+    Finset.sum_lt_sum_of_nonempty hs hterm
+end Taylor281Generic
+
+namespace Taylor281Project
+open Roth MvPolynomial
+lemma cost_bound {σ : Type*} [Fintype σ] [DecidableEq σ]
+    {Q : MvPolynomial σ ℝ} {r : σ → ℕ} (hd : ∀ j, degreeOf j Q ≤ r j)
+    {a x μ : σ → ℝ} {b c C : ℝ} (hb : 1 ≤ b)
+    (hC : ∀ d ∈ box r, |eval a (hasseDeriv d Q)| < C)
+    (hx : ∀ j, |x j - a j| ≤ b ^ (-μ j))
+    (hvanish : ∀ d ∈ box r, eval a (hasseDeriv d Q) ≠ 0 → c ≤ ∑ j, μ j * d j) :
+    |eval x Q| < (∏ j, ((r j : ℝ) + 1)) * C * b ^ (-c) := by
+  conv_lhs => rw [eq_sum_box_hasseDeriv a r Q hd]
+  convert Taylor281Generic.expansion_bound
+    (show (box r).Nonempty from ⟨0, mem_box.2 fun j ↦ Nat.zero_le _⟩)
+    hb hC hx hvanish using 1
+  rw [card_box]
+  push_cast
+  rfl
+
+lemma original_recovery {m : ℕ} [NeZero m] {Q : MvPolynomial (Fin m) ℝ} {r : Fin m → ℕ}
+    (hd : ∀ j, degreeOf j Q ≤ r j) {α c : ℝ} (hidx : c ≤ index Q (fun _ ↦ α) r)
+    {h : Fin m → ℤ} {q : Fin m → ℕ} (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ)
+    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ)
+    (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) {C : ℝ}
+    (hC : ∀ d ∈ box r, |eval (fun _ ↦ α) (hasseDeriv d Q)| < C) :
+    |eval (fun j ↦ (h j : ℝ) / q j) Q| < (∏ j, ((r j : ℝ) + 1)) * C *
+      (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq j
+  have hbase : (1 : ℝ) ≤ q 0 := by exact_mod_cast hq 0
+  have hx : ∀ j, |(h j : ℝ) / q j - α| ≤ (q 0 : ℝ) ^ (-((r 0 : ℝ) * κ / r j)) := by
+    intro j
+    calc |(h j : ℝ) / q j - α| ≤ 1 / (q j : ℝ) ^ κ := by
+          simpa only [abs_sub_comm] using happ j
+      _ = (q j : ℝ) ^ (-κ) := by rw [Real.rpow_neg (hqR j).le, one_div]
+      _ ≤ ((q 0 : ℝ) ^ ((r 0 : ℝ) / r j)) ^ (-κ) :=
+          Real.rpow_le_rpow_of_nonpos (by positivity) (hqr j) (neg_nonpos.2 hκ)
+      _ = (q 0 : ℝ) ^ (-((r 0 : ℝ) * κ / r j)) := by
+          rw [← Real.rpow_mul (hqR 0).le]
+          congr 1
+          ring
+  have hw : ∀ d ∈ box r, eval (fun _ ↦ α) (hasseDeriv d Q) ≠ 0 →
+      (r 0 : ℝ) * c * κ ≤ ∑ j, ((r 0 : ℝ) * κ / r j) * d j := by
+    intro d _ hd0
+    have hh := mul_le_mul_of_nonneg_left (hidx.trans (index_le_weight hd0))
+      (mul_nonneg (Nat.cast_nonneg (r 0)) hκ)
+    convert hh using 1
+    · ring
+    · rw [weight, Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro j _
+      ring
+  convert cost_bound hd hbase hC hx hw using 1
+  congr 2
+  ring
+end Taylor281Project
+#print axioms Taylor281Project.cost_bound
+#print axioms Taylor281Project.original_recovery
+
+namespace Taylor281Caller
+open Roth MvPolynomial
+private lemma abs_prod_pow_le_rpow_of_le_weight {m : ℕ} [NeZero m] {r q : Fin m → ℕ}
+    (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ) {x : Fin m → ℝ} (hx : ∀ j, |x j| ≤ 1 / (q j : ℝ) ^ κ)
+    (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) (d : Fin m →₀ ℕ) {c : ℝ} (hw : c ≤ weight r d)
+    : |∏ j, x j ^ d j| ≤ (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq j
+  have hq1 : (1 : ℝ) ≤ q 0 := by exact_mod_cast hq 0
+  rw [Finset.abs_prod]
+  calc ∏ j, |x j ^ d j|
+      ≤ ∏ j, (q j : ℝ) ^ (-κ * d j) := by
+        refine Finset.prod_le_prod₀ (fun j _ ↦ abs_nonneg _) fun j _ ↦ ?_
+        rw [abs_pow, Real.rpow_mul (hqR j).le, Real.rpow_natCast,
+          Real.rpow_neg (hqR j).le, ← one_div]
+        exact pow_le_pow_left₀ (abs_nonneg _) (hx j) _
+    _ ≤ ∏ j, ((q 0 : ℝ) ^ ((r 0 : ℝ) / r j)) ^ (-κ * d j) := by
+        refine Finset.prod_le_prod₀ (fun j _ ↦ by positivity) fun j _ ↦ ?_
+        exact Real.rpow_le_rpow_of_nonpos (by positivity) (hqr j)
+          (mul_nonpos_of_nonpos_of_nonneg (neg_nonpos.2 hκ) (Nat.cast_nonneg _))
+    _ = (q 0 : ℝ) ^ (-(r 0 : ℝ) * κ * weight r d) := by
+        simp_rw [← Real.rpow_mul (hqR 0).le]
+        rw [← Real.rpow_sum_of_pos (hqR 0), weight, Finset.mul_sum]
+        exact congrArg _ (Finset.sum_congr rfl fun j _ ↦ by ring)
+    _ ≤ (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+        apply Real.rpow_le_rpow_of_exponent_le hq1
+        convert mul_le_mul_of_nonpos_left hw
+          (neg_nonpos.2 (mul_nonneg (Nat.cast_nonneg (r 0)) hκ)) using 1 <;> ring
+
+lemma caller_inline {α κ : ℝ} {f : Polynomial ℤ} (hf : f.Monic)
+    (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} [NeZero m]
+    {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m) {r : Fin m → ℕ} (hr0 : ∀ j, 0 < r j)
+    (hrlast : 3 ≤ r (Fin.rev 0)) (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)
+    {q : Fin m → ℕ} (hq0 : ∀ j, 0 < q j) (hκ0 : 0 ≤ κ) {h : Fin m → ℤ}
+    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ) (hcop : ∀ j, IsCoprime (h j) (q j : ℤ))
+    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
+    1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) *
+      (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) *
+      (q 0 : ℝ) ^ (-(r 0 : ℝ) * (gam δ f.natDegree m - eta δ m) * κ)) := by
+  -- Lemma 9
+  obtain ⟨Q, -, hQd, hidx_strict, hne, hC⟩ :=
+    main_lemma hf hfα hA hδ0 hδm hrlast h31b h32 h33 hcop
+  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq0 j
+  -- the upper bound
+  have hdmap : ∀ j, degreeOf j (map (Int.castRingHom ℝ) Q) ≤ r j := fun j ↦ by
+    rw [degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective, ← degreeOf_eq_sup]
+    exact hQd j
+  have hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j := fun j ↦ by
+    have hrj : (0 : ℝ) < r j := by exact_mod_cast hr0 j
+    rw [Real.rpow_le_iff_le_log (hqR 0) (hqR j), div_mul_eq_mul_div, div_le_iff₀ hrj]
+    linarith [h33 j]
+  have upper {m : ℕ} [NeZero m] {Q : MvPolynomial (Fin m) ℝ} {r : Fin m → ℕ}
+      (hd : ∀ j, degreeOf j Q ≤ r j) {α c : ℝ} (hidx : c ≤ index Q (fun _ ↦ α) r) {h : Fin m → ℤ}
+      {q : Fin m → ℕ} (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ)
+      (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ)
+      (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) {C : ℝ}
+      (hC : ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i Q)| < C) :
+      |eval (fun j ↦ (h j : ℝ) / q j) Q| < (∏ j, ((r j : ℝ) + 1)) * C *
+        (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+    have hT : 0 < (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) :=
+      Real.rpow_pos_of_pos (by exact_mod_cast hq 0) _
+    rw [eval_eq_sum_box (fun _ ↦ α) (fun j ↦ (h j : ℝ) / q j) r Q hd]
+    -- each term of the Taylor expansion is small
+    have hterm : ∀ d ∈ box r, |eval (fun _ ↦ α) (hasseDeriv d Q) *
+        ∏ j, ((h j : ℝ) / q j - α) ^ d j| < C * (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+      intro d _
+      by_cases h0 : eval (fun _ ↦ α) (hasseDeriv d Q) = 0
+      · rw [h0, zero_mul, abs_zero]
+        exact mul_pos (lt_of_le_of_lt (abs_nonneg _) (hC 0)) hT
+      rw [abs_mul]
+      exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d)
+        (abs_prod_pow_le_rpow_of_le_weight hq hκ (fun j ↦ by
+          simpa only [abs_sub_comm] using happ j) hqr d (hidx.trans (index_le_weight h0)))
+        (abs_nonneg _) hT
+    refine (Finset.abs_sum_le_sum_abs _ _).trans_lt ?_
+    convert Finset.sum_lt_sum_of_nonempty ⟨0, mem_box.2 fun j ↦ Nat.zero_le _⟩ hterm using 1
+    rw [Finset.sum_const, card_box, nsmul_eq_mul]
+    push_cast
+    ring
+  exact (one_le_prod_pow_mul_abs_eval Q hQd h hq0 hne).trans_lt
+    (mul_lt_mul_of_pos_left (upper hdmap hidx_strict.le hq0 hκ0 happ hqr hC)
+      (Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _))
+
+lemma caller_generic {α κ : ℝ} {f : Polynomial ℤ} (hf : f.Monic)
+    (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} [NeZero m]
+    {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m) {r : Fin m → ℕ} (hr0 : ∀ j, 0 < r j)
+    (hrlast : 3 ≤ r (Fin.rev 0)) (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)
+    {q : Fin m → ℕ} (hq0 : ∀ j, 0 < q j) (hκ0 : 0 ≤ κ) {h : Fin m → ℤ}
+    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ) (hcop : ∀ j, IsCoprime (h j) (q j : ℤ))
+    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
+    1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) *
+      (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) *
+      (q 0 : ℝ) ^ (-(r 0 : ℝ) * (gam δ f.natDegree m - eta δ m) * κ)) := by
+  -- Lemma 9
+  obtain ⟨Q, -, hQd, hidx_strict, hne, hC⟩ :=
+    main_lemma hf hfα hA hδ0 hδm hrlast h31b h32 h33 hcop
+  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq0 j
+  -- the upper bound
+  have hdmap : ∀ j, degreeOf j (map (Int.castRingHom ℝ) Q) ≤ r j := fun j ↦ by
+    rw [degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective, ← degreeOf_eq_sup]
+    exact hQd j
+  have hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j := fun j ↦ by
+    have hrj : (0 : ℝ) < r j := by exact_mod_cast hr0 j
+    rw [Real.rpow_le_iff_le_log (hqR 0) (hqR j), div_mul_eq_mul_div, div_le_iff₀ hrj]
+    linarith [h33 j]
+  exact (one_le_prod_pow_mul_abs_eval Q hQd h hq0 hne).trans_lt
+    (mul_lt_mul_of_pos_left
+      (Taylor281Project.original_recovery hdmap hidx_strict.le hq0 hκ0 happ hqr
+        (fun d _ ↦ hC d))
+      (Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _))
+
+open Lean Elab Term in
+elab "originalCaller281" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Main `Roth.one_lt_roth_eval_bound_aux)
+example : @caller_inline = originalCaller281 := Subsingleton.elim _ _
+example : @caller_generic = originalCaller281 := Subsingleton.elim _ _
+#print axioms Taylor281Caller.caller_inline
+#print axioms Taylor281Caller.caller_generic
+run_cmd Lean.Elab.Command.liftTermElabM do
+  for n in [`Taylor281Caller.caller_inline, `Taylor281Caller.caller_generic] do
+    let ci ← Lean.getConstInfo n
+    let some v := ci.value? (allowOpaque := true) | throwError "missing value"
+    if v.getUsedConstants.contains `Roth.abs_eval_lt_of_le_index then
+      throwError "TAY281_CALLER_STILL_USES_TARGET"
+    Lean.logInfo m!"TAY281_CALLER_TARGET_FREE: {n}"
+end Taylor281Caller

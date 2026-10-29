@@ -1,0 +1,67 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+namespace Taylor281Generic
+open MvPolynomial
+lemma monomial_decay {σ : Type*} [Fintype σ] {b : ℝ} (hb : 1 ≤ b)
+    {μ x : σ → ℝ} (hx : ∀ j, |x j| ≤ b ^ (-μ j)) (d : σ →₀ ℕ) {c : ℝ}
+    (hc : c ≤ ∑ j, μ j * d j) : |∏ j, x j ^ d j| ≤ b ^ (-c) := by
+  have hb0 : 0 < b := zero_lt_one.trans_le hb
+  rw [Finset.abs_prod]
+  calc ∏ j, |x j ^ d j|
+      ≤ ∏ j, b ^ (-μ j * d j) := by
+        apply Finset.prod_le_prod₀ (fun j _ ↦ abs_nonneg _)
+        intro j _
+        rw [abs_pow, Real.rpow_mul hb0.le, Real.rpow_natCast]
+        exact pow_le_pow_left₀ (abs_nonneg _) (hx j) _
+    _ = b ^ (-(∑ j, μ j * d j)) := by
+        rw [← Real.rpow_sum_of_pos hb0]
+        congr 1
+        simp only [neg_mul, Finset.sum_neg_distrib]
+    _ ≤ b ^ (-c) := Real.rpow_le_rpow_of_exponent_le hb (neg_le_neg hc)
+
+lemma expansion_bound {σ : Type*} [Fintype σ] {s : Finset (σ →₀ ℕ)} (hs : s.Nonempty)
+    {a x μ : σ → ℝ} {A : (σ →₀ ℕ) → ℝ} {b c C : ℝ} (hb : 1 ≤ b)
+    (hC : ∀ d ∈ s, |A d| < C) (hx : ∀ j, |x j - a j| ≤ b ^ (-μ j))
+    (hvanish : ∀ d ∈ s, A d ≠ 0 → c ≤ ∑ j, μ j * d j) :
+    |eval x (∑ d ∈ s, MvPolynomial.C (A d) * ∏ j, (X j - MvPolynomial.C (a j)) ^ d j)|
+      < (s.card : ℝ) * C * b ^ (-c) := by
+  classical
+  have hT : 0 < b ^ (-c) := Real.rpow_pos_of_pos (zero_lt_one.trans_le hb) _
+  have hC0 : 0 < C := by
+    obtain ⟨d, hd⟩ := hs
+    exact (abs_nonneg _).trans_lt (hC d hd)
+  simp only [map_sum, map_mul, map_prod, map_pow, map_sub, eval_X, eval_C]
+  apply (Finset.abs_sum_le_sum_abs _ _).trans_lt
+  have hterm : ∀ d ∈ s, |A d * ∏ j, (x j - a j) ^ d j| < C * b ^ (-c) := by
+    intro d hd
+    by_cases h0 : A d = 0
+    · simpa [h0] using mul_pos hC0 hT
+    rw [abs_mul]
+    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d hd)
+      (monomial_decay hb hx d (hvanish d hd h0)) (abs_nonneg _) hT
+  simpa only [Finset.sum_const, nsmul_eq_mul, mul_assoc] using
+    Finset.sum_lt_sum_of_nonempty hs hterm
+end Taylor281Generic
+#print axioms Taylor281Generic.expansion_bound
+#check_failure Roth.abs_eval_lt_of_le_index
+#check Finset.sum_lt_sum_of_nonempty
+#check Real.rpow_le_rpow_of_nonpos
+#check Polynomial.taylor_coeff
+#check MvPowerSeries.weightedOrder_le

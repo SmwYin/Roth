@@ -1,0 +1,53 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nnamespace Taylor281Normed\nopen MvPolynomial\nlemma monomial_decay {\u03c3 K : Type*} [Fintype \u03c3] [NormedField K] {b : \u211d} (hb : 1 \u2264 b)\n    {\u03bc : \u03c3 \u2192 \u211d} {x : \u03c3 \u2192 K} (hx : \u2200 j, \u2016x j\u2016 \u2264 b ^ (-\u03bc j)) (d : \u03c3 \u2192\u2080 \u2115) {c : \u211d}\n    (hc : c \u2264 \u2211 j, \u03bc j * d j) : \u2016\u220f j, x j ^ d j\u2016 \u2264 b ^ (-c) := by\n  have hb0 : 0 < b := zero_lt_one.trans_le hb\n  rw [norm_prod]\n  calc \u220f j, \u2016x j ^ d j\u2016\n      \u2264 \u220f j, b ^ (-\u03bc j * d j) := by\n        apply Finset.prod_le_prod\u2080 (fun j _ \u21a6 norm_nonneg _)\n        intro j _\n        rw [norm_pow, Real.rpow_mul hb0.le, Real.rpow_natCast]\n        exact pow_le_pow_left\u2080 (norm_nonneg _) (hx j) _\n    _ = b ^ (-(\u2211 j, \u03bc j * d j)) := by\n        rw [\u2190 Real.rpow_sum_of_pos hb0]\n        congr 1\n        simp only [neg_mul, Finset.sum_neg_distrib]\n    _ \u2264 b ^ (-c) := Real.rpow_le_rpow_of_exponent_le hb (neg_le_neg hc)\n\nlemma expansion_bound {\u03c3 K : Type*} [Fintype \u03c3] [NormedField K]\n    {s : Finset (\u03c3 \u2192\u2080 \u2115)} (hs : s.Nonempty)\n    {a x : \u03c3 \u2192 K} {\u03bc : \u03c3 \u2192 \u211d} {A : (\u03c3 \u2192\u2080 \u2115) \u2192 K} {b c C : \u211d} (hb : 1 \u2264 b)\n    (hC : \u2200 d \u2208 s, \u2016A d\u2016 < C) (hx : \u2200 j, \u2016x j - a j\u2016 \u2264 b ^ (-\u03bc j))\n    (hvanish : \u2200 d \u2208 s, A d \u2260 0 \u2192 c \u2264 \u2211 j, \u03bc j * d j) :\n    \u2016eval x (\u2211 d \u2208 s, MvPolynomial.C (A d) * \u220f j, (X j - MvPolynomial.C (a j)) ^ d j)\u2016\n      < (s.card : \u211d) * C * b ^ (-c) := by\n  classical\n  have hT : 0 < b ^ (-c) := Real.rpow_pos_of_pos (zero_lt_one.trans_le hb) _\n  have hC0 : 0 < C := by\n    obtain \u27e8d, hd\u27e9 := hs\n    exact (norm_nonneg _).trans_lt (hC d hd)\n  simp only [map_sum, map_mul, map_prod, map_pow, map_sub, eval_X, eval_C]\n  apply (norm_sum_le _ _).trans_lt\n  have hterm : \u2200 d \u2208 s, \u2016A d * \u220f j, (x j - a j) ^ d j\u2016 < C * b ^ (-c) := by\n    intro d hd\n    by_cases h0 : A d = 0\n    \u00b7 simpa [h0] using mul_pos hC0 hT\n    rw [norm_mul]\n    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d hd)\n      (monomial_decay hb hx d (hvanish d hd h0)) (norm_nonneg _) hT\n  simpa only [Finset.sum_const, nsmul_eq_mul, mul_assoc] using\n    Finset.sum_lt_sum_of_nonempty hs hterm\nend Taylor281Normed\n\n#print axioms Taylor281Normed.expansion_bound\n#check_failure Roth.abs_eval_lt_of_le_index\n"
+  },
+  "elapsed_ms": 1331,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "normed02",
+      "operation": "run_code",
+      "source": "normed2-executed.lean.txt",
+      "source_sha256": "42b01325a3383159eb47fdcc68677a15754171534e3bd7a4af2c1fc3153c720d",
+      "receipt": "normed02-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.abs_eval_lt_of_le_index/root-requests/normed02.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.abs_eval_lt_of_le_index/normed2-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Taylor281Normed.expansion_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 64,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.abs_eval_lt_of_le_index`\",\n      \"line\": 65,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "'Taylor281Normed.expansion_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 64,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.abs_eval_lt_of_le_index`",
+          "line": 65,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

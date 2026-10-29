@@ -1,0 +1,89 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nnamespace Taylor281Generic\nopen MvPolynomial\nlemma monomial_decay {\u03c3 : Type*} [Fintype \u03c3] {b : \u211d} (hb : 1 \u2264 b)\n    {\u03bc x : \u03c3 \u2192 \u211d} (hx : \u2200 j, |x j| \u2264 b ^ (-\u03bc j)) (d : \u03c3 \u2192\u2080 \u2115) {c : \u211d}\n    (hc : c \u2264 \u2211 j, \u03bc j * d j) : |\u220f j, x j ^ d j| \u2264 b ^ (-c) := by\n  have hb0 : 0 < b := zero_lt_one.trans_le hb\n  rw [Finset.abs_prod]\n  calc \u220f j, |x j ^ d j|\n      \u2264 \u220f j, b ^ (-\u03bc j * d j) := by\n        apply Finset.prod_le_prod\u2080 (fun j _ \u21a6 abs_nonneg _)\n        intro j _\n        rw [abs_pow, Real.rpow_mul hb0.le, Real.rpow_natCast]\n        exact pow_le_pow_left\u2080 (abs_nonneg _) (hx j) _\n    _ = b ^ (-(\u2211 j, \u03bc j * d j)) := by\n        rw [\u2190 Real.rpow_sum_of_pos hb0]\n        congr 1\n        simp only [neg_mul, Finset.sum_neg_distrib]\n    _ \u2264 b ^ (-c) := Real.rpow_le_rpow_of_exponent_le hb (neg_le_neg hc)\n\nlemma expansion_bound {\u03c3 : Type*} [Fintype \u03c3] {s : Finset (\u03c3 \u2192\u2080 \u2115)} (hs : s.Nonempty)\n    {a x \u03bc : \u03c3 \u2192 \u211d} {A : (\u03c3 \u2192\u2080 \u2115) \u2192 \u211d} {b c C : \u211d} (hb : 1 \u2264 b)\n    (hC : \u2200 d \u2208 s, |A d| < C) (hx : \u2200 j, |x j - a j| \u2264 b ^ (-\u03bc j))\n    (hvanish : \u2200 d \u2208 s, A d \u2260 0 \u2192 c \u2264 \u2211 j, \u03bc j * d j) :\n    |eval x (\u2211 d \u2208 s, MvPolynomial.C (A d) * \u220f j, (X j - MvPolynomial.C (a j)) ^ d j)|\n      < (s.card : \u211d) * C * b ^ (-c) := by\n  classical\n  have hT : 0 < b ^ (-c) := Real.rpow_pos_of_pos (zero_lt_one.trans_le hb) _\n  have hC0 : 0 < C := by\n    obtain \u27e8d, hd\u27e9 := hs\n    exact (abs_nonneg _).trans_lt (hC d hd)\n  simp only [map_sum, map_mul, map_prod, map_pow, map_sub, eval_X, eval_C]\n  apply (Finset.abs_sum_le_sum_abs _ _).trans_lt\n  have hterm : \u2200 d \u2208 s, |A d * \u220f j, (x j - a j) ^ d j| < C * b ^ (-c) := by\n    intro d hd\n    by_cases h0 : A d = 0\n    \u00b7 simpa [h0] using mul_pos hC0 hT\n    rw [abs_mul]\n    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d hd)\n      (monomial_decay hb hx d (hvanish d hd h0)) (abs_nonneg _) hT\n  simpa only [Finset.sum_const, nsmul_eq_mul, mul_assoc] using\n    Finset.sum_lt_sum_of_nonempty hs hterm\nend Taylor281Generic\n#print axioms Taylor281Generic.expansion_bound\n#check_failure Roth.abs_eval_lt_of_le_index\n#check Finset.sum_lt_sum_of_nonempty\n#check Real.rpow_le_rpow_of_nonpos\n#check Polynomial.taylor_coeff\n#check MvPowerSeries.weightedOrder_le\n"
+  },
+  "elapsed_ms": 1655,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "generic01",
+      "operation": "run_code",
+      "source": "generic-executed.lean.txt",
+      "source_sha256": "6876f0858f1d9221a3497547e9b188533c397238fb85c94379c24b638da3303e",
+      "receipt": "generic01-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.abs_eval_lt_of_le_index/root-requests/generic01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.abs_eval_lt_of_le_index/generic-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Taylor281Generic.expansion_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 62,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.abs_eval_lt_of_le_index`\",\n      \"line\": 63,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Finset.sum_lt_sum_of_nonempty.{u_1, u_4} {\u03b9 : Type u_1} {M : Type u_4} [AddCommMonoid M] [Preorder M]\\n  [IsOrderedCancelAddMonoid M] {f g : \u03b9 \u2192 M} {s : Finset \u03b9} [AddLeftStrictMono M] (hs : s.Nonempty)\\n  (hlt : \u2200 i \u2208 s, f i < g i) : \u2211 i \u2208 s, f i < \u2211 i \u2208 s, g i\",\n      \"line\": 64,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.rpow_le_rpow_of_nonpos {x y z : \u211d} (hx : 0 < x) (hxy : x \u2264 y) (hz : z \u2264 0) : y ^ z \u2264 x ^ z\",\n      \"line\": 65,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.taylor_coeff.{u_1} {R : Type u_1} [Semiring R] (r : R) (f : Polynomial R) (n : \u2115) :\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\",\n      \"line\": 66,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPowerSeries.weightedOrder_le.{u_1, u_2} {\u03c3 : Type u_1} {R : Type u_2} [Semiring R] (w : \u03c3 \u2192 \u2115) {f : MvPowerSeries \u03c3 R}\\n  {d : \u03c3 \u2192\u2080 \u2115} (h : (MvPowerSeries.coeff d) f \u2260 0) : MvPowerSeries.weightedOrder w f \u2264 \u2191((Finsupp.weight w) d)\",\n      \"line\": 67,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "'Taylor281Generic.expansion_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 62,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.abs_eval_lt_of_le_index`",
+          "line": 63,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Finset.sum_lt_sum_of_nonempty.{u_1, u_4} {\u03b9 : Type u_1} {M : Type u_4} [AddCommMonoid M] [Preorder M]\n  [IsOrderedCancelAddMonoid M] {f g : \u03b9 \u2192 M} {s : Finset \u03b9} [AddLeftStrictMono M] (hs : s.Nonempty)\n  (hlt : \u2200 i \u2208 s, f i < g i) : \u2211 i \u2208 s, f i < \u2211 i \u2208 s, g i",
+          "line": 64,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.rpow_le_rpow_of_nonpos {x y z : \u211d} (hx : 0 < x) (hxy : x \u2264 y) (hz : z \u2264 0) : y ^ z \u2264 x ^ z",
+          "line": 65,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.taylor_coeff.{u_1} {R : Type u_1} [Semiring R] (r : R) (f : Polynomial R) (n : \u2115) :\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)",
+          "line": 66,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPowerSeries.weightedOrder_le.{u_1, u_2} {\u03c3 : Type u_1} {R : Type u_2} [Semiring R] (w : \u03c3 \u2192 \u2115) {f : MvPowerSeries \u03c3 R}\n  {d : \u03c3 \u2192\u2080 \u2115} (h : (MvPowerSeries.coeff d) f \u2260 0) : MvPowerSeries.weightedOrder w f \u2264 \u2191((Finsupp.weight w) d)",
+          "line": 67,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

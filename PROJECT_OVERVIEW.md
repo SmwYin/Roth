@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 280/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 281/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 280; remaining: 13.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 31 YES-but-generalise-first, 46 NO-mathlib-has-it, 97 BORDERLINE-needs-human, 72 SKIP.
+- Completed applicable assessments: 281; remaining: 12.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 31 YES-but-generalise-first, 46 NO-mathlib-has-it, 98 BORDERLINE-needs-human, 72 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3589,6 +3589,29 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_prod_pow_le_rpow_of_le_weight.md).
 
+### Completed: `Roth.abs_eval_lt_of_le_index`
+
+- Type: `∀ {m : ℕ} [inst : NeZero m] {Q : MvPolynomial (Fin m) ℝ} {r : Fin m → ℕ},
+  (∀ (j : Fin m), degreeOf j Q ≤ r j) →
+    ∀ {α c : ℝ},
+      c ≤ Roth.index Q (fun (x : Fin m) ↦ α) r →
+        ∀ {h : Fin m → ℤ} {q : Fin m → ℕ},
+          (∀ (j : Fin m), 0 < q j) →
+            ∀ {κ : ℝ},
+              0 ≤ κ →
+                (∀ (j : Fin m), |α - ↑(h j) / ↑(q j)| ≤ 1 / ↑(q j) ^ κ) →
+                  (∀ (j : Fin m), ↑(q 0) ^ (↑(r 0) / ↑(r j)) ≤ ↑(q j)) →
+                    ∀ {C : ℝ},
+                      (∀ (i : Fin m →₀ ℕ), |(eval fun (x : Fin m) ↦ α) ((hasseDeriv i) Q)| < C) →
+                        |(eval fun (j : Fin m) ↦ ↑(h j) / ↑(q j)) Q| <
+                          (∏ j : Fin m, (↑(r j) + 1)) * C * ↑(q 0) ^ (-↑(r 0) * c * κ)`
+- What: Strict quantitative Taylor upper estimate from index lower bound, uniform Hasse derivative coefficient bound and approximation/denominator growth.
+- How: Expand over degree box, discard low-weight nonzero coefficients via index, bound error products by real-power decay, then sum strict termwise bounds over a nonempty box.
+- Hypotheses: {'argument': 'm, NeZero m, Fin m', 'verdict': 'generalize', 'evidence': 'Finite σ possibly empty in own generic/cost_bound; NeZero required only by original distinguished coordinate0.'}, {'argument': 'Q real coefficients', 'verdict': 'generalize', 'evidence': 'NormedField and NormedCommRing + NormOneClass shifted polynomial expansion tested; project Hasse/index remains real-specific, not falsely claimed ported.'}, {'argument': 'r natural coordinate degrees, hd', 'verdict': 'retain box, abstract expansion also possible', 'evidence': 'Natural exponents/degree upper bounds give finite box and cardinal product. Arbitrary s.Nonempty works for expansion form; no positive degree condition.'}, {'argument': 'α common center', 'verdict': 'generalize', 'evidence': 'Arbitrary a:σ→ℝ or K in generic proof.'}, {'argument': 'c, hidx', 'verdict': 'semantic cost lower bound', 'evidence': 'Nonzero expansion coefficients imply c≤Σ μj*dj; original recovery rescales c to r0*c*κ and uses index_le_weight. No Q≠0.'}, {'argument': 'h integral numerator', 'verdict': 'remove representation', 'evidence': 'Arbitrary x:σ→ℝ/K; exact h/q evaluation recovered.'}, {'argument': 'q positive natural, hq', 'verdict': 'abstract to b≥1 and radii', 'evidence': 'b≥1 supplies positive base and exponent monotonicity; coordinate radius b^(-μj) need only satisfy actual error bound.'}, {'argument': 'κ nonnegative, happ, hqr', 'verdict': 'replace by semantic cost/radius bounds', 'evidence': 'Original bridge proven using Real.rpow_le_rpow_of_nonpos; μ arbitrary real in generic, no positivity assumption needed beyond actual error bound.'}, {'argument': 'C and all-index hC', 'verdict': 'localize', 'evidence': 'Only d∈box r needed; box nonempty by0; C>0 derived rather than hypothesized.'}
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.eval_eq_sum_box, Roth.index, Roth.index_le_weight, Roth.box, Roth.mem_box, Roth.card_box, Roth.abs_prod_pow_le_rpow_of_le_weight
+- Caller summary: explicit proof callers: {'name': 'Roth.one_lt_roth_eval_bound_aux', 'private': True, 'file': 'Roth/Main.lean', 'start': 453, 'end': 478, 'call': 477, 'uses': 1}; source scopes: Main39 documentary reference,380 declaration,477 actual call; no other tracked production source occurrences; full files read: Roth/Main.lean:1-588, Roth/LeanEval.lean:1-66; external to file count: 0; same file count: 1; transitive public chain: Roth.roth_of_isIntegral, Roth.roth, Roth.roth_rat, LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth; simp scope: No target simp attribute; direct source refs and exact canonical direct kernel refs separately audited; arbitrary tactic/transitive closure not claimed; inline derivations: Taylor expansion and finite sum primitives occur in target and Taylor.lean; no duplicate full quantitative weighted upper estimate found; skill count excluding declaring file: 0
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_lt_of_le_index.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4175,6 +4198,8 @@ Completed `Roth.one_le_prod_pow_mul_abs_eval`: Existing one_le_pow_mul_abs_eval_
 
 Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: Use Finset.abs_prod and abs_pow for pointwise absolute-value estimates. Rewrite reciprocal powers as negative real powers; Real.rpow_le_rpow_of_nonpos and the denominator growth comparison replace all bases by powers of q0. Collapse the product with Real.rpow_sum_of_pos and the weight formula. Finally use q0>=1 and the nonpositive exponent multiplier to replace weight by its lower bound c. Zero coordinate degrees are allowed because real division is total; no positive r premise is silently added.
 
+Completed `Roth.abs_eval_lt_of_le_index`: existing: Finset.abs_sum_le_sum_abs, Finset.sum_lt_sum_of_nonempty, Real.rpow_mul, Real.rpow_sum_of_pos, Real.rpow_le_rpow_of_nonpos, Polynomial.taylor_coeff, MvPowerSeries.weightedOrder_le; search: 15 cells actual plus corrected current Loogle and local retries; local indices error/warming, no absence claim; new helpers: Generic finite-expansion/cost theorem and recovery are newly proved, not preexisting mathlib.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4736,6 +4761,8 @@ Completed `Roth.exists_degrees`: {'a': 'Roth.exists_degrees', 'b': 'Roth.exists_
 Completed `Roth.one_le_prod_pow_mul_abs_eval`: Shares discrete integer separation with Theta coefficient estimates and univariate Liouville bound; not the same statement. Taylor upper bound is complementary, not duplicate.
 
 Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.abs_eval_lt_of_le_index`: Finite triangle/strict sum/rpow components only. Univariate Taylor and natural-weight ENat power-series order do not supply the quantitative finite multivariate upper estimate. Distinct from simple abs_eval_le and denominator lower bound.
 
 ## Part 5: Generalization opportunities
 
@@ -5332,6 +5359,25 @@ Completed `Roth.one_le_prod_pow_mul_abs_eval`: verified: True; reason: LITERATUR
 
 Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.abs_eval_lt_of_le_index`: verified: True; proposed type: lemma expansion_bound {σ : Type*} [Fintype σ] {s : Finset (σ →₀ ℕ)} (hs : s.Nonempty)
+    {a x μ : σ → ℝ} {A : (σ →₀ ℕ) → ℝ} {b c C : ℝ} (hb : 1 ≤ b)
+    (hC : ∀ d ∈ s, |A d| < C) (hx : ∀ j, |x j - a j| ≤ b ^ (-μ j))
+    (hvanish : ∀ d ∈ s, A d ≠ 0 → c ≤ ∑ j, μ j * d j) :
+    |eval x (∑ d ∈ s, MvPolynomial.C (A d) * ∏ j, (X j - MvPolynomial.C (a j)) ^ d j)|
+      < (s.card : ℝ) * C * b ^ (-c) ; project type: lemma cost_bound {σ : Type*} [Fintype σ] [DecidableEq σ]
+    {Q : MvPolynomial σ ℝ} {r : σ → ℕ} (hd : ∀ j, degreeOf j Q ≤ r j)
+    {a x μ : σ → ℝ} {b c C : ℝ} (hb : 1 ≤ b)
+    (hC : ∀ d ∈ box r, |eval a (hasseDeriv d Q)| < C)
+    (hx : ∀ j, |x j - a j| ≤ b ^ (-μ j))
+    (hvanish : ∀ d ∈ box r, eval a (hasseDeriv d Q) ≠ 0 → c ≤ ∑ j, μ j * d j) :
+    |eval x Q| < (∏ j, ((r j : ℝ) + 1)) * C * b ^ (-c) ; normed ring type: lemma expansion_bound {σ K : Type*} [Fintype σ] [NormedCommRing K] [NormOneClass K]
+    {s : Finset (σ →₀ ℕ)} (hs : s.Nonempty)
+    {a x : σ → K} {μ : σ → ℝ} {A : (σ →₀ ℕ) → K} {b c C : ℝ} (hb : 1 ≤ b)
+    (hC : ∀ d ∈ s, ‖A d‖ < C) (hx : ∀ j, ‖x j - a j‖ ≤ b ^ (-μ j))
+    (hvanish : ∀ d ∈ s, A d ≠ 0 → c ≤ ∑ j, μ j * d j) :
+    ‖eval x (∑ d ∈ s, MvPolynomial.C (A d) * ∏ j, (X j - MvPolynomial.C (a j)) ^ d j)‖
+      < (s.card : ℝ) * C * b ^ (-c) ; original recovery: Exact original statement recovered after restricting hC to box; arbitrary zero/mixed-zero r preserved.; semantic parameters: arbitrary real μ and b≥1, arbitrary center/evaluation, finite variable type; positive radii b^(-μ) are semantic data, not renamed integer denominators.; limit: Project Hasse/index not ported to arbitrary coefficient ring; normed expansion theorem is independently mathlib-only.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5894,6 +5940,8 @@ Completed `Roth.exists_degrees`: Finite simultaneous positive-weight natural rou
 Completed `Roth.one_le_prod_pow_mul_abs_eval`: Coordinatewise multivariate polynomial denominator-clearing equality at arbitrary rational points with individual degree bounds, and nonzero integer lower-bound corollary.
 
 Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.abs_eval_lt_of_le_index`: Reusable weighted finite expansion decay plus an eventual multivariate Taylor/order interface; no current verified exact mathlib replacement.
 
 ## Part 7: Junk / removable
 
@@ -6460,6 +6508,8 @@ Completed `Roth.one_le_prod_pow_mul_abs_eval`: KEEP: substantive clearing argume
 
 Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.abs_eval_lt_of_le_index`: Not junk: sole direct proof caller participates in final Roth contradiction; namespace/export decision remains separate.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6744,6 +6794,7 @@ Completed `Roth.abs_prod_pow_le_rpow_of_le_weight`: Retain a live private proof 
 | 278 | `Roth.exists_degrees` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_degrees.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_degrees/root-acceptance.json) |
 | 279 | `Roth.one_le_prod_pow_mul_abs_eval` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.one_le_prod_pow_mul_abs_eval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_le_prod_pow_mul_abs_eval/root-acceptance.json) |
 | 280 | `Roth.abs_prod_pow_le_rpow_of_le_weight` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_prod_pow_le_rpow_of_le_weight.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_prod_pow_le_rpow_of_le_weight/root-acceptance.json) |
+| 281 | `Roth.abs_eval_lt_of_le_index` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_lt_of_le_index.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_eval_lt_of_le_index/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7303,12 +7354,14 @@ Completed `Roth.one_le_prod_pow_mul_abs_eval` action: Generalize and split clear
 
 Completed `Roth.abs_prod_pow_le_rpow_of_le_weight` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.abs_eval_lt_of_le_index` action: verdict: BORDERLINE-needs-human; questions: Should a strict finite shifted-expansion estimate with coordinate cost decay be named in mathlib, or remain a local lemma of a future Roth proof?, If upstreamed, should the public interface use a finite expansion with a nonzero-coefficient cost predicate, or a weighted support/order API with an explicit translation bridge?, Should the multivariate Taylor/index corollary and the rational denominator growth bridge remain in the Roth development while only the normed-ring expansion core enters general polynomial analysis?; next: Retain theorem locally; upstream design review can choose finite expansion versus weighted support API. Assessment is complete, these are future design questions, not user blockers.; alternative destination: Roth/Main.lean or a future Roth/TaylorBounds.lean; candidate upstream norm core Mathlib/Analysis/MvPolynomial/Bounds.lean (new file, provisional layering); not cost based: True
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.abs_eval_lt_of_le_index` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_roth_parameters_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

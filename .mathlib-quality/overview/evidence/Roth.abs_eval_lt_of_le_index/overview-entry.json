@@ -1,0 +1,129 @@
+{
+  "declaration": "Roth.abs_eval_lt_of_le_index",
+  "kind": "theorem",
+  "type": "\u2200 {m : \u2115} [inst : NeZero m] {Q : MvPolynomial (Fin m) \u211d} {r : Fin m \u2192 \u2115},\n  (\u2200 (j : Fin m), degreeOf j Q \u2264 r j) \u2192\n    \u2200 {\u03b1 c : \u211d},\n      c \u2264 Roth.index Q (fun (x : Fin m) \u21a6 \u03b1) r \u2192\n        \u2200 {h : Fin m \u2192 \u2124} {q : Fin m \u2192 \u2115},\n          (\u2200 (j : Fin m), 0 < q j) \u2192\n            \u2200 {\u03ba : \u211d},\n              0 \u2264 \u03ba \u2192\n                (\u2200 (j : Fin m), |\u03b1 - \u2191(h j) / \u2191(q j)| \u2264 1 / \u2191(q j) ^ \u03ba) \u2192\n                  (\u2200 (j : Fin m), \u2191(q 0) ^ (\u2191(r 0) / \u2191(r j)) \u2264 \u2191(q j)) \u2192\n                    \u2200 {C : \u211d},\n                      (\u2200 (i : Fin m \u2192\u2080 \u2115), |(eval fun (x : Fin m) \u21a6 \u03b1) ((hasseDeriv i) Q)| < C) \u2192\n                        |(eval fun (j : Fin m) \u21a6 \u2191(h j) / \u2191(q j)) Q| <\n                          (\u220f j : Fin m, (\u2191(r j) + 1)) * C * \u2191(q 0) ^ (-\u2191(r 0) * c * \u03ba)",
+  "what": "Strict quantitative Taylor upper estimate from index lower bound, uniform Hasse derivative coefficient bound and approximation/denominator growth.",
+  "how": "Expand over degree box, discard low-weight nonzero coefficients via index, bound error products by real-power decay, then sum strict termwise bounds over a nonempty box.",
+  "hypotheses": [
+    {
+      "argument": "m, NeZero m, Fin m",
+      "verdict": "generalize",
+      "evidence": "Finite \u03c3 possibly empty in own generic/cost_bound; NeZero required only by original distinguished coordinate0."
+    },
+    {
+      "argument": "Q real coefficients",
+      "verdict": "generalize",
+      "evidence": "NormedField and NormedCommRing + NormOneClass shifted polynomial expansion tested; project Hasse/index remains real-specific, not falsely claimed ported."
+    },
+    {
+      "argument": "r natural coordinate degrees, hd",
+      "verdict": "retain box, abstract expansion also possible",
+      "evidence": "Natural exponents/degree upper bounds give finite box and cardinal product. Arbitrary s.Nonempty works for expansion form; no positive degree condition."
+    },
+    {
+      "argument": "\u03b1 common center",
+      "verdict": "generalize",
+      "evidence": "Arbitrary a:\u03c3\u2192\u211d or K in generic proof."
+    },
+    {
+      "argument": "c, hidx",
+      "verdict": "semantic cost lower bound",
+      "evidence": "Nonzero expansion coefficients imply c\u2264\u03a3 \u03bcj*dj; original recovery rescales c to r0*c*\u03ba and uses index_le_weight. No Q\u22600."
+    },
+    {
+      "argument": "h integral numerator",
+      "verdict": "remove representation",
+      "evidence": "Arbitrary x:\u03c3\u2192\u211d/K; exact h/q evaluation recovered."
+    },
+    {
+      "argument": "q positive natural, hq",
+      "verdict": "abstract to b\u22651 and radii",
+      "evidence": "b\u22651 supplies positive base and exponent monotonicity; coordinate radius b^(-\u03bcj) need only satisfy actual error bound."
+    },
+    {
+      "argument": "\u03ba nonnegative, happ, hqr",
+      "verdict": "replace by semantic cost/radius bounds",
+      "evidence": "Original bridge proven using Real.rpow_le_rpow_of_nonpos; \u03bc arbitrary real in generic, no positivity assumption needed beyond actual error bound."
+    },
+    {
+      "argument": "C and all-index hC",
+      "verdict": "localize",
+      "evidence": "Only d\u2208box r needed; box nonempty by0; C>0 derived rather than hypothesized."
+    }
+  ],
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.eval_eq_sum_box",
+    "Roth.index",
+    "Roth.index_le_weight",
+    "Roth.box",
+    "Roth.mem_box",
+    "Roth.card_box",
+    "Roth.abs_prod_pow_le_rpow_of_le_weight"
+  ],
+  "caller_summary": {
+    "explicit_proof_callers": [
+      {
+        "name": "Roth.one_lt_roth_eval_bound_aux",
+        "private": true,
+        "file": "Roth/Main.lean",
+        "start": 453,
+        "end": 478,
+        "call": 477,
+        "uses": 1
+      }
+    ],
+    "source_scopes": "Main39 documentary reference,380 declaration,477 actual call; no other tracked production source occurrences",
+    "full_files_read": [
+      "Roth/Main.lean:1-588",
+      "Roth/LeanEval.lean:1-66"
+    ],
+    "external_to_file_count": 0,
+    "same_file_count": 1,
+    "transitive_public_chain": [
+      "Roth.roth_of_isIntegral",
+      "Roth.roth",
+      "Roth.roth_rat",
+      "LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth"
+    ],
+    "simp_scope": "No target simp attribute; direct source refs and exact canonical direct kernel refs separately audited; arbitrary tactic/transitive closure not claimed",
+    "inline_derivations": "Taylor expansion and finite sum primitives occur in target and Taylor.lean; no duplicate full quantitative weighted upper estimate found",
+    "skill_count_excluding_declaring_file": 0
+  },
+  "mathlib_api_audit": {
+    "existing": [
+      "Finset.abs_sum_le_sum_abs",
+      "Finset.sum_lt_sum_of_nonempty",
+      "Real.rpow_mul",
+      "Real.rpow_sum_of_pos",
+      "Real.rpow_le_rpow_of_nonpos",
+      "Polynomial.taylor_coeff",
+      "MvPowerSeries.weightedOrder_le"
+    ],
+    "search": "15 cells actual plus corrected current Loogle and local retries; local indices error/warming, no absence claim",
+    "new_helpers": "Generic finite-expansion/cost theorem and recovery are newly proved, not preexisting mathlib."
+  },
+  "moral_duplications": "Finite triangle/strict sum/rpow components only. Univariate Taylor and natural-weight ENat power-series order do not supply the quantitative finite multivariate upper estimate. Distinct from simple abs_eval_le and denominator lower bound.",
+  "generalization": {
+    "verified": true,
+    "proposed_type": "lemma expansion_bound {\u03c3 : Type*} [Fintype \u03c3] {s : Finset (\u03c3 \u2192\u2080 \u2115)} (hs : s.Nonempty)\n    {a x \u03bc : \u03c3 \u2192 \u211d} {A : (\u03c3 \u2192\u2080 \u2115) \u2192 \u211d} {b c C : \u211d} (hb : 1 \u2264 b)\n    (hC : \u2200 d \u2208 s, |A d| < C) (hx : \u2200 j, |x j - a j| \u2264 b ^ (-\u03bc j))\n    (hvanish : \u2200 d \u2208 s, A d \u2260 0 \u2192 c \u2264 \u2211 j, \u03bc j * d j) :\n    |eval x (\u2211 d \u2208 s, MvPolynomial.C (A d) * \u220f j, (X j - MvPolynomial.C (a j)) ^ d j)|\n      < (s.card : \u211d) * C * b ^ (-c) ",
+    "project_type": "lemma cost_bound {\u03c3 : Type*} [Fintype \u03c3] [DecidableEq \u03c3]\n    {Q : MvPolynomial \u03c3 \u211d} {r : \u03c3 \u2192 \u2115} (hd : \u2200 j, degreeOf j Q \u2264 r j)\n    {a x \u03bc : \u03c3 \u2192 \u211d} {b c C : \u211d} (hb : 1 \u2264 b)\n    (hC : \u2200 d \u2208 box r, |eval a (hasseDeriv d Q)| < C)\n    (hx : \u2200 j, |x j - a j| \u2264 b ^ (-\u03bc j))\n    (hvanish : \u2200 d \u2208 box r, eval a (hasseDeriv d Q) \u2260 0 \u2192 c \u2264 \u2211 j, \u03bc j * d j) :\n    |eval x Q| < (\u220f j, ((r j : \u211d) + 1)) * C * b ^ (-c) ",
+    "normed_ring_type": "lemma expansion_bound {\u03c3 K : Type*} [Fintype \u03c3] [NormedCommRing K] [NormOneClass K]\n    {s : Finset (\u03c3 \u2192\u2080 \u2115)} (hs : s.Nonempty)\n    {a x : \u03c3 \u2192 K} {\u03bc : \u03c3 \u2192 \u211d} {A : (\u03c3 \u2192\u2080 \u2115) \u2192 K} {b c C : \u211d} (hb : 1 \u2264 b)\n    (hC : \u2200 d \u2208 s, \u2016A d\u2016 < C) (hx : \u2200 j, \u2016x j - a j\u2016 \u2264 b ^ (-\u03bc j))\n    (hvanish : \u2200 d \u2208 s, A d \u2260 0 \u2192 c \u2264 \u2211 j, \u03bc j * d j) :\n    \u2016eval x (\u2211 d \u2208 s, MvPolynomial.C (A d) * \u220f j, (X j - MvPolynomial.C (a j)) ^ d j)\u2016\n      < (s.card : \u211d) * C * b ^ (-c) ",
+    "original_recovery": "Exact original statement recovered after restricting hC to box; arbitrary zero/mixed-zero r preserved.",
+    "semantic_parameters": "arbitrary real \u03bc and b\u22651, arbitrary center/evaluation, finite variable type; positive radii b^(-\u03bc) are semantic data, not renamed integer denominators.",
+    "limit": "Project Hasse/index not ported to arbitrary coefficient ring; normed expansion theorem is independently mathlib-only."
+  },
+  "missing_api": "Reusable weighted finite expansion decay plus an eventual multivariate Taylor/order interface; no current verified exact mathlib replacement.",
+  "junk": "Not junk: sole direct proof caller participates in final Roth contradiction; namespace/export decision remains separate.",
+  "action": {
+    "verdict": "BORDERLINE-needs-human",
+    "questions": [
+      "Should a strict finite shifted-expansion estimate with coordinate cost decay be named in mathlib, or remain a local lemma of a future Roth proof?",
+      "If upstreamed, should the public interface use a finite expansion with a nonzero-coefficient cost predicate, or a weighted support/order API with an explicit translation bridge?",
+      "Should the multivariate Taylor/index corollary and the rational denominator growth bridge remain in the Roth development while only the normed-ring expansion core enters general polynomial analysis?"
+    ],
+    "next": "Retain theorem locally; upstream design review can choose finite expansion versus weighted support API. Assessment is complete, these are future design questions, not user blockers.",
+    "alternative_destination": "Roth/Main.lean or a future Roth/TaylorBounds.lean; candidate upstream norm core Mathlib/Analysis/MvPolynomial/Bounds.lean (new file, provisional layering)",
+    "not_cost_based": true
+  }
+}

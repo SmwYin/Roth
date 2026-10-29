@@ -1,0 +1,172 @@
+{
+  "size": "SMALL: quantitative supporting lemma, not listed as final Main result or person-named theorem; substantive many-step estimate",
+  "one_line": "n/a theorem, definition-only check",
+  "modern9": [
+    {
+      "question": "1 typeclass preambles",
+      "answer": "no",
+      "reason": "Original is real-valued; finite indexing already uses Fintype. No new class warranted for a one-off vanishing predicate."
+    },
+    {
+      "question": "2 filters/nets",
+      "answer": "no",
+      "reason": "Exact finite polynomial estimate, no convergence or topology used."
+    },
+    {
+      "question": "3 universal property",
+      "answer": "no",
+      "reason": "Existing MvPolynomial evaluation/aeval already supply universal properties; the missing step is quantitative."
+    },
+    {
+      "question": "4 bundled substructure",
+      "answer": "no",
+      "reason": "A finite support restriction could be a submodule but adds no useful algebraic operation to this numeric bound."
+    },
+    {
+      "question": "5 hierarchy",
+      "answer": "yes",
+      "reason": "Own normed field and normed commutative ring plus NormOneClass expansion proofs; no coefficient division, completeness or ordered coefficients needed. Real b,c,C,\u03bc control the scalar estimates."
+    },
+    {
+      "question": "6 higher categories",
+      "answer": "no",
+      "reason": "No categorical construction or categorical coherence law here."
+    },
+    {
+      "question": "7 concrete indices",
+      "answer": "yes",
+      "reason": "Arbitrary finite variable type including empty, arbitrary real center/evaluation vectors; integer numerator and natural denominator become a downstream radius bridge."
+    },
+    {
+      "question": "8 concrete-via-abstract",
+      "answer": "yes",
+      "reason": "After eval_eq_sum_box original index occurs once via hidx.trans(index_le_weight h0); arithmetic error only supplies a monomial bound. Tested finite shifted expansion and coordinate costs abstract these properties, with actual exact original recovery."
+    },
+    {
+      "question": "9 false-generalization guard",
+      "answer": "no false generalization",
+      "reason": "Original recovery retains exact original statement, zero polynomial and mixed zero degrees; no ENat zero-polynomial convention substitution or unsupported equivalence of index definitions. Nonempty expansion and strict hC preserved."
+    }
+  ],
+  "proofstrategy5": [
+    {
+      "question": "1 epsilon-delta vs filters",
+      "answer": "n/a finite algebraic inequality"
+    },
+    {
+      "question": "2 elementwise vs substructure",
+      "answer": "elementwise finite sum/product is appropriate; support lower bound could later be packaged as a submodule but is not needed"
+    },
+    {
+      "question": "3 sequences vs nets",
+      "answer": "n/a no limits"
+    },
+    {
+      "question": "4 construction vs universal property",
+      "answer": "existing eval and polynomial sums retained; no new object construction"
+    },
+    {
+      "question": "5 missing helpers",
+      "answer": "yes: own shifted-expansion strict decay and monomial radius/cost estimate; project multivariate Taylor/Hasse/index ingredients are not mathlib primitives"
+    }
+  ],
+  "proofstrategy_verdict": "REFACTOR-RECOMMENDED: separate finite expansion norm estimate, semantic radius decay, then Taylor/index/arithmetic specialization",
+  "statement_shape3": [
+    {
+      "check": "normal form",
+      "verdict": "RESTATE",
+      "reason": "Compare absolute-value real corollary, norm of a shifted finite expansion, and coefficient/support cost formulation. Use norm for general coefficients and low-cost vanishing predicate, keep original index corollary downstream. No known existing canonical exact weighted upper estimate; not an iff theorem so RHS convention irrelevant."
+    },
+    {
+      "check": "syntactic generality",
+      "verdict": "RESTATE",
+      "reason": "Verified boxed coefficient premise \u2200d\u2208box r instead of all multiindices, arbitrary center/evaluation/cost, finite \u03c3. Actual sole caller supplies box restriction by fun d _ \u21a6 hC d; original type preserved."
+    },
+    {
+      "check": "superfluous arguments",
+      "verdict": "localize",
+      "reason": "NeZero m needed only to write q0/r0; Fin m and rational/integer presentations removed in generic. hd needed for box expansion; hidx used for surviving weights; hq for positive denominators/base at least1; hκ for exponent sign; h\u03ba for exponent monotonicity; happ/hqr for radius bridge; hC strict on nonempty box ensures C>0. No nonzero Q/positive r required."
+    }
+  ],
+  "statement_shape_verdict": "RESTATE-BEFORE-SHIP",
+  "infrastructure_risks": [
+    {
+      "risk": "typeclass diamond",
+      "verdict": "n/a",
+      "reason": "Target is a theorem; introduces no definition, coercion or typeclass instance."
+    },
+    {
+      "risk": "reducibility leak",
+      "verdict": "n/a",
+      "reason": "Target is a theorem; introduces no definition, coercion or typeclass instance."
+    },
+    {
+      "risk": "noncanonical unfolding",
+      "verdict": "n/a",
+      "reason": "Target is a theorem; introduces no definition, coercion or typeclass instance."
+    },
+    {
+      "risk": "instance priority collision",
+      "verdict": "n/a",
+      "reason": "Target is a theorem; introduces no definition, coercion or typeclass instance."
+    },
+    {
+      "risk": "universe polymorphism",
+      "verdict": "n/a",
+      "reason": "Target is a theorem; introduces no definition, coercion or typeclass instance."
+    },
+    {
+      "risk": "coercion ambiguity",
+      "verdict": "n/a",
+      "reason": "Target is a theorem; introduces no definition, coercion or typeclass instance."
+    }
+  ],
+  "generality": [
+    {
+      "argument": "m, NeZero m, Fin m",
+      "verdict": "generalize",
+      "evidence": "Finite \u03c3 possibly empty in own generic/cost_bound; NeZero required only by original distinguished coordinate0."
+    },
+    {
+      "argument": "Q real coefficients",
+      "verdict": "generalize",
+      "evidence": "NormedField and NormedCommRing + NormOneClass shifted polynomial expansion tested; project Hasse/index remains real-specific, not falsely claimed ported."
+    },
+    {
+      "argument": "r natural coordinate degrees, hd",
+      "verdict": "retain box, abstract expansion also possible",
+      "evidence": "Natural exponents/degree upper bounds give finite box and cardinal product. Arbitrary s.Nonempty works for expansion form; no positive degree condition."
+    },
+    {
+      "argument": "\u03b1 common center",
+      "verdict": "generalize",
+      "evidence": "Arbitrary a:\u03c3\u2192\u211d or K in generic proof."
+    },
+    {
+      "argument": "c, hidx",
+      "verdict": "semantic cost lower bound",
+      "evidence": "Nonzero expansion coefficients imply c\u2264\u03a3 \u03bcj*dj; original recovery rescales c to r0*c*\u03ba and uses index_le_weight. No Q\u22600."
+    },
+    {
+      "argument": "h integral numerator",
+      "verdict": "remove representation",
+      "evidence": "Arbitrary x:\u03c3\u2192\u211d/K; exact h/q evaluation recovered."
+    },
+    {
+      "argument": "q positive natural, hq",
+      "verdict": "abstract to b\u22651 and radii",
+      "evidence": "b\u22651 supplies positive base and exponent monotonicity; coordinate radius b^(-\u03bcj) need only satisfy actual error bound."
+    },
+    {
+      "argument": "\u03ba nonnegative, happ, hqr",
+      "verdict": "replace by semantic cost/radius bounds",
+      "evidence": "Original bridge proven using Real.rpow_le_rpow_of_nonpos; \u03bc arbitrary real in generic, no positivity assumption needed beyond actual error bound."
+    },
+    {
+      "argument": "C and all-index hC",
+      "verdict": "localize",
+      "evidence": "Only d\u2208box r needed; box nonempty by0; C>0 derived rather than hypothesized."
+    }
+  ],
+  "generality_verdict": "STRICTLY NARROWER: verified center/evaluation/finite variables/box localization; genuine parameter changes, not renaming arithmetic constants"
+}
