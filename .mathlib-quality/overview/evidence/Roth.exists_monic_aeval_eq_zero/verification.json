@@ -1,0 +1,129 @@
+{
+  "declaration": "Roth.exists_monic_aeval_eq_zero",
+  "canonical_index": 272,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "source_sha256": "54ef6486a49d623941977a8f6050ca0ea8123ad0ca27d4ef373c98b82c930f63",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "MONIC272_FULL_TYPE:",
+        "MONIC272_AUDIT: requested=293; unique=293",
+        "MONIC272_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "isolated",
+      "source": "isolated3-executed.lean.txt",
+      "receipt": "isolated3-receipt.json",
+      "format": "run_code",
+      "source_sha256": "713ff3d13c95e497547ecc85da1d23e35a184524cd2cb0533b0be8b28abe3178",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n#check_failure Roth.exists_monic_aeval_eq_zero\n#check IsIntegral\n#check Polynomial.natDegree_mul_X_pow\n#check Polynomial.Monic.mul\n#check Polynomial.monic_X_pow\n#check Polynomial.Monic.ne_zero\n#check Polynomial.aeval_def\nnamespace Monic272Generic\nopen Polynomial\n-- Pure padding needs no integral API and uses semirings, even a noncommutative target.\ntheorem pad {R A : Type*} [CommSemiring R] [Nontrivial R] [Semiring A] [Algebra R A]\n    {a : A} {f : R[X]} (hf : f.Monic) (hfa : aeval a f = 0) (N : ℕ) :\n    ∃ g : R[X], g.Monic ∧ aeval a g = 0 ∧ N ≤ g.natDegree := by\n  refine ⟨f * X ^ N, hf.mul (monic_X_pow N), ?_, ?_⟩\n  · rw [map_mul, hfa, zero_mul]\n  · simp [hf.ne_zero]\n-- Pinned IsIntegral is defined for rings, so the witness form is the semiring weakening.\ntheorem integral {R A : Type*} [CommRing R] [Nontrivial R] [Ring A] [Algebra R A]\n    {a : A} (ha : IsIntegral R a) (N : ℕ) :\n    ∃ g : R[X], g.Monic ∧ aeval a g = 0 ∧ N ≤ g.natDegree := by\n  obtain ⟨f, hf, hfa⟩ := ha\n  exact pad hf (by simpa only [aeval_def] using hfa) N\n-- Original specialization, retaining all original assumptions and exact result.\ntheorem original {α : ℝ} (hint : IsIntegral ℤ α) :\n    ∃ f : Polynomial ℤ, f.Monic ∧ Polynomial.aeval α f = 0 ∧ 2 ≤ f.natDegree :=\n  integral hint 2\n-- A nontrivial target is not required: target PUnit admits the same witness padding.\nexample (N : ℕ) : ∃ g : ℕ[X], g.Monic ∧ aeval (0 : PUnit) g = 0 ∧ N ≤ g.natDegree := by\n  exact pad (monic_X_pow 1) (by simp) N\n-- Integral integer and rational values are included: no irrationality premise exists.\nexample (z : ℤ) (N : ℕ) : ∃ f : ℤ[X], f.Monic ∧ aeval (z : ℝ) f = 0 ∧ N ≤ f.natDegree :=\n  integral (isIntegral_algebraMap (R := ℤ) (A := ℝ) (x := z)) N\nexample (N : ℕ) : ∃ f : ℤ[X], f.Monic ∧ aeval (0 : ℚ) f = 0 ∧ N ≤ f.natDegree :=\n  integral (isIntegral_zero) N\n-- A trivial coefficient ring invalidates all positive degree bounds.\nexample : ¬ ∃ f : PUnit[X], 1 ≤ f.natDegree := by\n  rintro ⟨f, hf⟩\n  have h : f = 0 := Subsingleton.elim _ _\n  simp [h] at hf\n#print axioms pad\n#print axioms integral\n#print axioms original\nend Monic272Generic\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Monic272Generic.pad' depends on axioms:",
+        "'Monic272Generic.original' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "callers",
+      "source": "caller2-executed.lean.txt",
+      "receipt": "caller2-receipt.json",
+      "format": "disk",
+      "source_sha256": "c83d96b5dcbf5390341e52864ee5f74298130a0cd3372d3a4c702cf1a9e1eab8",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "MONIC272_NONCIRCULAR: Monic272Inline.exists_roth_parameters_aux",
+        "'Monic272Inline.thueSiegelRoth' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "composition",
+      "source": "composition-executed.lean.txt",
+      "receipt": "composition-receipt.json",
+      "format": "run_code",
+      "source_sha256": "302093f7e9ee47888073c0c0c3788e55f991438c493f382310588e853061e4d5",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n#check_failure Roth.exists_monic_aeval_eq_zero\nnamespace Monic272Composition\nopen Polynomial\nexample {α : ℝ} (hint : IsIntegral ℤ α) :\n    ∃ f : Polynomial ℤ, f.Monic ∧ aeval α f = 0 ∧ 2 ≤ f.natDegree := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp [IsIntegral, RingHom.IsIntegralElem]\n  obtain ⟨f, hf, hf0⟩ := hint\n  refine ⟨f * X ^ 2, hf.mul (monic_X_pow 2), ?_, ?_⟩\n  · rw [map_mul, aeval_def, hf0, zero_mul]\n  · simp [hf.ne_zero]\nend Monic272Composition\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [],
+      "axiom_print_required": false
+    },
+    {
+      "label": "consumers",
+      "source": "consumer-scope-executed.lean.txt",
+      "receipt": "consumer-scope-receipt.json",
+      "format": "disk",
+      "source_sha256": "714c171a843b9a15fb8048de8d93a1202e7768305a05478a920b3634c0cb385d",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "MONIC272_SIMP_MEMBER: false",
+        "MONIC272_SCOPE_COMPLETE"
+      ],
+      "axiom_print_required": true
+    }
+  ],
+  "other_executions": [
+    {
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "1b60799368ad24b35672c565891de60d3d173f3c826494bfb346304d93795ab2",
+      "status": "Rejected: two guard-example errors; generic core succeeded but not accepted batch"
+    },
+    {
+      "source": "isolated2-executed.lean.txt",
+      "receipt": "isolated2-receipt.json",
+      "source_sha256": "624cd5cb24b0181ee9c59784842136cc60b998f09dc4319fc77f489fb1c5a2db",
+      "status": "Rejected: one unnecessarySimpa style warning; corrected final batch clean"
+    },
+    {
+      "source": "caller-executed.lean.txt",
+      "receipt": "caller-receipt.json",
+      "source_sha256": "af9a66c0d0aede55814ce2b7db737a47f58dff6486a565e28173327e283b84d8",
+      "status": "Successful earlier complete inline caller replay; extended final caller2 is accepted primary"
+    }
+  ],
+  "attempt_accounting": {
+    "native_executions": 8,
+    "accepted_primary": 5,
+    "other": 3
+  },
+  "controls": {
+    "disk_import_count": 9,
+    "isolated_import_count": 18,
+    "isolated_extra_modules": [],
+    "native_executor": "root",
+    "production_changes": false,
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "363a6821de56e15a68978bcfef1f74e28eb837482667eba3b9ef498e98cea593"
+  },
+  "build_gate": "Fresh17 hashes agree with clean baseline2467jobs; accepted fileendTheta228 build reused; no fileendbuild required272 (next289)."
+}

@@ -1,0 +1,125 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n#check_failure Roth.exists_monic_aeval_eq_zero\n#check IsIntegral\n#check Polynomial.natDegree_mul_X_pow\n#check Polynomial.Monic.mul\n#check Polynomial.monic_X_pow\n#check Polynomial.Monic.ne_zero\n#check Polynomial.aeval_def\nnamespace Monic272Generic\nopen Polynomial\n-- Pure padding needs no integral API and uses semirings, even a noncommutative target.\ntheorem pad {R A : Type*} [CommSemiring R] [Nontrivial R] [Semiring A] [Algebra R A]\n    {a : A} {f : R[X]} (hf : f.Monic) (hfa : aeval a f = 0) (N : \u2115) :\n    \u2203 g : R[X], g.Monic \u2227 aeval a g = 0 \u2227 N \u2264 g.natDegree := by\n  refine \u27e8f * X ^ N, hf.mul (monic_X_pow N), ?_, ?_\u27e9\n  \u00b7 rw [map_mul, hfa, zero_mul]\n  \u00b7 simp [hf.ne_zero]\n-- Pinned IsIntegral is defined for rings, so the witness form is the semiring weakening.\ntheorem integral {R A : Type*} [CommRing R] [Nontrivial R] [Ring A] [Algebra R A]\n    {a : A} (ha : IsIntegral R a) (N : \u2115) :\n    \u2203 g : R[X], g.Monic \u2227 aeval a g = 0 \u2227 N \u2264 g.natDegree := by\n  obtain \u27e8f, hf, hfa\u27e9 := ha\n  exact pad hf (by simpa only [aeval_def] using hfa) N\n-- Original specialization, retaining all original assumptions and exact result.\ntheorem original {\u03b1 : \u211d} (hint : IsIntegral \u2124 \u03b1) :\n    \u2203 f : Polynomial \u2124, f.Monic \u2227 Polynomial.aeval \u03b1 f = 0 \u2227 2 \u2264 f.natDegree :=\n  integral hint 2\n-- A nontrivial target is not required: target PUnit admits the same witness padding.\nexample (N : \u2115) : \u2203 g : \u2115[X], g.Monic \u2227 aeval (0 : PUnit) g = 0 \u2227 N \u2264 g.natDegree := by\n  exact pad (monic_X_pow 1) (by simp) N\n-- Integral integer and rational values are included: no irrationality premise exists.\nexample (z : \u2124) (N : \u2115) : \u2203 f : \u2124[X], f.Monic \u2227 aeval (z : \u211d) f = 0 \u2227 N \u2264 f.natDegree :=\n  integral (isIntegral_algebraMap (R := \u2124) (A := \u211d) (x := z)) N\nexample (N : \u2115) : \u2203 f : \u2124[X], f.Monic \u2227 aeval (0 : \u211a) f = 0 \u2227 N \u2264 f.natDegree :=\n  integral (isIntegral_zero) N\n-- A trivial coefficient ring invalidates all positive degree bounds.\nexample : \u00ac \u2203 f : PUnit[X], 1 \u2264 f.natDegree := by\n  rintro \u27e8f, hf\u27e9\n  have h : f = 0 := Subsingleton.elim _ _\n  simp [h] at hf\n#print axioms pad\n#print axioms integral\n#print axioms original\nend Monic272Generic\n"
+  },
+  "elapsed_ms": 734,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "isolated03",
+      "operation": "run_code",
+      "receipt": "isolated3-receipt.json",
+      "arguments": {},
+      "source": "isolated3-executed.lean.txt",
+      "source_sha256": "713ff3d13c95e497547ecc85da1d23e35a184524cd2cb0533b0be8b28abe3178"
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.exists_monic_aeval_eq_zero/root-requests/isolated03.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.exists_monic_aeval_eq_zero/isolated3-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_monic_aeval_eq_zero`\",\n      \"line\": 19,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"IsIntegral.{u_1, u_3} (R : Type u_1) {A : Type u_3} [CommRing R] [Ring A] [Algebra R A] (x : A) : Prop\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.natDegree_mul_X_pow.{u} {R : Type u} [Semiring R] [Nontrivial R] {p : Polynomial R} (n : \u2115) (hp : p \u2260 0) :\\n  (p * Polynomial.X ^ n).natDegree = p.natDegree + n\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.Monic.mul.{u} {R : Type u} [Semiring R] {p q : Polynomial R} (hp : p.Monic) (hq : q.Monic) : (p * q).Monic\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.monic_X_pow.{u} {R : Type u} [Semiring R] (n : \u2115) : (Polynomial.X ^ n).Monic\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.Monic.ne_zero.{u} {R : Type u} [Semiring R] [Nontrivial R] {p : Polynomial R} (hp : p.Monic) : p \u2260 0\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.aeval_def.{u, z} {R : Type u} {A : Type z} [CommSemiring R] [Semiring A] [Algebra R A] (x : A)\\n  (p : Polynomial R) : (Polynomial.aeval x) p = Polynomial.eval\u2082 (algebraMap R A) x p\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Monic272Generic.pad' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 58,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Monic272Generic.integral' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 59,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Monic272Generic.original' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 60,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_monic_aeval_eq_zero`",
+          "line": 19,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "IsIntegral.{u_1, u_3} (R : Type u_1) {A : Type u_3} [CommRing R] [Ring A] [Algebra R A] (x : A) : Prop",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.natDegree_mul_X_pow.{u} {R : Type u} [Semiring R] [Nontrivial R] {p : Polynomial R} (n : \u2115) (hp : p \u2260 0) :\n  (p * Polynomial.X ^ n).natDegree = p.natDegree + n",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.Monic.mul.{u} {R : Type u} [Semiring R] {p q : Polynomial R} (hp : p.Monic) (hq : q.Monic) : (p * q).Monic",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.monic_X_pow.{u} {R : Type u} [Semiring R] (n : \u2115) : (Polynomial.X ^ n).Monic",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.Monic.ne_zero.{u} {R : Type u} [Semiring R] [Nontrivial R] {p : Polynomial R} (hp : p.Monic) : p \u2260 0",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.aeval_def.{u, z} {R : Type u} {A : Type z} [CommSemiring R] [Semiring A] [Algebra R A] (x : A)\n  (p : Polynomial R) : (Polynomial.aeval x) p = Polynomial.eval\u2082 (algebraMap R A) x p",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Monic272Generic.pad' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 58,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Monic272Generic.integral' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 59,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Monic272Generic.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 60,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}
