@@ -1,0 +1,22 @@
+private lemma roth_product_bound_aux {m : ℕ} [NeZero m] {α A δ : ℝ} (hδ0 : 0 ≤ δ) (hA : 0 ≤ A)
+    {q r : Fin m → ℕ} (hr0 : 0 < r 0) (hr0max : ∀ j, r j ≤ r 0)
+    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log (q 0)) : 0 < (mainCoeffBound δ (q 0) (r 0) : ℝ) ∧
+      (mainCoeffBound δ (q 0) (r 0) : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) ∧
+      (∏ j, ((r j : ℝ) + 1)) < (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ δ := by
+  -- `B` is at most `q_0^{δ r_0}` and `∏ (r_j + 1) < B^δ`
+  have hm1 : (1 : ℝ) ≤ m := by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)
+  have h32' : 3 ≤ δ ^ 2 * Real.log (q 0) := by
+    have := mul_nonneg (Nat.cast_nonneg m) (Real.log_nonneg (le_add_of_nonneg_right hA))
+    have := mul_nonneg (Nat.cast_nonneg m)
+      (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α)))
+    linarith
+  obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor ((by norm_num : (2 : ℝ) ≤ 4).trans
+    (four_lt_rpow hδ0 hr0 h32').le)
+  refine ⟨(Real.sqrt_nonneg _).trans_lt hsqB, hBX, ?_⟩
+  have hprod : ∏ j, (r j + 1) ≤ (2 ^ r 0) ^ m := by
+    simpa using Finset.prod_le_pow_card Finset.univ (fun j ↦ r j + 1) (2 ^ r 0)
+      (fun j _ ↦ Nat.lt_two_pow_self.trans_le (Nat.pow_le_pow_right (by norm_num) (hr0max j)))
+  have hprodR : (∏ j, ((r j : ℝ) + 1)) ≤ (2 : ℝ) ^ (m * r 0) := by
+    exact_mod_cast (by simpa [← pow_mul, mul_comm] using hprod)
+  exact hprodR.trans_lt (three_small_factors hδ0 hr0 hA h32).1

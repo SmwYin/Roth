@@ -1,0 +1,21 @@
+{
+  "declaration": "Roth.roth_product_bound_aux",
+  "kind": "lemma",
+  "type": "∀ {m : ℕ} [inst : NeZero m] {α A δ : ℝ},\n  0 ≤ δ →\n    0 ≤ A →\n      ∀ {q r : Fin m → ℕ},\n        0 < r 0 →\n          (∀ (j : Fin m), r j ≤ r 0) →\n            2 * ↑m + 1 + 2 * ↑m * Real.log (1 + A) + 2 * ↑m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log ↑(q 0) →\n              0 < ↑(Roth.mainCoeffBound δ (q 0) (r 0)) ∧\n                ↑(Roth.mainCoeffBound δ (q 0) (r 0)) ≤ ↑(q 0) ^ (δ * ↑(r 0)) ∧\n                  ∏ j : Fin m, (↑(r j) + 1) < ↑(Roth.mainCoeffBound δ (q 0) (r 0)) ^ δ",
+  "what": "Bounds the natural-floor coefficient scale from above and away from zero, and bounds the product of degree factors strictly by its delta power.",
+  "how": "Use four_lt_rpow and sqrt_lt_floor for the coefficient scale; bound each degree-plus-one by two to the maximal degree and apply three_small_factors.",
+  "hypotheses": "Nonzero dimension, nonnegative delta/coefficient bound, positive maximal first degree and combined logarithmic bound. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.four_lt_rpow",
+    "Roth.mainCoeffBound",
+    "Roth.sqrt_lt_floor",
+    "Roth.three_small_factors"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Main.lean; 1 direct original value consumers. Exact separate lists retained. Entire Main module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Extract the square-log threshold at least3 from m>=1 and nonnegative logarithm contributions. Apply four_lt_rpow and sqrt_lt_floor to get positivity of B and B<=q0^(delta*r0). Bound each degree factor by 2^r0 via Nat.lt_two_pow_self and rj<=r0, then use Finset.prod_le_pow_card and the first three_small_factors bound.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

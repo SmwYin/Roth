@@ -1,0 +1,61 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 481,
+  "name": "Roth.roth_product_bound_aux",
+  "short": "roth_product_bound_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 502,
+  "source": "private lemma roth_product_bound_aux {m : ℕ} [NeZero m] {α A δ : ℝ} (hδ0 : 0 ≤ δ) (hA : 0 ≤ A)\n    {q r : Fin m → ℕ} (hr0 : 0 < r 0) (hr0max : ∀ j, r j ≤ r 0)\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0)) : 0 < (mainCoeffBound δ (q 0) (r 0) : ℝ) ∧\n      (mainCoeffBound δ (q 0) (r 0) : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) ∧\n      (∏ j, ((r j : ℝ) + 1)) < (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ δ := by\n  -- `B` is at most `q_0^{δ r_0}` and `∏ (r_j + 1) < B^δ`\n  have hm1 : (1 : ℝ) ≤ m := by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)\n  have h32' : 3 ≤ δ ^ 2 * Real.log (q 0) := by\n    have := mul_nonneg (Nat.cast_nonneg m) (Real.log_nonneg (le_add_of_nonneg_right hA))\n    have := mul_nonneg (Nat.cast_nonneg m)\n      (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α)))\n    linarith\n  obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor ((by norm_num : (2 : ℝ) ≤ 4).trans\n    (four_lt_rpow hδ0 hr0 h32').le)\n  refine ⟨(Real.sqrt_nonneg _).trans_lt hsqB, hBX, ?_⟩\n  have hprod : ∏ j, (r j + 1) ≤ (2 ^ r 0) ^ m := by\n    simpa using Finset.prod_le_pow_card Finset.univ (fun j ↦ r j + 1) (2 ^ r 0)\n      (fun j _ ↦ Nat.lt_two_pow_self.trans_le (Nat.pow_le_pow_right (by norm_num) (hr0max j)))\n  have hprodR : (∏ j, ((r j : ℝ) + 1)) ≤ (2 : ℝ) ^ (m * r 0) := by\n    exact_mod_cast (by simpa [← pow_mul, mul_comm] using hprod)\n  exact hprodR.trans_lt (three_small_factors hδ0 hr0 hA h32).1",
+  "signature": "private lemma roth_product_bound_aux {m : ℕ} [NeZero m] {α A δ : ℝ} (hδ0 : 0 ≤ δ) (hA : 0 ≤ A)\n    {q r : Fin m → ℕ} (hr0 : 0 < r 0) (hr0max : ∀ j, r j ≤ r 0)\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0)) : 0 < (mainCoeffBound δ (q 0) (r 0) : ℝ) ∧\n      (mainCoeffBound δ (q 0) (r 0) : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) ∧\n      (∏ j, ((r j : ℝ) + 1)) < (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ δ",
+  "body": "by\n  -- `B` is at most `q_0^{δ r_0}` and `∏ (r_j + 1) < B^δ`\n  have hm1 : (1 : ℝ) ≤ m := by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)\n  have h32' : 3 ≤ δ ^ 2 * Real.log (q 0) := by\n    have := mul_nonneg (Nat.cast_nonneg m) (Real.log_nonneg (le_add_of_nonneg_right hA))\n    have := mul_nonneg (Nat.cast_nonneg m)\n      (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α)))\n    linarith\n  obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor ((by norm_num : (2 : ℝ) ≤ 4).trans\n    (four_lt_rpow hδ0 hr0 h32').le)\n  refine ⟨(Real.sqrt_nonneg _).trans_lt hsqB, hBX, ?_⟩\n  have hprod : ∏ j, (r j + 1) ≤ (2 ^ r 0) ^ m := by\n    simpa using Finset.prod_le_pow_card Finset.univ (fun j ↦ r j + 1) (2 ^ r 0)\n      (fun j _ ↦ Nat.lt_two_pow_self.trans_le (Nat.pow_le_pow_right (by norm_num) (hr0max j)))\n  have hprodR : (∏ j, ((r j : ℝ) + 1)) ≤ (2 : ℝ) ^ (m * r 0) := by\n    exact_mod_cast (by simpa [← pow_mul, mul_comm] using hprod)\n  exact hprodR.trans_lt (three_small_factors hδ0 hr0 hA h32).1",
+  "proof_lines": 17,
+  "sha256": "cda407e832714f13a68cb031a7037075ed553dc9fc6e1a34c0297ae7f8c3005a",
+  "what": "The floored coefficient scale is positive, bounded by its unfloored power, and absorbs all degree-count factors.",
+  "how": "Use four_lt_rpow and sqrt_lt_floor for the coefficient scale; bound each degree-plus-one by two to the maximal degree and apply three_small_factors.",
+  "hypotheses": "Nonzero dimension, nonnegative delta/coefficient bound, positive maximal first degree and combined logarithmic bound.",
+  "source_body_refs": [
+    "Roth.four_lt_rpow",
+    "Roth.sqrt_lt_floor",
+    "Roth.three_small_factors"
+  ],
+  "source_type_refs": [
+    "Roth.mainCoeffBound"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.roth_of_isIntegral",
+      "file": "Roth/Main.lean",
+      "line": 547
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.four_lt_rpow",
+    "Roth.sqrt_lt_floor",
+    "Roth.three_small_factors"
+  ],
+  "used_by_in_file": [
+    "Roth.roth_of_isIntegral"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 448,
+  "project_body_refs": [
+    "Roth.four_lt_rpow",
+    "Roth.sqrt_lt_floor",
+    "Roth.three_small_factors"
+  ],
+  "project_type_refs": [
+    "Roth.mainCoeffBound"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.roth_of_isIntegral",
+      "file": "Roth/Main.lean",
+      "line": 547
+    }
+  ]
+}
