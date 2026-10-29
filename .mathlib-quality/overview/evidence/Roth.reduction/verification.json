@@ -1,0 +1,156 @@
+{
+  "declaration": "Roth.reduction",
+  "canonical_index": 271,
+  "completed": true,
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "5781cb134ca1b984d5083d8cda4122fb2f07adeebba73ffe687710df090b77de",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "REDUCTION271_FULL_TYPE:",
+        "RED271_AUDIT: requested=293; unique=293",
+        "REDUCTION271_AUDIT_PRESENT: present=293; values=293"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "2410a38e6d139d0ba286336692719ad2f8906019c7c5f6f4b2cea522074918f7",
+      "receipt": "isolated-receipt.json",
+      "format": "isolated",
+      "native_region_start_line": 21,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.reduction\n#check_failure Roth.approxSet\nnamespace Reduction271Generic\ndef approxSet (α κ : ℝ) : Set (ℤ × ℕ) :=\n  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}\n\ntheorem exists_nat_mul_isIntegral {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by\n  obtain ⟨y, hy, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_integral_multiple\n  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩\n  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign\n\ntheorem approxSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by\n  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ\n  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉\n  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_\n  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩\n  simp only at hq0 happ hqQ\n  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0\n  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,\n      Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)\n        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]\n  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by\n    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ\n    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| ≤ K := by\n    have : ((|h| : ℤ) : ℝ) ≤ K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact ⟨abs_le.1 hK', hq0, hqQ⟩\n\ntheorem eventually_div_rpow_lt {M κ κ' : ℝ} (hκ : κ' < κ) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' := by\n  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1\n    (((tendsto_rpow_atTop (sub_pos.2 hκ)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)\n  refine ⟨N, fun q hq ↦ ?_⟩\n  have hq0 : (0 : ℝ) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq\n  rw [div_lt_iff₀ (Real.rpow_pos_of_pos hq0 κ), one_div_mul_eq_div, ← Real.rpow_sub hq0]\n  exact hN q hq.le\n\ntheorem scaling {α κ κ' : ℝ} (M : ℕ) (hM0 : 0 < M) (hκ : κ' < κ)\n    (hinf : (approxSet α κ).Infinite) : (approxSet (M * α) κ').Infinite := by\n  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) hκ\n  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image\n    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap\n      Function.injective_id).injOn).mono ?_\n  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩\n  refine ⟨hq0, ?_⟩\n  dsimp only [Prod.map, id]\n  push_cast\n  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]\n  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by\n        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)\n    _ < 1 / (q : ℝ) ^ κ' := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)\n\ntheorem threshold {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α)\n    {t κ : ℝ} (hκ : t < κ) (hinf : (approxSet α κ).Infinite) :\n    ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ t < κ' ∧ κ' < κ ∧\n      (approxSet α' κ').Infinite := by\n  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg\n  refine ⟨M * α, (κ + t) / 2, hα.natCast_mul hM0.ne', hMint,\n    by linarith, by linarith, scaling M hM0 (by linarith) hinf⟩\n\ntheorem recovery {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α)\n    {κ : ℝ} (hκ : 2 < κ) (hinf : (approxSet α κ).Infinite) :\n    ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧\n      (approxSet α' κ').Infinite := by\n  obtain ⟨a, k, ha, hi, ht, -, hs⟩ := threshold hα halg hκ hinf\n  exact ⟨a, k, ha, hi, ht, hs⟩\n\ntheorem liouville_threshold {α κ : ℝ} (hα : Irrational α)\n    (halg : IsAlgebraic ℚ α) (h : LiouvilleWith κ α) :\n    ∃ α' : ℝ, Irrational α' ∧ IsIntegral ℤ α' ∧ LiouvilleWith κ α' := by\n  obtain ⟨M, hM, hi⟩ := exists_nat_mul_isIntegral halg\n  exact ⟨M * α, hα.natCast_mul hM.ne', hi, h.nat_mul hM.ne'⟩\n\n#check @LiouvilleWith.nat_mul\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#check @LiouvilleWith.exists_pos\n#check @LiouvilleWith.mono\n#print axioms scaling\n#print axioms threshold\n#print axioms recovery\n#print axioms liouville_threshold\nend Reduction271Generic\n"
+      },
+      "required_info": [
+        "'Reduction271Generic.scaling' depends on axioms:",
+        "'Reduction271Generic.threshold' depends on axioms:",
+        "'Reduction271Generic.recovery' depends on axioms:",
+        "'Reduction271Generic.liouville_threshold' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "callers",
+      "source": "caller3-executed.lean.txt",
+      "source_sha256": "70b07ae3e0e0faab63c3b1aa2fbd505c83c45f2638c726243b88a99c56506c86",
+      "receipt": "caller3-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "RED271_NONCIRCULAR: Reduction271Inline.roth; checked=2795",
+        "RED271_NONCIRCULAR: Reduction271Replacement.roth; checked=2796",
+        "RED271_NONCIRCULAR: Reduction271Replacement.threshold; checked=459"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "composition-guards",
+      "source": "scope2-executed.lean.txt",
+      "source_sha256": "d6d0427ce00f334ef5216e2d278d80209e85e40a32121c3a8ec90daf87c48bfb",
+      "receipt": "scope2-receipt.json",
+      "format": "isolated",
+      "native_region_start_line": 21,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.reduction\nnamespace Reduction271Scope\ndef approxSet (α κ : ℝ) : Set (ℤ × ℕ) :=\n  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}\ntheorem composition {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)\n    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧\n    (approxSet α' κ').Infinite  := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp [approxSet]\n  fail_if_success exact LiouvilleWith.nat_mul\n  have exists_nat_mul_isIntegral {α : ℝ} (hα : IsAlgebraic ℚ α) :\n    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by\n    obtain ⟨y, hy, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_integral_multiple\n    refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩\n    simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign\n  have approxSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by\n    set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ\n    set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉\n    refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_\n    rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩\n    simp only at hq0 happ hqQ\n    have hqR : (0 : ℝ) < q := by exact_mod_cast hq0\n    have hdiv : |(h : ℝ) / q| ≤ |α| + S := by\n      rw [abs_sub_comm] at happ\n      linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,\n        Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)\n          (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]\n    have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by\n      have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ\n      have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv\n      simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans\n        (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n    have hK' : |h| ≤ K := by\n      have : ((|h| : ℤ) : ℝ) ≤ K := by\n        rw [Int.cast_abs]\n        exact habs.trans (Int.le_ceil _)\n      exact_mod_cast this\n    simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n    exact ⟨abs_le.1 hK', hq0, hqQ⟩\n  have eventually_div_rpow_lt {M κ κ' : ℝ} (hκ : κ' < κ) :\n    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' := by\n    obtain ⟨N, hN⟩ := Filter.eventually_atTop.1\n      (((tendsto_rpow_atTop (sub_pos.2 hκ)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)\n    refine ⟨N, fun q hq ↦ ?_⟩\n    have hq0 : (0 : ℝ) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq\n    rw [div_lt_iff₀ (Real.rpow_pos_of_pos hq0 κ), one_div_mul_eq_div, ← Real.rpow_sub hq0]\n    exact hN q hq.le\n  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg\n  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)\n  refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩\n  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image\n    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap\n      Function.injective_id).injOn).mono ?_\n  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩\n  refine ⟨hq0, ?_⟩\n  dsimp only [Prod.map, id]\n  push_cast\n  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]\n  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by\n        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)\n    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)\nexample : ((0 : ℤ), (1 : ℕ)) ∈ approxSet (3 / 4) 0 ∧\n    ¬ ((0 : ℤ), (1 : ℕ)) ∈ approxSet (2 * (3 / 4)) 0 := by\n  norm_num [approxSet, Real.rpow_zero]\nexample (t : ℝ) : ¬ (t < (t + t) / 2) := by linarith\nexample : LiouvilleWith 1 (0 : ℝ) := liouvilleWith_one 0\n#print axioms composition\nend Reduction271Scope\n"
+      },
+      "required_info": [
+        "'Reduction271Scope.composition' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "dependencies",
+      "source": "dependencies-executed.lean.txt",
+      "source_sha256": "d6e40b9c0f1c61ecd7def44dfedbf27a3411de4454f63c912fb53b62e040be9e",
+      "receipt": "dependencies-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "RED271_EXACT_PROJECT_DEPS:"
+      ],
+      "axiom_print_required": false
+    },
+    {
+      "label": "consumers",
+      "source": "consumer-scope-executed.lean.txt",
+      "source_sha256": "e27385800026c7ede07f0f0e9e6667bfcb6725a3aa84272401a9f4c0449ab4ad",
+      "receipt": "consumer-scope-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "RED271_SIMP_MEMBER: false",
+        "RED271_SCOPE_COMPLETE"
+      ],
+      "axiom_print_required": true
+    }
+  ],
+  "other_executions": [
+    {
+      "source": "caller-executed.lean.txt",
+      "receipt": "caller-receipt.json",
+      "source_sha256": "48d19e81f74ea0019a9a59af8264aeb1eef8e22b1f2c62d34acb1cbc9ab6c662",
+      "status": "unaccepted partial/timed-out broad mathlib closure; not a proof failure"
+    },
+    {
+      "source": "caller2-executed.lean.txt",
+      "receipt": "caller2-receipt.json",
+      "source_sha256": "77ce971aec142342bad7e6e6336c8a5d010d978d7c0b1bf96692bc663f56ecc1",
+      "status": "clean redundant execution; superseded by caller03 adding exact signature agreements"
+    },
+    {
+      "source": "scope-executed.lean.txt",
+      "receipt": "scope-receipt.json",
+      "source_sha256": "f131dd6283862d03276284500913bf576af9a0c2e61eeb6c5d8cd64cd3ca5521",
+      "status": "unaccepted empty-line style warning; fixed without proof changes in scope02"
+    }
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "executor": "Root persistent native session; worker prepared exact source/hash requests and read complete raw diagnostics",
+  "attempt_accounting": {
+    "native_executions": 9,
+    "accepted_sources": 6,
+    "clean_redundant": 1,
+    "partial": 1,
+    "warning_superseded": 1,
+    "all_native_raw_receipts_archived": true
+  },
+  "original_replay_scope": "Exact target only, no private helpers, replay basename; exact native type agreement.",
+  "no_file_end_build_due": true,
+  "next_file_end_canonical_index": 289,
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "363a6821de56e15a68978bcfef1f74e28eb837482667eba3b9ef498e98cea593",
+    "isolated_extra_modules": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics",
+      "Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith"
+    ],
+    "authorization": "import-authorization.json"
+  }
+}

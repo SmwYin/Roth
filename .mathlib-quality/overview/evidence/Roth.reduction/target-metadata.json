@@ -1,0 +1,61 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 118,
+  "name": "Roth.reduction",
+  "short": "reduction",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 134,
+  "source": "theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)\n    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧\n    (approxSet α' κ').Infinite := by\n  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg\n  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)\n  refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩\n  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image\n    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap\n      Function.injective_id).injOn).mono ?_\n  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩\n  refine ⟨hq0, ?_⟩\n  dsimp only [Prod.map, id]\n  push_cast\n  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]\n  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by\n        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)\n    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)",
+  "signature": "theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)\n    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧\n    (approxSet α' κ').Infinite",
+  "body": "by\n  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg\n  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)\n  refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩\n  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image\n    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap\n      Function.injective_id).injOn).mono ?_\n  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩\n  refine ⟨hq0, ?_⟩\n  dsimp only [Prod.map, id]\n  push_cast\n  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]\n  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by\n        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)\n    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)",
+  "proof_lines": 15,
+  "sha256": "71685057e60b2d6058716fc639007c6da550c334bbc5970f21c5a321178d00fe",
+  "what": "An irrational algebraic counterexample with exponent above two yields an irrational algebraic-integer counterexample.",
+  "how": "Scale by exists_nat_mul_isIntegral, absorb the scale using eventually_div_rpow_lt, remove the finite small-denominator set and take an injective image.",
+  "hypotheses": "Irrational real algebraic number with infinitely many approximation pairs and exponent above two.",
+  "source_body_refs": [
+    "Roth.approxSet_den_le_finite",
+    "Roth.eventually_div_rpow_lt",
+    "Roth.exists_nat_mul_isIntegral"
+  ],
+  "source_type_refs": [
+    "Roth.approxSet"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.roth",
+      "file": "Roth/Main.lean",
+      "line": 573
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.approxSet_den_le_finite",
+    "Roth.eventually_div_rpow_lt",
+    "Roth.exists_nat_mul_isIntegral"
+  ],
+  "used_by_in_file": [
+    "Roth.roth"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 221,
+  "project_body_refs": [
+    "Roth.approxSet_den_le_finite",
+    "Roth.eventually_div_rpow_lt",
+    "Roth.exists_nat_mul_isIntegral"
+  ],
+  "project_type_refs": [
+    "Roth.approxSet"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.roth",
+      "file": "Roth/Main.lean",
+      "line": 573
+    }
+  ]
+}

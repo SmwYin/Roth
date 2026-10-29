@@ -1,0 +1,125 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.reduction\n#check_failure Roth.approxSet\nnamespace Reduction271Generic\ndef approxSet (\u03b1 \u03ba : \u211d) : Set (\u2124 \u00d7 \u2115) :=\n  {hq | 0 < hq.2 \u2227 |\u03b1 - (hq.1 : \u211d) / hq.2| < 1 / (hq.2 : \u211d) ^ \u03ba}\n\ntheorem exists_nat_mul_isIntegral {\u03b1 : \u211d} (h\u03b1 : IsAlgebraic \u211a \u03b1) :\n    \u2203 M : \u2115, 0 < M \u2227 IsIntegral \u2124 ((M : \u211d) * \u03b1) := by\n  obtain \u27e8y, hy, hint\u27e9 := ((IsFractionRing.isAlgebraic_iff \u2124 \u211a \u211d).2 h\u03b1).exists_integral_multiple\n  refine \u27e8y.natAbs, Int.natAbs_pos.2 hy, ?_\u27e9\n  simpa [zsmul_eq_mul, \u2190 mul_assoc, \u2190 Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign\n\ntheorem approxSet_den_le_finite (\u03b1 \u03ba : \u211d) (Q\u2080 : \u2115) : {hq \u2208 approxSet \u03b1 \u03ba | hq.2 \u2264 Q\u2080}.Finite := by\n  set S : \u211d := \u2211 q \u2208 Finset.Icc 1 Q\u2080, 1 / (q : \u211d) ^ \u03ba\n  set K : \u2124 := \u2308(Q\u2080 : \u211d) * (|\u03b1| + S)\u2309\n  refine (Finset.finite_toSet (Finset.Icc (-K) K \u00d7\u02e2 Finset.Icc 1 Q\u2080)).subset ?_\n  rintro \u27e8h, q\u27e9 \u27e8\u27e8hq0, happ\u27e9, hqQ\u27e9\n  simp only at hq0 happ hqQ\n  have hqR : (0 : \u211d) < q := by exact_mod_cast hq0\n  have hdiv : |(h : \u211d) / q| \u2264 |\u03b1| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, abs_sub_abs_le_abs_sub ((h : \u211d) / q) \u03b1,\n      Finset.single_le_sum (f := fun q : \u2115 \u21a6 1 / (q : \u211d) ^ \u03ba) (fun i _ \u21a6 by positivity)\n        (Finset.mem_Icc.2 \u27e8hq0, hqQ\u27e9)]\n  have habs : |(h : \u211d)| \u2264 Q\u2080 * (|\u03b1| + S) := by\n    have hqQR : (q : \u211d) \u2264 Q\u2080 := by exact_mod_cast hqQ\n    have hh : |(h : \u211d)| / q \u2264 |\u03b1| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff\u2080 hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| \u2264 K := by\n    have : ((|h| : \u2124) : \u211d) \u2264 K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact \u27e8abs_le.1 hK', hq0, hqQ\u27e9\n\ntheorem eventually_div_rpow_lt {M \u03ba \u03ba' : \u211d} (h\u03ba : \u03ba' < \u03ba) :\n    \u2203 Q\u2080 : \u2115, \u2200 q : \u2115, Q\u2080 < q \u2192 M / (q : \u211d) ^ \u03ba < 1 / (q : \u211d) ^ \u03ba' := by\n  obtain \u27e8N, hN\u27e9 := Filter.eventually_atTop.1\n    (((tendsto_rpow_atTop (sub_pos.2 h\u03ba)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)\n  refine \u27e8N, fun q hq \u21a6 ?_\u27e9\n  have hq0 : (0 : \u211d) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq\n  rw [div_lt_iff\u2080 (Real.rpow_pos_of_pos hq0 \u03ba), one_div_mul_eq_div, \u2190 Real.rpow_sub hq0]\n  exact hN q hq.le\n\ntheorem scaling {\u03b1 \u03ba \u03ba' : \u211d} (M : \u2115) (hM0 : 0 < M) (h\u03ba : \u03ba' < \u03ba)\n    (hinf : (approxSet \u03b1 \u03ba).Infinite) : (approxSet (M * \u03b1) \u03ba').Infinite := by\n  obtain \u27e8Q\u2080, hQ\u2080\u27e9 := eventually_div_rpow_lt (M := M) h\u03ba\n  refine ((hinf.sdiff (approxSet_den_le_finite \u03b1 \u03ba Q\u2080)).image\n    ((mul_right_injective\u2080 (by exact_mod_cast hM0.ne' : (M : \u2124) \u2260 0)).prodMap\n      Function.injective_id).injOn).mono ?_\n  rintro _ \u27e8\u27e8h, q\u27e9, \u27e8\u27e8hq0, happ\u27e9, hnot\u27e9, rfl\u27e9\n  refine \u27e8hq0, ?_\u27e9\n  dsimp only [Prod.map, id]\n  push_cast\n  rw [mul_div_assoc, \u2190 mul_sub, abs_mul, Nat.abs_cast]\n  calc (M : \u211d) * |\u03b1 - h / q| < M / (q : \u211d) ^ \u03ba := by\n        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : \u211d) < M)\n    _ < 1 / (q : \u211d) ^ \u03ba' := hQ\u2080 q (not_le.1 fun hc \u21a6 hnot \u27e8\u27e8hq0, happ\u27e9, hc\u27e9)\n\ntheorem threshold {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) (halg : IsAlgebraic \u211a \u03b1)\n    {t \u03ba : \u211d} (h\u03ba : t < \u03ba) (hinf : (approxSet \u03b1 \u03ba).Infinite) :\n    \u2203 (\u03b1' \u03ba' : \u211d), Irrational \u03b1' \u2227 IsIntegral \u2124 \u03b1' \u2227 t < \u03ba' \u2227 \u03ba' < \u03ba \u2227\n      (approxSet \u03b1' \u03ba').Infinite := by\n  obtain \u27e8M, hM0, hMint\u27e9 := exists_nat_mul_isIntegral halg\n  refine \u27e8M * \u03b1, (\u03ba + t) / 2, h\u03b1.natCast_mul hM0.ne', hMint,\n    by linarith, by linarith, scaling M hM0 (by linarith) hinf\u27e9\n\ntheorem recovery {\u03b1 : \u211d} (h\u03b1 : Irrational \u03b1) (halg : IsAlgebraic \u211a \u03b1)\n    {\u03ba : \u211d} (h\u03ba : 2 < \u03ba) (hinf : (approxSet \u03b1 \u03ba).Infinite) :\n    \u2203 (\u03b1' \u03ba' : \u211d), Irrational \u03b1' \u2227 IsIntegral \u2124 \u03b1' \u2227 2 < \u03ba' \u2227\n      (approxSet \u03b1' \u03ba').Infinite := by\n  obtain \u27e8a, k, ha, hi, ht, -, hs\u27e9 := threshold h\u03b1 halg h\u03ba hinf\n  exact \u27e8a, k, ha, hi, ht, hs\u27e9\n\ntheorem liouville_threshold {\u03b1 \u03ba : \u211d} (h\u03b1 : Irrational \u03b1)\n    (halg : IsAlgebraic \u211a \u03b1) (h : LiouvilleWith \u03ba \u03b1) :\n    \u2203 \u03b1' : \u211d, Irrational \u03b1' \u2227 IsIntegral \u2124 \u03b1' \u2227 LiouvilleWith \u03ba \u03b1' := by\n  obtain \u27e8M, hM, hi\u27e9 := exists_nat_mul_isIntegral halg\n  exact \u27e8M * \u03b1, h\u03b1.natCast_mul hM.ne', hi, h.nat_mul hM.ne'\u27e9\n\n#check @LiouvilleWith.nat_mul\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#check @LiouvilleWith.exists_pos\n#check @LiouvilleWith.mono\n#print axioms scaling\n#print axioms threshold\n#print axioms recovery\n#print axioms liouville_threshold\nend Reduction271Generic\n"
+  },
+  "elapsed_ms": 3855,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "isolated01",
+      "operation": "run_code",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "2410a38e6d139d0ba286336692719ad2f8906019c7c5f6f4b2cea522074918f7",
+      "receipt": "isolated-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.reduction/root-requests/isolated01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.reduction/isolated-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.reduction`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.approxSet`\",\n      \"line\": 23,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.nat_mul : \u2200 {p x : \u211d} {n : \u2115}, LiouvilleWith p x \u2192 n \u2260 0 \u2192 LiouvilleWith p (\u2191n * x)\",\n      \"line\": 104,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in Filter.atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)\",\n      \"line\": 105,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.exists_pos : \u2200 {p x : \u211d},\\n  LiouvilleWith p x \u2192\\n    \u2203 C, \u2203 (_ : 0 < C), \u2203\u1da0 (n : \u2115) in Filter.atTop, 1 \u2264 n \u2227 \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < C / \u2191n ^ p\",\n      \"line\": 106,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.mono : \u2200 {p q x : \u211d}, LiouvilleWith p x \u2192 q \u2264 p \u2192 LiouvilleWith q x\",\n      \"line\": 107,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Reduction271Generic.scaling' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 108,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Reduction271Generic.threshold' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 109,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Reduction271Generic.recovery' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 110,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Reduction271Generic.liouville_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 111,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.reduction`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.approxSet`",
+          "line": 23,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.nat_mul : \u2200 {p x : \u211d} {n : \u2115}, LiouvilleWith p x \u2192 n \u2260 0 \u2192 LiouvilleWith p (\u2191n * x)",
+          "line": 104,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in Filter.atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)",
+          "line": 105,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.exists_pos : \u2200 {p x : \u211d},\n  LiouvilleWith p x \u2192\n    \u2203 C, \u2203 (_ : 0 < C), \u2203\u1da0 (n : \u2115) in Filter.atTop, 1 \u2264 n \u2227 \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < C / \u2191n ^ p",
+          "line": 106,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.mono : \u2200 {p q x : \u211d}, LiouvilleWith p x \u2192 q \u2264 p \u2192 LiouvilleWith q x",
+          "line": 107,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Reduction271Generic.scaling' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 108,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Reduction271Generic.threshold' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 109,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Reduction271Generic.recovery' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 110,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Reduction271Generic.liouville_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 111,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

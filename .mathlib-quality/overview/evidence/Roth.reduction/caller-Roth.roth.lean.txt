@@ -1,0 +1,5 @@
+theorem roth {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) : κ ≤ 2 := by
+  by_contra! hκ
+  obtain ⟨α', κ', hα', hint', hκ', hinf'⟩ := reduction hα halg hκ hinf
+  exact (roth_of_isIntegral hα' hint' hinf').not_gt hκ'

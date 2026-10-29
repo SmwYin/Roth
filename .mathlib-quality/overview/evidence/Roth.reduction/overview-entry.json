@@ -1,0 +1,26 @@
+{
+  "type": "∀ {α : ℝ},\n  Irrational α →\n    IsAlgebraic ℚ α →\n      ∀ {κ : ℝ},\n        2 < κ →\n          (Roth.approxSet α κ).Infinite →\n            ∃ (α' : ℝ) (κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧ (Roth.approxSet α' κ').Infinite",
+  "kind": "theorem",
+  "what": "An infinite approximation counterexample above exponent2 transfers from an irrational real algebraic number to an irrational real algebraic integer, with a potentially smaller exponent still above2.",
+  "how": "Choose a positive integral multiple with exists_nat_mul_isIntegral; eventually_div_rpow_lt absorbs numerator scaling at the midpoint exponent. Remove the finite bounded-denominator slice, map (h,q) to (M*h,q) injectively, and compare errors.",
+  "hypotheses": "Irrational α, algebraicity over Q, exponent κ>2, and infinitely many unreduced integer/natural pairs satisfying the fixed unit-constant approximation bound.",
+  "project_dependencies": [
+    "Roth.approxSet",
+    "Roth.exists_nat_mul_isIntegral",
+    "Roth.eventually_div_rpow_lt",
+    "Roth.approxSet_den_le_finite"
+  ],
+  "caller_summary": "Only explicit/direct kernel caller Roth.roth at Main576; full original caller tested with literal inline proof and arbitrary-threshold recovery, exact original signatures retained. Canonical293 transitive consumers separately archived.",
+  "mathlib_api_audit": "Existing LiouvilleWith.nat_mul/mul_rat and frequently_lt_rpow_neg cover constant-allowing frequent approximation and exponent slack. They do not directly state fixed-constant pair infinitude. Existing sdiff/image/mono supply structural transport, with a new pointwise estimate still required.",
+  "moral_duplications": "Powergap and integral scalar prerequisites are existing project abstractions, not duplicate reductions. exists_reduced_approx uses rational reduction/fiber finiteness; this theorem uses injective numerator scaling and finite subtraction, a different map.",
+  "generalization": {
+    "verified": true,
+    "proposed_type": "∀ {α : ℝ}, Irrational α → IsAlgebraic ℚ α → ∀ {t κ : ℝ}, t < κ → (approxSet α κ).Infinite → ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ t < κ' ∧ κ' < κ ∧ (approxSet α' κ').Infinite",
+    "scaling_type": "∀ {α κ κprime : ℝ} (M : ℕ), 0 < M → κprime < κ → (approxSet α κ).Infinite → (approxSet (M * α) κprime).Infinite",
+    "evidence": "isolated-executed.lean.txt; isolated-receipt.json",
+    "meaning": "2 is a reusable semantic lower threshold, not essential here; M>0 scopes the injective map and irrational output, not a claimed necessary condition for the weaker standalone Infinite conclusion."
+  },
+  "missing_api": "Potential fixed-unit pair scaling/threshold API or explicit bridge to LiouvilleWith. Whether to introduce a second approximation representation upstream is unresolved design, not unfinished proof verification.",
+  "junk": "Used once in the main theorem; meaningful source-level reduction, not dead code and not a verified <=3-mathlib-call wrapper.",
+  "action": "Keep project-local pending three concrete upstream API choices: pair representation versus LiouvilleWith bridge, generic scaling primary versus integral corollary, and arbitrary t with explicit κprime<κ. Assessment complete; production unchanged."
+}

@@ -1,0 +1,22 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+run_cmd do
+  let env ← Lean.getEnv
+  let some ci := env.find? `Roth.reduction | throwError "missing target"
+  let some v := ci.value? (allowOpaque := true) | throwError "missing value"
+  let project := v.getUsedConstants.toList.filter (fun n ↦
+    n.toString.startsWith "Roth." || n.toString.startsWith "_private.Roth.")
+  Lean.logInfo m!"RED271_EXACT_PROJECT_DEPS: {project}"

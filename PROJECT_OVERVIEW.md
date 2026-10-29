@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 270/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 271/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 270; remaining: 23.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 28 YES-but-generalise-first, 46 NO-mathlib-has-it, 92 BORDERLINE-needs-human, 70 SKIP.
+- Completed applicable assessments: 271; remaining: 22.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 28 YES-but-generalise-first, 46 NO-mathlib-has-it, 93 BORDERLINE-needs-human, 70 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3436,6 +3436,22 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 3 direct callers: reduction, exists_reduced_approx, LeanEval.isDiophantine_iff; 9 transitive consumers; not simp.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.eventually_div_rpow_lt.md).
 
+### Completed: `Roth.reduction`
+
+- Type: `∀ {α : ℝ},
+  Irrational α →
+    IsAlgebraic ℚ α →
+      ∀ {κ : ℝ},
+        2 < κ →
+          (Roth.approxSet α κ).Infinite →
+            ∃ (α' : ℝ) (κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧ (Roth.approxSet α' κ').Infinite`
+- What: An infinite approximation counterexample above exponent2 transfers from an irrational real algebraic number to an irrational real algebraic integer, with a potentially smaller exponent still above2.
+- How: Choose a positive integral multiple with exists_nat_mul_isIntegral; eventually_div_rpow_lt absorbs numerator scaling at the midpoint exponent. Remove the finite bounded-denominator slice, map (h,q) to (M*h,q) injectively, and compare errors.
+- Hypotheses: Irrational α, algebraicity over Q, exponent κ>2, and infinitely many unreduced integer/natural pairs satisfying the fixed unit-constant approximation bound.
+- Project dependencies: Roth.approxSet, Roth.exists_nat_mul_isIntegral, Roth.eventually_div_rpow_lt, Roth.approxSet_den_le_finite
+- Caller summary: Only explicit/direct kernel caller Roth.roth at Main576; full original caller tested with literal inline proof and arbitrary-threshold recovery, exact original signatures retained. Canonical293 transitive consumers separately archived.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.reduction.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4002,6 +4018,8 @@ Completed `Roth.approxSet_den_le_finite`: Existing finite intervals, finite unio
 
 Completed `Roth.eventually_div_rpow_lt`: Existing Filter/Tendsto/rpow ingredients; LiouvilleWith has related internal absorption but no demonstrated exported exact comparison replacement.
 
+Completed `Roth.reduction`: Existing LiouvilleWith.nat_mul/mul_rat and frequently_lt_rpow_neg cover constant-allowing frequent approximation and exponent slack. They do not directly state fixed-constant pair infinitude. Existing sdiff/image/mono supply structural transport, with a new pointwise estimate still required.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4543,6 +4561,8 @@ Completed `Roth.exists_nat_mul_isIntegral`: Separation.exists_nat_smul_eq_map cl
 Completed `Roth.approxSet_den_le_finite`: Comparable finite-fiber reasoning inside exists_reduced_approx additionally needs irrationality and positive-exponent decay to bound unreduced representations of a fixed rational. These are distinct facts.
 
 Completed `Roth.eventually_div_rpow_lt`: Internal calculation in LiouvilleWith.frequently_lt_rpow_neg uses same exponent-gap absorption; not identical exported theorem.
+
+Completed `Roth.reduction`: Powergap and integral scalar prerequisites are existing project abstractions, not duplicate reductions. exists_reduced_approx uses rational reduction/fiber finiteness; this theorem uses injective numerator scaling and finite subtraction, a different map.
 
 ## Part 5: Generalization opportunities
 
@@ -5097,6 +5117,8 @@ Completed `Roth.approxSet_den_le_finite`: Freshly compiled arbitrary real radius
 
 Completed `Roth.eventually_div_rpow_lt`: proposed type: ∀ {α : Type*} {l : Filter α} {f : α → ℝ}, Filter.Tendsto f l Filter.atTop → ∀ {M C κ κ' : ℝ}, κ' < κ → 0 < C → ∀ᶠ x in l, M / f x ^ κ < C / f x ^ κ'; verified: True; source: isolated3-executed.lean.txt; recovery: Decay270Generic.threshold hκ zero_lt_one; axes: arbitrary positive RHS amplitude C, arbitrary cofinal real input along any filter
 
+Completed `Roth.reduction`: verified: True; proposed type: ∀ {α : ℝ}, Irrational α → IsAlgebraic ℚ α → ∀ {t κ : ℝ}, t < κ → (approxSet α κ).Infinite → ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ t < κ' ∧ κ' < κ ∧ (approxSet α' κ').Infinite; scaling type: ∀ {α κ κprime : ℝ} (M : ℕ), 0 < M → κprime < κ → (approxSet α κ).Infinite → (approxSet (M * α) κprime).Infinite; evidence: isolated-executed.lean.txt; isolated-receipt.json; meaning: 2 is a reusable semantic lower threshold, not essential here; M>0 scopes the injective map and irrational output, not a claimed necessary condition for the weaker standalone Infinite conclusion.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5639,6 +5661,8 @@ Completed `Roth.exists_nat_mul_isIntegral`: No mathematical gap for the real res
 Completed `Roth.approxSet_den_le_finite`: Potential upstream choice between arbitrary-ψ approximation slices and a general finite integer-cast tube lemma. Finite image/fibers already exists; arithmetic interval transport remains real proof.
 
 Completed `Roth.eventually_div_rpow_lt`: Exported eventual inequality comparing arbitrary amplitudes across real exponent gaps at infinity.
+
+Completed `Roth.reduction`: Potential fixed-unit pair scaling/threshold API or explicit bridge to LiouvilleWith. Whether to introduce a second approximation representation upstream is unresolved design, not unfinished proof verification.
 
 ## Part 7: Junk / removable
 
@@ -6185,6 +6209,8 @@ Completed `Roth.approxSet_den_le_finite`: Used by the reduction and reduced-appr
 
 Completed `Roth.eventually_div_rpow_lt`: Used analytic helper, no deletion justified as ≤3-existing-call wrapper.
 
+Completed `Roth.reduction`: Used once in the main theorem; meaningful source-level reduction, not dead code and not a verified <=3-mathlib-call wrapper.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6459,6 +6485,7 @@ Completed `Roth.eventually_div_rpow_lt`: Used analytic helper, no deletion justi
 | 268 | `Roth.exists_nat_mul_isIntegral` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_nat_mul_isIntegral.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_nat_mul_isIntegral/root-acceptance.json) |
 | 269 | `Roth.approxSet_den_le_finite` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet_den_le_finite.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet_den_le_finite/root-acceptance.json) |
 | 270 | `Roth.eventually_div_rpow_lt` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.eventually_div_rpow_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eventually_div_rpow_lt/root-acceptance.json) |
+| 271 | `Roth.reduction` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.reduction.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.reduction/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6998,12 +7025,14 @@ Completed `Roth.approxSet_den_le_finite` action: BORDERLINE-needs-human: retain 
 
 Completed `Roth.eventually_div_rpow_lt` action: YES-but-generalise-first: standalone power-asymptotics API PR; use verified generic signature, natural threshold corollary, all 3 full callers retained.
 
+Completed `Roth.reduction` action: Keep project-local pending three concrete upstream API choices: pair representation versus LiouvilleWith bridge, generic scaling primary versus integral corollary, and arbitrary t with explicit κprime<κ. Assessment complete; production unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.reduction` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_monic_aeval_eq_zero` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

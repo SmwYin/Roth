@@ -1,0 +1,92 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+namespace Reduction271Inline
+open Roth
+theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)
+    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧
+    (approxSet α' κ').Infinite := by
+  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg
+  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)
+  refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩
+  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image
+    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap
+      Function.injective_id).injOn).mono ?_
+  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩
+  refine ⟨hq0, ?_⟩
+  dsimp only [Prod.map, id]
+  push_cast
+  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]
+  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by
+        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
+    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
+theorem roth {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) : κ ≤ 2 := by
+  by_contra! hκ
+  obtain ⟨α', κ', hα', hint', hκ', hinf'⟩ := reduction hα halg hκ hinf
+  exact (roth_of_isIntegral hα' hint' hinf').not_gt hκ'
+#print axioms roth
+end Reduction271Inline
+namespace Reduction271Replacement
+open Roth
+theorem threshold {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {t κ : ℝ} (hκ : t < κ)
+    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ t < κ' ∧
+    (approxSet α' κ').Infinite := by
+  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg
+  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + t) / 2 < κ by linarith)
+  refine ⟨M * α, (κ + t) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩
+  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image
+    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap
+      Function.injective_id).injOn).mono ?_
+  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩
+  refine ⟨hq0, ?_⟩
+  dsimp only [Prod.map, id]
+  push_cast
+  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]
+  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by
+        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
+    _ < 1 / (q : ℝ) ^ ((κ + t) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
+theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)
+    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧
+    (approxSet α' κ').Infinite  := by
+  exact threshold hα halg hκ hinf
+theorem roth {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) : κ ≤ 2 := by
+  by_contra! hκ
+  obtain ⟨α', κ', hα', hint', hκ', hinf'⟩ := reduction hα halg hκ hinf
+  exact (roth_of_isIntegral hα' hint' hinf').not_gt hκ'
+#print axioms threshold
+#print axioms reduction
+#print axioms roth
+end Reduction271Replacement
+run_cmd do
+  let env ← Lean.getEnv
+  for n in #[`Reduction271Inline.roth, `Reduction271Replacement.roth,
+      `Reduction271Replacement.threshold] do
+    let mut todo : List Lean.Name := [n]
+    let mut seen : List Lean.Name := []
+    while !todo.isEmpty do
+      let c := todo.head!
+      todo := todo.tail!
+      if !seen.contains c then
+        seen := c :: seen
+        if c == `Roth.reduction || c == `Roth.roth then
+          throwError "RED271_CIRCULAR: {n} reaches {c}"
+        if c.toString.startsWith "Roth." || c.toString.startsWith "_private.Roth." ||
+            c.toString.startsWith "Reduction271" then
+          if let some ci := env.find? c then
+            if let some v := ci.value? (allowOpaque := true) then
+              todo := v.getUsedConstants.toList ++ todo
+    Lean.logInfo m!"RED271_NONCIRCULAR: {n}; checked={seen.length}"

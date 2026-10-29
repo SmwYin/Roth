@@ -1,0 +1,112 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
+
+#check_failure Roth.reduction
+#check_failure Roth.approxSet
+namespace Reduction271Generic
+def approxSet (α κ : ℝ) : Set (ℤ × ℕ) :=
+  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}
+
+theorem exists_nat_mul_isIntegral {α : ℝ} (hα : IsAlgebraic ℚ α) :
+    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by
+  obtain ⟨y, hy, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_integral_multiple
+  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩
+  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign
+
+theorem approxSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
+  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ
+  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉
+  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_
+  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩
+  simp only at hq0 happ hqQ
+  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0
+  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by
+    rw [abs_sub_comm] at happ
+    linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,
+      Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)
+        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]
+  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by
+    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ
+    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv
+    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans
+      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))
+  have hK' : |h| ≤ K := by
+    have : ((|h| : ℤ) : ℝ) ≤ K := by
+      rw [Int.cast_abs]
+      exact habs.trans (Int.le_ceil _)
+    exact_mod_cast this
+  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]
+  exact ⟨abs_le.1 hK', hq0, hqQ⟩
+
+theorem eventually_div_rpow_lt {M κ κ' : ℝ} (hκ : κ' < κ) :
+    ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' := by
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1
+    (((tendsto_rpow_atTop (sub_pos.2 hκ)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)
+  refine ⟨N, fun q hq ↦ ?_⟩
+  have hq0 : (0 : ℝ) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq
+  rw [div_lt_iff₀ (Real.rpow_pos_of_pos hq0 κ), one_div_mul_eq_div, ← Real.rpow_sub hq0]
+  exact hN q hq.le
+
+theorem scaling {α κ κ' : ℝ} (M : ℕ) (hM0 : 0 < M) (hκ : κ' < κ)
+    (hinf : (approxSet α κ).Infinite) : (approxSet (M * α) κ').Infinite := by
+  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) hκ
+  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image
+    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap
+      Function.injective_id).injOn).mono ?_
+  rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩
+  refine ⟨hq0, ?_⟩
+  dsimp only [Prod.map, id]
+  push_cast
+  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]
+  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by
+        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
+    _ < 1 / (q : ℝ) ^ κ' := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
+
+theorem threshold {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α)
+    {t κ : ℝ} (hκ : t < κ) (hinf : (approxSet α κ).Infinite) :
+    ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ t < κ' ∧ κ' < κ ∧
+      (approxSet α' κ').Infinite := by
+  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg
+  refine ⟨M * α, (κ + t) / 2, hα.natCast_mul hM0.ne', hMint,
+    by linarith, by linarith, scaling M hM0 (by linarith) hinf⟩
+
+theorem recovery {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α)
+    {κ : ℝ} (hκ : 2 < κ) (hinf : (approxSet α κ).Infinite) :
+    ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧
+      (approxSet α' κ').Infinite := by
+  obtain ⟨a, k, ha, hi, ht, -, hs⟩ := threshold hα halg hκ hinf
+  exact ⟨a, k, ha, hi, ht, hs⟩
+
+theorem liouville_threshold {α κ : ℝ} (hα : Irrational α)
+    (halg : IsAlgebraic ℚ α) (h : LiouvilleWith κ α) :
+    ∃ α' : ℝ, Irrational α' ∧ IsIntegral ℤ α' ∧ LiouvilleWith κ α' := by
+  obtain ⟨M, hM, hi⟩ := exists_nat_mul_isIntegral halg
+  exact ⟨M * α, hα.natCast_mul hM.ne', hi, h.nat_mul hM.ne'⟩
+
+#check @LiouvilleWith.nat_mul
+#check @LiouvilleWith.frequently_lt_rpow_neg
+#check @LiouvilleWith.exists_pos
+#check @LiouvilleWith.mono
+#print axioms scaling
+#print axioms threshold
+#print axioms recovery
+#print axioms liouville_threshold
+end Reduction271Generic
