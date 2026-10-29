@@ -1,0 +1,62 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 419,
+  "name": "Roth.le_index_of_forall_eval_eq_zero",
+  "short": "le_index_of_forall_eval_eq_zero",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 425,
+  "source": "theorem le_index_of_forall_eval_eq_zero {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)\n    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) {c : ℝ}\n    (hvan : ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0) :\n    c ≤ index P α r := by\n  refine (le_index_iff hP).2 fun d he ↦ le_of_not_gt fun hw ↦ he (hvan d (fun j ↦ ?_) hw)\n  by_contra! hj\n  exact he <| by rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]",
+  "signature": "theorem le_index_of_forall_eval_eq_zero {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)\n    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) {c : ℝ}\n    (hvan : ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0) :\n    c ≤ index P α r",
+  "body": "by\n  refine (le_index_iff hP).2 fun d he ↦ le_of_not_gt fun hw ↦ he (hvan d (fun j ↦ ?_) hw)\n  by_contra! hj\n  exact he <| by rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]",
+  "proof_lines": 4,
+  "sha256": "552ba89d49ca5b7160e92ebba4f2b2e4dd39f367d222c410d12c13550bad75c6",
+  "what": "Vanishing of low-weight derivatives inside the degree box gives a lower index bound.",
+  "how": "Use le_index_iff; any derivative outside the degree box vanishes by hasseDeriv_eq_zero_of_degreeOf_lt, so the assumed low-weight vanishing covers all cases.",
+  "hypotheses": "Nonzero real polynomial on finitely many variables, coordinate degree bounds and vanishing below a strict weight cutoff.",
+  "source_body_refs": [
+    "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt",
+    "Roth.le_index_iff"
+  ],
+  "source_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.index",
+    "Roth.weight"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_mem_RSet_le_index_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 550
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt",
+    "Roth.le_index_iff"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_mem_RSet_le_index_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 271,
+  "project_body_refs": [
+    "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt",
+    "Roth.le_index_iff"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.index",
+    "Roth.weight"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_mem_RSet_le_index_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 550
+    }
+  ]
+}

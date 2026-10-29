@@ -1,0 +1,75 @@
+$$
+by the one-variable binomial expansion $x_i^{s_i}=((x_i-\alpha_i)+\alpha_i)^{s_i}$.
+\end{proof}
+
+Let $P(x_1, \dots, x_p)$ be a nonzero polynomial with real coefficients in $p$ variables. Let $\alpha_1, \dots, \alpha_p$ be any real numbers. Let $r_1, \dots, r_p$ be any positive numbers. We define the {\it index} $\theta$ of $P$ at the point $(\alpha_1, \dots, \alpha_p)$ relative to $r_1, \dots, r_p$ as follows: We define $\theta$ to be the minimum of all numbers of the form
+$$
+\frac{i_1}{r_1} + \cdots + \frac{i_p}{r_p}
+$$
+where the minimum is over all tuples $(i_1, \dots, i_p)$ such that
+$$
+\Delta_{i_1, \dots, i_p} P(\alpha_1, \dots, \alpha_p) \ne 0.
+$$
+When we want to keep track of all data we write
+$$
+\ind(P; \alpha_1, \dots, \alpha_p; r_1, \dots, r_p).
+$$
+When there is no confusion about the data, we simply write $\ind(P)$.
+Taylor's theorem shows that at least one derivative at the chosen point is
+nonzero; only finitely many derivative multi-indices can be nonzero. Thus
+this is an attained minimum. We additionally set $\ind(0)=+\infty$.
+All comparisons involving zero polynomials below use this convention.
+\lean{Let $P_\alpha(X)=P(X+\alpha)$, whose coefficient at $d$ is
+$(\Delta_dP)(\alpha)$. Define the index as the minimum of
+$\sum_jd_j/r_j$ over its nonzero coefficients, with values in
+$[0,+\infty]$ and value $+\infty$ for the zero polynomial. For positive
+integral $r_j$, an alternative is to set $D=\prod_jr_j$ and use the
+natural weights $w_j=D/r_j$ in
+\texttt{MvPowerSeries.weightedOrder}\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/MvPowerSeries/Order.html}},
+then divide the finite value by $D$ after embedding $P_\alpha$ as a power
+series. Arbitrary positive real $r_j$ require the direct finite-support
+minimum; do not convert an infinite order to a natural number.}
+
+\begin{lem}
+   We have $\ind (P) \geq 0$ and $\ind(P) = 0$ if and only if
+$$
+P(\alpha_1, \dots, \alpha_p) \ne 0.
+$$
+\end{lem}
+\begin{proof}
+    Every weight $\sum_j i_j/r_j$ is nonnegative. Since each $r_j>0$,
+    such a weight is zero exactly when every $i_j=0$. The minimum is attained,
+    and $\Delta_0P=P$, proving the equivalence. For $P=0$ the index is
+    infinite, so the assertion remains valid.
+\end{proof}
+
+
+Indeed, $(1+B_1)^c\geq1+B_1^c$ and $2^c\geq2$, so the right-hand side
+is at least $2+2B_1^c$. The tuple $j=0$ is allowed because $\gamma>0$,
+so $D\geq1$. Using $cnD\leq r/2$, we obtain
+\begin{align*}
+(1+2B_1^c)^{nD}
+ &<[2(1+B_1)]^{cnD}\leq[2(1+B_1)]^{r/2}\\
+ &<(1+B_1)^r=|\mathcal W|.
+\end{align*}
+The last strict inequality follows from $2(1+B_1)<(1+B_1)^2$, or
+$B_1>1$. Thus there are fewer remainder tuples than elements of $\mathcal W$.
+ By the pigeonhole principle, there are two distinct polynomials $W',W''\in\mathcal W$ such that
+$$
+\Delta_{j_1, \dots, j_m} W' (x, \dots, x) - \Delta_{j_1, \dots, j_m} W'' (x, \dots, x)
+$$
+is divisible by $f(x)$ for all $j_1, \dots, j_m$ that satisfy \eqref{roth:eq44}. Let $W^*=W'-W''$. Hasse differentiation, diagonal substitution and
+remainder modulo the fixed monic $f$ are additive, so equality of remainder
+tuples implies the stated divisibility for the difference. For all $j_1, \dots, j_m$ satisfying \eqref{roth:eq44}
+$$
+\Delta_{j_1, \dots, j_m} W^* (x_1, \dots, x_m)
+$$
+are zero when $x_1 = \dots = x_m = \alpha$. Multi-indices outside the degree box give identically zero derivatives as well. Hence the index of $W^*$ at the point $(\alpha, \dots, \alpha)$ relative to $r_1, \dots, r_m$ is at least $\gamma$. Also $W^*$ is not identically zero, and its coefficients in absolute value do not exceed $B_1$.
+
+\lean{Represent each $W$ by a coefficient array on the finite monomial
+box, with entries in $\{0,\ldots,B_1\}$, and map it to the $nD$ integer
+coefficients of its remainder tuple. Apply
+finite pigeonhole\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Pigeonhole.html}}
+using the strict cardinality estimate above. Distinct arrays give a
+nonzero difference with coefficient bound $B_1$, not $2B_1$, because both
+arrays lie in $[0,B_1]$ coordinatewise; equality of remainders then forces

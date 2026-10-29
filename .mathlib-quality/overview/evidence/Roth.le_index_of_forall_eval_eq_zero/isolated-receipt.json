@@ -1,0 +1,165 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.le_index_of_forall_eval_eq_zero\n#check_failure MvPolynomial.hasseDeriv\n#check_failure MvPolynomial.taylor\n#check @le_of_not_gt\n#check @le_csInf\n#check @le_csInf_iff\n#check @MvPowerSeries.nat_le_weightedOrder\n#check @MvPowerSeries.le_weightedOrder\n#check @MvPowerSeries.coeff_eq_zero_of_lt_weightedOrder\n#check @Polynomial.hasseDeriv_eq_zero_of_lt_natDegree\n\nnamespace Cutoff252Abstract\ntheorem support_lower_iff {I A L : Type*} [Zero A] [ConditionallyCompleteLinearOrder L]\n    (f : I →₀ A) (hf : f ≠ 0) (w : I → L) (c : L) :\n    c ≤ sInf (w '' (↑f.support : Set I)) ↔ ∀ i, w i < c → f i = 0 := by\n  constructor\n  · intro hc i hi\n    by_contra hfi\n    exact (not_le_of_gt hi) (hc.trans (csInf_le (f.support.finite_toSet.image w).bddBelow\n      (Set.mem_image_of_mem w (Finsupp.mem_support_iff.2 hfi))))\n  · intro h\n    refine le_csInf ((Finsupp.support_nonempty_iff.2 hf).to_set.image w) ?_\n    rintro _ ⟨i, hi, rfl⟩\n    exact le_of_not_gt fun hwi ↦ (Finsupp.mem_support_iff.1 hi) (h i hwi)\ntheorem support_lower_of_checks {I A L : Type*} [Zero A]\n    [ConditionallyCompleteLinearOrder L] (f : I →₀ A) (hf : f ≠ 0) (w : I → L) (c : L)\n    (T : Set I) (hout : ∀ i, w i < c → i ∉ T → f i = 0)\n    (hin : ∀ i ∈ T, w i < c → f i = 0) : c ≤ sInf (w '' (↑f.support : Set I)) := by\n  apply (support_lower_iff f hf w c).2\n  intro i hi\n  by_cases hT : i ∈ T\n  · exact hin i hT hi\n  · exact hout i hi hT\nend Cutoff252Abstract\n\nnamespace Cutoff252Existing\ntheorem scalar_order {L : Type*} [LinearOrder L] {c w : L} (h : ¬ w < c) : c ≤ w := by\n  exact?\ntheorem powerSeries_criterion {σ A : Type*} [Semiring A] (w : σ → ℕ)\n    (F : MvPowerSeries σ A) (n : ℕ) (h : ∀ d, Finsupp.weight w d < n →\n      MvPowerSeries.coeff d F = 0) : (n : ℕ∞) ≤ F.weightedOrder w :=\n  MvPowerSeries.nat_le_weightedOrder w h\nnoncomputable def translated {σ A : Type*} [CommSemiring A] (α : σ → A)\n    (P : MvPolynomial σ A) : MvPolynomial σ A :=\n  MvPolynomial.eval₂Hom MvPolynomial.C (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P\ntheorem translated_weighted {σ A : Type*} [CommSemiring A] (α : σ → A)\n    (P : MvPolynomial σ A) (w : σ → ℕ) (n : ℕ)\n    (h : ∀ d, Finsupp.weight w d < n → (translated α P).coeff d = 0) :\n    (n : ℕ∞) ≤ (translated α P : MvPowerSeries σ A).weightedOrder w :=\n  MvPowerSeries.nat_le_weightedOrder w (by simpa only [MvPolynomial.coeff_coe] using h)\nend Cutoff252Existing\n#print axioms Cutoff252Abstract.support_lower_iff\n#print axioms Cutoff252Abstract.support_lower_of_checks\n#print axioms Cutoff252Existing.scalar_order\n#print axioms Cutoff252Existing.powerSeries_criterion\n#print axioms Cutoff252Existing.translated_weighted\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.le_index_of_forall_eval_eq_zero`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@le_of_not_gt : ∀ {α : Type u_1} [inst : LinearOrder α] {a b : α}, ¬b < a → a ≤ b\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@le_csInf : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\\n  s.Nonempty → (∀ b ∈ s, a ≤ b) → a ≤ sInf s\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@le_csInf_iff : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\\n  BddBelow s → s.Nonempty → (a ≤ sInf s ↔ ∀ b ∈ s, a ≤ b)\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.nat_le_weightedOrder : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\\n  {f : MvPowerSeries σ R} {n : ℕ},\\n  (∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0) → ↑n ≤ MvPowerSeries.weightedOrder w f\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.le_weightedOrder : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\\n  {f : MvPowerSeries σ R} {n : ℕ∞},\\n  (∀ (d : σ →₀ ℕ), ↑((Finsupp.weight w) d) < n → (MvPowerSeries.coeff d) f = 0) → n ≤ MvPowerSeries.weightedOrder w f\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.coeff_eq_zero_of_lt_weightedOrder : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\\n  {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\\n  ↑((Finsupp.weight w) d) < MvPowerSeries.weightedOrder w f → (MvPowerSeries.coeff d) f = 0\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_eq_zero_of_lt_natDegree : ∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  p.natDegree < n → (Polynomial.hasseDeriv n) p = 0\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Try this:\\n  [apply] exact Std.not_lt.mp h\",\n      \"line\": 57,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"suggestion\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Cutoff252Abstract.support_lower_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 71,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Cutoff252Abstract.support_lower_of_checks' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 72,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Cutoff252Existing.scalar_order' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 73,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Cutoff252Existing.powerSeries_criterion' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 74,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Cutoff252Existing.translated_weighted' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 75,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.le_index_of_forall_eval_eq_zero`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@le_of_not_gt : ∀ {α : Type u_1} [inst : LinearOrder α] {a b : α}, ¬b < a → a ≤ b",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@le_csInf : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\n  s.Nonempty → (∀ b ∈ s, a ≤ b) → a ≤ sInf s",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@le_csInf_iff : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\n  BddBelow s → s.Nonempty → (a ≤ sInf s ↔ ∀ b ∈ s, a ≤ b)",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.nat_le_weightedOrder : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\n  {f : MvPowerSeries σ R} {n : ℕ},\n  (∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0) → ↑n ≤ MvPowerSeries.weightedOrder w f",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.le_weightedOrder : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\n  {f : MvPowerSeries σ R} {n : ℕ∞},\n  (∀ (d : σ →₀ ℕ), ↑((Finsupp.weight w) d) < n → (MvPowerSeries.coeff d) f = 0) → n ≤ MvPowerSeries.weightedOrder w f",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.coeff_eq_zero_of_lt_weightedOrder : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\n  {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\n  ↑((Finsupp.weight w) d) < MvPowerSeries.weightedOrder w f → (MvPowerSeries.coeff d) f = 0",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_eq_zero_of_lt_natDegree : ∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  p.natDegree < n → (Polynomial.hasseDeriv n) p = 0",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Try this:\n  [apply] exact Std.not_lt.mp h",
+          "line": 57,
+          "column": 3,
+          "lean_tags": null,
+          "category": "suggestion",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Cutoff252Abstract.support_lower_iff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 71,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Cutoff252Abstract.support_lower_of_checks' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 72,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Cutoff252Existing.scalar_order' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 73,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Cutoff252Existing.powerSeries_criterion' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 74,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Cutoff252Existing.translated_weighted' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 75,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 115006
+}

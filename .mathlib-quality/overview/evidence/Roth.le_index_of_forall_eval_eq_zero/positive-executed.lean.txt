@@ -1,0 +1,279 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+
+namespace Cutoff252Abstract
+theorem support_lower_iff {I A L : Type*} [Zero A] [ConditionallyCompleteLinearOrder L]
+    (f : I →₀ A) (hf : f ≠ 0) (w : I → L) (c : L) :
+    c ≤ sInf (w '' (↑f.support : Set I)) ↔ ∀ i, w i < c → f i = 0 := by
+  constructor
+  · intro hc i hi
+    by_contra hfi
+    exact (not_le_of_gt hi) (hc.trans (csInf_le (f.support.finite_toSet.image w).bddBelow
+      (Set.mem_image_of_mem w (Finsupp.mem_support_iff.2 hfi))))
+  · intro h
+    refine le_csInf ((Finsupp.support_nonempty_iff.2 hf).to_set.image w) ?_
+    rintro _ ⟨i, hi, rfl⟩
+    exact le_of_not_gt fun hwi ↦ (Finsupp.mem_support_iff.1 hi) (h i hwi)
+theorem support_lower_of_checks {I A L : Type*} [Zero A]
+    [ConditionallyCompleteLinearOrder L] (f : I →₀ A) (hf : f ≠ 0) (w : I → L) (c : L)
+    (T : Set I) (hout : ∀ i, w i < c → i ∉ T → f i = 0)
+    (hin : ∀ i ∈ T, w i < c → f i = 0) : c ≤ sInf (w '' (↑f.support : Set I)) := by
+  apply (support_lower_iff f hf w c).2
+  intro i hi
+  by_cases hT : i ∈ T
+  · exact hin i hT hi
+  · exact hout i hi hT
+end Cutoff252Abstract
+
+namespace Cutoff252Project
+open Roth MvPolynomial
+#check @Roth.weight
+#check @Roth.index
+#check @Roth.le_index_iff
+#check @MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt
+noncomputable def weightAny {σ : Type*} (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ :=
+  Finsupp.weight (R := ℕ) (fun j ↦ (r j : ℝ)⁻¹) d
+theorem weight_bridge {σ : Type*} [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) :
+    weightAny r d = weight r d := by
+  rw [weightAny, Finsupp.weight_eq_sum]
+  simp only [weight, nsmul_eq_mul, div_eq_mul_inv]
+noncomputable def indexAny {σ A : Type*} [CommSemiring A] (P : MvPolynomial σ A)
+    (α : σ → A) (r : σ → ℕ) : ℝ :=
+  sInf (weightAny r '' (↑(taylor α P).support : Set (σ →₀ ℕ)))
+theorem index_bridge {σ : Type*} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (r : σ → ℕ) : indexAny P α r = index P α r := by
+  simp only [indexAny, index, weight_bridge]
+theorem generic_cutoff {σ A : Type*} [CommRing A] {P : MvPolynomial σ A} (hP : P ≠ 0)
+    (α : σ → A) (r : σ → ℕ) (T : Set (σ →₀ ℕ)) (c : ℝ)
+    (hout : ∀ d, weightAny r d < c → d ∉ T → eval α (hasseDeriv d P) = 0)
+    (hin : ∀ d ∈ T, weightAny r d < c → eval α (hasseDeriv d P) = 0) :
+    c ≤ indexAny P α r := by
+  have hf : (taylor α P).coeff ≠ 0 := by
+    intro h
+    apply hP
+    apply (taylor_eq_zero_iff α P).1
+    apply AddMonoidAlgebra.coeff_injective
+    simpa using h
+  exact Cutoff252Abstract.support_lower_of_checks (taylor α P).coeff hf (weightAny r) c T
+    (fun d hw hd ↦ by simpa only [coeff_taylor] using hout d hw hd)
+    (fun d hd hw ↦ by simpa only [coeff_taylor] using hin d hd hw)
+theorem cutoff_outside {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    (α : σ → ℝ) (r : σ → ℕ) (c : ℝ)
+    (hout : ∀ d, weight r d < c → (¬ ∀ j, d j ≤ r j) → eval α (hasseDeriv d P) = 0)
+    (hin : ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0) :
+    c ≤ index P α r := by
+  apply (le_index_iff hP).2
+  intro d he
+  apply le_of_not_gt
+  intro hw
+  by_cases hd : ∀ j, d j ≤ r j
+  · exact he (hin d hd hw)
+  · exact he (hout d hw hd)
+theorem cutoff_local_degree {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    (α : σ → ℝ) (r : σ → ℕ) (c : ℝ)
+    (hd : ∀ d, weight r d < c → (¬ ∀ j, d j ≤ r j) → ∃ j, degreeOf j P < d j)
+    (hin : ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0) :
+    c ≤ index P α r := by
+  apply cutoff_outside hP α r c ?_ hin
+  intro d hw hb
+  obtain ⟨j, hj⟩ := hd d hw hb
+  rw [hasseDeriv_eq_zero_of_degreeOf_lt hj, map_zero]
+theorem recovery {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) {c : ℝ}
+    (hin : ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0) :
+    c ≤ index P α r := by
+  rw [← index_bridge]
+  apply generic_cutoff hP α r {d | ∀ j, d j ≤ r j} c ?_ ?_
+  · intro d _ hb
+    obtain ⟨j, hj⟩ : ∃ j, r j < d j := by simpa only [Set.mem_ofPred_eq, not_forall,
+      not_le] using hb
+    rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]
+  · intro d hb hw
+    exact hin d hb (by simpa only [weight_bridge] using hw)
+theorem bounded_iff {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) (c : ℝ) :
+    c ≤ index P α r ↔
+      ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0 := by
+  constructor
+  · intro hc d _ hw
+    by_contra he
+    exact (not_le_of_gt hw) ((le_index_iff hP).1 hc d he)
+  · exact recovery hP hd α
+theorem unrestricted_iff {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    (α : σ → ℝ) (r : σ → ℕ) (c : ℝ) :
+    c ≤ index P α r ↔ ∀ d, weight r d < c → eval α (hasseDeriv d P) = 0 := by
+  constructor
+  · intro hc d hw
+    by_contra he
+    exact (not_le_of_gt hw) ((le_index_iff hP).1 hc d he)
+  · intro h
+    exact (le_index_iff hP).2 fun d he ↦ le_of_not_gt fun hw ↦ he (h d hw)
+theorem nonpositive_cutoff {σ : Type*} [Fintype σ] (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) {c : ℝ} (hc : c ≤ 0) : c ≤ index P α r :=
+  hc.trans (index_nonneg P α r)
+theorem zero_observations {σ : Type*} [Fintype σ] (α : σ → ℝ) (r : σ → ℕ) (c : ℝ) :
+    (∀ d, (∀ j, d j ≤ r j) → weight r d < c →
+      eval α (hasseDeriv d (0 : MvPolynomial σ ℝ)) = 0) ∧
+      index (0 : MvPolynomial σ ℝ) α r = 0 := by
+  simp [index]
+theorem zero_is_counterexample {σ : Type*} [Fintype σ] (α : σ → ℝ) (r : σ → ℕ)
+    {c : ℝ} (hc : 0 < c) : ¬ c ≤ index (0 : MvPolynomial σ ℝ) α r := by
+  simpa [index] using not_le_of_gt hc
+theorem all_zero_weights {σ : Type*} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ) :
+    index P α (fun _ ↦ 0) = 0 := by
+  have hw : weight (σ := σ) (fun _ ↦ 0) = fun _ ↦ (0 : ℝ) := by
+    funext d
+    simp [weight]
+  rw [index, hw]
+  by_cases h : (taylor α P).support.Nonempty
+  · rw [h.to_set.image_const 0, csInf_singleton]
+  · simp only [Finset.not_nonempty_iff_eq_empty] at h
+    simp [h]
+theorem empty_variables (P : MvPolynomial Empty ℝ) (α : Empty → ℝ) (r : Empty → ℕ) :
+    index P α r = 0 := by
+  have hw : weight r = fun _ ↦ (0 : ℝ) := by
+    funext d
+    simp [weight]
+  rw [index, hw]
+  by_cases h : (taylor α P).support.Nonempty
+  · rw [h.to_set.image_const 0, csInf_singleton]
+  · simp only [Finset.not_nonempty_iff_eq_empty] at h
+    simp [h]
+theorem equality_not_required :
+    (∀ d : Unit →₀ ℕ, weight (fun _ ↦ 1) d < 1 →
+      eval (fun _ ↦ (0 : ℝ)) (hasseDeriv d (X () : MvPolynomial Unit ℝ)) = 0) ∧
+    eval (fun _ ↦ (0 : ℝ)) (hasseDeriv (Finsupp.single () 1) (X () : MvPolynomial Unit ℝ)) ≠
+      0 := by
+  constructor
+  · intro d hw
+    have hd : d = 0 := by
+      apply Finsupp.ext
+      intro j
+      have : (d () : ℝ) < 1 := by simpa [weight] using hw
+      have hn : d () < 1 := by exact_mod_cast this
+      have hz : d () = 0 := by omega
+      simpa using hz
+    subst d
+    simp
+  · simp [X, hasseDeriv_monomial, hasseCoeff]
+end Cutoff252Project
+#print axioms Cutoff252Project.weight_bridge
+#print axioms Cutoff252Project.index_bridge
+#print axioms Cutoff252Project.generic_cutoff
+#print axioms Cutoff252Project.cutoff_outside
+#print axioms Cutoff252Project.cutoff_local_degree
+#print axioms Cutoff252Project.recovery
+#print axioms Cutoff252Project.bounded_iff
+#print axioms Cutoff252Project.unrestricted_iff
+#print axioms Cutoff252Project.nonpositive_cutoff
+#print axioms Cutoff252Project.zero_observations
+#print axioms Cutoff252Project.zero_is_counterexample
+#print axioms Cutoff252Project.all_zero_weights
+#print axioms Cutoff252Project.empty_variables
+#print axioms Cutoff252Project.equality_not_required
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let old ← Lean.getConstInfo `Roth.le_index_of_forall_eval_eq_zero
+  let new ← Lean.getConstInfo `Cutoff252Project.recovery
+  unless ← Lean.Meta.isDefEq old.type new.type do throwError "CUTOFF252_RECOVERY_TYPE_CHANGED"
+  Lean.logInfo "CUTOFF252_EXACT_RECOVERY"
+run_cmd Lean.Elab.Command.liftTermElabM do
+  for n in #[`Roth.weight, `Roth.index, `Cutoff252Project.generic_cutoff,
+      `Cutoff252Project.cutoff_local_degree] do
+    let ci ← Lean.getConstInfo n
+    Lean.withOptions (fun o ↦ o.setBool `pp.funBinderTypes true) do
+      Lean.logInfo m!"CUTOFF252_GENERAL_TYPE {n}: {ci.type}"
+run_cmd do
+  let ci ← Lean.getConstInfo `Roth.le_index_of_forall_eval_eq_zero
+  Lean.logInfo m!"CUTOFF252_TYPE_CONSTANTS: {ci.type.getUsedConstants}"
+  let some v := ci.value? (allowOpaque := true) | throwError "CUTOFF252_NO_VALUE"
+  Lean.logInfo m!"CUTOFF252_BODY_CONSTANTS: {v.getUsedConstants}"
+
+namespace Cutoff252Controls
+open Roth MvPolynomial Cutoff252Project
+theorem local_degree_of_global {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ}
+    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (c : ℝ) :
+    ∀ d, weight r d < c → (¬ ∀ j, d j ≤ r j) → ∃ j, degreeOf j P < d j := by
+  intro d _ hb
+  obtain ⟨j, hj⟩ : ∃ j, r j < d j := by simpa only [not_forall, not_le] using hb
+  exact ⟨j, (hd j).trans_lt hj⟩
+theorem local_strictly_weaker :
+    (∀ d : Unit →₀ ℕ, weight (fun _ ↦ 0) d < 0 → (¬ ∀ j, d j ≤ 0) →
+      ∃ j, degreeOf j (X () : MvPolynomial Unit ℝ) < d j) ∧
+    ¬ (∀ j : Unit, degreeOf j (X () : MvPolynomial Unit ℝ) ≤ 0) := by
+  constructor
+  · intro d hw
+    exact (not_lt_of_ge (weight_nonneg _ d) hw).elim
+  · simp
+theorem missing_degree_guard :
+    (X () : MvPolynomial Unit ℝ) ≠ 0 ∧
+    (∀ d : Unit →₀ ℕ, (∀ j, d j ≤ 0) → weight (fun _ ↦ 0) d < 1 →
+      eval (fun _ ↦ (0 : ℝ)) (hasseDeriv d (X () : MvPolynomial Unit ℝ)) = 0) ∧
+    ¬ (1 : ℝ) ≤ index (X () : MvPolynomial Unit ℝ) (fun _ ↦ 0) (fun _ ↦ 0) := by
+  refine ⟨X_ne_zero (), ?_, ?_⟩
+  · intro d hd _
+    have hz : d = 0 := Finsupp.ext fun j ↦ Nat.eq_zero_of_le_zero (hd j)
+    subst d
+    simp
+  · rw [all_zero_weights]
+    norm_num
+theorem composition_check {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) {c : ℝ}
+    (hin : ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0) :
+    c ≤ index P α r := by
+  fail_if_success
+    exact MvPowerSeries.nat_le_weightedOrder (fun j ↦ r j) hin
+  fail_if_success
+    solve | simp only [index]
+  exact recovery hP hd α hin
+end Cutoff252Controls
+#print axioms Cutoff252Controls.local_degree_of_global
+#print axioms Cutoff252Controls.local_strictly_weaker
+#print axioms Cutoff252Controls.missing_degree_guard
+#print axioms Cutoff252Controls.composition_check
+
+namespace Cutoff252Positive
+open Roth MvPolynomial Cutoff252Project
+theorem positive_cutoff_weaker :
+    (∀ d : Unit →₀ ℕ, weight (fun _ ↦ 1) d < 1 → (¬ ∀ j, d j ≤ 1) →
+      ∃ j, degreeOf j ((X () : MvPolynomial Unit ℝ) ^ 2) < d j) ∧
+    (∀ d : Unit →₀ ℕ, (∀ j, d j ≤ 1) → weight (fun _ ↦ 1) d < 1 →
+      eval (fun _ ↦ (0 : ℝ)) (hasseDeriv d ((X () : MvPolynomial Unit ℝ) ^ 2)) = 0) ∧
+    ¬ (∀ j : Unit, degreeOf j ((X () : MvPolynomial Unit ℝ) ^ 2) ≤ 1) ∧
+    (1 : ℝ) ≤ index ((X () : MvPolynomial Unit ℝ) ^ 2) (fun _ ↦ 0) (fun _ ↦ 1) := by
+  have low (d : Unit →₀ ℕ) (hw : weight (fun _ ↦ 1) d < 1) : d = 0 := by
+    apply Finsupp.ext
+    intro j
+    have hR : (d () : ℝ) < 1 := by simpa [weight] using hw
+    have hn : d () < 1 := by exact_mod_cast hR
+    have hz : d () = 0 := by omega
+    simpa using hz
+  have hlocal : ∀ d : Unit →₀ ℕ, weight (fun _ ↦ 1) d < 1 → (¬ ∀ j, d j ≤ 1) →
+      ∃ j, degreeOf j ((X () : MvPolynomial Unit ℝ) ^ 2) < d j := by
+    intro d hw hb
+    obtain rfl := low d hw
+    simp at hb
+  have hvan : ∀ d : Unit →₀ ℕ, (∀ j, d j ≤ 1) → weight (fun _ ↦ 1) d < 1 →
+      eval (fun _ ↦ (0 : ℝ)) (hasseDeriv d ((X () : MvPolynomial Unit ℝ) ^ 2)) = 0 := by
+    intro d _ hw
+    obtain rfl := low d hw
+    simp
+  refine ⟨hlocal, hvan, ?_, ?_⟩
+  · simp
+  · exact cutoff_local_degree (pow_ne_zero _ (X_ne_zero ())) (fun _ ↦ 0) (fun _ ↦ 1) 1
+      hlocal hvan
+end Cutoff252Positive
+#print axioms Cutoff252Positive.positive_cutoff_weaker

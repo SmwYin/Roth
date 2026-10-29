@@ -1,0 +1,92 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+
+namespace Cutoff252Reaim
+theorem abstract_lower {I A L : Type*} [Semiring A] [SemilatticeInf L] [OrderTop L]
+    (w : I → L) (P : AddMonoidAlgebra A I) (c : L) :
+    c ≤ AddMonoidAlgebra.infDegree w P ↔ ∀ i ∈ P.coeff.support, c ≤ w i :=
+  Finset.le_inf_iff
+theorem bounded_support_check {I A L : Type*} [Semiring A] [LinearOrder L] [OrderTop L]
+    (w : I → L) (P : AddMonoidAlgebra A I) (T : Set I) (c : L)
+    (hs : ∀ i ∈ P.coeff.support, i ∈ T)
+    (hv : ∀ i ∈ T, w i < c → P.coeff i = 0) : c ≤ AddMonoidAlgebra.infDegree w P :=
+  Finset.le_inf_iff.mpr fun i hi ↦
+    le_of_not_gt fun hw ↦ (Finsupp.mem_support_iff.mp hi) (hv i (hs i hi) hw)
+theorem finset_bridge {I : Type*} (s : Finset I) (w : I → ℝ) :
+    (s.inf (fun i ↦ (w i : WithTop ℝ))).untopD 0 = sInf (w '' (↑s : Set I)) := by
+  classical
+  rcases s.eq_empty_or_nonempty with h | h
+  · subst s
+    simp
+  · change (s.inf (WithTop.some ∘ w)).untopD 0 = _
+    rw [← Finset.coe_inf' h w, Finset.inf'_eq_csInf_image]
+    rfl
+theorem projected_lower {I A : Type*} [Semiring A] (w : I → ℝ)
+    (P : AddMonoidAlgebra A I) (hP : P.coeff.support.Nonempty) (c : ℝ) :
+    c ≤ (AddMonoidAlgebra.infDegree (fun i ↦ (w i : WithTop ℝ)) P).untopD 0 ↔
+      ∀ i, P.coeff i ≠ 0 → c ≤ w i := by
+  change c ≤ (P.coeff.support.inf (WithTop.some ∘ w)).untopD 0 ↔ _
+  rw [← Finset.coe_inf' hP w]
+  simp only [WithTop.untopD_coe]
+  simpa only [Finsupp.mem_support_iff] using
+    (show c ≤ P.coeff.support.inf' hP w ↔ ∀ i ∈ P.coeff.support, c ≤ w i from
+      Finset.le_inf'_iff hP w)
+end Cutoff252Reaim
+#print axioms Cutoff252Reaim.abstract_lower
+#print axioms Cutoff252Reaim.bounded_support_check
+#print axioms Cutoff252Reaim.finset_bridge
+#print axioms Cutoff252Reaim.projected_lower
+
+namespace Cutoff252ReaimProject
+open Roth MvPolynomial
+theorem index_inf_bridge {σ : Type*} [Fintype σ] (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) : index P α r =
+      (AddMonoidAlgebra.infDegree (fun d ↦ (weight r d : WithTop ℝ)) (taylor α P)).untopD 0 :=
+  (Cutoff252Reaim.finset_bridge (taylor α P).support (weight r)).symm
+theorem boxed_support {σ A : Type*} [CommSemiring A] {P : MvPolynomial σ A}
+    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → A) :
+    ∀ d ∈ (taylor α P).coeff.support, ∀ j, d j ≤ r j := by
+  intro d he j
+  exact (monomial_le_degreeOf j he).trans ((degreeOf_taylor_le α j P).trans (hd j))
+theorem recovery {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) {c : ℝ}
+    (hin : ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0) :
+    c ≤ index P α r := by
+  have hf : (taylor α P).coeff ≠ 0 := by
+    intro h
+    apply hP
+    apply (taylor_eq_zero_iff α P).1
+    apply AddMonoidAlgebra.coeff_injective
+    simpa using h
+  rw [index_inf_bridge]
+  apply (Cutoff252Reaim.projected_lower (weight r) (taylor α P)
+    (Finsupp.support_nonempty_iff.2 hf) c).2
+  intro d he
+  apply le_of_not_gt
+  intro hw
+  apply he
+  rw [coeff_taylor]
+  exact hin d (boxed_support hd α d (Finsupp.mem_support_iff.2 he)) hw
+end Cutoff252ReaimProject
+#print axioms Cutoff252ReaimProject.index_inf_bridge
+#print axioms Cutoff252ReaimProject.boxed_support
+#print axioms Cutoff252ReaimProject.recovery
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let old ← Lean.getConstInfo `Roth.le_index_of_forall_eval_eq_zero
+  let new ← Lean.getConstInfo `Cutoff252ReaimProject.recovery
+  unless ← Lean.Meta.isDefEq old.type new.type do throwError "CUTOFF252_REAIM_TYPE_CHANGED"
+  Lean.logInfo "CUTOFF252_REAIM_EXACT_RECOVERY"

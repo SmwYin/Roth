@@ -1,0 +1,24 @@
+from pathlib import Path
+import json,hashlib,subprocess
+D=Path(__file__).parent;R=Path('/Users/ramin/LEAN/Roth');N='Roth.le_index_of_forall_eval_eq_zero'
+def put(n,x):(D/n).write_text(json.dumps(x,indent=2,ensure_ascii=False)+'\n')
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def rd(n):return json.loads((D/n).read_text())
+required={
+'original':['CUTOFF252_SIGNATURE_IDENTICAL','CUTOFF252_AUDIT: requested=293; unique=293','CUTOFF252_AUDIT_PRESENT: present=293; values=293','CUTOFF252_FULL_TYPE:'],
+'isolated':["'Cutoff252Abstract.support_lower_iff' depends on axioms:","'Cutoff252Abstract.support_lower_of_checks' depends on axioms:","'Cutoff252Existing.translated_weighted' depends on axioms:","Unknown constant `MvPolynomial.taylor`"],
+'project':['CUTOFF252_EXACT_RECOVERY','CUTOFF252_GENERAL_TYPE Roth.weight:','CUTOFF252_GENERAL_TYPE Roth.index:',"'Cutoff252Project.generic_cutoff' depends on axioms:","'Cutoff252Project.cutoff_local_degree' depends on axioms:","'Cutoff252Project.equality_not_required' depends on axioms:","'Cutoff252Project.zero_is_counterexample' depends on axioms:"],
+'inline':['CUTOFF252_INLINE_SIGNATURE_IDENTICAL','CUTOFF252_INLINE_NO_TARGET',"'Cutoff252Inline.main_lemma' depends on axioms:"],
+'controls':["'Cutoff252Controls.local_degree_of_global' depends on axioms:","'Cutoff252Controls.local_strictly_weaker' depends on axioms:","'Cutoff252Controls.missing_degree_guard' depends on axioms:","'Cutoff252Controls.composition_check' depends on axioms:"],
+'reaim':["'Cutoff252Reaim.abstract_lower' depends on axioms:","'Cutoff252Reaim.bounded_support_check' depends on axioms:","'Cutoff252Reaim.finset_bridge' depends on axioms:"],
+'reaim-project':['CUTOFF252_REAIM_EXACT_RECOVERY',"'Cutoff252ReaimProject.boxed_support' depends on axioms:","'Cutoff252ReaimProject.index_inf_bridge' depends on axioms:"],
+'positive':["'Cutoff252Positive.positive_cutoff_weaker' depends on axioms:"]}
+accepted=[]
+for label,info in required.items():
+ source=label+'-executed.lean.txt';receipt=label+'-receipt.json';r=rd(receipt)
+ accepted.append(dict(label=label,source=source,receipt=receipt,source_sha256=sha(D/source),format='isolated'if label in ['isolated','reaim']else'disk',original_execution_request=r['request'],native_region_start_line=17,required_info=info))
+rejected=[dict(label='project-initial',source='project-rejected-executed.lean.txt',receipt='project-rejected-receipt.json',format='disk',reason='Initial boundary proof spellings/type fixes and metadata monad misuse; recovered sorryAx is rejected, not accepted verification.')]
+cmd=['python3','/private/tmp/roth-overview/check_audit_source.py',str(D/'original-executed.lean.txt')];q=subprocess.run(cmd,cwd=R,capture_output=True,text=True);assert q.returncode==0
+put('preparation-checks.json',dict(original_preexecution=dict(command=cmd,exit_code=0,stdout='PASS exact293 unique source order: '+str(D/'original-executed.lean.txt'),source_sha256=sha(D/'original-executed.lean.txt'),observed_before_original_execution=True),freeze_time_canonical_recheck=dict(request=cmd,exit_code=q.returncode,stdout=q.stdout,stderr=q.stderr),widths={e['source']:max(map(len,(D/e['source']).read_text().splitlines()))for e in accepted},stable18=True,disk9=True,extra_imports_requested=[]))
+put('verification.json',dict(declaration=N,canonical_index=252,completed=True,unresolved=[],standard_axioms=['propext','Classical.choice','Quot.sound'],accepted=accepted,rejected=rejected,warming=[dict(source='original-executed.lean.txt',receipt='original-warming-receipt.json',reason='Initial cold load, partial=true; not accepted proof evidence.')],full_actual_callers=dict(count=1,original_signatures_verified=1,source='inline-executed.lean.txt',receipt='inline-receipt.json',full_original_module_replayed=True,full_downstream_continuation=True),controls=dict(shared_prefix_sha256=sha(D/'isolated-prefix.lean.txt'),disk_prefix_sha256=sha(D/'disk-prefix.lean.txt'),production_files_unchanged=True,no_resource_raises=True,no_new_axioms=True,no_unsafe=True,no_native_decide=True),edge_cases=['P0/c>0 nonzero guard','missing hd: X/Unit/alpha0/r0/c1','all zero r','Empty sigma','c<=0','equality cutoff: X/r1/c1','localized strict c0 and positive X2/r1/c1 witness'],existing_vs_new=dict(existing=['Finset.le_inf_iff','le_of_not_gt','Finsupp.mem_support_iff','MvPowerSeries.nat_le_weightedOrder','MvPowerSeries.le_weightedOrder'],new_generic=['Cutoff252Abstract.support_lower_iff','Cutoff252Abstract.support_lower_of_checks'],normalization=['Cutoff252Project.weight_bridge','Cutoff252Project.index_bridge','Cutoff252ReaimProject.index_inf_bridge','Cutoff252ReaimProject.boxed_support'],exact_original_recoveries=['Cutoff252Project.recovery','Cutoff252ReaimProject.recovery'])))
+print('PASS verification records eight accepted sources, one rejected, one warming; exact293 recheck')

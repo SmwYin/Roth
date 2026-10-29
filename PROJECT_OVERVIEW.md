@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 251/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 252/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 251; remaining: 42.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 88 BORDERLINE-needs-human, 59 SKIP.
+- Completed applicable assessments: 252; remaining: 41.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 89 BORDERLINE-needs-human, 59 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3089,6 +3089,22 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One actual private proof caller at MainLemma567; full module inlining retains caller signature and downstream main_lemma, with no target constant in the inlined caller value. Zero external-to-file uses/direct type consumers.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md).
 
+### Completed: `Roth.le_index_of_forall_eval_eq_zero`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] {P : MvPolynomial σ ℝ},
+  P ≠ 0 →
+    ∀ {r : σ → ℕ},
+      (∀ (j : σ), degreeOf j P ≤ r j) →
+        ∀ (α : σ → ℝ) {c : ℝ},
+          (∀ (d : σ →₀ ℕ), (∀ (j : σ), d j ≤ r j) → Roth.weight r d < c → (eval α) ((hasseDeriv d) P) = 0) →
+            c ≤ Roth.index P α r`
+- What: For a nonzero real multivariate polynomial within coordinate degree bounds, vanishing of the in-box Hasse derivatives strictly below a real weight cutoff forces the index to be at least that cutoff.
+- How: A nonzero evaluated Hasse derivative cannot exceed a coordinate degree. Apply the project le_index_iff characterization and contrapose the strict cutoff condition; excessive orders vanish by hasseDeriv_eq_zero_of_degreeOf_lt.
+- Hypotheses: P is nonzero; index of zero is defined as 0., Every coordinate degree is bounded by r., Only derivative orders in the box and of weight strictly less than c must vanish., The existing index/weight interface requires Fintype σ; α and c are arbitrary and r may contain zeros.
+- Project dependencies: Roth.weight, MvPolynomial.hasseDeriv, Roth.index, Roth.le_index_iff, MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt
+- Caller summary: One source proof call and one canonical kernel-value consumer: private exists_mem_RSet_le_index_aux at MainLemma:562; no external-to-file source calls or direct type consumers. Full caller inlining and entire module continuation through main_lemma compile with the original caller signature.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.le_index_of_forall_eval_eq_zero.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3617,6 +3633,8 @@ Completed `Roth.sub_mem_RSet`: Existing degreeOf_sub_le, coeff_sub, sub_ne_zero 
 
 Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Existing eval₂_modByMonic_eq_self_of_root needs no monicity at this pin; aeval_eq_zero_of_dvd_aeval_eq_zero, dvd_modByMonic_iff_dvd and sub_modByMonic supply scalar leaves. Hasse transport is project API, not existing mathlib.
 
+Completed `Roth.le_index_of_forall_eval_eq_zero`: Existing le_of_not_gt is only scalar contraposition. Finset.le_inf_iff/le_inf and AddMonoidAlgebra.infDegree already supply the abstract support lower bound; a three-call bounded-support check compiles once support⊆test-set is given. MvPowerSeries.nat_le_weightedOrder/le_weightedOrder are natural-weight/top-valued alternatives. Project Hasse/Taylor support normalization is still needed for the exact bounded derivative theorem.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4120,6 +4138,8 @@ Completed `Roth.exists_ne_modByMonic_eq`: Generic collision duplicates Fintype p
 Completed `Roth.sub_mem_RSet`: Only scalar/degree/nonzero leaves coincide with existing mathlib theorems. The complete membership tuple is not identical to any one of them; a new scratch generic interval helper is a specialization route, not existing API.
 
 Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Equal-remainder evaluation is a short chain of existing polynomial evaluation laws, but the full mapped-Hasse-diagonal conclusion requires coefficient/evaluation normalization. Parent diag is one-call aeval; diag_sub is map_sub; Hasse and its transport were accepted YES separately. No verdict inherited.
+
+Completed `Roth.le_index_of_forall_eval_eq_zero`: le_index_iff supplies unrestricted nonzero-derivative bounds, not bounded checking., eq_sum_box_hasseDeriv and degreeOf_taylor_le share out-of-box annihilation but conclude reconstruction/support confinement., exists_hasseDeriv_eval_ne_zero is the complementary strict upper-cutoff witness theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -4636,6 +4656,8 @@ Completed `Roth.sub_mem_RSet`: Verified ordered commutative ring interval endpoi
 
 Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Verified arbitrary CommRing coefficient R and algebra target S with the same Hasse/diagonal semantics. A separately proved generic AddGroup observation D into Polynomial R and RingHom e killing f works over arbitrary rings, with exact original recovery checked. Root and remainder equality are both necessary.
 
+Completed `Roth.le_index_of_forall_eval_eq_zero`: Verified cutoff-local outside-box degree condition, or outside-box evaluated annihilation, weakens the global degree premise. New finite-support observation proofs work over arbitrary Zero coefficients and conditionally complete linear ordered weights; arbitrary-variable/CommRing polynomial indexAny recovers the exact original via finite-support weights. Fintype cannot simply be deleted from the unchanged parent signatures.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5140,6 +5162,8 @@ Completed `Roth.exists_ne_modByMonic_eq`: Potential finite-alphabet polynomial-o
 Completed `Roth.sub_mem_RSet`: Possible combined coefficient-family subtraction inclusion with degree bounds; three concrete future upstream design questions in report.
 
 Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Upstream design decision between a generic equal-remainder evaluation companion, a reusable diagonal-evaluation bridge, and retaining the full Hasse corollary locally; three concrete future questions in report.
+
+Completed `Roth.le_index_of_forall_eval_eq_zero`: Potential discoverability for bounded Hasse/Taylor support checking, not a missing finite-infimum order law. Upstream choice between a public boxed convenience theorem and local use of shared support bridges remains a taste/API question.
 
 ## Part 7: Junk / removable
 
@@ -5648,6 +5672,8 @@ Completed `Roth.sub_mem_RSet`: Used by one actual caller and transitively main_l
 
 Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Not dead code: one direct caller and the main-lemma continuation. Full inlining compiles but does not establish a ≤3 existing-call replacement for the entire theorem.
 
+Completed `Roth.le_index_of_forall_eval_eq_zero`: Not dead code: the sole caller converts pigeonhole remainder equalities into the key index bound. Full inlining works but duplicates the degree-box proof; one use alone does not establish ≤3-mathlib-call composability.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5903,6 +5929,7 @@ Completed `Roth.eval_hasseDeriv_sub_eq_zero`: Not dead code: one direct caller a
 | 249 | `Roth.exists_ne_modByMonic_eq` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_ne_modByMonic_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_ne_modByMonic_eq/root-acceptance.json) |
 | 250 | `Roth.sub_mem_RSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sub_mem_RSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sub_mem_RSet/root-acceptance.json) |
 | 251 | `Roth.eval_hasseDeriv_sub_eq_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eval_hasseDeriv_sub_eq_zero/root-acceptance.json) |
+| 252 | `Roth.le_index_of_forall_eval_eq_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.le_index_of_forall_eval_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.le_index_of_forall_eval_eq_zero/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6404,12 +6431,14 @@ Completed `Roth.sub_mem_RSet` action: BORDERLINE-needs-human: retain local in Ma
 
 Completed `Roth.eval_hasseDeriv_sub_eq_zero` action: BORDERLINE-needs-human: retain local in MainLemma; consider scalar equal-remainder evaluation and coefficient-independent diagonal transport API before upstreaming a Hasse-specific corollary. Completed assessment; future API questions are not blockers.
 
+Completed `Roth.le_index_of_forall_eval_eq_zero` action: BORDERLINE-needs-human; retain production unchanged. Decide the three concrete future upstream API questions after considering the verified generic support formulation and parent infDegree migration. No question blocks completion of this assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.le_index_of_forall_eval_eq_zero` next. Supporting identities receive their own applicable checks.
+   `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

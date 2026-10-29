@@ -1,0 +1,8 @@
+theorem le_index_of_forall_eval_eq_zero {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) {c : ℝ}
+    (hvan : ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0) :
+    c ≤ index P α r := by
+  refine (le_index_iff hP).2 fun d he ↦ le_of_not_gt fun hw ↦ he (hvan d (fun j ↦ ?_) hw)
+  by_contra! hj
+  exact he <| by rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]
+

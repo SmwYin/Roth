@@ -1,0 +1,24 @@
+
+namespace Cutoff252Abstract
+theorem support_lower_iff {I A L : Type*} [Zero A] [ConditionallyCompleteLinearOrder L]
+    (f : I →₀ A) (hf : f ≠ 0) (w : I → L) (c : L) :
+    c ≤ sInf (w '' (↑f.support : Set I)) ↔ ∀ i, w i < c → f i = 0 := by
+  constructor
+  · intro hc i hi
+    by_contra hfi
+    exact (not_le_of_gt hi) (hc.trans (csInf_le (f.support.finite_toSet.image w).bddBelow
+      (Set.mem_image_of_mem w (Finsupp.mem_support_iff.2 hfi))))
+  · intro h
+    refine le_csInf ((Finsupp.support_nonempty_iff.2 hf).to_set.image w) ?_
+    rintro _ ⟨i, hi, rfl⟩
+    exact le_of_not_gt fun hwi ↦ (Finsupp.mem_support_iff.1 hi) (h i hwi)
+theorem support_lower_of_checks {I A L : Type*} [Zero A]
+    [ConditionallyCompleteLinearOrder L] (f : I →₀ A) (hf : f ≠ 0) (w : I → L) (c : L)
+    (T : Set I) (hout : ∀ i, w i < c → i ∉ T → f i = 0)
+    (hin : ∀ i ∈ T, w i < c → f i = 0) : c ≤ sInf (w '' (↑f.support : Set I)) := by
+  apply (support_lower_iff f hf w c).2
+  intro i hi
+  by_cases hT : i ∈ T
+  · exact hin i hT hi
+  · exact hout i hi hT
+end Cutoff252Abstract

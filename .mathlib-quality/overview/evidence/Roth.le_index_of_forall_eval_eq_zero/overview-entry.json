@@ -1,0 +1,30 @@
+{
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {P : MvPolynomial σ ℝ},\n  P ≠ 0 →\n    ∀ {r : σ → ℕ},\n      (∀ (j : σ), degreeOf j P ≤ r j) →\n        ∀ (α : σ → ℝ) {c : ℝ},\n          (∀ (d : σ →₀ ℕ), (∀ (j : σ), d j ≤ r j) → Roth.weight r d < c → (eval α) ((hasseDeriv d) P) = 0) →\n            c ≤ Roth.index P α r",
+  "kind": "theorem",
+  "what": "For a nonzero real multivariate polynomial within coordinate degree bounds, vanishing of the in-box Hasse derivatives strictly below a real weight cutoff forces the index to be at least that cutoff.",
+  "how": "A nonzero evaluated Hasse derivative cannot exceed a coordinate degree. Apply the project le_index_iff characterization and contrapose the strict cutoff condition; excessive orders vanish by hasseDeriv_eq_zero_of_degreeOf_lt.",
+  "hypotheses": [
+    "P is nonzero; index of zero is defined as 0.",
+    "Every coordinate degree is bounded by r.",
+    "Only derivative orders in the box and of weight strictly less than c must vanish.",
+    "The existing index/weight interface requires Fintype σ; α and c are arbitrary and r may contain zeros."
+  ],
+  "project_dependencies": [
+    "Roth.weight",
+    "MvPolynomial.hasseDeriv",
+    "Roth.index",
+    "Roth.le_index_iff",
+    "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt"
+  ],
+  "caller_summary": "One source proof call and one canonical kernel-value consumer: private exists_mem_RSet_le_index_aux at MainLemma:562; no external-to-file source calls or direct type consumers. Full caller inlining and entire module continuation through main_lemma compile with the original caller signature.",
+  "mathlib_api_audit": "Existing le_of_not_gt is only scalar contraposition. Finset.le_inf_iff/le_inf and AddMonoidAlgebra.infDegree already supply the abstract support lower bound; a three-call bounded-support check compiles once support⊆test-set is given. MvPowerSeries.nat_le_weightedOrder/le_weightedOrder are natural-weight/top-valued alternatives. Project Hasse/Taylor support normalization is still needed for the exact bounded derivative theorem.",
+  "moral_duplications": [
+    "le_index_iff supplies unrestricted nonzero-derivative bounds, not bounded checking.",
+    "eq_sum_box_hasseDeriv and degreeOf_taylor_le share out-of-box annihilation but conclude reconstruction/support confinement.",
+    "exists_hasseDeriv_eval_ne_zero is the complementary strict upper-cutoff witness theorem."
+  ],
+  "generalization": "Verified cutoff-local outside-box degree condition, or outside-box evaluated annihilation, weakens the global degree premise. New finite-support observation proofs work over arbitrary Zero coefficients and conditionally complete linear ordered weights; arbitrary-variable/CommRing polynomial indexAny recovers the exact original via finite-support weights. Fintype cannot simply be deleted from the unchanged parent signatures.",
+  "missing_api": "Potential discoverability for bounded Hasse/Taylor support checking, not a missing finite-infimum order law. Upstream choice between a public boxed convenience theorem and local use of shared support bridges remains a taste/API question.",
+  "junk": "Not dead code: the sole caller converts pigeonhole remainder equalities into the key index bound. Full inlining works but duplicates the degree-box proof; one use alone does not establish ≤3-mathlib-call composability.",
+  "action": "BORDERLINE-needs-human; retain production unchanged. Decide the three concrete future upstream API questions after considering the verified generic support formulation and parent infDegree migration. No question blocks completion of this assessment."
+}

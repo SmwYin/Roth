@@ -1,0 +1,217 @@
+{
+  "declaration": "Roth.le_index_of_forall_eval_eq_zero",
+  "canonical_index": 252,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "43dea06c35064094630ab6a8f4299b53dfef2c670caa50a92b6e52c24a6db362",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "CUTOFF252_SIGNATURE_IDENTICAL",
+        "CUTOFF252_AUDIT: requested=293; unique=293",
+        "CUTOFF252_AUDIT_PRESENT: present=293; values=293",
+        "CUTOFF252_FULL_TYPE:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "d9e08647fcdeb445f70f652f1f6b866aa56c71bf7839e7cd80f3a0051b618306",
+      "format": "isolated",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.le_index_of_forall_eval_eq_zero\n#check_failure MvPolynomial.hasseDeriv\n#check_failure MvPolynomial.taylor\n#check @le_of_not_gt\n#check @le_csInf\n#check @le_csInf_iff\n#check @MvPowerSeries.nat_le_weightedOrder\n#check @MvPowerSeries.le_weightedOrder\n#check @MvPowerSeries.coeff_eq_zero_of_lt_weightedOrder\n#check @Polynomial.hasseDeriv_eq_zero_of_lt_natDegree\n\nnamespace Cutoff252Abstract\ntheorem support_lower_iff {I A L : Type*} [Zero A] [ConditionallyCompleteLinearOrder L]\n    (f : I →₀ A) (hf : f ≠ 0) (w : I → L) (c : L) :\n    c ≤ sInf (w '' (↑f.support : Set I)) ↔ ∀ i, w i < c → f i = 0 := by\n  constructor\n  · intro hc i hi\n    by_contra hfi\n    exact (not_le_of_gt hi) (hc.trans (csInf_le (f.support.finite_toSet.image w).bddBelow\n      (Set.mem_image_of_mem w (Finsupp.mem_support_iff.2 hfi))))\n  · intro h\n    refine le_csInf ((Finsupp.support_nonempty_iff.2 hf).to_set.image w) ?_\n    rintro _ ⟨i, hi, rfl⟩\n    exact le_of_not_gt fun hwi ↦ (Finsupp.mem_support_iff.1 hi) (h i hwi)\ntheorem support_lower_of_checks {I A L : Type*} [Zero A]\n    [ConditionallyCompleteLinearOrder L] (f : I →₀ A) (hf : f ≠ 0) (w : I → L) (c : L)\n    (T : Set I) (hout : ∀ i, w i < c → i ∉ T → f i = 0)\n    (hin : ∀ i ∈ T, w i < c → f i = 0) : c ≤ sInf (w '' (↑f.support : Set I)) := by\n  apply (support_lower_iff f hf w c).2\n  intro i hi\n  by_cases hT : i ∈ T\n  · exact hin i hT hi\n  · exact hout i hi hT\nend Cutoff252Abstract\n\nnamespace Cutoff252Existing\ntheorem scalar_order {L : Type*} [LinearOrder L] {c w : L} (h : ¬ w < c) : c ≤ w := by\n  exact?\ntheorem powerSeries_criterion {σ A : Type*} [Semiring A] (w : σ → ℕ)\n    (F : MvPowerSeries σ A) (n : ℕ) (h : ∀ d, Finsupp.weight w d < n →\n      MvPowerSeries.coeff d F = 0) : (n : ℕ∞) ≤ F.weightedOrder w :=\n  MvPowerSeries.nat_le_weightedOrder w h\nnoncomputable def translated {σ A : Type*} [CommSemiring A] (α : σ → A)\n    (P : MvPolynomial σ A) : MvPolynomial σ A :=\n  MvPolynomial.eval₂Hom MvPolynomial.C (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P\ntheorem translated_weighted {σ A : Type*} [CommSemiring A] (α : σ → A)\n    (P : MvPolynomial σ A) (w : σ → ℕ) (n : ℕ)\n    (h : ∀ d, Finsupp.weight w d < n → (translated α P).coeff d = 0) :\n    (n : ℕ∞) ≤ (translated α P : MvPowerSeries σ A).weightedOrder w :=\n  MvPowerSeries.nat_le_weightedOrder w (by simpa only [MvPolynomial.coeff_coe] using h)\nend Cutoff252Existing\n#print axioms Cutoff252Abstract.support_lower_iff\n#print axioms Cutoff252Abstract.support_lower_of_checks\n#print axioms Cutoff252Existing.scalar_order\n#print axioms Cutoff252Existing.powerSeries_criterion\n#print axioms Cutoff252Existing.translated_weighted\n"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Cutoff252Abstract.support_lower_iff' depends on axioms:",
+        "'Cutoff252Abstract.support_lower_of_checks' depends on axioms:",
+        "'Cutoff252Existing.translated_weighted' depends on axioms:",
+        "Unknown constant `MvPolynomial.taylor`"
+      ]
+    },
+    {
+      "label": "project",
+      "source": "project-executed.lean.txt",
+      "receipt": "project-receipt.json",
+      "source_sha256": "1d1c07a561183925b5deb90e7005a2c5b3d7ebffc24f3880b8f79fad6dd64bae",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "CUTOFF252_EXACT_RECOVERY",
+        "CUTOFF252_GENERAL_TYPE Roth.weight:",
+        "CUTOFF252_GENERAL_TYPE Roth.index:",
+        "'Cutoff252Project.generic_cutoff' depends on axioms:",
+        "'Cutoff252Project.cutoff_local_degree' depends on axioms:",
+        "'Cutoff252Project.equality_not_required' depends on axioms:",
+        "'Cutoff252Project.zero_is_counterexample' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "source_sha256": "61a5f2454df6474dd7809a0794638a7e8c8f7e22a772078e21240a05a24316f6",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "CUTOFF252_INLINE_SIGNATURE_IDENTICAL",
+        "CUTOFF252_INLINE_NO_TARGET",
+        "'Cutoff252Inline.main_lemma' depends on axioms:"
+      ]
+    },
+    {
+      "label": "controls",
+      "source": "controls-executed.lean.txt",
+      "receipt": "controls-receipt.json",
+      "source_sha256": "73167e0d21866431e77b0fb8fa78a285417f37d5f25eae7887220ba1ca70e0ae",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Cutoff252Controls.local_degree_of_global' depends on axioms:",
+        "'Cutoff252Controls.local_strictly_weaker' depends on axioms:",
+        "'Cutoff252Controls.missing_degree_guard' depends on axioms:",
+        "'Cutoff252Controls.composition_check' depends on axioms:"
+      ]
+    },
+    {
+      "label": "reaim",
+      "source": "reaim-executed.lean.txt",
+      "receipt": "reaim-receipt.json",
+      "source_sha256": "2b9f0bf1caf3951ed32fa466b9fd2498aba33f3ed9dcc1cf2b248eb54a45b8fa",
+      "format": "isolated",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.le_index_of_forall_eval_eq_zero\n#check_failure MvPolynomial.hasseDeriv\n#check @AddMonoidAlgebra.infDegree\n#check @Finset.le_inf_iff\n#check @Finset.le_inf'_iff\n\nnamespace Cutoff252Reaim\ntheorem abstract_lower {I A L : Type*} [Semiring A] [SemilatticeInf L] [OrderTop L]\n    (w : I → L) (P : AddMonoidAlgebra A I) (c : L) :\n    c ≤ AddMonoidAlgebra.infDegree w P ↔ ∀ i ∈ P.coeff.support, c ≤ w i :=\n  Finset.le_inf_iff\ntheorem bounded_support_check {I A L : Type*} [Semiring A] [LinearOrder L] [OrderTop L]\n    (w : I → L) (P : AddMonoidAlgebra A I) (T : Set I) (c : L)\n    (hs : ∀ i ∈ P.coeff.support, i ∈ T)\n    (hv : ∀ i ∈ T, w i < c → P.coeff i = 0) : c ≤ AddMonoidAlgebra.infDegree w P :=\n  Finset.le_inf_iff.mpr fun i hi ↦\n    le_of_not_gt fun hw ↦ (Finsupp.mem_support_iff.mp hi) (hv i (hs i hi) hw)\ntheorem finset_bridge {I : Type*} (s : Finset I) (w : I → ℝ) :\n    (s.inf (fun i ↦ (w i : WithTop ℝ))).untopD 0 = sInf (w '' (↑s : Set I)) := by\n  classical\n  rcases s.eq_empty_or_nonempty with h | h\n  · subst s\n    simp\n  · change (s.inf (WithTop.some ∘ w)).untopD 0 = _\n    rw [← Finset.coe_inf' h w, Finset.inf'_eq_csInf_image]\n    rfl\ntheorem projected_lower {I A : Type*} [Semiring A] (w : I → ℝ)\n    (P : AddMonoidAlgebra A I) (hP : P.coeff.support.Nonempty) (c : ℝ) :\n    c ≤ (AddMonoidAlgebra.infDegree (fun i ↦ (w i : WithTop ℝ)) P).untopD 0 ↔\n      ∀ i, P.coeff i ≠ 0 → c ≤ w i := by\n  change c ≤ (P.coeff.support.inf (WithTop.some ∘ w)).untopD 0 ↔ _\n  rw [← Finset.coe_inf' hP w]\n  simp only [WithTop.untopD_coe]\n  simpa only [Finsupp.mem_support_iff] using\n    (show c ≤ P.coeff.support.inf' hP w ↔ ∀ i ∈ P.coeff.support, c ≤ w i from\n      Finset.le_inf'_iff hP w)\nend Cutoff252Reaim\n#print axioms Cutoff252Reaim.abstract_lower\n#print axioms Cutoff252Reaim.bounded_support_check\n#print axioms Cutoff252Reaim.finset_bridge\n#print axioms Cutoff252Reaim.projected_lower\n"
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Cutoff252Reaim.abstract_lower' depends on axioms:",
+        "'Cutoff252Reaim.bounded_support_check' depends on axioms:",
+        "'Cutoff252Reaim.finset_bridge' depends on axioms:"
+      ]
+    },
+    {
+      "label": "reaim-project",
+      "source": "reaim-project-executed.lean.txt",
+      "receipt": "reaim-project-receipt.json",
+      "source_sha256": "45360da5704de3cd77b43618150ff646e6fcaf48ba5fe5755cf3081a64e47b50",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "CUTOFF252_REAIM_EXACT_RECOVERY",
+        "'Cutoff252ReaimProject.boxed_support' depends on axioms:",
+        "'Cutoff252ReaimProject.index_inf_bridge' depends on axioms:"
+      ]
+    },
+    {
+      "label": "positive",
+      "source": "positive-executed.lean.txt",
+      "receipt": "positive-receipt.json",
+      "source_sha256": "53cd34c787d0eb6a6fc70b97663a81744b4aa866b149f6dac45a98e623f03a4c",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "'Cutoff252Positive.positive_cutoff_weaker' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "label": "project-initial",
+      "source": "project-rejected-executed.lean.txt",
+      "receipt": "project-rejected-receipt.json",
+      "format": "disk",
+      "reason": "Initial boundary proof spellings/type fixes and metadata monad misuse; recovered sorryAx is rejected, not accepted verification."
+    }
+  ],
+  "warming": [
+    {
+      "source": "original-executed.lean.txt",
+      "receipt": "original-warming-receipt.json",
+      "reason": "Initial cold load, partial=true; not accepted proof evidence."
+    }
+  ],
+  "full_actual_callers": {
+    "count": 1,
+    "original_signatures_verified": 1,
+    "source": "inline-executed.lean.txt",
+    "receipt": "inline-receipt.json",
+    "full_original_module_replayed": true,
+    "full_downstream_continuation": true
+  },
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "fad927215a124d6928eaf99af55185c1261bcc2a834a2c2fcbda3946fa3ceafc",
+    "production_files_unchanged": true,
+    "no_resource_raises": true,
+    "no_new_axioms": true,
+    "no_unsafe": true,
+    "no_native_decide": true
+  },
+  "edge_cases": [
+    "P0/c>0 nonzero guard",
+    "missing hd: X/Unit/alpha0/r0/c1",
+    "all zero r",
+    "Empty sigma",
+    "c<=0",
+    "equality cutoff: X/r1/c1",
+    "localized strict c0 and positive X2/r1/c1 witness"
+  ],
+  "existing_vs_new": {
+    "existing": [
+      "Finset.le_inf_iff",
+      "le_of_not_gt",
+      "Finsupp.mem_support_iff",
+      "MvPowerSeries.nat_le_weightedOrder",
+      "MvPowerSeries.le_weightedOrder"
+    ],
+    "new_generic": [
+      "Cutoff252Abstract.support_lower_iff",
+      "Cutoff252Abstract.support_lower_of_checks"
+    ],
+    "normalization": [
+      "Cutoff252Project.weight_bridge",
+      "Cutoff252Project.index_bridge",
+      "Cutoff252ReaimProject.index_inf_bridge",
+      "Cutoff252ReaimProject.boxed_support"
+    ],
+    "exact_original_recoveries": [
+      "Cutoff252Project.recovery",
+      "Cutoff252ReaimProject.recovery"
+    ]
+  }
+}

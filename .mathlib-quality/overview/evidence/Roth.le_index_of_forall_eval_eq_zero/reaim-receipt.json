@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.le_index_of_forall_eval_eq_zero\n#check_failure MvPolynomial.hasseDeriv\n#check @AddMonoidAlgebra.infDegree\n#check @Finset.le_inf_iff\n#check @Finset.le_inf'_iff\n\nnamespace Cutoff252Reaim\ntheorem abstract_lower {I A L : Type*} [Semiring A] [SemilatticeInf L] [OrderTop L]\n    (w : I → L) (P : AddMonoidAlgebra A I) (c : L) :\n    c ≤ AddMonoidAlgebra.infDegree w P ↔ ∀ i ∈ P.coeff.support, c ≤ w i :=\n  Finset.le_inf_iff\ntheorem bounded_support_check {I A L : Type*} [Semiring A] [LinearOrder L] [OrderTop L]\n    (w : I → L) (P : AddMonoidAlgebra A I) (T : Set I) (c : L)\n    (hs : ∀ i ∈ P.coeff.support, i ∈ T)\n    (hv : ∀ i ∈ T, w i < c → P.coeff i = 0) : c ≤ AddMonoidAlgebra.infDegree w P :=\n  Finset.le_inf_iff.mpr fun i hi ↦\n    le_of_not_gt fun hw ↦ (Finsupp.mem_support_iff.mp hi) (hv i (hs i hi) hw)\ntheorem finset_bridge {I : Type*} (s : Finset I) (w : I → ℝ) :\n    (s.inf (fun i ↦ (w i : WithTop ℝ))).untopD 0 = sInf (w '' (↑s : Set I)) := by\n  classical\n  rcases s.eq_empty_or_nonempty with h | h\n  · subst s\n    simp\n  · change (s.inf (WithTop.some ∘ w)).untopD 0 = _\n    rw [← Finset.coe_inf' h w, Finset.inf'_eq_csInf_image]\n    rfl\ntheorem projected_lower {I A : Type*} [Semiring A] (w : I → ℝ)\n    (P : AddMonoidAlgebra A I) (hP : P.coeff.support.Nonempty) (c : ℝ) :\n    c ≤ (AddMonoidAlgebra.infDegree (fun i ↦ (w i : WithTop ℝ)) P).untopD 0 ↔\n      ∀ i, P.coeff i ≠ 0 → c ≤ w i := by\n  change c ≤ (P.coeff.support.inf (WithTop.some ∘ w)).untopD 0 ↔ _\n  rw [← Finset.coe_inf' hP w]\n  simp only [WithTop.untopD_coe]\n  simpa only [Finsupp.mem_support_iff] using\n    (show c ≤ P.coeff.support.inf' hP w ↔ ∀ i ∈ P.coeff.support, c ≤ w i from\n      Finset.le_inf'_iff hP w)\nend Cutoff252Reaim\n#print axioms Cutoff252Reaim.abstract_lower\n#print axioms Cutoff252Reaim.bounded_support_check\n#print axioms Cutoff252Reaim.finset_bridge\n#print axioms Cutoff252Reaim.projected_lower\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.le_index_of_forall_eval_eq_zero`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.infDegree : {R : Type u_1} →\\n  {A : Type u_2} →\\n    {T : Type u_3} →\\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.le_inf'_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\\n  (f : β → α) {a : α}, a ≤ s.inf' H f ↔ ∀ b ∈ s, a ≤ f b\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Cutoff252Reaim.abstract_lower' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 57,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Cutoff252Reaim.bounded_support_check' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 58,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Cutoff252Reaim.finset_bridge' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 59,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Cutoff252Reaim.projected_lower' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 60,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.le_index_of_forall_eval_eq_zero`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.infDegree : {R : Type u_1} →\n  {A : Type u_2} →\n    {T : Type u_3} →\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.le_inf'_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\n  (f : β → α) {a : α}, a ≤ s.inf' H f ↔ ∀ b ∈ s, a ≤ f b",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Cutoff252Reaim.abstract_lower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 57,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Cutoff252Reaim.bounded_support_check' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 58,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Cutoff252Reaim.finset_bridge' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 59,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Cutoff252Reaim.projected_lower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 60,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 2236
+}
