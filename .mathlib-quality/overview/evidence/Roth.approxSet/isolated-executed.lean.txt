@@ -1,0 +1,109 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
+import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
+
+#check_failure Roth.approxSet
+#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational
+#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational
+#check @Rat.finite_rat_abs_sub_lt_one_div_den_sq
+#check @LiouvilleWith
+#check @LiouvilleWith.exists_pos
+#check @LiouvilleWith.frequently_lt_rpow_neg
+#print LiouvilleWith
+namespace Approx267Isolated
+open Filter
+open scoped Filter
+noncomputable def approxWith (α : ℝ) (ψ : ℕ → ℝ) : Set (ℤ × ℕ) :=
+  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < ψ hq.2}
+noncomputable def approxC (α κ C : ℝ) : Set (ℤ × ℕ) :=
+  approxWith α (fun q ↦ C / (q : ℝ) ^ κ)
+theorem bounded_den_finite (α : ℝ) (ψ : ℕ → ℝ) (Q₀ : ℕ) :
+    {hq ∈ approxWith α ψ | hq.2 ≤ Q₀}.Finite := by
+  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, |ψ q|
+  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉
+  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_
+  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩
+  simp only at hq0 happ hqQ
+  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0
+  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by
+    rw [abs_sub_comm] at happ
+    linarith only [happ, le_abs_self (ψ q), abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,
+      Finset.single_le_sum (f := fun q : ℕ ↦ |ψ q|) (fun i _ ↦ abs_nonneg _)
+        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]
+  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by
+    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ
+    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv
+    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans
+      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))
+  have hK' : |h| ≤ K := by
+    have : ((|h| : ℤ) : ℝ) ≤ K := by
+      rw [Int.cast_abs]
+      exact habs.trans (Int.le_ceil _)
+    exact_mod_cast this
+  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]
+  exact ⟨abs_le.1 hK', hq0, hqQ⟩
+theorem infinite_iff_frequently (α : ℝ) (ψ : ℕ → ℝ) :
+    (approxWith α ψ).Infinite ↔
+      ∃ᶠ q : ℕ in atTop, ∃ h : ℤ, (h, q) ∈ approxWith α ψ := by
+  rw [Filter.frequently_atTop']
+  constructor
+  · intro hi Q
+    obtain ⟨⟨h, q⟩, hmem, hn⟩ := (hi.sdiff (bounded_den_finite α ψ Q)).nonempty
+    exact ⟨q, not_le.mp (fun hq ↦ hn ⟨hmem, hq⟩), h, hmem⟩
+  · intro hf hfin
+    obtain ⟨Q, hQ⟩ := (hfin.image Prod.snd).bddAbove
+    obtain ⟨q, hq, h, hm⟩ := hf Q
+    exact hq.not_ge (hQ ⟨(h, q), hm, rfl⟩)
+theorem liouvilleWith_iff {α κ : ℝ} (hα : Irrational α) :
+    LiouvilleWith κ α ↔ ∃ C : ℝ, (approxC α κ C).Infinite := by
+  constructor
+  · rintro ⟨C, hC⟩
+    refine ⟨C, (infinite_iff_frequently _ _).2 ?_⟩
+    refine ((Filter.eventually_gt_atTop 0).and_frequently hC).mono ?_
+    rintro q ⟨hq, h, _, hh⟩
+    exact ⟨h, hq, hh⟩
+  · rintro ⟨C, hC⟩
+    refine ⟨C, ((infinite_iff_frequently _ _).1 hC).mono ?_⟩
+    rintro q ⟨h, _, hh⟩
+    exact ⟨h, by simpa using hα.ne_rational h q, hh⟩
+theorem dirichlet_endpoint {α : ℝ} (hα : Irrational α) :
+    {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ (2 : ℝ)}.Infinite := by
+  simpa only [Real.rpow_two] using
+    Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational hα
+theorem zero_rat_endpoint :
+    {x : ℚ | |(0 : ℝ) - x| < 1 / (x.den : ℝ) ^ (2 : ℝ)}.Finite := by
+  apply Set.not_infinite.mp
+  intro hi
+  apply (show ¬ Irrational (0 : ℝ) by simp)
+  apply (Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational 0).mp
+  simpa only [Real.rpow_two] using hi
+-- A candidate named set is a diagnostic witness; automation reproducing its literal
+-- comprehension is not evidence of an existing semantic Diophantine approximation API.
+example (α κ : ℝ) (witness : Set (ℤ × ℕ))
+    (hw : witness = {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}) :
+    approxC α κ 1 = witness := by
+  rw [hw]
+  rfl
+end Approx267Isolated
+#print axioms Approx267Isolated.bounded_den_finite
+#print axioms Approx267Isolated.infinite_iff_frequently
+#print axioms Approx267Isolated.liouvilleWith_iff
+#print axioms Approx267Isolated.dirichlet_endpoint
+#print axioms Approx267Isolated.zero_rat_endpoint

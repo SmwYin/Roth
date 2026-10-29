@@ -1,0 +1,20 @@
+private lemma exists_pos_div_rpow_lt_aux {x κ : ℝ} (hx : Irrational x)
+    (hs : (Roth.approxSet x κ).Finite) :
+    ∃ C : ℝ, 0 < C ∧ ∀ (p q : ℤ), 0 < q → C / (q : ℝ) ^ κ < |x - (p : ℝ) / q| := by
+  let f : ℤ × ℕ → ℝ := fun a ↦ |x - (a.1 : ℝ) / a.2| * (a.2 : ℝ) ^ κ
+  obtain ⟨a, ha, hmin⟩ := Set.exists_min_image _ f (hs.insert (0, 1))
+    (Set.insert_nonempty (0, 1) _)
+  have haq : 0 < a.2 := by
+    rcases ha with rfl | ha <;> first | exact ha.1 | norm_num
+  have hfa : 0 < f a := mul_pos
+    (abs_pos.mpr (sub_ne_zero.mpr (by simpa using hx.ne_rational a.1 a.2)))
+    (rpow_pos_of_pos (by positivity) _)
+  refine ⟨min (1 / 2) (f a / 2), by positivity, fun p q hq ↦ ?_⟩
+  lift q to ℕ using hq.le
+  have hq' : 0 < (q : ℝ) ^ κ := rpow_pos_of_pos (by exact_mod_cast hq) _
+  rw [Int.cast_natCast, div_lt_iff₀ hq']
+  by_cases hmem : (p, q) ∈ Roth.approxSet x κ
+  · exact (min_le_right _ _).trans_lt
+      ((half_lt_self hfa).trans_le (hmin (p, q) (Set.mem_insert_of_mem _ hmem)))
+  · apply ((min_le_left _ _).trans_lt (by norm_num : (1 : ℝ) / 2 < 1)).trans_le
+    exact le_of_not_gt fun h ↦ hmem ⟨by exact_mod_cast hq, (lt_div_iff₀ hq').mpr h⟩

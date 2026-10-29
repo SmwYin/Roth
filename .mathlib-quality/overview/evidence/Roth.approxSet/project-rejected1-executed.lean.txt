@@ -1,0 +1,114 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+namespace Approx267Project
+open Roth
+noncomputable def approxWith (α : ℝ) (ψ : ℕ → ℝ) : Set (ℤ × ℕ) :=
+  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < ψ hq.2}
+noncomputable def approxC (α κ C : ℝ) : Set (ℤ × ℕ) :=
+  approxWith α (fun q ↦ C / (q : ℝ) ^ κ)
+theorem recovery (α κ : ℝ) : approxSet α κ = approxC α κ 1 := rfl
+theorem pointwise (α κ : ℝ) (hq : ℤ × ℕ) :
+    hq ∈ approxSet α κ ↔ 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ := Iff.rfl
+theorem no_zero (α κ : ℝ) (h : ℤ) : (h, 0) ∉ approxSet α κ := by
+  simp [approxSet]
+theorem at_one (α κ : ℝ) (h : ℤ) : (h, 1) ∈ approxSet α κ ↔ |α - h| < 1 := by
+  simp [approxSet]
+theorem nonpos_constant (α κ C : ℝ) (hC : C ≤ 0) : approxC α κ C = ∅ := by
+  apply Set.eq_empty_iff_forall_notMem.mpr
+  intro hq hh
+  exact (not_lt_of_ge (abs_nonneg _))
+    (hh.2.trans_le (div_nonpos_of_nonpos_of_nonneg hC (Real.rpow_nonneg (by positivity) _)))
+theorem constant_mono (α κ : ℝ) {C D : ℝ} (hCD : C ≤ D) :
+    approxC α κ C ⊆ approxC α κ D := by
+  intro hq hh
+  exact ⟨hh.1, hh.2.trans_le (div_le_div_of_nonneg_right hCD
+    (Real.rpow_nonneg (by positivity) _))⟩
+theorem constants_differ : approxC 0 3 1 ≠ approxC 0 3 2 := by
+  intro heq
+  have h : ((1 : ℤ), (1 : ℕ)) ∈ approxC 0 3 2 := by norm_num [approxC, approxWith]
+  rw [← heq] at h
+  norm_num [approxC, approxWith] at h
+noncomputable def ratApprox (α κ : ℝ) : Set ℚ :=
+  {x | |α - x| < 1 / (x.den : ℝ) ^ κ}
+def quotient (hq : ℤ × ℕ) : ℚ := (hq.1 : ℚ) / hq.2
+theorem reduced_mem_iff (α κ : ℝ) (x : ℚ) :
+    (x.num, x.den) ∈ approxSet α κ ↔ x ∈ ratApprox α κ := by
+  simp only [approxSet, Set.mem_setOf_eq, Rat.den_pos, true_and, ratApprox, ← Rat.cast_def]
+theorem quotient_image {α κ : ℝ} (hκ : 0 ≤ κ) :
+    quotient '' approxSet α κ = ratApprox α κ := by
+  apply Set.Subset.antisymm
+  · rintro _ ⟨⟨h, q⟩, hm, rfl⟩
+    have hden : ((h : ℚ) / q).den ≤ q :=
+      Nat.le_of_dvd hm.1 <| Int.natCast_dvd_natCast.1 <| by
+        simpa [Rat.divInt_eq_div] using Rat.den_dvd h q
+    change |α - (((h : ℚ) / q : ℚ) : ℝ)| < _
+    rw [Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast]
+    exact hm.2.trans_le (by gcongr)
+  · intro x hx
+    refine ⟨(x.num, x.den), (reduced_mem_iff α κ x).2 hx, ?_⟩
+    exact Rat.num_div_den x
+theorem rational_to_pair_infinite {α κ : ℝ} (h : (ratApprox α κ).Infinite) :
+    (approxSet α κ).Infinite := by
+  refine (h.image (f := fun x : ℚ ↦ (x.num, x.den))
+    (fun _ _ _ _ hxy ↦ Rat.ext (congrArg Prod.fst hxy) (congrArg Prod.snd hxy))).mono ?_
+  rintro _ ⟨x, hx, rfl⟩
+  exact (reduced_mem_iff α κ x).2 hx
+theorem finite_fiber {α κ : ℝ} (hα : Irrational α) (hκ : 0 < κ) (x : ℚ) :
+    {hq ∈ approxSet α κ | quotient hq = x}.Finite := by
+  obtain ⟨N, hN⟩ := eventually_div_rpow_lt (M := 1 / |α - (x : ℝ)|) hκ
+  refine (approxSet_den_le_finite α κ N).subset ?_
+  rintro ⟨h, q⟩ ⟨hm, hρx⟩
+  refine ⟨hm, le_of_not_gt fun hq ↦ ?_⟩
+  have hbound := hN q hq
+  rw [Real.rpow_zero, div_one, div_right_comm,
+    div_lt_iff₀ (abs_pos.2 (sub_ne_zero.2 (hα.ne_rat x))), one_mul] at hbound
+  exact not_lt_of_gt hbound <| by simpa [← hρx, quotient] using hm.2
+theorem infinite_iff_rat {α κ : ℝ} (hα : Irrational α) (hκ : 0 < κ) :
+    (approxSet α κ).Infinite ↔ (ratApprox α κ).Infinite := by
+  refine ⟨fun hinf hfin ↦ ?_, rational_to_pair_infinite⟩
+  apply hinf
+  apply Set.Finite.of_finite_fibers quotient
+  · rwa [quotient_image hκ.le]
+  · intro x _
+    exact finite_fiber hα hκ x
+theorem zero_pair_infinite (κ : ℝ) : (approxSet 0 κ).Infinite := by
+  have hi : Function.Injective (fun n : ℕ ↦ ((0 : ℤ), n + 1)) := by
+    intro n m h
+    exact Nat.add_right_cancel (congrArg Prod.snd h)
+  refine (Set.infinite_range_of_injective hi).mono ?_
+  rintro _ ⟨n, rfl⟩
+  refine ⟨Nat.succ_pos n, ?_⟩
+  simp only [Int.cast_zero, zero_div, sub_self, abs_zero]
+  exact one_div_pos.mpr (Real.rpow_pos_of_pos (by positivity) _)
+theorem negative_reduction_guard :
+    ((0 : ℤ), (2 : ℕ)) ∈ approxSet (3 / 2) (-1) ∧
+      ((0 : ℤ), (1 : ℕ)) ∉ approxSet (3 / 2) (-1) := by
+  norm_num [approxSet, Real.rpow_neg_one]
+end Approx267Project
+#print axioms Approx267Project.recovery
+#print axioms Approx267Project.pointwise
+#print axioms Approx267Project.no_zero
+#print axioms Approx267Project.at_one
+#print axioms Approx267Project.nonpos_constant
+#print axioms Approx267Project.constant_mono
+#print axioms Approx267Project.constants_differ
+#print axioms Approx267Project.reduced_mem_iff
+#print axioms Approx267Project.quotient_image
+#print axioms Approx267Project.rational_to_pair_infinite
+#print axioms Approx267Project.finite_fiber
+#print axioms Approx267Project.infinite_iff_rat
+#print axioms Approx267Project.zero_pair_infinite
+#print axioms Approx267Project.negative_reduction_guard

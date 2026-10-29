@@ -1,0 +1,17 @@
+theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral ℤ α) {κ : ℝ}
+    (hinf : (approxSet α κ).Infinite) : κ ≤ 2 := by
+  by_contra! hκ
+  obtain ⟨f, A, m, δ, hf, hfα, hA1, hA, hm2, hδ0, hδm, h30, h49⟩ :=
+    exists_roth_parameters_aux hint hκ
+  have : NeZero m := ⟨by lia⟩
+  have hδ1 : δ ≤ 1 := hδm.le.trans (by
+    simpa using one_div_le_one_div_of_le zero_lt_one
+      (show (1 : ℝ) ≤ m by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)))
+  obtain ⟨h, q, r, happ, hcop, hq1, hr0, hrlast, h31b, hr0max, h32, h33, h53⟩ :=
+    exists_roth_approximants_aux hα (by linarith) hinf m hδ0 hδ1 A
+  obtain ⟨hBpos, hBX, hN⟩ :=
+    roth_product_bound_aux hδ0.le (zero_le_one.trans hA1) (hr0 0) hr0max h32.le
+  exact ((div_lt_iff₀' (sub_pos.2 ((eta_lt_gam_iff _ _ _).1 h30))).1 h49).not_gt
+    (roth_log_bound_aux (κ := κ) hm2 hδ1 hq1 h53 hBpos hBX hN
+      (one_lt_roth_eval_bound_aux hf hfα hA hδ0.le hδm.le hr0 hrlast h31b
+        (fun j ↦ zero_lt_one.trans (hq1 j)) (by linarith) (fun j ↦ (happ j).2.le) hcop h32.le h33))

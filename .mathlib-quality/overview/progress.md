@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 266 / 293 written declarations.**
+**Completed: 267 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -274,8 +274,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 264 | `Roth.theta_lt_eta_of_sq_log_bound_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.theta_lt_eta_of_sq_log_bound_aux.md) |
 | 265 | `Roth.exists_auxiliary_polynomial_with_index_gap_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.exists_auxiliary_polynomial_with_index_gap_aux.md) |
 | 266 | `Roth.main_lemma` | full-mathlibable; accepted complete | YES-add-as-is | [Detailed report](mathlibable/Roth.main_lemma.md) |
+| 267 | `Roth.approxSet` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.approxSet.md) |
 
-**Next declaration: `Roth.approxSet`**, `Roth/Main.lean:55`.
+**Next declaration: `Roth.exists_nat_mul_isIntegral`**, `Roth/Main.lean:62`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

@@ -1,0 +1,135 @@
+{
+  "declaration": "Roth.approxSet",
+  "canonical_index": 267,
+  "completed": true,
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "25093ec760910607346c13dbc236a8c28a4c1457a49ece7b9d2e6d402c26e429",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "format": "disk",
+      "native_region_start_line": 16,
+      "required_info": [
+        "APPROX267_FULL_TYPE: ℝ → ℝ → Set (ℤ × ℕ)",
+        "APPROX267_AUDIT: requested=293; unique=293",
+        "APPROX267_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "project",
+      "source": "project-executed.lean.txt",
+      "receipt": "project-receipt.json",
+      "source_sha256": "eef7bdc34e88892e042a2f7b311a8d823bf6a9baf219d5f04b87a5cc28ea7d36",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "format": "disk",
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Approx267Project.quotient_image' depends on axioms:",
+        "'Approx267Project.infinite_iff_rat' depends on axioms:",
+        "'Approx267Project.constants_differ' depends on axioms:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "e5966e9468fb7779d4f0288308513c4af7965c44fc935ccf79f743c57af5d91e",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.DiophantineApproximation.Basic\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.approxSet\n#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational\n#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational\n#check @Rat.finite_rat_abs_sub_lt_one_div_den_sq\n#check @LiouvilleWith\n#check @LiouvilleWith.exists_pos\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#print LiouvilleWith\nnamespace Approx267Isolated\nopen Filter\nopen scoped Filter\nnoncomputable def approxWith (α : ℝ) (ψ : ℕ → ℝ) : Set (ℤ × ℕ) :=\n  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < ψ hq.2}\nnoncomputable def approxC (α κ C : ℝ) : Set (ℤ × ℕ) :=\n  approxWith α (fun q ↦ C / (q : ℝ) ^ κ)\ntheorem bounded_den_finite (α : ℝ) (ψ : ℕ → ℝ) (Q₀ : ℕ) :\n    {hq ∈ approxWith α ψ | hq.2 ≤ Q₀}.Finite := by\n  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, |ψ q|\n  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉\n  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_\n  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩\n  simp only at hq0 happ hqQ\n  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0\n  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, le_abs_self (ψ q), abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,\n      Finset.single_le_sum (f := fun q : ℕ ↦ |ψ q|) (fun i _ ↦ abs_nonneg _)\n        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]\n  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by\n    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ\n    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| ≤ K := by\n    have : ((|h| : ℤ) : ℝ) ≤ K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact ⟨abs_le.1 hK', hq0, hqQ⟩\ntheorem infinite_iff_frequently (α : ℝ) (ψ : ℕ → ℝ) :\n    (approxWith α ψ).Infinite ↔\n      ∃ᶠ q : ℕ in atTop, ∃ h : ℤ, (h, q) ∈ approxWith α ψ := by\n  rw [Filter.frequently_atTop']\n  constructor\n  · intro hi Q\n    obtain ⟨⟨h, q⟩, hmem, hn⟩ := (hi.sdiff (bounded_den_finite α ψ Q)).nonempty\n    exact ⟨q, not_le.mp (fun hq ↦ hn ⟨hmem, hq⟩), h, hmem⟩\n  · intro hf hfin\n    obtain ⟨Q, hQ⟩ := (hfin.image Prod.snd).bddAbove\n    obtain ⟨q, hq, h, hm⟩ := hf Q\n    exact hq.not_ge (hQ ⟨(h, q), hm, rfl⟩)\ntheorem liouvilleWith_iff {α κ : ℝ} (hα : Irrational α) :\n    LiouvilleWith κ α ↔ ∃ C : ℝ, (approxC α κ C).Infinite := by\n  constructor\n  · rintro ⟨C, hC⟩\n    refine ⟨C, (infinite_iff_frequently _ _).2 ?_⟩\n    refine ((Filter.eventually_gt_atTop 0).and_frequently hC).mono ?_\n    rintro q ⟨hq, h, _, hh⟩\n    exact ⟨h, hq, hh⟩\n  · rintro ⟨C, hC⟩\n    refine ⟨C, ((infinite_iff_frequently _ _).1 hC).mono ?_⟩\n    rintro q ⟨h, _, hh⟩\n    exact ⟨h, by simpa using hα.ne_rational h q, hh⟩\ntheorem dirichlet_endpoint {α : ℝ} (hα : Irrational α) :\n    {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ (2 : ℝ)}.Infinite := by\n  simpa only [Real.rpow_two] using\n    Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational hα\ntheorem zero_rat_endpoint :\n    {x : ℚ | |(0 : ℝ) - x| < 1 / (x.den : ℝ) ^ (2 : ℝ)}.Finite := by\n  apply Set.not_infinite.mp\n  intro hi\n  apply (show ¬ Irrational (0 : ℝ) by simp)\n  apply (Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational 0).mp\n  simpa only [Real.rpow_two] using hi\n-- A candidate named set is a diagnostic witness; automation reproducing its literal\n-- comprehension is not evidence of an existing semantic Diophantine approximation API.\nexample (α κ : ℝ) (witness : Set (ℤ × ℕ))\n    (hw : witness = {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}) :\n    approxC α κ 1 = witness := by\n  rw [hw]\n  rfl\nend Approx267Isolated\n#print axioms Approx267Isolated.bounded_den_finite\n#print axioms Approx267Isolated.infinite_iff_frequently\n#print axioms Approx267Isolated.liouvilleWith_iff\n#print axioms Approx267Isolated.dirichlet_endpoint\n#print axioms Approx267Isolated.zero_rat_endpoint\n"
+      },
+      "format": "run_code",
+      "native_region_start_line": 21,
+      "required_info": [
+        "Unknown identifier `Roth.approxSet`",
+        "'Approx267Isolated.bounded_den_finite' depends on axioms:",
+        "'Approx267Isolated.liouvilleWith_iff' depends on axioms:",
+        "'Approx267Isolated.zero_rat_endpoint' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "source_sha256": "d95fab02bd334d60a22059f44ecbaf7788512ebc86dc9107945223792fdadf56",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "format": "disk",
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Approx267Inline.roth_rat' depends on axioms:",
+        "'Approx267InlineLeanEval.thueSiegelRoth' depends on axioms:",
+        "Approx267InlineLeanEval.exists_pos_div_rpow_lt_aux"
+      ]
+    },
+    {
+      "label": "supplement",
+      "source": "supplement-executed.lean.txt",
+      "receipt": "supplement-receipt.json",
+      "source_sha256": "ccf851ca81399f58dd6fa406e7a471820dab7c4d5764b6eddeee23d1ec9e169a",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "format": "disk",
+      "native_region_start_line": 16,
+      "required_info": [
+        "'Approx267Supplement.rational_pair_infinite' depends on axioms:",
+        "'Approx267Supplement.zero_exponent_fiber_infinite' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "label": "project-rejected1",
+      "source": "project-rejected1-executed.lean.txt",
+      "receipt": "project-rejected1-receipt.json"
+    },
+    {
+      "label": "isolated-rejected1",
+      "source": "isolated-rejected1-executed.lean.txt",
+      "receipt": "isolated-rejected1-receipt.json"
+    },
+    {
+      "label": "inline-rejected1",
+      "source": "inline-rejected1-executed.lean.txt",
+      "receipt": "inline-rejected1-receipt.json"
+    },
+    {
+      "label": "supplement-rejected1",
+      "source": "supplement-rejected1-executed.lean.txt",
+      "receipt": "supplement-rejected1-receipt.json"
+    }
+  ],
+  "warming": [
+    "original-warming-receipt.json"
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "isolated20_sha256": "a932065441573cf90be990c233ce6cacff1039f07a427948a96b1aa078294372",
+    "disk_prefix_sha256": "363a6821de56e15a68978bcfef1f74e28eb837482667eba3b9ef498e98cea593"
+  },
+  "full_actual_callers": {
+    "source_explicit": 10,
+    "kernel_value": 12,
+    "kernel_type": 10,
+    "original_signatures_verified": 12
+  },
+  "no_file_end_build_due": true,
+  "next_file_end_canonical_index": 289
+}

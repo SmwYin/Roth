@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 266/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 267/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 266; remaining: 27.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 70 SKIP.
+- Completed applicable assessments: 267; remaining: 26.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 91 BORDERLINE-needs-human, 70 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3396,6 +3396,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One actual call: private Roth.one_lt_roth_eval_bound_aux at Main466; consumes index via .le at477, nonvanishing and derivative bound; full module inlining passes with original signatures.
 - Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/Roth.main_lemma.md).
 
+### Completed: `Roth.approxSet`
+
+- Type: `ℝ → ℝ → Set (ℤ × ℕ)`
+- What: The set of unreduced integer/natural pairs whose positive supplied denominator gives strict real-power approximation error to α.
+- How: Construct the pair set by conjunction of denominator positivity and the absolute-error bound, preserving the denominator rather than quotienting by rational equality.
+- Hypotheses: Arbitrary real α and κ. No irrationality, algebraicity or exponent positivity assumption is part of the definition.
+- Project dependencies: None
+- Caller summary: Ten source-explicit declarations (eight Main, two LeanEval); twelve canonical direct kernel-value consumers and ten direct type consumers. Full module inlining and twelve original-signature equalities verified.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.approxSet.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3954,6 +3964,8 @@ Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: Expose m=n+1 an
 
 Completed `Roth.main_lemma`: Existing Siegel small-kernel vector, finite pigeonhole, monic remainder reconstruction and root evaluation are genuine pinned building blocks. None establishes the joint quantitative polynomial/index/nonvanishing statement; isolated19 candidate probes and exact semantic representation bridge archived.
 
+Completed `Roth.approxSet`: Pinned DiophantineApproximation.Basic supplies reduced rational exponent2 results; LiouvilleWith is an existential-C frequent-witness endpoint with exact-equality exclusion. New image/fiber and arbitrary-error/filter bridges verify the relationships; neither is an exact replacement for fixed1 unreduced pair membership.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4487,6 +4499,8 @@ Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: The structural review disting
 Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.main_lemma`: Private construction/selector lemmas factor the proof; they are not duplicates of the complete named lemma or existing mathlib. New numerical_envelope exposes semantic budgets and recovers old statement exactly.
+
+Completed `Roth.approxSet`: Related to reduced rational-height conditions in roth_rat and uniform lower-bound IsDiophantine, with different representation/quantification. No exact bypassing duplicate was found.
 
 ## Part 5: Generalization opportunities
 
@@ -5033,6 +5047,8 @@ Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: No public gener
 
 Completed `Roth.main_lemma`: Retain full named quantitative statement. Scratch numerical_envelope independently varies B,beta,c,X,E under mathematical admissibility conditions and recovers all original hypotheses/conclusions; it is complementary internal API, not a replacement for deriving Theta<eta from numerical hypotheses. Arbitrary finite ordered variables require explicit reindexing; complex/absolute-valued-field versions require index/analytic API transport, not an unchecked hypothesis drop.
 
+Completed `Roth.approxSet`: Verified arbitrary error-function approxWith and coefficient approxC family with exact C1 recovery, nonpositive-C emptiness, C monotonicity and actual C1/C2 distinction. Arbitrary ψ bounded-slice/filter proofs compile mathlib-only. Rational image equality needs κ≥0; finite fibers and pair/rational infinitude equivalence need irrationality and κ>0.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5567,6 +5583,8 @@ Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: No new primitive is needed fo
 Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.main_lemma`: Quantitative bounded-coefficient high-index auxiliary polynomial plus derivative selection at a prescribed rational tuple; reusable Hasse/index, remainder-height and evaluation-height support can precede the Roth feature.
+
+Completed `Roth.approxSet`: Choose a primary named approximation family and expose finite slices, reduced rational image/fiber conversions and frequent-witness/LiouvilleWith bridges together.
 
 ## Part 7: Junk / removable
 
@@ -6105,6 +6123,8 @@ Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux`: Retain a live p
 
 Completed `Roth.main_lemma`: Keep named main theorem. One caller and short orchestration proof do not make its mathematical construction junk; actual inlining still invokes substantial project-only lemmas.
 
+Completed `Roth.approxSet`: Not junk: stable semantic family shared by ten explicit callers. Literal inlining works but does not eliminate the mathematical need to preserve supplied denominator information.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6375,6 +6395,7 @@ Completed `Roth.main_lemma`: Keep named main theorem. One caller and short orche
 | 264 | `Roth.theta_lt_eta_of_sq_log_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_eta_of_sq_log_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_lt_eta_of_sq_log_bound_aux/root-acceptance.json) |
 | 265 | `Roth.exists_auxiliary_polynomial_with_index_gap_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_auxiliary_polynomial_with_index_gap_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_auxiliary_polynomial_with_index_gap_aux/root-acceptance.json) |
 | 266 | `Roth.main_lemma` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/Roth.main_lemma.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.main_lemma/root-acceptance.json) |
+| 267 | `Roth.approxSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.approxSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.approxSet/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6906,12 +6927,14 @@ Completed `Roth.exists_auxiliary_polynomial_with_index_gap_aux` action: Keep unc
 
 Completed `Roth.main_lemma` action: Prepare Mathlib/NumberTheory/DiophantineApproximation/Roth.lean with a descriptive exists_auxiliary_polynomial name, retaining this full mathematical statement and private construction chain. Stage accepted Hasse/index/height prerequisites, run /generalise Roth.main_lemma and /cleanup Roth/MainLemma.lean Roth.main_lemma; select reviewer from recorded relevant commits.
 
+Completed `Roth.approxSet` action: BORDERLINE-needs-human: retain project-local approxSet; decide whether upstream should center a ψ pair family, reduced rational-height family or combined bridge layer. Three concrete future design questions are in the completed report.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.approxSet` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_nat_mul_isIntegral` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

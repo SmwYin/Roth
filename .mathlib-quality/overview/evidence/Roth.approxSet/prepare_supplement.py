@@ -1,0 +1,46 @@
+from pathlib import Path
+import re
+D=Path(__file__).resolve().parent;R=Path.cwd()
+s='''namespace Approx267Supplement
+open Roth
+theorem rational_pair_infinite (x : ℚ) (κ : ℝ) : (approxSet (x : ℝ) κ).Infinite := by
+  let f : ℕ → ℤ × ℕ := fun n ↦ (x.num * (n + 1), x.den * (n + 1))
+  have hi : Function.Injective f := by
+    intro n m h
+    have hs : x.den * (n + 1) = x.den * (m + 1) := congrArg Prod.snd h
+    exact Nat.add_right_cancel ((Nat.mul_left_cancel_iff x.den_pos).mp hs)
+  refine (Set.infinite_range_of_injective hi).mono ?_
+  rintro _ ⟨n, rfl⟩
+  have hn : (n : ℝ) + 1 ≠ 0 := by positivity
+  refine ⟨Nat.mul_pos x.den_pos (Nat.succ_pos n), ?_⟩
+  change |(x : ℝ) - (x.num * (n + 1) : ℤ) / (x.den * (n + 1) : ℕ)| < _
+  push_cast
+  rw [mul_div_mul_right _ _ hn, ← Rat.cast_def, sub_self, abs_zero]
+  exact one_div_pos.mpr (Real.rpow_pos_of_pos (by positivity) _)
+theorem zero_exponent_fiber_infinite (α : ℝ) (ha : |α| < 1) :
+    {hq ∈ approxSet α 0 | (hq.1 : ℚ) / hq.2 = 0}.Infinite := by
+  have hi : Function.Injective (fun n : ℕ ↦ ((0 : ℤ), n + 1)) := by
+    intro n m h
+    exact Nat.add_right_cancel (congrArg Prod.snd h)
+  refine (Set.infinite_range_of_injective hi).mono ?_
+  rintro _ ⟨n, rfl⟩
+  simp only [Set.mem_ofPred_eq, approxSet, Nat.succ_pos, Int.cast_zero, zero_div,
+    sub_zero, Real.rpow_zero, div_one, true_and]
+  exact ⟨ha, trivial⟩
+theorem exponent_antitone {α κ κ' : ℝ} (hκ : κ' ≤ κ) : approxSet α κ ⊆ approxSet α κ' := by
+  intro hq hh
+  refine ⟨hh.1, hh.2.trans_le ?_⟩
+  have hq : (1 : ℝ) ≤ hq.2 := by exact_mod_cast hh.1
+  gcongr
+theorem constant_one_literal (α κ : ℝ) : approxSet α κ =
+    {hq : ℤ × ℕ | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ} := rfl
+-- These candidates have incompatible codomains or mathematical data.
+#check_failure (Set.ofPred : ℝ → ℝ → Set (ℤ × ℕ))
+#check_failure (Metric.ball : ℝ → ℝ → Set (ℤ × ℕ))
+end Approx267Supplement
+'''
+checks='\n'.join('#print axioms Approx267Supplement.'+n for n in re.findall(r'^theorem (\w+)',s,re.M))
+full=(D/'disk-prefix.lean.txt').read_text()+s+checks+'\n'
+assert max(map(len,full.splitlines()))<=100
+(D/'supplement-executed.lean.txt').write_text(full);(R/'.lake/roth-overview-session/GenWronskianChecks.lean').write_text(full)
+print('Prepared supplement',len(full.splitlines()),'lines')

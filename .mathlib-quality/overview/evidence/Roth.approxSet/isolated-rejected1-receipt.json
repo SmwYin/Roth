@@ -1,0 +1,147 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.DiophantineApproximation.Basic\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.approxSet\n#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational\n#check @Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational\n#check @Rat.finite_rat_abs_sub_lt_one_div_den_sq\n#check @LiouvilleWith\n#check @LiouvilleWith.exists_pos\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#print LiouvilleWith\nnamespace Approx267Isolated\nopen Filter\nopen scoped Filter\nnoncomputable def approxWith (α : ℝ) (ψ : ℕ → ℝ) : Set (ℤ × ℕ) :=\n  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < ψ hq.2}\nnoncomputable def approxC (α κ C : ℝ) : Set (ℤ × ℕ) :=\n  approxWith α (fun q ↦ C / (q : ℝ) ^ κ)\ntheorem bounded_den_finite (α : ℝ) (ψ : ℕ → ℝ) (Q₀ : ℕ) :\n    {hq ∈ approxWith α ψ | hq.2 ≤ Q₀}.Finite := by\n  set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, |ψ q|\n  set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉\n  refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_\n  rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩\n  simp only at hq0 happ hqQ\n  have hqR : (0 : ℝ) < q := by exact_mod_cast hq0\n  have hdiv : |(h : ℝ) / q| ≤ |α| + S := by\n    rw [abs_sub_comm] at happ\n    linarith only [happ, le_abs_self (ψ q), abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,\n      Finset.single_le_sum (f := fun q : ℕ ↦ |ψ q|) (fun i _ ↦ abs_nonneg _)\n        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]\n  have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by\n    have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ\n    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv\n    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans\n      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))\n  have hK' : |h| ≤ K := by\n    have : ((|h| : ℤ) : ℝ) ≤ K := by\n      rw [Int.cast_abs]\n      exact habs.trans (Int.le_ceil _)\n    exact_mod_cast this\n  simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]\n  exact ⟨abs_le.1 hK', hq0, hqQ⟩\ntheorem infinite_iff_frequently (α : ℝ) (ψ : ℕ → ℝ) :\n    (approxWith α ψ).Infinite ↔\n      ∃ᶠ q : ℕ in atTop, ∃ h : ℤ, (h, q) ∈ approxWith α ψ := by\n  rw [Filter.frequently_atTop']\n  constructor\n  · intro hi Q\n    obtain ⟨⟨h, q⟩, hmem, hn⟩ := (hi.sdiff (bounded_den_finite α ψ Q)).nonempty\n    exact ⟨q, not_le.mp (fun hq ↦ hn ⟨hmem, hq⟩), h, hmem⟩\n  · intro hf hfin\n    obtain ⟨Q, hQ⟩ := (hfin.image Prod.snd).bddAbove\n    obtain ⟨q, hq, h, hm⟩ := hf Q\n    exact hq.not_ge (hQ ⟨(h, q), hm, rfl⟩)\ntheorem liouvilleWith_iff {α κ : ℝ} (hα : Irrational α) :\n    LiouvilleWith κ α ↔ ∃ C : ℝ, (approxC α κ C).Infinite := by\n  constructor\n  · rintro ⟨C, hC⟩\n    refine ⟨C, (infinite_iff_frequently _ _).2 ?_⟩\n    refine ((Filter.eventually_gt_atTop 0).and_frequently hC).mono ?_\n    rintro q ⟨hq, h, _, hh⟩\n    exact ⟨h, hq, hh⟩\n  · rintro ⟨C, hC⟩\n    refine ⟨C, ((infinite_iff_frequently _ _).1 hC).mono ?_⟩\n    rintro q ⟨h, _, hh⟩\n    exact ⟨h, by simpa using hα.ne_rational h q, hh⟩\ntheorem dirichlet_endpoint {α : ℝ} (hα : Irrational α) :\n    {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ (2 : ℝ)}.Infinite := by\n  simpa only [Real.rpow_two] using\n    Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational hα\ntheorem zero_rat_endpoint :\n    {x : ℚ | |(0 : ℝ) - x| < 1 / (x.den : ℝ) ^ (2 : ℝ)}.Finite := by\n  apply Set.not_infinite.mp\n  rw [Real.rpow_two]\n  intro hi\n  exact (irrational_iff_ne_rational.mp\n    ((Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational 0).mp hi)) 0 1 (by norm_num)\n-- A candidate named set is a diagnostic witness; automation reproducing its literal\n-- comprehension is not evidence of an existing semantic Diophantine approximation API.\nexample (α κ : ℝ) (witness : Set (ℤ × ℕ))\n    (hw : witness = {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}) :\n    approxC α κ 1 = witness := by\n  rw [hw]\n  rfl\nend Approx267Isolated\n#print axioms Approx267Isolated.bounded_den_finite\n#print axioms Approx267Isolated.infinite_iff_frequently\n#print axioms Approx267Isolated.liouvilleWith_iff\n#print axioms Approx267Isolated.dirichlet_endpoint\n#print axioms Approx267Isolated.zero_rat_endpoint\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.approxSet`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational : ∀ {ξ : ℝ},\\n  Irrational ξ → {q | |ξ - ↑q| < 1 / ↑q.den ^ 2}.Infinite\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational : ∀ (ξ : ℝ),\\n  {q | |ξ - ↑q| < 1 / ↑q.den ^ 2}.Infinite ↔ Irrational ξ\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Rat.finite_rat_abs_sub_lt_one_div_den_sq : ∀ (ξ : ℚ), {q | |ξ - q| < 1 / ↑q.den ^ 2}.Finite\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LiouvilleWith : ℝ → ℝ → Prop\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.exists_pos : ∀ {p x : ℝ},\\n  LiouvilleWith p x →\\n    ∃ C, ∃ (_ : 0 < C), ∃ᶠ (n : ℕ) in Filter.atTop, 1 ≤ n ∧ ∃ m, x ≠ ↑m / ↑n ∧ |x - ↑m / ↑n| < C / ↑n ^ p\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.frequently_lt_rpow_neg : ∀ {p q x : ℝ},\\n  LiouvilleWith p x → q < p → ∃ᶠ (n : ℕ) in Filter.atTop, ∃ m, x ≠ ↑m / ↑n ∧ |x - ↑m / ↑n| < ↑n ^ (-q)\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"def LiouvilleWith : ℝ → ℝ → Prop :=\\nfun p x ↦ ∃ C, ∃ᶠ (n : ℕ) in Filter.atTop, ∃ m, x ≠ ↑m / ↑n ∧ |x - ↑m / ↑n| < C / ↑n ^ p\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Tactic `rewrite` failed: Did not find an occurrence of the pattern\\n  ?x ^ 2\\nin the target expression\\n  ¬{x | |0 - ↑x| < 1 / ↑x.den ^ 2}.Infinite\\n\\n⊢ ¬{x | |0 - ↑x| < 1 / ↑x.den ^ 2}.Infinite\",\n      \"line\": 93,\n      \"column\": 7,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approx267Isolated.bounded_den_finite' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 105,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approx267Isolated.infinite_iff_frequently' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 106,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approx267Isolated.liouvilleWith_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 107,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approx267Isolated.dirichlet_endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 108,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Approx267Isolated.zero_rat_endpoint' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 109,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.approxSet`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational : ∀ {ξ : ℝ},\n  Irrational ξ → {q | |ξ - ↑q| < 1 / ↑q.den ^ 2}.Infinite",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational : ∀ (ξ : ℝ),\n  {q | |ξ - ↑q| < 1 / ↑q.den ^ 2}.Infinite ↔ Irrational ξ",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Rat.finite_rat_abs_sub_lt_one_div_den_sq : ∀ (ξ : ℚ), {q | |ξ - q| < 1 / ↑q.den ^ 2}.Finite",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "LiouvilleWith : ℝ → ℝ → Prop",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.exists_pos : ∀ {p x : ℝ},\n  LiouvilleWith p x →\n    ∃ C, ∃ (_ : 0 < C), ∃ᶠ (n : ℕ) in Filter.atTop, 1 ≤ n ∧ ∃ m, x ≠ ↑m / ↑n ∧ |x - ↑m / ↑n| < C / ↑n ^ p",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.frequently_lt_rpow_neg : ∀ {p q x : ℝ},\n  LiouvilleWith p x → q < p → ∃ᶠ (n : ℕ) in Filter.atTop, ∃ m, x ≠ ↑m / ↑n ∧ |x - ↑m / ↑n| < ↑n ^ (-q)",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "def LiouvilleWith : ℝ → ℝ → Prop :=\nfun p x ↦ ∃ C, ∃ᶠ (n : ℕ) in Filter.atTop, ∃ m, x ≠ ↑m / ↑n ∧ |x - ↑m / ↑n| < C / ↑n ^ p",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Tactic `rewrite` failed: Did not find an occurrence of the pattern\n  ?x ^ 2\nin the target expression\n  ¬{x | |0 - ↑x| < 1 / ↑x.den ^ 2}.Infinite\n\n⊢ ¬{x | |0 - ↑x| < 1 / ↑x.den ^ 2}.Infinite",
+          "line": 93,
+          "column": 7,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approx267Isolated.bounded_den_finite' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 105,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approx267Isolated.infinite_iff_frequently' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 106,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approx267Isolated.liouvilleWith_iff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 107,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approx267Isolated.dirichlet_endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 108,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Approx267Isolated.zero_rat_endpoint' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 109,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 100692
+}
