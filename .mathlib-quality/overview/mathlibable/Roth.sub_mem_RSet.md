@@ -161,7 +161,7 @@ Fresh `rg --no-ignore` scoped to production and `git grep` agree: one actual pro
 
 | Actual caller | Usage and every required retained conclusion |
 |---|---|
-| private `Roth.exists_mem_RSet_le_index_aux`, `Roth/MainLemma.lean:546`, call at560 | After obtaining a distinct pair with equal selected remainders, `have hP := sub_mem_RSet hW' hW'' hne`. It returns W′−W″ with hP membership, uses hP.1 to prove the mapped polynomial nonzero, and hP.2.1 to transfer coordinate degree bounds before applying the Hasse vanishing/index criterion. |
+| private `Roth.exists_mem_RSet_le_index_aux`, `Roth/MainLemma.lean:550`, call at560 | After obtaining a distinct pair with equal selected remainders, `have hP := sub_mem_RSet hW' hW'' hne`. It returns W′−W″ with hP membership, uses hP.1 to prove the mapped polynomial nonzero, and hP.2.1 to transfer coordinate degree bounds before applying the Hasse vanishing/index criterion. |
 
 Its continuation feeds the rpow-bound helper, then the logarithmic-bound helper, the auxiliary-polynomial construction, and `main_lemma`. Those are transitive users, not additional direct callers. The theorem has no simp attribute. No claim is made about full transitive kernel or implicit simp closure. The fresh inline-derivation search found no independent rederivation of this same complete tuple elsewhere.
 

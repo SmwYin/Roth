@@ -3075,6 +3075,8 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One actual proof caller, the private exists_mem_RSet_le_index_aux in MainLemma at560; no external-to-file uses or direct type consumers. Full caller inlining retains its signature and continuation.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sub_mem_RSet.md).
 
+- Evidence citation correction: the sole caller declaration begins at `Roth/MainLemma.lean:550`; its invocation is at560. Proof/native evidence and verdict unchanged.
+
 ### Completed: `Roth.eval_hasseDeriv_sub_eq_zero`
 
 - Type: `∀ {σ : Type u_1} {S : Type u_2} [inst : CommRing S] {f : Polynomial ℤ} {α : S},

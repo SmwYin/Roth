@@ -267,3 +267,5 @@ Only the listed assessments are complete. No partial assessment was committed.
 On restart: read [README](README.md), [machine progress](progress.json), and
 [declaration order](declaration-order.json); verify source/pin hashes and accepted evidence,
 then continue with the first unfinished declaration. Reports and evidence are tracked.
+
+Editorial correction to completed250: caller declaration citation corrected to `Roth/MainLemma.lean:550` (invocation560); mathematical/native evidence unchanged. Full provenance is in its root acceptance and machine progress record.
