@@ -1,0 +1,70 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 692,
+  "name": "Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+  "short": "exists_auxiliary_polynomial_with_index_gap_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 725,
+  "source": "private lemma exists_auxiliary_polynomial_with_index_gap_aux {α : ℝ} {f : Polynomial ℤ}\n    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)\n    {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m) {r : Fin m → ℕ}\n    (hrlast : 3 ≤ r (Fin.rev 0)) (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)\n    {q : Fin m → ℕ} (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :\n    ∃ W : MvPolynomial (Fin m) ℤ, W ∈ RSet ((q 0 : ℝ) ^ (δ * r 0)) r ∧\n      gam δ f.natDegree m - eta δ m + Θ ((q 0 : ℝ) ^ (δ * r 0)) q r <\n        index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r ∧ ∀ i k : Fin m →₀ ℕ,\n        |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k W)))| <\n          (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by\n  obtain ⟨m', rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)\n  have h32' : 2 * ((m' + 1 : ℕ) : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0) :=\n    (le_add_of_nonneg_right (mul_nonneg (by positivity)\n      (Real.log_nonneg (le_add_of_nonneg_right ((abs_nonneg _).trans (hA 0)))))).trans\n      ((le_add_of_nonneg_right (mul_nonneg (by positivity)\n        (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))))).trans h32)\n  have hδ0 : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by\n    simpa [← he] using ((by positivity : 0 < 2 * ((m' + 1 : ℕ) : ℝ) + 1).trans_le h32')\n  have hmR : (1 : ℝ) ≤ ((m' + 1 : ℕ) : ℝ) := by\n    exact_mod_cast (Nat.succ_le_succ (Nat.zero_le m'))\n  -- `r` is decreasing, so `r j ≤ r 0`\n  have hanti : Antitone r := Fin.antitone_iff_succ_le.2 fun i ↦ by\n    exact_mod_cast (le_div_self (Nat.cast_nonneg _) hδ0\n      (hδm.trans ((div_le_one (by positivity)).2 hmR))).trans (h31b i.castSucc i.succ rfl)\n  have hsumr : ∑ j, r j ≤ (m' + 1) * r 0 := by\n    simpa using Finset.sum_le_card_nsmul Finset.univ r (r 0) (fun j _ ↦ hanti (Fin.zero_le j))\n  obtain ⟨W, hWR, hγ, hWbound⟩ := exists_auxiliary_polynomial_of_log_bound_aux hf hfα hA\n    (Nat.succ_pos m') r (fun j ↦ (by decide : 0 < 3).trans_le\n      (hrlast.trans (hanti (by simpa using Fin.le_last j)))) hsumr hδ0.le h32\n  -- Lemma 7\n  refine ⟨W, hWR, ?_, hWbound⟩\n  linarith only [hγ, theta_lt_eta_of_sq_log_bound_aux hδ0.le\n    ((le_div_iff₀ (by positivity)).1 hδm) hrlast h31b h32' h33]",
+  "signature": "private lemma exists_auxiliary_polynomial_with_index_gap_aux {α : ℝ} {f : Polynomial ℤ}\n    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)\n    {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m) {r : Fin m → ℕ}\n    (hrlast : 3 ≤ r (Fin.rev 0)) (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)\n    {q : Fin m → ℕ} (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤\n      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :\n    ∃ W : MvPolynomial (Fin m) ℤ, W ∈ RSet ((q 0 : ℝ) ^ (δ * r 0)) r ∧\n      gam δ f.natDegree m - eta δ m + Θ ((q 0 : ℝ) ^ (δ * r 0)) q r <\n        index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r ∧ ∀ i k : Fin m →₀ ℕ,\n        |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k W)))| <\n          (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ)",
+  "body": "by\n  obtain ⟨m', rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)\n  have h32' : 2 * ((m' + 1 : ℕ) : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0) :=\n    (le_add_of_nonneg_right (mul_nonneg (by positivity)\n      (Real.log_nonneg (le_add_of_nonneg_right ((abs_nonneg _).trans (hA 0)))))).trans\n      ((le_add_of_nonneg_right (mul_nonneg (by positivity)\n        (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))))).trans h32)\n  have hδ0 : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by\n    simpa [← he] using ((by positivity : 0 < 2 * ((m' + 1 : ℕ) : ℝ) + 1).trans_le h32')\n  have hmR : (1 : ℝ) ≤ ((m' + 1 : ℕ) : ℝ) := by\n    exact_mod_cast (Nat.succ_le_succ (Nat.zero_le m'))\n  -- `r` is decreasing, so `r j ≤ r 0`\n  have hanti : Antitone r := Fin.antitone_iff_succ_le.2 fun i ↦ by\n    exact_mod_cast (le_div_self (Nat.cast_nonneg _) hδ0\n      (hδm.trans ((div_le_one (by positivity)).2 hmR))).trans (h31b i.castSucc i.succ rfl)\n  have hsumr : ∑ j, r j ≤ (m' + 1) * r 0 := by\n    simpa using Finset.sum_le_card_nsmul Finset.univ r (r 0) (fun j _ ↦ hanti (Fin.zero_le j))\n  obtain ⟨W, hWR, hγ, hWbound⟩ := exists_auxiliary_polynomial_of_log_bound_aux hf hfα hA\n    (Nat.succ_pos m') r (fun j ↦ (by decide : 0 < 3).trans_le\n      (hrlast.trans (hanti (by simpa using Fin.le_last j)))) hsumr hδ0.le h32\n  -- Lemma 7\n  refine ⟨W, hWR, ?_, hWbound⟩\n  linarith only [hγ, theta_lt_eta_of_sq_log_bound_aux hδ0.le\n    ((le_div_iff₀ (by positivity)).1 hδm) hrlast h31b h32' h33]",
+  "proof_lines": 24,
+  "sha256": "c3c4753b7af7ec43621ac20f6dc3bf0cbc3447151554d4f1a0c3dbb0aae02537",
+  "what": "An auxiliary polynomial exceeds gamma minus eta plus the extremal index and keeps derivative bounds.",
+  "how": "Derive antitone positive degrees and their total bound, use exists_auxiliary_polynomial_of_log_bound_aux, then compare Θ with eta via theta_lt_eta_of_sq_log_bound_aux.",
+  "hypotheses": "Monic integer equation, nonzero dimension, bounded coefficients, nonnegative small delta and the displayed degree/logarithmic inequalities.",
+  "source_body_refs": [
+    "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+    "Roth.theta_lt_eta_of_sq_log_bound_aux"
+  ],
+  "source_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.RSet",
+    "Roth.eta",
+    "Roth.gam",
+    "Roth.index",
+    "Roth.mainCoeffBound",
+    "Roth.Θ"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.main_lemma",
+      "file": "Roth/MainLemma.lean",
+      "line": 735
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+    "Roth.theta_lt_eta_of_sq_log_bound_aux"
+  ],
+  "used_by_in_file": [
+    "Roth.main_lemma"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 913,
+  "project_body_refs": [
+    "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+    "Roth.theta_lt_eta_of_sq_log_bound_aux"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.RSet",
+    "Roth.eta",
+    "Roth.gam",
+    "Roth.index",
+    "Roth.mainCoeffBound",
+    "Roth.Θ"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.main_lemma",
+      "file": "Roth/MainLemma.lean",
+      "line": 735
+    }
+  ]
+}

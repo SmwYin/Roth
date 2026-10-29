@@ -1,0 +1,34 @@
+private lemma exists_auxiliary_polynomial_with_index_gap_aux {α : ℝ} {f : Polynomial ℤ}
+    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)
+    {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m) {r : Fin m → ℕ}
+    (hrlast : 3 ≤ r (Fin.rev 0)) (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)
+    {q : Fin m → ℕ} (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
+    ∃ W : MvPolynomial (Fin m) ℤ, W ∈ RSet ((q 0 : ℝ) ^ (δ * r 0)) r ∧
+      gam δ f.natDegree m - eta δ m + Θ ((q 0 : ℝ) ^ (δ * r 0)) q r <
+        index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r ∧ ∀ i k : Fin m →₀ ℕ,
+        |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k W)))| <
+          (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by
+  obtain ⟨m', rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)
+  have h32' : 2 * ((m' + 1 : ℕ) : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0) :=
+    (le_add_of_nonneg_right (mul_nonneg (by positivity)
+      (Real.log_nonneg (le_add_of_nonneg_right ((abs_nonneg _).trans (hA 0)))))).trans
+      ((le_add_of_nonneg_right (mul_nonneg (by positivity)
+        (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))))).trans h32)
+  have hδ0 : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by
+    simpa [← he] using ((by positivity : 0 < 2 * ((m' + 1 : ℕ) : ℝ) + 1).trans_le h32')
+  have hmR : (1 : ℝ) ≤ ((m' + 1 : ℕ) : ℝ) := by
+    exact_mod_cast (Nat.succ_le_succ (Nat.zero_le m'))
+  -- `r` is decreasing, so `r j ≤ r 0`
+  have hanti : Antitone r := Fin.antitone_iff_succ_le.2 fun i ↦ by
+    exact_mod_cast (le_div_self (Nat.cast_nonneg _) hδ0
+      (hδm.trans ((div_le_one (by positivity)).2 hmR))).trans (h31b i.castSucc i.succ rfl)
+  have hsumr : ∑ j, r j ≤ (m' + 1) * r 0 := by
+    simpa using Finset.sum_le_card_nsmul Finset.univ r (r 0) (fun j _ ↦ hanti (Fin.zero_le j))
+  obtain ⟨W, hWR, hγ, hWbound⟩ := exists_auxiliary_polynomial_of_log_bound_aux hf hfα hA
+    (Nat.succ_pos m') r (fun j ↦ (by decide : 0 < 3).trans_le
+      (hrlast.trans (hanti (by simpa using Fin.le_last j)))) hsumr hδ0.le h32
+  -- Lemma 7
+  refine ⟨W, hWR, ?_, hWbound⟩
+  linarith only [hγ, theta_lt_eta_of_sq_log_bound_aux hδ0.le
+    ((le_div_iff₀ (by positivity)).1 hδm) hrlast h31b h32' h33]
