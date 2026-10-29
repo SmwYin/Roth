@@ -1,0 +1,65 @@
+[
+  {
+    "file": "Roth/MainLemma.lean",
+    "line": 515,
+    "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+    "short": "abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 548,
+    "source": "private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux {σ : Type*} [Fintype σ]\n    {f : Polynomial ℤ} {P : MvPolynomial σ ℤ} {r : σ → ℕ} {A B β : ℝ} {s : ℕ}\n    (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) (hd : ∀ k, degreeOf k P ≤ r k)\n    (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (hs : ∑ k, r k ≤ s) (h2 : 2 ^ s ≤ β) (hpow : (1 + A) ^ s ≤ β)\n    (j : σ →₀ ℕ) (i : ℕ) : |(diag (hasseDeriv j P) %ₘ f).coeff i| ≤ (⌊B * β ^ 3⌋₊ : ℤ) := by\n  have hB0 : 0 ≤ B := (abs_nonneg _).trans (hc 0)\n  have hβ1 : 1 ≤ β := (one_le_pow₀ (by norm_num)).trans h2\n  have hβ0 : 0 ≤ β := zero_le_one.trans hβ1\n  have h2' : (2 : ℝ) ^ (∑ k, r k) ≤ β :=\n    (pow_le_pow_right₀ (by norm_num) hs).trans h2\n  have hNR : ((∏ k, (r k + 1) : ℕ) : ℝ) ≤ β := by\n    refine le_trans ?_ h2'\n    exact_mod_cast (show (∏ k, (r k + 1) : ℕ) ≤ 2 ^ (∑ k, r k) by\n      rw [← Finset.prod_pow_eq_pow_sum]\n      exact Finset.prod_le_prod fun k _ ↦ Nat.lt_two_pow_self)\n  have bound {g : Polynomial ℤ} {C : ℝ} (hC : ∀ i, |(g.coeff i : ℝ)| ≤ C)\n      (he : (1 + C) ^ ((∑ k, r k) + 1 - g.natDegree) ≤ β) :\n      |((diag (hasseDeriv j P) %ₘ g).coeff i : ℝ)| ≤ B * β ^ 3 := by\n    calc _ ≤ _ := abs_coeff_diag_hasseDeriv_modByMonic_le_aux hC hd hc j i\n      _ ≤ β * (β * (β * B)) :=\n        (mul_le_mul he (mul_le_mul hNR (mul_le_mul_of_nonneg_right h2' hB0)\n          (by positivity) hβ0) (by positivity) hβ0)\n      _ = B * β ^ 3 := by ring\n  have hreal : |((diag (hasseDeriv j P) %ₘ f).coeff i : ℝ)| ≤ B * β ^ 3 := by\n    by_cases hn : f.natDegree = 0\n    · by_cases hf : f.Monic\n      · simpa [Polynomial.eq_one_of_monic_natDegree_zero hf hn] using\n          mul_nonneg hB0 (pow_nonneg hβ0 3)\n      · simpa [Polynomial.modByMonic_eq_of_not_monic _ hf] using\n          bound (g := 0) (C := 0) (by simp) (by simpa using hβ1)\n    · exact bound hA ((pow_le_pow_right₀ (le_add_of_nonneg_right\n        ((abs_nonneg _).trans (hA 0))) (by lia)).trans hpow)\n  simpa [Int.natCast_floor_eq_floor ((abs_nonneg _).trans hreal), Int.le_floor,\n    Int.cast_abs] using hreal",
+    "signature": "private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux {σ : Type*} [Fintype σ]\n    {f : Polynomial ℤ} {P : MvPolynomial σ ℤ} {r : σ → ℕ} {A B β : ℝ} {s : ℕ}\n    (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) (hd : ∀ k, degreeOf k P ≤ r k)\n    (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (hs : ∑ k, r k ≤ s) (h2 : 2 ^ s ≤ β) (hpow : (1 + A) ^ s ≤ β)\n    (j : σ →₀ ℕ) (i : ℕ) : |(diag (hasseDeriv j P) %ₘ f).coeff i| ≤ (⌊B * β ^ 3⌋₊ : ℤ)",
+    "body": "by\n  have hB0 : 0 ≤ B := (abs_nonneg _).trans (hc 0)\n  have hβ1 : 1 ≤ β := (one_le_pow₀ (by norm_num)).trans h2\n  have hβ0 : 0 ≤ β := zero_le_one.trans hβ1\n  have h2' : (2 : ℝ) ^ (∑ k, r k) ≤ β :=\n    (pow_le_pow_right₀ (by norm_num) hs).trans h2\n  have hNR : ((∏ k, (r k + 1) : ℕ) : ℝ) ≤ β := by\n    refine le_trans ?_ h2'\n    exact_mod_cast (show (∏ k, (r k + 1) : ℕ) ≤ 2 ^ (∑ k, r k) by\n      rw [← Finset.prod_pow_eq_pow_sum]\n      exact Finset.prod_le_prod fun k _ ↦ Nat.lt_two_pow_self)\n  have bound {g : Polynomial ℤ} {C : ℝ} (hC : ∀ i, |(g.coeff i : ℝ)| ≤ C)\n      (he : (1 + C) ^ ((∑ k, r k) + 1 - g.natDegree) ≤ β) :\n      |((diag (hasseDeriv j P) %ₘ g).coeff i : ℝ)| ≤ B * β ^ 3 := by\n    calc _ ≤ _ := abs_coeff_diag_hasseDeriv_modByMonic_le_aux hC hd hc j i\n      _ ≤ β * (β * (β * B)) :=\n        (mul_le_mul he (mul_le_mul hNR (mul_le_mul_of_nonneg_right h2' hB0)\n          (by positivity) hβ0) (by positivity) hβ0)\n      _ = B * β ^ 3 := by ring\n  have hreal : |((diag (hasseDeriv j P) %ₘ f).coeff i : ℝ)| ≤ B * β ^ 3 := by\n    by_cases hn : f.natDegree = 0\n    · by_cases hf : f.Monic\n      · simpa [Polynomial.eq_one_of_monic_natDegree_zero hf hn] using\n          mul_nonneg hB0 (pow_nonneg hβ0 3)\n      · simpa [Polynomial.modByMonic_eq_of_not_monic _ hf] using\n          bound (g := 0) (C := 0) (by simp) (by simpa using hβ1)\n    · exact bound hA ((pow_le_pow_right₀ (le_add_of_nonneg_right\n        ((abs_nonneg _).trans (hA 0))) (by lia)).trans hpow)\n  simpa [Int.natCast_floor_eq_floor ((abs_nonneg _).trans hreal), Int.le_floor,\n    Int.cast_abs] using hreal",
+    "proof_lines": 30,
+    "sha256": "7056648912f9c499eaf4d0615094b9fecf7a0857362da74665106449c8769bc7",
+    "what": "The derivative remainder coefficients admit a natural-floor bound from three common growth factors.",
+    "how": "Use abs_coeff_diag_hasseDeriv_modByMonic_le_aux, bound box cardinality by a power of two, handle zero-degree/nonmonic divisors and convert with Int.le_floor.",
+    "hypotheses": "Finite variables; total degree bound, divisor/input coefficient bounds and common growth-factor bounds.",
+    "source_body_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "Roth.diag"
+    ],
+    "source_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.diag"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 581
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+    "uses_from_project": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "Roth.diag"
+    ],
+    "used_by_in_file": [
+      "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 422,
+    "project_body_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "Roth.diag"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.diag"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 581
+      }
+    ]
+  }
+]
