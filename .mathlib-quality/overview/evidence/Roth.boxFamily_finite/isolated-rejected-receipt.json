@@ -1,0 +1,112 @@
+{
+  "tool": "lean_run_code",
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\nnamespace Box245Generic\n#check_failure Roth.boxFamily_finite\n\ndef family {σ R : Type*} [CommSemiring R] (r : σ → ℕ)\n    (t : (σ →₀ ℕ) → Set R) : Set (MvPolynomial σ R) :=\n  {P | (∀ j, degreeOf j P ≤ r j) ∧ ∀ d, P.coeff d ∈ t d}\n\ntheorem finite_coeff_choices {σ R : Type*} [CommSemiring R] (s : Set (σ →₀ ℕ))\n    (hs : s.Finite) (t : (σ →₀ ℕ) → Set R) (ht : ∀ d ∈ s, (t d).Finite) :\n    {P : MvPolynomial σ R | (↑P.support : Set (σ →₀ ℕ)) ⊆ s ∧\n      ∀ d, P.coeff d ∈ t d}.Finite := by\n  classical\n  let : Fintype s := hs.fintype\n  let f : MvPolynomial σ R → s → R := fun P d ↦ P.coeff d\n  have hfin : {g : s → R | ∀ d, g d ∈ t d}.Finite :=\n    Set.Finite.pi' (fun d ↦ ht d d.property)\n  refine hfin.of_injOn (f := f) (fun P hP d ↦ hP.2 d) ?_\n  intro P hP Q hQ he\n  apply MvPolynomial.ext\n  intro d\n  by_cases hd : d ∈ s\n  · exact congrFun he ⟨d, hd⟩\n  · have hp : P.coeff d = 0 :=\n      Finsupp.notMem_support_iff.1 (fun hp ↦ hd (hP.1 hp))\n    have hq : Q.coeff d = 0 :=\n      Finsupp.notMem_support_iff.1 (fun hq ↦ hd (hQ.1 hq))\n    exact hp.trans hq.symm\n\ntheorem finite_family_of_monomials {σ R : Type*} [CommSemiring R] (r : σ → ℕ)\n    (hs : {d : σ →₀ ℕ | ∀ j, d j ≤ r j}.Finite)\n    (t : (σ →₀ ℕ) → Set R) (ht : ∀ d, (t d).Finite) : (family r t).Finite := by\n  refine (finite_coeff_choices _ hs t (fun d _ ↦ ht d)).subset ?_\n  exact fun P hP ↦ ⟨fun d hd j ↦ (monomial_le_degreeOf j hd).trans (hP.1 j), hP.2⟩\n\ntheorem zero_bound {σ : Type*} (r : σ → ℕ) :\n    family r (fun _ ↦ Set.Icc (0 : ℤ) 0) = {0} := by\n  ext P\n  constructor\n  · intro h\n    apply Set.mem_singleton_iff.2\n    apply MvPolynomial.ext\n    intro d\n    exact le_antisymm (h.2 d).2 (h.2 d).1\n  · rintro rfl\n    simp [family]\n\ntheorem infinite_family : (family (fun _ : ℕ ↦ 1) (fun _ ↦ Set.Icc (0 : ℤ) 1)).Infinite := by\n  have hi : Function.Injective (fun i : ℕ ↦ (X i : MvPolynomial ℕ ℤ)) :=\n    fun _ _ h ↦ MvPolynomial.X_injective h\n  refine (Set.infinite_range_of_injective hi).mono (Set.range_subset_iff.2 ?_)\n  intro i\n  constructor\n  · intro j\n    by_cases h : i = j\n    · subst j\n      simp\n    · simp [degreeOf_X_of_ne (Ne.symm h)]\n  · intro d\n    simp only [MvPolynomial.coeff_X, Set.mem_Icc]\n    split_ifs <;> norm_num\n\ntheorem abstract_image {α β : Type*} (s : Finset α) (f : α → β) : (f '' (s : Set α)).Finite :=\n  s.finite_toSet.image f\n\n#print axioms finite_coeff_choices\n#print axioms finite_family_of_monomials\n#print axioms zero_bound\n#print axioms infinite_family\n#print axioms abstract_image\nend Box245Generic\n"
+  },
+  "elapsed_ms": 1217,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.boxFamily_finite`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Application type mismatch: The argument\\n  d\\nhas type\\n  σ →₀ ℕ\\nbut is expected to have type\\n  ↑s\\nin the application\\n  g d\",\n      \"line\": 35,\n      \"column\": 35,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Invalid field `property`: The environment does not contain `Finsupp.property`, so it is not possible to project the field `property` from an expression\\n  d\\nof type `σ →₀ ℕ`\",\n      \"line\": 36,\n      \"column\": 36,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  Finite (σ →₀ ℕ)\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 36,\n      \"column\": 5,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Application type mismatch: The argument\\n  fun P hP d ↦ hP.right d\\nhas type\\n  ∀ P ∈ {P | ↑P.support ⊆ s ∧ ∀ (d : σ →₀ ℕ), P.coeff d ∈ t d}, ∀ (d : σ →₀ ℕ), P.coeff d ∈ t d\\nbut is expected to have type\\n  Set.MapsTo f {P | ↑P.support ⊆ s ∧ ∀ (d : σ →₀ ℕ), P.coeff d ∈ t d} ?m.59\\nin the application\\n  Set.Finite.of_injOn fun P hP d ↦ hP.right d\",\n      \"line\": 37,\n      \"column\": 33,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box245Generic.finite_coeff_choices' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 85,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box245Generic.finite_family_of_monomials' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 86,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box245Generic.zero_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 87,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box245Generic.infinite_family' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 88,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box245Generic.abstract_image' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 89,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.boxFamily_finite`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Application type mismatch: The argument\n  d\nhas type\n  σ →₀ ℕ\nbut is expected to have type\n  ↑s\nin the application\n  g d",
+          "line": 35,
+          "column": 35,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Invalid field `property`: The environment does not contain `Finsupp.property`, so it is not possible to project the field `property` from an expression\n  d\nof type `σ →₀ ℕ`",
+          "line": 36,
+          "column": 36,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  Finite (σ →₀ ℕ)\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 36,
+          "column": 5,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Application type mismatch: The argument\n  fun P hP d ↦ hP.right d\nhas type\n  ∀ P ∈ {P | ↑P.support ⊆ s ∧ ∀ (d : σ →₀ ℕ), P.coeff d ∈ t d}, ∀ (d : σ →₀ ℕ), P.coeff d ∈ t d\nbut is expected to have type\n  Set.MapsTo f {P | ↑P.support ⊆ s ∧ ∀ (d : σ →₀ ℕ), P.coeff d ∈ t d} ?m.59\nin the application\n  Set.Finite.of_injOn fun P hP d ↦ hP.right d",
+          "line": 37,
+          "column": 33,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box245Generic.finite_coeff_choices' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 85,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box245Generic.finite_family_of_monomials' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 86,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box245Generic.zero_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 87,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box245Generic.infinite_family' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 88,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box245Generic.abstract_image' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 89,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 244/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 245/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 244; remaining: 49.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 82 BORDERLINE-needs-human, 58 SKIP.
+- Completed applicable assessments: 245; remaining: 48.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 83 BORDERLINE-needs-human, 58 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3005,6 +3005,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 2 explicit source caller declarations, all in MainLemma.lean; 2 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_eq_image_finsupp_aux.md).
 
+### Completed: `Roth.boxFamily_finite`
+
+- Type: `∀ {σ : Type u_1} (r : σ → ℕ) [Finite ↑(Function.support r)] (B : ℕ), (Roth.boxFamily r B).Finite`
+- What: Integer multivariate polynomials whose coordinate degrees have finitely supported bounds and whose coefficients lie in [0,B] form a finite set, even for an infinite ambient variable type.
+- How: Rewrite by Roth.boxFamily_eq_image_finsupp_aux to the image of a finite coefficient-array box, then use Finset.finite_toSet and Set.Finite.image.
+- Hypotheses: Only finitely many variable degree bounds are nonzero. No finiteness of the ambient variable type or positivity of B is required.
+- Project dependencies: Roth.boxFamily, Roth.boxFamily_eq_image_finsupp_aux
+- Caller summary: One explicit body call in Roth.exists_ne_modByMonic_eq supplies its local Fintype. No external-file callers; exact293 kernel audit confirms one direct value consumer and no direct type consumer.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_finite.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3519,6 +3529,8 @@ Completed `Roth.norm_coeff_modByMonic_le`: Existing division and norm building b
 
 Completed `Roth.boxFamily_eq_image_finsupp_aux`: Map coefficient functions through AddMonoidAlgebra.ofCoeff. In the forward direction monomial_le_degreeOf places each support exponent in Iic of the finite-support degree function. Conversely the support bound implies every coordinate degree bound, and Finset.mem_finsupp_iff gives interval bounds on box monomials; off-box coefficients vanish. This representation is shared by finiteness and exact cardinality, which then use different existing finite-set laws.
 
+Completed `Roth.boxFamily_finite`: Finset.finsupp, Finset.mem_finsupp_iff, Finset.finite_toSet and Set.Finite.image provide enumeration and image finiteness. Set.Finite.pi' and Set.Finite.of_injOn support a newly proved semantic theorem. The project representation helper is not existing mathlib.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4008,6 +4020,8 @@ Completed `Roth.exists_norm_coeff_reduction_aux`: One leading-term elimination a
 Completed `Roth.norm_coeff_modByMonic_le`: The private reduction is one step of this theorem; diagonal Hasse remainder estimate is a genuine downstream specialization, not a duplicate. Factor/root bounds are different statements.
 
 Completed `Roth.boxFamily_eq_image_finsupp_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.boxFamily_finite`: Shares the coefficient-array representation with Roth.ncard_boxFamily; finiteness and counting are different statements. It is not a duplicate of finite degree-index sets or nonzero bounded families.
 
 ## Part 5: Generalization opportunities
 
@@ -4509,6 +4523,8 @@ Completed `Roth.norm_coeff_modByMonic_le`: Verified mathlib-only Ring R and arbi
 
 Completed `Roth.boxFamily_eq_image_finsupp_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.boxFamily_finite`: Compiled: arbitrary CommSemiring R, arbitrary finite monomial support, and finite coefficient sets (only on selected monomials). Original recovered with no signature change. Also B=0 permits removal of the support condition; unqualified support removal fails for ℕ variables, r=1, B=1.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4999,6 +5015,8 @@ Completed `Roth.exists_norm_coeff_reduction_aux`: No new primitive is needed for
 Completed `Roth.norm_coeff_modByMonic_le`: Quantitative coefficient growth under iterated monic reduction; choice of direct norm, bundled seminorm or supNorm public interface remains upstream design.
 
 Completed `Roth.boxFamily_eq_image_finsupp_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.boxFamily_finite`: A semantic finite-coefficient/finite-support bridge for MvPolynomial is the candidate API boundary; current Finset.finsupp image machinery already supplies the enumerated form.
 
 ## Part 7: Junk / removable
 
@@ -5493,6 +5511,8 @@ Completed `Roth.norm_coeff_modByMonic_le`: Not removable as a ≤3-existing-math
 
 Completed `Roth.boxFamily_eq_image_finsupp_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.boxFamily_finite`: Used once and successfully inlined in its actual caller with unchanged type, but the inline still uses the project private representation bridge. Do not call it a pure existing-mathlib wrapper or dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5741,6 +5761,7 @@ Completed `Roth.boxFamily_eq_image_finsupp_aux`: Retain a live private proof int
 | 242 | `Roth.exists_norm_coeff_reduction_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_norm_coeff_reduction_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_norm_coeff_reduction_aux/root-acceptance.json) |
 | 243 | `Roth.norm_coeff_modByMonic_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.norm_coeff_modByMonic_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.norm_coeff_modByMonic_le/root-acceptance.json) |
 | 244 | `Roth.boxFamily_eq_image_finsupp_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_eq_image_finsupp_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily_eq_image_finsupp_aux/root-acceptance.json) |
+| 245 | `Roth.boxFamily_finite` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily_finite.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily_finite/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6228,12 +6249,14 @@ Completed `Roth.norm_coeff_modByMonic_le` action: Retain locally. Resolve the th
 
 Completed `Roth.boxFamily_eq_image_finsupp_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.boxFamily_finite` action: Retain production unchanged. Consider the three concrete upstream API questions in the full report; if choosing a local cleanup, inline the verified bridge/image proof at Roth.exists_ne_modByMonic_eq.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.boxFamily_finite` next. Supporting identities receive their own applicable checks.
+   `Roth.ncard_boxFamily` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

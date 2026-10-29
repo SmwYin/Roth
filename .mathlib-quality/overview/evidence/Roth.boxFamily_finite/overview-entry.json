@@ -1,0 +1,18 @@
+{
+  "type": "∀ {σ : Type u_1} (r : σ → ℕ) [Finite ↑(Function.support r)] (B : ℕ), (Roth.boxFamily r B).Finite",
+  "kind": "theorem",
+  "what": "Integer multivariate polynomials whose coordinate degrees have finitely supported bounds and whose coefficients lie in [0,B] form a finite set, even for an infinite ambient variable type.",
+  "how": "Rewrite by Roth.boxFamily_eq_image_finsupp_aux to the image of a finite coefficient-array box, then use Finset.finite_toSet and Set.Finite.image.",
+  "hypotheses": "Only finitely many variable degree bounds are nonzero. No finiteness of the ambient variable type or positivity of B is required.",
+  "project_dependencies": [
+    "Roth.boxFamily",
+    "Roth.boxFamily_eq_image_finsupp_aux"
+  ],
+  "caller_summary": "One explicit body call in Roth.exists_ne_modByMonic_eq supplies its local Fintype. No external-file callers; exact293 kernel audit confirms one direct value consumer and no direct type consumer.",
+  "mathlib_api_audit": "Finset.finsupp, Finset.mem_finsupp_iff, Finset.finite_toSet and Set.Finite.image provide enumeration and image finiteness. Set.Finite.pi' and Set.Finite.of_injOn support a newly proved semantic theorem. The project representation helper is not existing mathlib.",
+  "moral_duplications": "Shares the coefficient-array representation with Roth.ncard_boxFamily; finiteness and counting are different statements. It is not a duplicate of finite degree-index sets or nonzero bounded families.",
+  "generalization": "Compiled: arbitrary CommSemiring R, arbitrary finite monomial support, and finite coefficient sets (only on selected monomials). Original recovered with no signature change. Also B=0 permits removal of the support condition; unqualified support removal fails for ℕ variables, r=1, B=1.",
+  "missing_api": "A semantic finite-coefficient/finite-support bridge for MvPolynomial is the candidate API boundary; current Finset.finsupp image machinery already supplies the enumerated form.",
+  "junk": "Used once and successfully inlined in its actual caller with unchanged type, but the inline still uses the project private representation bridge. Do not call it a pure existing-mathlib wrapper or dead code.",
+  "action": "Retain production unchanged. Consider the three concrete upstream API questions in the full report; if choosing a local cleanup, inline the verified bridge/image proof at Roth.exists_ne_modByMonic_eq."
+}

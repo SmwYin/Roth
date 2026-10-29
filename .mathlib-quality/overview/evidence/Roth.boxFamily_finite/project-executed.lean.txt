@@ -1,0 +1,188 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+open MvPolynomial
+namespace Box245Generic
+
+def family {σ R : Type*} [CommSemiring R] (r : σ → ℕ)
+    (t : (σ →₀ ℕ) → Set R) : Set (MvPolynomial σ R) :=
+  {P | (∀ j, degreeOf j P ≤ r j) ∧ ∀ d, P.coeff d ∈ t d}
+
+theorem finite_coeff_choices {σ R : Type*} [CommSemiring R] (s : Set (σ →₀ ℕ))
+    (hs : s.Finite) (t : (σ →₀ ℕ) → Set R) (ht : ∀ d ∈ s, (t d).Finite) :
+    {P : MvPolynomial σ R | (↑P.support : Set (σ →₀ ℕ)) ⊆ s ∧
+      ∀ d, P.coeff d ∈ t d}.Finite := by
+  classical
+  let : Fintype s := hs.fintype
+  let f : MvPolynomial σ R → s → R := fun P d ↦ P.coeff d
+  have hfin : {g : s → R | ∀ d : s, g d ∈ t d}.Finite :=
+    Set.Finite.pi' (fun d ↦ ht d d.property)
+  refine Set.Finite.of_injOn (f := f)
+    (t := {g : s → R | ∀ d : s, g d ∈ t d}) (fun P hP d ↦ hP.2 d) ?_ hfin
+  intro P hP Q hQ he
+  apply MvPolynomial.ext
+  intro d
+  by_cases hd : d ∈ s
+  · exact congrFun he ⟨d, hd⟩
+  · have hp : P.coeff d = 0 :=
+      Finsupp.notMem_support_iff.1 (fun hp ↦ hd (hP.1 hp))
+    have hq : Q.coeff d = 0 :=
+      Finsupp.notMem_support_iff.1 (fun hq ↦ hd (hQ.1 hq))
+    exact hp.trans hq.symm
+
+theorem finite_family_of_monomials {σ R : Type*} [CommSemiring R] (r : σ → ℕ)
+    (hs : {d : σ →₀ ℕ | ∀ j, d j ≤ r j}.Finite)
+    (t : (σ →₀ ℕ) → Set R) (ht : ∀ d, (t d).Finite) : (family r t).Finite := by
+  refine (finite_coeff_choices _ hs t (fun d _ ↦ ht d)).subset ?_
+  exact fun P hP ↦ ⟨fun d hd j ↦ (monomial_le_degreeOf j hd).trans (hP.1 j), hP.2⟩
+
+theorem zero_bound {σ : Type*} (r : σ → ℕ) :
+    family r (fun _ ↦ Set.Icc (0 : ℤ) 0) = {0} := by
+  ext P
+  constructor
+  · intro h
+    apply Set.mem_singleton_iff.2
+    apply MvPolynomial.ext
+    intro d
+    exact le_antisymm (h.2 d).2 (h.2 d).1
+  · rintro rfl
+    simp [family]
+
+theorem infinite_family : (family (fun _ : ℕ ↦ 1) (fun _ ↦ Set.Icc (0 : ℤ) 1)).Infinite := by
+  have hi : Function.Injective (fun i : ℕ ↦ (X i : MvPolynomial ℕ ℤ)) :=
+    fun _ _ h ↦ MvPolynomial.X_injective h
+  refine (Set.infinite_range_of_injective hi).mono (Set.range_subset_iff.2 ?_)
+  intro i
+  constructor
+  · intro j
+    by_cases h : i = j
+    · subst j
+      simp
+    · simp [degreeOf_X_of_ne (Ne.symm h)]
+  · intro d
+    simp only [MvPolynomial.coeff_X, Set.mem_Icc]
+    split_ifs <;> norm_num
+
+theorem abstract_image {α β : Type*} (s : Finset α) (f : α → β) : (f '' (s : Set α)).Finite :=
+  s.finite_toSet.image f
+
+#print axioms finite_coeff_choices
+#print axioms finite_family_of_monomials
+#print axioms zero_bound
+#print axioms infinite_family
+#print axioms abstract_image
+end Box245Generic
+
+namespace Box245Project
+open MvPolynomial
+elab "box245Representation" : term =>
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.MainLemma `Roth.boxFamily_eq_image_finsupp_aux)
+
+theorem finite_generic {σ R : Type*} [CommSemiring R] (r : σ → ℕ)
+    [Finite (Function.support r)] (t : (σ →₀ ℕ) → Set R) (ht : ∀ d, (t d).Finite) :
+    (Box245Generic.family r t).Finite := by
+  classical
+  have hs : {d : σ →₀ ℕ | ∀ j, d j ≤ r j}.Finite := by
+    change (Set.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))).Finite
+    exact Set.finite_Iic _
+  exact Box245Generic.finite_family_of_monomials r hs t ht
+
+theorem finite_original {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :
+    (Roth.boxFamily r B).Finite := by
+  simpa only [Roth.boxFamily, Box245Generic.family, Set.mem_Icc] using
+    finite_generic r (fun _ ↦ Set.Icc (0 : ℤ) B) (fun _ ↦ Set.finite_Icc _ _)
+
+theorem private_bridge_composition {σ : Type*} (r : σ → ℕ)
+    [Finite (Function.support r)] (B : ℕ) : (Roth.boxFamily r B).Finite := by
+  classical
+  rw [box245Representation]
+  exact (Finset.finite_toSet _).image _
+
+theorem supplied_signature : @Roth.boxFamily_finite = @finite_original := rfl
+
+theorem zero_coefficient_bound {σ : Type*} (r : σ → ℕ) : (Roth.boxFamily r 0).Finite := by
+  change (Box245Generic.family r (fun _ ↦ Set.Icc (0 : ℤ) 0)).Finite
+  rw [Box245Generic.zero_bound]
+  exact Set.finite_singleton _
+
+theorem zero_degree {σ : Type*} (B : ℕ) :
+    (Roth.boxFamily (fun _ : σ ↦ 0) B).Finite := by
+  let : Fintype (Function.support (fun _ : σ ↦ 0)) :=
+    (show (Function.support (fun _ : σ ↦ 0)).Finite by simp).fintype
+  exact finite_original _ B
+
+theorem empty_variables (r : Empty → ℕ) (B : ℕ) : (Roth.boxFamily r B).Finite :=
+  finite_original r B
+
+theorem infinite_variables_finite_support (B : ℕ) :
+    (Roth.boxFamily (fun i : ℕ ↦ if i = 0 then 2 else 0) B).Finite := by
+  have hs : (Function.support (fun i : ℕ ↦ if i = 0 then 2 else 0)).Finite := by
+    simp [Function.support]
+  let : Fintype (Function.support (fun i : ℕ ↦ if i = 0 then 2 else 0)) := hs.fintype
+  exact finite_original _ B
+
+theorem support_needed : (Roth.boxFamily (fun _ : ℕ ↦ 1) 1).Infinite :=
+  Box245Generic.infinite_family
+
+theorem weaker_disjunction {σ : Type*} (r : σ → ℕ) (B : ℕ)
+    (h : B = 0 ∨ (Function.support r).Finite) : (Roth.boxFamily r B).Finite := by
+  rcases h with rfl | h
+  · exact zero_coefficient_bound r
+  · let : Fintype (Function.support r) := h.fintype
+    exact finite_original r B
+
+open Roth
+theorem exists_ne_modByMonic_eq {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ)
+    {f : Polynomial ℤ} (hf : f.Monic) (J : Finset (σ →₀ ℕ)) (C : ℕ)
+    (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,
+      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ C)
+    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ ∏ᶠ j, (r j + 1)) :
+    ∃ W' ∈ boxFamily r B, ∃ W'' ∈ boxFamily r B, W' ≠ W'' ∧
+      ∀ j ∈ J, diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f := by
+  classical
+  let : Fintype (boxFamily r B) := (show (boxFamily r B).Finite from by
+    rw [box245Representation]
+    exact (Finset.finite_toSet _).image _).fintype
+  let F (W : boxFamily r B) (p : J × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=
+    ⟨(diag (hasseDeriv p.1.1 W.1) %ₘ f).coeff p.2, abs_le.1 (hC W.1 W.2 p.1.1 p.1.2 p.2.1 p.2.2)⟩
+  obtain ⟨W', W'', hne, h⟩ := Fintype.exists_ne_map_eq_of_card_lt F <| by
+    simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,
+      Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, mul_comm, Set.fintypeCard_eq_ncard,
+      ncard_boxFamily, show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by lia] using
+      (show (2 * C + 1) ^ (f.natDegree * J.card) < (B + 1) ^ ∏ᶠ j, (r j + 1) by
+        exact_mod_cast hcount)
+  refine ⟨W', W'.2, W'', W''.2, Subtype.coe_ne_coe.2 hne, fun j hj ↦ ?_⟩
+  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using
+    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)
+      (g (⟨j, hj⟩, i) : ℤ)) h
+
+theorem caller_signature :
+    @Roth.exists_ne_modByMonic_eq = @Box245Project.exists_ne_modByMonic_eq := rfl
+
+#print axioms finite_generic
+#print axioms finite_original
+#print axioms private_bridge_composition
+#print axioms supplied_signature
+#print axioms zero_coefficient_bound
+#print axioms zero_degree
+#print axioms empty_variables
+#print axioms infinite_variables_finite_support
+#print axioms support_needed
+#print axioms weaker_disjunction
+#print axioms exists_ne_modByMonic_eq
+#print axioms caller_signature
+#print Roth.boxFamily_finite
+end Box245Project
