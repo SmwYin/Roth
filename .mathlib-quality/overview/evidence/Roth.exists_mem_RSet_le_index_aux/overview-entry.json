@@ -1,0 +1,27 @@
+{
+  "declaration": "Roth.exists_mem_RSet_le_index_aux",
+  "kind": "lemma",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {f : Polynomial ℤ} {α : ℝ},\n  f.Monic →\n    (Polynomial.aeval α) f = 0 →\n      ∀ (r : σ → ℕ) (B C : ℕ) (J : Finset (σ →₀ ℕ)) {γ : ℝ},\n        (∀ W ∈ Roth.boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree, |(Roth.diag ((hasseDeriv j) W) %ₘ f).coeff i| ≤ ↑C) →\n          ↑(2 * C + 1) ^ (f.natDegree * J.card) < (↑B + 1) ^ ∏ k : σ, (r k + 1) →\n            (∀ (d : σ →₀ ℕ), (∀ (k : σ), d k ≤ r k) → Roth.weight r d < γ → d ∈ J) →\n              ∃ P ∈ Roth.RSet (↑B) r, γ ≤ Roth.index ((map (Int.castRingHom ℝ)) P) (fun (x : σ) ↦ α) r",
+  "what": "Uses a strict finite remainder count to construct a nonzero integer box polynomial whose index at the diagonal root is at least an arbitrary real cutoff.",
+  "how": "Use exists_ne_modByMonic_eq, subtract via sub_mem_RSet, then apply le_index_of_forall_eval_eq_zero using eval_hasseDeriv_sub_eq_zero.",
+  "hypotheses": "Monic integer equation for the point, remainder coefficient/count bounds, and derivative set covering all low-weight box indices. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.RSet",
+    "Roth.boxFamily",
+    "Roth.diag",
+    "Roth.eval_hasseDeriv_sub_eq_zero",
+    "Roth.exists_ne_modByMonic_eq",
+    "Roth.index",
+    "Roth.le_index_of_forall_eval_eq_zero",
+    "Roth.sub_mem_RSet",
+    "Roth.weight"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Apply exists_ne_modByMonic_eq to obtain two distinct box polynomials with matching selected remainders. Their difference belongs to RSet by sub_mem_RSet. Injectivity of the integer-to-real map preserves nonzeroness and coordinate degrees via degrees_map_of_injective; eval_hasseDeriv_sub_eq_zero and le_index_of_forall_eval_eq_zero turn remainder equality into the index lower bound. The sole rpow-bound caller supplies a filtered weight box J containing all indices strictly below the target cutoff. This is the algebraic pigeonhole-to-index step, separate from estimates proving its strict count premise.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

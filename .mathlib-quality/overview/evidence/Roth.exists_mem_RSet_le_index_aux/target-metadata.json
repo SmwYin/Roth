@@ -1,0 +1,74 @@
+{
+  "file": "Roth/MainLemma.lean",
+  "line": 550,
+  "name": "Roth.exists_mem_RSet_le_index_aux",
+  "short": "exists_mem_RSet_le_index_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 567,
+  "source": "private lemma exists_mem_RSet_le_index_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ} {α : ℝ}\n    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) (r : σ → ℕ) (B C : ℕ) (J : Finset (σ →₀ ℕ))\n    {γ : ℝ} (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (C : ℤ))\n    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ (∏ k, (r k + 1) : ℕ))\n    (hJ : ∀ d, (∀ k, d k ≤ r k) → weight r d < γ → d ∈ J) : ∃ P : MvPolynomial σ ℤ, P ∈ RSet B r ∧\n      γ ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by\n  obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J C hC\n    (by simpa [finprod_eq_prod_of_fintype] using hcount)\n  -- `W* = W' - W''`\n  have hP := sub_mem_RSet hW' hW'' hne\n  refine ⟨W' - W'', hP, ?_⟩\n  exact le_index_of_forall_eval_eq_zero\n    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP.1)\n    (by simpa only [degreeOf,\n          degrees_map_of_injective _ (f := Int.castRingHom ℝ) Int.cast_injective]\n        using hP.2.1) (fun _ ↦ α)\n    fun d hd hw ↦ eval_hasseDeriv_sub_eq_zero hfα (hWeq d (hJ d hd hw))",
+  "signature": "private lemma exists_mem_RSet_le_index_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ} {α : ℝ}\n    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) (r : σ → ℕ) (B C : ℕ) (J : Finset (σ →₀ ℕ))\n    {γ : ℝ} (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (C : ℤ))\n    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ (∏ k, (r k + 1) : ℕ))\n    (hJ : ∀ d, (∀ k, d k ≤ r k) → weight r d < γ → d ∈ J) : ∃ P : MvPolynomial σ ℤ, P ∈ RSet B r ∧\n      γ ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r",
+  "body": "by\n  obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J C hC\n    (by simpa [finprod_eq_prod_of_fintype] using hcount)\n  -- `W* = W' - W''`\n  have hP := sub_mem_RSet hW' hW'' hne\n  refine ⟨W' - W'', hP, ?_⟩\n  exact le_index_of_forall_eval_eq_zero\n    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP.1)\n    (by simpa only [degreeOf,\n          degrees_map_of_injective _ (f := Int.castRingHom ℝ) Int.cast_injective]\n        using hP.2.1) (fun _ ↦ α)\n    fun d hd hw ↦ eval_hasseDeriv_sub_eq_zero hfα (hWeq d (hJ d hd hw))",
+  "proof_lines": 12,
+  "sha256": "acc391440f39f8916ce72ebead5f80d3222f6d10c73030138668cdcf500bca97",
+  "what": "The pigeonhole collision supplies an admissible polynomial with a high diagonal index.",
+  "how": "Use exists_ne_modByMonic_eq, subtract via sub_mem_RSet, then apply le_index_of_forall_eval_eq_zero using eval_hasseDeriv_sub_eq_zero.",
+  "hypotheses": "Monic integer equation for the point, remainder coefficient/count bounds, and derivative set covering all low-weight box indices.",
+  "source_body_refs": [
+    "Roth.eval_hasseDeriv_sub_eq_zero",
+    "Roth.exists_ne_modByMonic_eq",
+    "Roth.le_index_of_forall_eval_eq_zero",
+    "Roth.sub_mem_RSet"
+  ],
+  "source_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.RSet",
+    "Roth.boxFamily",
+    "Roth.diag",
+    "Roth.index",
+    "Roth.weight"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 581
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [
+    "Roth.eval_hasseDeriv_sub_eq_zero",
+    "Roth.exists_ne_modByMonic_eq",
+    "Roth.le_index_of_forall_eval_eq_zero",
+    "Roth.sub_mem_RSet"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 571,
+  "project_body_refs": [
+    "Roth.eval_hasseDeriv_sub_eq_zero",
+    "Roth.exists_ne_modByMonic_eq",
+    "Roth.le_index_of_forall_eval_eq_zero",
+    "Roth.sub_mem_RSet"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.RSet",
+    "Roth.boxFamily",
+    "Roth.diag",
+    "Roth.index",
+    "Roth.weight"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 581
+    }
+  ]
+}

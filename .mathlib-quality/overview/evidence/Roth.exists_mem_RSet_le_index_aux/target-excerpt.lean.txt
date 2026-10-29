@@ -1,0 +1,18 @@
+private lemma exists_mem_RSet_le_index_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ} {α : ℝ}
+    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) (r : σ → ℕ) (B C : ℕ) (J : Finset (σ →₀ ℕ))
+    {γ : ℝ} (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,
+      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (C : ℤ))
+    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ (∏ k, (r k + 1) : ℕ))
+    (hJ : ∀ d, (∀ k, d k ≤ r k) → weight r d < γ → d ∈ J) : ∃ P : MvPolynomial σ ℤ, P ∈ RSet B r ∧
+      γ ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by
+  obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J C hC
+    (by simpa [finprod_eq_prod_of_fintype] using hcount)
+  -- `W* = W' - W''`
+  have hP := sub_mem_RSet hW' hW'' hne
+  refine ⟨W' - W'', hP, ?_⟩
+  exact le_index_of_forall_eval_eq_zero
+    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP.1)
+    (by simpa only [degreeOf,
+          degrees_map_of_injective _ (f := Int.castRingHom ℝ) Int.cast_injective]
+        using hP.2.1) (fun _ ↦ α)
+    fun d hd hw ↦ eval_hasseDeriv_sub_eq_zero hfα (hWeq d (hJ d hd hw))

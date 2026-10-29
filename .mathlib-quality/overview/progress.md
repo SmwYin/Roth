@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 258 / 293 written declarations.**
+**Completed: 259 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -266,8 +266,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 256 | `Roth.exists_hasseDeriv_index_eval_bound_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.exists_hasseDeriv_index_eval_bound_aux.md) |
 | 257 | `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux.md) |
 | 258 | `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux.md) |
+| 259 | `Roth.exists_mem_RSet_le_index_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.exists_mem_RSet_le_index_aux.md) |
 
-**Next declaration: `Roth.exists_mem_RSet_le_index_aux`**, `Roth/MainLemma.lean:550`.
+**Next declaration: `Roth.mul_card_filter_weight_le_aux`**, `Roth/MainLemma.lean:569`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and
