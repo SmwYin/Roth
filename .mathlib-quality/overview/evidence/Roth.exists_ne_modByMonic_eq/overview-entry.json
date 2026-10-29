@@ -1,0 +1,21 @@
+{
+  "type": "∀ {σ : Type u_1} (r : σ → ℕ) [Finite ↑(Function.support r)] (B : ℕ) {f : Polynomial ℤ},\n  f.Monic →\n    ∀ (J : Finset (σ →₀ ℕ)) (C : ℕ),\n      (∀ W ∈ Roth.boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree, |(Roth.diag ((hasseDeriv j) W) %ₘ f).coeff i| ≤ ↑C) →\n        ↑(2 * C + 1) ^ (f.natDegree * J.card) < (↑B + 1) ^ ∏ᶠ (j : σ), (r j + 1) →\n          ∃ W' ∈ Roth.boxFamily r B,\n            ∃ W'' ∈ Roth.boxFamily r B,\n              W' ≠ W'' ∧ ∀ j ∈ J, Roth.diag ((hasseDeriv j) W') %ₘ f = Roth.diag ((hasseDeriv j) W'') %ₘ f",
+  "kind": "theorem",
+  "what": "Two distinct integer box polynomials share every selected diagonal Hasse derivative remainder when a strict coefficient-array budget is smaller than the box family.",
+  "how": "Encode each polynomial by the J × Fin natDegree remainder coefficients in a finite integer interval; use Fintype.exists_ne_map_eq_of_card_lt, ncard_boxFamily, and Polynomial.sum_modByMonic_coeff to recover full remainders.",
+  "hypotheses": "Arbitrary variable type; finite support of natural degree bounds; natural B,C; monic integer divisor; finite selected multiindices; low coefficient absolute bounds; strict real counting budget.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.diag",
+    "Roth.boxFamily",
+    "Roth.boxFamily_finite",
+    "Roth.ncard_boxFamily"
+  ],
+  "caller_summary": "One explicit proof caller, private Roth.exists_mem_RSet_le_index_aux at MainLemma:550, call557. No external-to-file proof callers or direct type consumers. Full caller inlining preserves its signature.",
+  "mathlib_api_audit": "Existing finite-map collision and low-degree monic remainder reconstruction verified; finite-ring polynomial collision is related but does not apply to integer interval alphabets. Complete original is not <=3 existing mathlib calls.",
+  "moral_duplications": "Generic collision duplicates Fintype pigeonhole only after a substantive polynomial encoding and project box cardinality bridge; pigeonhole_count supplies the budget and ncard_boxFamily supplies source size, neither is the same theorem.",
+  "generalization": "Verified finiteObservations over arbitrary finite α,ι and dependent finite codomains; verified polynomialObservations for arbitrary finite source α and finite observation indices ι, followed by exact original recovery. The first is existing pigeonhole API with Pi cardinal normalization; the second is a newly proved helper, not an existing mathlib replacement.",
+  "missing_api": "Potential bounded polynomial observation collision helper / finite coefficient alphabet counting bridge; acceptance and exact packaging remain concrete upstream design questions.",
+  "junk": "Used once in the central auxiliary-polynomial construction. Inlining verified but expands the caller by the complete encoding proof; no dead-code or <=3-call wrapper finding.",
+  "action": "Retain project-local Hasse specialization pending the three upstream API design questions; use existing Fintype collision directly in any abstract-only version. No production edits in this assessment."
+}

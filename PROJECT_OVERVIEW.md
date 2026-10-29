@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 248/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 249/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 248; remaining: 45.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 85 BORDERLINE-needs-human, 59 SKIP.
+- Completed applicable assessments: 249; remaining: 44.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 86 BORDERLINE-needs-human, 59 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3047,6 +3047,23 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: lexical total excluding declaration: 1; docstring mentions: 1; external to file uses: 0; callers: {'name': 'Roth.exists_mem_RSet_le_index_of_rpow_bound_aux', 'visibility': 'private', 'file': 'Roth/MainLemma.lean', 'line': 581, 'call_line': 615, 'purpose': 'Supply strict remainder count from n=f.natDegree,D=J.card,N=product(r+1),c exponent,B natural-coerced. Exact Cn=floor(B^c) with B>0,c>=1,N>0 and hD is retained.'}; inline derivations: None; scope note: Fresh rg --no-ignore and tracked git grep agree with one canonical direct kernel-value consumer; no direct type consumers; no simp attribute. Transitive downstream use via main_lemma is a separate scope.; total actual proof uses: 1; internal use count excluding declaring file: 0
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.pigeonhole_count.md).
 
+### Completed: `Roth.exists_ne_modByMonic_eq`
+
+- Type: `∀ {σ : Type u_1} (r : σ → ℕ) [Finite ↑(Function.support r)] (B : ℕ) {f : Polynomial ℤ},
+  f.Monic →
+    ∀ (J : Finset (σ →₀ ℕ)) (C : ℕ),
+      (∀ W ∈ Roth.boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree, |(Roth.diag ((hasseDeriv j) W) %ₘ f).coeff i| ≤ ↑C) →
+        ↑(2 * C + 1) ^ (f.natDegree * J.card) < (↑B + 1) ^ ∏ᶠ (j : σ), (r j + 1) →
+          ∃ W' ∈ Roth.boxFamily r B,
+            ∃ W'' ∈ Roth.boxFamily r B,
+              W' ≠ W'' ∧ ∀ j ∈ J, Roth.diag ((hasseDeriv j) W') %ₘ f = Roth.diag ((hasseDeriv j) W'') %ₘ f`
+- What: Two distinct integer box polynomials share every selected diagonal Hasse derivative remainder when a strict coefficient-array budget is smaller than the box family.
+- How: Encode each polynomial by the J × Fin natDegree remainder coefficients in a finite integer interval; use Fintype.exists_ne_map_eq_of_card_lt, ncard_boxFamily, and Polynomial.sum_modByMonic_coeff to recover full remainders.
+- Hypotheses: Arbitrary variable type; finite support of natural degree bounds; natural B,C; monic integer divisor; finite selected multiindices; low coefficient absolute bounds; strict real counting budget.
+- Project dependencies: MvPolynomial.hasseDeriv, Roth.diag, Roth.boxFamily, Roth.boxFamily_finite, Roth.ncard_boxFamily
+- Caller summary: One explicit proof caller, private Roth.exists_mem_RSet_le_index_aux at MainLemma:550, call557. No external-to-file proof callers or direct type consumers. Full caller inlining preserves its signature.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_ne_modByMonic_eq.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3569,6 +3586,8 @@ Completed `Roth.floor_rpow_count_lt_aux`: Real.add_rpow_le_rpow_add gives x^c+1<
 
 Completed `Roth.pigeonhole_count`: Existing rpow/floor/order primitives are appropriate. No exact existing replacement was verified in all15 search cells; the scalar floor helper and budget theorem in scratch are new proofs, not existing mathlib API.
 
+Completed `Roth.exists_ne_modByMonic_eq`: Existing finite-map collision and low-degree monic remainder reconstruction verified; finite-ring polynomial collision is related but does not apply to integer interval alphabets. Complete original is not <=3 existing mathlib calls.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4066,6 +4085,8 @@ Completed `Roth.ncard_boxFamily`: Shares enumeration with boxFamily_finite and e
 Completed `Roth.floor_rpow_count_lt_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.pigeonhole_count`: {'other': 'Roth.floor_rpow_count_lt_aux', 'same_statement': False, 'same_proof': False, 'action': 'Keep scalar floor bound distinct from exponent-budget lifting.'}, {'other': 'Roth.exists_ne_modByMonic_eq', 'same_statement': False, 'same_proof': False, 'action': 'Keep arithmetic size comparison distinct from finite pigeonhole existence.'}
+
+Completed `Roth.exists_ne_modByMonic_eq`: Generic collision duplicates Fintype pigeonhole only after a substantive polynomial encoding and project box cardinality bridge; pigeonhole_count supplies the budget and ncard_boxFamily supplies source size, neither is the same theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -4576,6 +4597,8 @@ Completed `Roth.floor_rpow_count_lt_aux`: No public generality claim under the p
 Completed `Roth.pigeonhole_count`: verified: theorem powerBudget {a b t : ℝ} {k N : ℕ} (ha : 0 ≤ a) (hb : 1 < b)
     (hbase : a < b ^ t) (hN : 0 < N) (hbudget : t * k ≤ N) : a ^ k < b ^ N; semantic: Arbitrary a,b,t separate count generation from exponent lifting; permits other coefficient-count bounds. Flattening nD to k alone is only representation normalization.; hypothesis localization: N positivity can be localized to k=0 in verified localizedBudget; exact target cannot drop it because nD=0 is allowed.; sharpness: B0,c0,N0/no-budget and positive c=1/2 counterexamples compile. No claim that c>=1 is sharp or that current hypotheses are globally maximal.
 
+Completed `Roth.exists_ne_modByMonic_eq`: Verified finiteObservations over arbitrary finite α,ι and dependent finite codomains; verified polynomialObservations for arbitrary finite source α and finite observation indices ι, followed by exact original recovery. The first is existing pigeonhole API with Pi cardinal normalization; the second is a newly proved helper, not an existing mathlib replacement.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5074,6 +5097,8 @@ Completed `Roth.ncard_boxFamily`: Potential semantic coefficient-family represen
 Completed `Roth.floor_rpow_count_lt_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.pigeonhole_count`: Possible arbitrary strict-base/exponent-budget lifting law with explicit zero-exponent behavior; public value undecided., Possible scalar floor-count estimate; supplied project helper is not existing mathlib.
+
+Completed `Roth.exists_ne_modByMonic_eq`: Potential bounded polynomial observation collision helper / finite coefficient alphabet counting bridge; acceptance and exact packaging remain concrete upstream design questions.
 
 ## Part 7: Junk / removable
 
@@ -5576,6 +5601,8 @@ Completed `Roth.floor_rpow_count_lt_aux`: Retain a live private proof interface.
 
 Completed `Roth.pigeonhole_count`: Not dead: one private actual caller and transitive use in main_lemma. An actual inline proof compiles, but no <=3 existing-mathlib-call proof was established; deletion as trivial wrapper is unsupported.
 
+Completed `Roth.exists_ne_modByMonic_eq`: Used once in the central auxiliary-polynomial construction. Inlining verified but expands the caller by the complete encoding proof; no dead-code or <=3-call wrapper finding.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5828,6 +5855,7 @@ Completed `Roth.pigeonhole_count`: Not dead: one private actual caller and trans
 | 246 | `Roth.ncard_boxFamily` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.ncard_boxFamily.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.ncard_boxFamily/root-acceptance.json) |
 | 247 | `Roth.floor_rpow_count_lt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.floor_rpow_count_lt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.floor_rpow_count_lt_aux/root-acceptance.json) |
 | 248 | `Roth.pigeonhole_count` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.pigeonhole_count.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.pigeonhole_count/root-acceptance.json) |
+| 249 | `Roth.exists_ne_modByMonic_eq` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_ne_modByMonic_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_ne_modByMonic_eq/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6323,12 +6351,14 @@ Completed `Roth.floor_rpow_count_lt_aux` action: Keep unchanged; complete privat
 
 Completed `Roth.pigeonhole_count` action: Retain locally while considering the three concrete upstream API questions. Assessment complete, no task blocker; production files unchanged.
 
+Completed `Roth.exists_ne_modByMonic_eq` action: Retain project-local Hasse specialization pending the three upstream API design questions; use existing Fintype collision directly in any abstract-only version. No production edits in this assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_ne_modByMonic_eq` next. Supporting identities receive their own applicable checks.
+   `Roth.sub_mem_RSet` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

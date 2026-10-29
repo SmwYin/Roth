@@ -1,0 +1,68 @@
+{
+  "request": {
+    "query": "polynomials degree below n determined by first n coefficients monic remainder",
+    "num_results": 6
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.sum_modByMonic_coeff\",\n      \"informal_name\": \"Remainder Reconstruction via Monomial Sum for Monic Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] {p q : Polynomial R},\\n  q.Monic → ∀ {n : ℕ}, q.degree ≤ ↑n → ∑ i, (Polynomial.monomial ↑i) ((p %ₘ q).coeff ↑i) = p %ₘ q\",\n      \"informal_description\": \"Given a monic polynomial $ q $ and a natural number $ n $ such that $ \\\\deg(q) \\\\leq n $, the sum of monomials $ X^i \\\\cdot (p \\\\mod q)_i $ for $ i < n $ reconstructs the remainder $ p \\\\mod q $, where $ (p \\\\mod q)_i $ denotes the coefficient of degree $ i $ in the remainder polynomial.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"Polynomial.monicEquivDegreeLT\",\n      \"informal_name\": \"Equivalence between monic polynomials of degree $n$ and the submodule of polynomials of degree less than $n$\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  [inst : Semiring R] → [Nontrivial R] → (n : ℕ) → { p // p.Monic ∧ p.natDegree = n } ≃ ↥(Polynomial.degreeLT R n)\",\n      \"informal_description\": \"For any nontrivial semiring $R$ and natural number $n$, there is a canonical equivalence between the type of monic polynomials of degree $n$ in $R[X]$ and the submodule of polynomials with degree strictly less than $n$. This equivalence is established by mapping a monic polynomial to its lower-degree part (erasing the leading term) and reconstructing a monic polynomial by adding $X^n$ to a lower-degree polynomial. The operations are mutually inverse, showing a bijection between these two sets.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.degreeLT.addLinearEquiv_apply_fst\",\n      \"informal_name\": \"First Component of Degree-LT-(m+n) Polynomial Isomorphism is Modulo X^m\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {m n : ℕ} {R : Type u_2} [inst : Ring R] (f : ↥(Polynomial.degreeLT R (m + n))),\\n  ↑((Polynomial.degreeLT.addLinearEquiv R m n) f).1 = ↑f %ₘ Polynomial.X ^ m\",\n      \"informal_description\": \"For a ring $ R $ and natural numbers $ m, n $, the first component of the linear equivalence between the submodule $ R[X]_{< m+n} $ and the product $ R[X]_{<m} \\\\times R[X]_{<n} $ maps a polynomial $ f $ to its remainder modulo $ X^m $, i.e., $ f \\\\mod X^m $. This corresponds to extracting the coefficients of $ f $ for degrees less than $ m $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.DegreeLT\"\n    },\n    {\n      \"formal_name\": \"Polynomial.ofFn_comp_toFn_eq_id_of_natDegree_lt\",\n      \"informal_name\": \"Identity: $\\\\text{ofFn}_n \\\\circ \\\\text{toFn}_n = \\\\text{id}$ for Polynomials of Degree Less Than $n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : DecidableEq R] {n : ℕ} {p : Polynomial R},\\n  p.natDegree < n → (Polynomial.ofFn n) ((Polynomial.toFn n) p) = p\",\n      \"informal_description\": \"For any natural number $n$ and polynomial $p$ over a semiring $R$ with natural degree less than $n$, the composition of the linear map converting finite sequences to polynomials and the coefficient extraction map results in the original polynomial $p$. In other words, $\\\\text{ofFn}_n(\\\\text{toFn}_n(p)) = p$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.OfFn\"\n    },\n    {\n      \"formal_name\": \"Polynomial.IsMonicOfDegree.exists_natDegree_lt\",\n      \"informal_name\": \"Existence of Lower-Degree Polynomial in Monic Polynomial Decomposition\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {p : Polynomial R} {n : ℕ},\\n  n ≠ 0 → p.IsMonicOfDegree n → ∃ q, p = Polynomial.X ^ n + q ∧ q.natDegree < n\",\n      \"informal_description\": \"For any non-zero natural number $n$ and any monic polynomial $p$ of degree $n$ over a semiring $R$, there exists a polynomial $q$ such that $p = X^n + q$ and the natural degree of $q$ is strictly less than $n$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Degree.IsMonicOfDegree\"\n    },\n    {\n      \"formal_name\": \"Polynomial.modByMonic\",\n      \"informal_name\": \"Remainder of polynomial division by a monic polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Ring R] → Polynomial R → Polynomial R → Polynomial R\",\n      \"informal_description\": \"Given polynomials $ p $ and $ q $ over a semiring $ R $, the function returns the remainder of dividing $ p $ by $ q $ if $ q $ is monic (i.e., its leading coefficient is 1). If $ q $ is not monic, it returns $ p $ itself. The computation relies on classical logic to decide whether $ q $ is monic.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.sum_modByMonic_coeff",
+          "informal_name": "Remainder Reconstruction via Monomial Sum for Monic Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} [inst : Ring R] {p q : Polynomial R},\n  q.Monic → ∀ {n : ℕ}, q.degree ≤ ↑n → ∑ i, (Polynomial.monomial ↑i) ((p %ₘ q).coeff ↑i) = p %ₘ q",
+          "informal_description": "Given a monic polynomial $ q $ and a natural number $ n $ such that $ \\deg(q) \\leq n $, the sum of monomials $ X^i \\cdot (p \\mod q)_i $ for $ i < n $ reconstructs the remainder $ p \\mod q $, where $ (p \\mod q)_i $ denotes the coefficient of degree $ i $ in the remainder polynomial.",
+          "path": "Mathlib.Algebra.Polynomial.Div"
+        },
+        {
+          "formal_name": "Polynomial.monicEquivDegreeLT",
+          "informal_name": "Equivalence between monic polynomials of degree $n$ and the submodule of polynomials of degree less than $n$",
+          "kind": "definition",
+          "type": "{R : Type u} →\n  [inst : Semiring R] → [Nontrivial R] → (n : ℕ) → { p // p.Monic ∧ p.natDegree = n } ≃ ↥(Polynomial.degreeLT R n)",
+          "informal_description": "For any nontrivial semiring $R$ and natural number $n$, there is a canonical equivalence between the type of monic polynomials of degree $n$ in $R[X]$ and the submodule of polynomials with degree strictly less than $n$. This equivalence is established by mapping a monic polynomial to its lower-degree part (erasing the leading term) and reconstructing a monic polynomial by adding $X^n$ to a lower-degree polynomial. The operations are mutually inverse, showing a bijection between these two sets.",
+          "path": "Mathlib.RingTheory.Polynomial.Basic"
+        },
+        {
+          "formal_name": "Polynomial.degreeLT.addLinearEquiv_apply_fst",
+          "informal_name": "First Component of Degree-LT-(m+n) Polynomial Isomorphism is Modulo X^m",
+          "kind": "theorem",
+          "type": "∀ {m n : ℕ} {R : Type u_2} [inst : Ring R] (f : ↥(Polynomial.degreeLT R (m + n))),\n  ↑((Polynomial.degreeLT.addLinearEquiv R m n) f).1 = ↑f %ₘ Polynomial.X ^ m",
+          "informal_description": "For a ring $ R $ and natural numbers $ m, n $, the first component of the linear equivalence between the submodule $ R[X]_{< m+n} $ and the product $ R[X]_{<m} \\times R[X]_{<n} $ maps a polynomial $ f $ to its remainder modulo $ X^m $, i.e., $ f \\mod X^m $. This corresponds to extracting the coefficients of $ f $ for degrees less than $ m $.",
+          "path": "Mathlib.RingTheory.Polynomial.DegreeLT"
+        },
+        {
+          "formal_name": "Polynomial.ofFn_comp_toFn_eq_id_of_natDegree_lt",
+          "informal_name": "Identity: $\\text{ofFn}_n \\circ \\text{toFn}_n = \\text{id}$ for Polynomials of Degree Less Than $n$",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : DecidableEq R] {n : ℕ} {p : Polynomial R},\n  p.natDegree < n → (Polynomial.ofFn n) ((Polynomial.toFn n) p) = p",
+          "informal_description": "For any natural number $n$ and polynomial $p$ over a semiring $R$ with natural degree less than $n$, the composition of the linear map converting finite sequences to polynomials and the coefficient extraction map results in the original polynomial $p$. In other words, $\\text{ofFn}_n(\\text{toFn}_n(p)) = p$.",
+          "path": "Mathlib.Algebra.Polynomial.OfFn"
+        },
+        {
+          "formal_name": "Polynomial.IsMonicOfDegree.exists_natDegree_lt",
+          "informal_name": "Existence of Lower-Degree Polynomial in Monic Polynomial Decomposition",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] {p : Polynomial R} {n : ℕ},\n  n ≠ 0 → p.IsMonicOfDegree n → ∃ q, p = Polynomial.X ^ n + q ∧ q.natDegree < n",
+          "informal_description": "For any non-zero natural number $n$ and any monic polynomial $p$ of degree $n$ over a semiring $R$, there exists a polynomial $q$ such that $p = X^n + q$ and the natural degree of $q$ is strictly less than $n$.",
+          "path": "Mathlib.Algebra.Polynomial.Degree.IsMonicOfDegree"
+        },
+        {
+          "formal_name": "Polynomial.modByMonic",
+          "informal_name": "Remainder of polynomial division by a monic polynomial",
+          "kind": "definition",
+          "type": "{R : Type u} → [inst : Ring R] → Polynomial R → Polynomial R → Polynomial R",
+          "informal_description": "Given polynomials $ p $ and $ q $ over a semiring $ R $, the function returns the remainder of dividing $ p $ by $ q $ if $ q $ is monic (i.e., its leading coefficient is 1). If $ q $ is not monic, it returns $ p $ itself. The computation relies on classical logic to decide whether $ q $ is monic.",
+          "path": "Mathlib.Algebra.Polynomial.Div"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 3506
+}

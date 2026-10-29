@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n#check_failure Roth.exists_ne_modByMonic_eq\n#check Fintype.exists_ne_map_eq_of_card_lt\n#check Polynomial.sum_modByMonic_coeff\n#check Fintype.card_pi\n#check Int.card_Icc\nnamespace Collision249Generic\n\ntheorem finiteObservations {α ι : Type*} [Fintype α] [Fintype ι]\n    {β : ι → Type*} [∀ i, Fintype (β i)] (F : α → ∀ i, β i)\n    (h : (∏ i, Fintype.card (β i)) < Fintype.card α) :\n    ∃ x y, x ≠ y ∧ ∀ i, F x i = F y i := by\n  classical\n  obtain ⟨x, y, hne, he⟩ := Fintype.exists_ne_map_eq_of_card_lt F (by\n    simpa only [Fintype.card_pi] using h)\n  exact ⟨x, y, hne, fun i ↦ congrFun he i⟩\n\ntheorem polynomialObservations {α ι : Type*} [Fintype α] [Fintype ι]\n    (Q : α → ι → Polynomial ℤ) {f : Polynomial ℤ} (hf : f.Monic) (C : ℕ)\n    (hC : ∀ x j i, i < f.natDegree → |(Q x j %ₘ f).coeff i| ≤ C)\n    (hcount : (2 * C + 1) ^ (f.natDegree * Fintype.card ι) < Fintype.card α) :\n    ∃ x y, x ≠ y ∧ ∀ j, Q x j %ₘ f = Q y j %ₘ f := by\n  classical\n  let F (x : α) (p : ι × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=\n    ⟨(Q x p.1 %ₘ f).coeff p.2, abs_le.1 (hC x p.1 p.2 p.2.2)⟩\n  obtain ⟨x, y, hne, he⟩ := Fintype.exists_ne_map_eq_of_card_lt F (by\n    simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,\n      Fintype.card_prod, Fintype.card_fin, mul_comm,\n      show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by omega] using hcount)\n  refine ⟨x, y, hne, fun j ↦ ?_⟩\n  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using\n    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)\n      (g (j, i) : ℤ)) he\n\ntheorem remainderRecover {R : Type*} [Ring R] {f P Q : Polynomial R} (hf : f.Monic)\n    (h : ∀ i < f.natDegree, (P %ₘ f).coeff i = (Q %ₘ f).coeff i) : P %ₘ f = Q %ₘ f := by\n  rw [← Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree (p := P),\n    ← Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree (p := Q)]\n  exact Finset.sum_congr rfl fun i _ ↦ congrArg (Polynomial.monomial (i : ℕ)) (h i i.2)\n\nexample (C N : ℕ) : (2 * C + 1) ^ (0 * N) = 1 := by simp\nexample (n C : ℕ) : (2 * C + 1) ^ (n * 0) = 1 := by simp\nexample (N : ℕ) : ¬ (1 : ℝ) < ((0 : ℝ) + 1) ^ N := by simp\nexample (P : Polynomial ℤ) : P %ₘ (1 : Polynomial ℤ) = 0 := by simp\nexample : (Polynomial.X : Polynomial ℤ) %ₘ 0 ≠ 0 %ₘ 0 := by simp\nexample : ∀ i < (0 : Polynomial ℤ).natDegree,\n    ((Polynomial.X : Polynomial ℤ) %ₘ 0).coeff i = (0 %ₘ (0 : Polynomial ℤ)).coeff i := by\n  simp\nexample : ¬ ∃ x y : Fin 1, x ≠ y := by simp\n#print axioms finiteObservations\n#print axioms polynomialObservations\n#print axioms remainderRecover\nend Collision249Generic\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_ne_modByMonic_eq`\",\n      \"line\": 19,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Fintype.exists_ne_map_eq_of_card_lt.{u_1, u_2} {α : Type u_1} {β : Type u_2} [Fintype α] [Fintype β] (f : α → β)\\n  (h : Fintype.card β < Fintype.card α) : ∃ x y, x ≠ y ∧ f x = f y\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.sum_modByMonic_coeff.{u} {R : Type u} [Ring R] {p q : Polynomial R} (hq : q.Monic) {n : ℕ}\\n  (hn : q.degree ≤ ↑n) : ∑ i, (Polynomial.monomial ↑i) ((p %ₘ q).coeff ↑i) = p %ₘ q\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Fintype.card_pi.{u_4, u_6} {ι : Type u_4} {α : ι → Type u_6} [DecidableEq ι] [Fintype ι] [(i : ι) → Fintype (α i)] :\\n  Fintype.card ((i : ι) → α i) = ∏ i, Fintype.card (α i)\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Int.card_Icc (a b : ℤ) : (Finset.Icc a b).card = (b + 1 - a).toNat\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Collision249Generic.finiteObservations' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 67,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Collision249Generic.polynomialObservations' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 68,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Collision249Generic.remainderRecover' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 69,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_ne_modByMonic_eq`",
+          "line": 19,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Fintype.exists_ne_map_eq_of_card_lt.{u_1, u_2} {α : Type u_1} {β : Type u_2} [Fintype α] [Fintype β] (f : α → β)\n  (h : Fintype.card β < Fintype.card α) : ∃ x y, x ≠ y ∧ f x = f y",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.sum_modByMonic_coeff.{u} {R : Type u} [Ring R] {p q : Polynomial R} (hq : q.Monic) {n : ℕ}\n  (hn : q.degree ≤ ↑n) : ∑ i, (Polynomial.monomial ↑i) ((p %ₘ q).coeff ↑i) = p %ₘ q",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Fintype.card_pi.{u_4, u_6} {ι : Type u_4} {α : ι → Type u_6} [DecidableEq ι] [Fintype ι] [(i : ι) → Fintype (α i)] :\n  Fintype.card ((i : ι) → α i) = ∏ i, Fintype.card (α i)",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Int.card_Icc (a b : ℤ) : (Finset.Icc a b).card = (b + 1 - a).toNat",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Collision249Generic.finiteObservations' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 67,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Collision249Generic.polynomialObservations' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 68,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Collision249Generic.remainderRecover' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 69,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1202
+}

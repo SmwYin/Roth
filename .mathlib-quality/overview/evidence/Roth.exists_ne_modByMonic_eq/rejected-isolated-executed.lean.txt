@@ -1,0 +1,69 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+#check_failure Roth.exists_ne_modByMonic_eq
+#check Fintype.exists_ne_map_eq_of_card_lt
+#check Polynomial.sum_modByMonic_coeff
+#check Fintype.card_pi
+#check Int.card_Icc
+namespace Collision249Generic
+
+theorem finiteObservations {α ι : Type*} [Fintype α] [Fintype ι]
+    {β : ι → Type*} [∀ i, Fintype (β i)] (F : α → ∀ i, β i)
+    (h : (∏ i, Fintype.card (β i)) < Fintype.card α) :
+    ∃ x y, x ≠ y ∧ ∀ i, F x i = F y i := by
+  obtain ⟨x, y, hne, he⟩ := Fintype.exists_ne_map_eq_of_card_lt F (by
+    simpa only [Fintype.card_pi] using h)
+  exact ⟨x, y, hne, fun i ↦ congrFun he i⟩
+
+theorem polynomialObservations {α ι : Type*} [Fintype α] [Fintype ι]
+    (Q : α → ι → Polynomial ℤ) {f : Polynomial ℤ} (hf : f.Monic) (C : ℕ)
+    (hC : ∀ x j i, i < f.natDegree → |(Q x j %ₘ f).coeff i| ≤ C)
+    (hcount : (2 * C + 1) ^ (f.natDegree * Fintype.card ι) < Fintype.card α) :
+    ∃ x y, x ≠ y ∧ ∀ j, Q x j %ₘ f = Q y j %ₘ f := by
+  classical
+  let F (x : α) (p : ι × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=
+    ⟨(Q x p.1 %ₘ f).coeff p.2, abs_le.1 (hC x p.1 p.2 p.2.2)⟩
+  obtain ⟨x, y, hne, he⟩ := Fintype.exists_ne_map_eq_of_card_lt F (by
+    simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,
+      Fintype.card_prod, Fintype.card_fin, mul_comm,
+      show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by omega] using hcount)
+  refine ⟨x, y, hne, fun j ↦ ?_⟩
+  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using
+    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)
+      (g (j, i) : ℤ)) he
+
+theorem remainderRecover {R : Type*} [Ring R] {f P Q : Polynomial R} (hf : f.Monic)
+    (h : ∀ i < f.natDegree, (P %ₘ f).coeff i = (Q %ₘ f).coeff i) : P %ₘ f = Q %ₘ f := by
+  rw [← Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree (p := P),
+    ← Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree (p := Q)]
+  exact Finset.sum_congr rfl fun i _ ↦ congrArg (Polynomial.monomial (i : ℕ)) (h i i.2)
+
+example (C N : ℕ) : (2 * C + 1) ^ (0 * N) = 1 := by simp
+example (n C : ℕ) : (2 * C + 1) ^ (n * 0) = 1 := by simp
+example (N : ℕ) : ¬ (1 : ℝ) < ((0 : ℝ) + 1) ^ N := by simp
+example (P : Polynomial ℤ) : P %ₘ (1 : Polynomial ℤ) = 0 := by simp
+example : (Polynomial.X : Polynomial ℤ) %ₘ 0 ≠ 0 %ₘ 0 := by simp
+example : ∀ i < (0 : Polynomial ℤ).natDegree,
+    ((Polynomial.X : Polynomial ℤ) %ₘ 0).coeff i = (0 %ₘ (0 : Polynomial ℤ)).coeff i := by
+  simp
+example : ¬ ∃ x y : Fin 1, x ≠ y := by simp
+#print axioms finiteObservations
+#print axioms polynomialObservations
+#print axioms remainderRecover
+end Collision249Generic

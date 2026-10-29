@@ -1,0 +1,19 @@
+from pathlib import Path
+import hashlib,json,subprocess
+D=Path(__file__).parent;R=Path('/Users/ramin/LEAN/Roth');N='Roth.exists_ne_modByMonic_eq'
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def rd(n):return json.loads((D/n).read_text())
+def put(n,x):(D/n).write_text(json.dumps(x,indent=2,ensure_ascii=False)+'\n')
+accept=[]
+for label,source,receipt,fmt,required in [
+ ('original','original-executed.lean.txt','original-final-receipt.json','disk',['COLL249_FULL_TYPE:','COLL249_SIGNATURE_IDENTICAL','COLL249_AUDIT: requested=293; unique=293','COLL249_AUDIT_PRESENT: present=293; values=293','COLL249_TYPE_CONSTANTS:','COLL249_BODY_CONSTANTS:']),
+ ('isolated','isolated-executed.lean.txt','isolated-final-receipt.json','virtual',['Collision249Generic.finiteObservations','Collision249Generic.polynomialObservations','Collision249Generic.remainderRecover']),
+ ('recovery','recovery-executed.lean.txt','recovery-receipt.json','disk',['COLL249_RECOVERY_SIGNATURE_IDENTICAL']),
+ ('inline','inline-executed.lean.txt','inline-receipt.json','disk',['COLL249_INLINE_SIGNATURE_IDENTICAL','COLL249_INLINE_NO_TARGET']),
+ ('guards','guards-executed.lean.txt','guards-receipt.json','disk',['Collision249Guards.zeroBoundConstant','Collision249Guards.nonmonicCannotDrop'])]:
+ accept.append(dict(label=label,source=source,source_sha256=sha(D/source),receipt=receipt,format=fmt,original_execution_request=rd(receipt)['request'],native_region_start_line=17,required_info=required))
+put('verification.json',dict(declaration=N,canonical_index=249,completed=True,unresolved=[],standard_axioms=['propext','Classical.choice','Quot.sound'],accepted=accept,rejected=[dict(source='rejected-'+l+'-executed.lean.txt',receipt='rejected-'+l+'-receipt.json',format='virtual'if l=='isolated'else'disk',reason=r)for l,r in [('isolated','Missing local classical decidability for dependent Pi Fintype; corrected.'),('inline','Local Type* introduced a fresh universe; corrected by using caller σ.'),('guards','Unqualified constant/coeff simplification and leadingCoeff normalization; corrected explicitly.')]],warming=[dict(receipt='original-warming-receipt.json')],supplementary_successes=[dict(source='original-initial-success-executed.lean.txt',receipt='original-initial-success-receipt.json',format='disk'),dict(source='guards-initial-success-executed.lean.txt',receipt='guards-initial-success-receipt.json',format='disk',width_note='Initial successful proof had one108column line; final source wrapped identically and recompiled.')],full_actual_callers=dict(original_signatures_verified=1,modules=['Roth.MainLemma'],proof_calls=1),controls=dict(shared_prefix_sha256=sha(D/'isolated-prefix.lean.txt'),disk_prefix_sha256=sha(D/'disk-prefix.lean.txt'),isolated_imports=18,disk_imports=9,source_pin_count=17,canonical_entries=293,imports_unchanged=True)))
+cmd=['python3','/private/tmp/roth-overview/check_audit_source.py',str(D/'original-executed.lean.txt')];p=subprocess.run(cmd,cwd=R,capture_output=True,text=True);assert p.returncode==0
+put('preparation-checks.json',dict(original=dict(exit_code=0,width_max=100,canonical_pre_gate='PASS before original executions; derived directly from tracked order'),isolated=dict(exit_code=0,width_max=90,imports=18),inline=dict(exit_code=0,width_max=100,full_original_module=True,actual_callers=1),recovery=dict(exit_code=0,width_max=100,original_signature=True),guards=dict(exit_code=0,width_max=94,full_family_counterexample=True),freeze_time_canonical_recheck=dict(request=cmd,exit_code=p.returncode,stdout=p.stdout,stderr=p.stderr),native_ownership='Worker249 exclusively held native/build throughout; root release only after freeze.'))
+p=D/'report.md';s=p.read_text().replace('rejected recovery sorryAx','rejected elaboration sorryAx');p.write_text(s)
+print('PASS verification and canonical preflight recorded')
