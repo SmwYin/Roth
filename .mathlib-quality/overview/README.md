@@ -53,7 +53,24 @@ Current structural inventory has 293 written declarations (215 public, 78 privat
 references were manually reviewed; an independent parser review repaired named-assignment/
 statement-let delimiter errors. The broader structural drafts stay scratch-only until
 associated declaration assessments are complete, respecting completed-only publication.
-Full fresh Lean.Meta metadata extraction timed out; no opaque dependency audit is claimed.
+The initial fresh Lean.Meta metadata extraction timed out; that historical limitation is
+retained in the earlier evidence. Later successful native audits enumerated the exact293
+canonical declarations with correct private modules, and extracted direct references from
+both types and opaque theorem values. The final evidence preserves the raw receipt and exact
+executed source alongside the canonical graph. This is a direct expression audit; it does not
+expand the full auxiliary/simp/generated/transitive dependency closure or establish external
+deadness. Per-declaration generated-proof investigations retain their own narrower scopes.
+
+Final inventory signatures reproduce complete native binder types. Fourteen older kind-only
+inventory fields were repaired from separately verified native type/binder receipts; original
+accepted packages remain immutable. The final aggregate records the repair and dependency-
+metadata normalization provenance separately from those historical packages.
+
+The default Roth library root does not import Roth.LeanEval. Final build evidence must include
+both `lake build` and `lake build Roth.LeanEval`, with actual exit statuses and log hashes;
+one command alone does not establish full source coverage.
+
+Final supporting evidence: [native dependency graph](evidence/final/final-kernel-graph.json), [canonical direct dependencies](evidence/final/final-canonical-direct-dependencies.json), [native binder repairs](evidence/final/final-inventory-type-repair-plan.json), [historical metadata resolutions](evidence/final/final-project-dependency-reviewed-resolutions.json), [full pairwise comparison index](evidence/final/pairwise/README.md), [both actual final builds](evidence/final/final-build-verification.json), and [copied evidence manifest](evidence/final/copy-manifest.json).
 
 Before publishing evidence, run `python3 .mathlib-quality/overview/evidence/shared/scan_evidence_secrets.py <incoming-package-directory>`. Returned signed or credential-bearing URLs must have their query removed and the redaction documented. [Correction record](evidence/shared/web-evidence-redaction-2026-10-26.md).
 

@@ -1,0 +1,126 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith\n\n#check_failure Roth.roth\n#check_failure LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth\nnamespace Endpoint293Composition\nopen Real\ndef UniformBound (t x : \u211d) : Prop :=\n  \u2200 \u03b5 : \u211d, 0 < \u03b5 \u2192 \u2203 C : \u211d, 0 < C \u2227\n    \u2200 p q : \u2124, 0 < q \u2192 C / (q : \u211d) ^ (t + \u03b5) < |x - (p : \u211d) / q|\ndef pairSet (\u03b1 \u03ba : \u211d) : Set (\u2124 \u00d7 \u2115) :=\n  {hq | 0 < hq.2 \u2227 |\u03b1 - (hq.1 : \u211d) / hq.2| < 1 / (hq.2 : \u211d) ^ \u03ba}\nexample (x : \u211d) (hx : Irrational x) (ha : IsAlgebraic \u2124 x) : True := by\n  fail_if_success\n    have : UniformBound 2 x := by exact?\n  fail_if_success\n    have : UniformBound 2 x := by simp only [UniformBound]\n  exact (fun (_ : Irrational x) (_ : IsAlgebraic \u2124 x) \u21a6 True.intro) hx ha\nexample (x : \u211d) (hx : Irrational x) (ha : IsAlgebraic \u211a x) : True := by\n  fail_if_success\n    have : \u2200 {\u03ba : \u211d}, (pairSet x \u03ba).Infinite \u2192 \u03ba \u2264 2 := by exact?\n  fail_if_success\n    have : Irrational x \u2227 \u2200 {p : \u211d}, LiouvilleWith p x \u2192 p \u2264 2 := by exact?\n  exact (fun (_ : Irrational x) (_ : IsAlgebraic \u211a x) \u21a6 True.intro) hx ha\n#check @Liouville.exists_pos_real_of_irrational_root\n#check @LiouvilleWith.exists_pos\n#check @LiouvilleWith.frequently_lt_rpow_neg\n#check @LiouvilleWith.irrational\n#check @LiouvilleWith.add_rat_iff\n#check @LiouvilleWith.mul_rat_iff\n#print axioms Liouville.exists_pos_real_of_irrational_root\n#print axioms LiouvilleWith.frequently_lt_rpow_neg\nend Endpoint293Composition\n"
+  },
+  "elapsed_ms": 11921,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "composition01",
+      "operation": "run_code",
+      "source": "composition-executed.lean.txt",
+      "source_sha256": "bfe6fa774713ad373f8d155f0519ef98a4764bb30c0192efd07705486e4dbfdf",
+      "receipt": "composition01-receipt.json",
+      "original_audit": false,
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth/root-requests/composition01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth/composition-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.roth`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Liouville.exists_pos_real_of_irrational_root : \u2200 {\u03b1 : \u211d},\\n  Irrational \u03b1 \u2192\\n    \u2200 {f : Polynomial \u2124},\\n      f \u2260 0 \u2192\\n        Polynomial.eval \u03b1 (Polynomial.map (algebraMap \u2124 \u211d) f) = 0 \u2192\\n          \u2203 A, 0 < A \u2227 \u2200 (a : \u2124) (b : \u2115), 1 \u2264 (\u2191b + 1) ^ f.natDegree * (|\u03b1 - \u2191a / (\u2191b + 1)| * A)\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.exists_pos : \u2200 {p x : \u211d},\\n  LiouvilleWith p x \u2192\\n    \u2203 C, \u2203 (_ : 0 < C), \u2203\u1da0 (n : \u2115) in Filter.atTop, 1 \u2264 n \u2227 \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < C / \u2191n ^ p\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in Filter.atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.irrational : \u2200 {p x : \u211d}, LiouvilleWith p x \u2192 1 < p \u2192 Irrational x\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.add_rat_iff : \u2200 {p x : \u211d} {r : \u211a}, LiouvilleWith p (x + \u2191r) \u2194 LiouvilleWith p x\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LiouvilleWith.mul_rat_iff : \u2200 {p x : \u211d} {r : \u211a}, r \u2260 0 \u2192 (LiouvilleWith p (x * \u2191r) \u2194 LiouvilleWith p x)\",\n      \"line\": 47,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Liouville.exists_pos_real_of_irrational_root' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 48,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LiouvilleWith.frequently_lt_rpow_neg' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 49,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.roth`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Liouville.exists_pos_real_of_irrational_root : \u2200 {\u03b1 : \u211d},\n  Irrational \u03b1 \u2192\n    \u2200 {f : Polynomial \u2124},\n      f \u2260 0 \u2192\n        Polynomial.eval \u03b1 (Polynomial.map (algebraMap \u2124 \u211d) f) = 0 \u2192\n          \u2203 A, 0 < A \u2227 \u2200 (a : \u2124) (b : \u2115), 1 \u2264 (\u2191b + 1) ^ f.natDegree * (|\u03b1 - \u2191a / (\u2191b + 1)| * A)",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.exists_pos : \u2200 {p x : \u211d},\n  LiouvilleWith p x \u2192\n    \u2203 C, \u2203 (_ : 0 < C), \u2203\u1da0 (n : \u2115) in Filter.atTop, 1 \u2264 n \u2227 \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < C / \u2191n ^ p",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.frequently_lt_rpow_neg : \u2200 {p q x : \u211d},\n  LiouvilleWith p x \u2192 q < p \u2192 \u2203\u1da0 (n : \u2115) in Filter.atTop, \u2203 m, x \u2260 \u2191m / \u2191n \u2227 |x - \u2191m / \u2191n| < \u2191n ^ (-q)",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.irrational : \u2200 {p x : \u211d}, LiouvilleWith p x \u2192 1 < p \u2192 Irrational x",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.add_rat_iff : \u2200 {p x : \u211d} {r : \u211a}, LiouvilleWith p (x + \u2191r) \u2194 LiouvilleWith p x",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LiouvilleWith.mul_rat_iff : \u2200 {p x : \u211d} {r : \u211a}, r \u2260 0 \u2192 (LiouvilleWith p (x * \u2191r) \u2194 LiouvilleWith p x)",
+          "line": 47,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Liouville.exists_pos_real_of_irrational_root' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 48,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LiouvilleWith.frequently_lt_rpow_neg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 49,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

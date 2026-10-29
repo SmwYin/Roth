@@ -1,0 +1,426 @@
+{
+  "status": "ROOT source/report/native-reviewed related-case refinements through265; not final293",
+  "rows": [
+    {
+      "a": "Roth.abs_eval_le",
+      "b": "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+      "relation": "The general integer-polynomial evaluation estimate is applied to hasseDeriv i(hasseDeriv k P). Degree decreases twice; two coefficient estimates cost 2^(sum r) each. At the diagonal point the evaluation product becomes (1+abs(alpha))^(sum r). Strict 2^s<beta, B>0 and weak evaluation factor<=beta yield the strict beta*(beta*B)*beta bound. This is a composite specialization of the shared evaluation API, not a second proof of its geometric-sum estimate.",
+      "action": "Keep existing evaluation and Hasse bounds as ingredients; private255 records the specific combined quantitative specialization.",
+      "evidence": [
+        {
+          "declaration": "Roth.abs_eval_le",
+          "canonical_index": 98,
+          "file": "Roth/CoeffNorm.lean",
+          "start_line": 223,
+          "end_line": 239,
+          "source_sha256": "6b826a706d36205a066b5af6ed98c01f06067bc80c595556b244f67415d63df7",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.abs_eval_le.md",
+          "report_sha256": "fc3a31fed027303c24f1dba8468b4e0e0ef423146f3c90a29966a469640bf317"
+        },
+        {
+          "declaration": "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+          "canonical_index": 255,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 459,
+          "end_line": 475,
+          "source_sha256": "e49a05bb30f9132af963bb4832c3f682ef09617739c4a3acdf332f795adfdaf9",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.abs_eval_iterated_hasseDeriv_lt_aux.md",
+          "report_sha256": "c2a3ad927f4ef76e52699e44cef3ec3685320ac05903787b5c5fdb5e8de9e1b5"
+        }
+      ]
+    },
+    {
+      "a": "Roth.abs_coeff_hasseDeriv_le",
+      "b": "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+      "relation": "The coefficient theorem concerns one fixed derivative coefficient and supplies one 2^(sum r) multiplier.255 applies it twice to different derivative levels and then evaluates; a coefficient bound alone does not assert the scalar value bound.",
+      "action": "Reuse the coefficient theorem twice and the evaluation theorem, preserving strictness and positive B.",
+      "evidence": [
+        {
+          "declaration": "Roth.abs_coeff_hasseDeriv_le",
+          "canonical_index": 89,
+          "file": "Roth/CoeffNorm.lean",
+          "start_line": 134,
+          "end_line": 143,
+          "source_sha256": "a8787379ea84f4e07616886fe969f878cc47b03e2ad3b962937ebfb6b1b77987",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.abs_coeff_hasseDeriv_le.md",
+          "report_sha256": "650eda0fe59a1264a35a07953f07f3d63c0457f5e703ef27274a5022acc3d8ca"
+        },
+        {
+          "declaration": "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+          "canonical_index": 255,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 459,
+          "end_line": 475,
+          "source_sha256": "e49a05bb30f9132af963bb4832c3f682ef09617739c4a3acdf332f795adfdaf9",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.abs_eval_iterated_hasseDeriv_lt_aux.md",
+          "report_sha256": "c2a3ad927f4ef76e52699e44cef3ec3685320ac05903787b5c5fdb5e8de9e1b5"
+        }
+      ]
+    },
+    {
+      "a": "Roth.norm_coeff_modByMonic_le",
+      "b": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "relation": "243 is a generic normed coefficient bound for univariate modByMonic with supplied coefficient/degree budget.257 supplies its input by diagonalizing a multivariate Hasse derivative, bounding support by prod(r+1), and Hasse coefficients by 2^(sum r)*B, then normalizes Int.norm_eq_abs. The divisor-degree exponent is retained.",
+      "action": "Preserve the generic univariate remainder API and its multivariate quantitative specialization; no duplicated polynomial-division recursion.",
+      "evidence": [
+        {
+          "declaration": "Roth.norm_coeff_modByMonic_le",
+          "canonical_index": 243,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 252,
+          "end_line": 269,
+          "source_sha256": "5c0464ff0bb9b4e0e74cd241b56a5efd897fa1d62df9cb394d59cc23f8d9f029",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.norm_coeff_modByMonic_le.md",
+          "report_sha256": "afabfc521ef0734f29caf1336e277cb6bf26b2dc9132d6f314de69ad12647523"
+        },
+        {
+          "declaration": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+          "canonical_index": 257,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 497,
+          "end_line": 513,
+          "source_sha256": "4379fff6892510f6d08274e4961f1953d72b6151d470de57f6f83b9a4e50c704",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux.md",
+          "report_sha256": "88d6af0648ec4eb74baa91f7d90b10b639d2dc6b179c3fd99548311b7fcf28fc"
+        }
+      ]
+    },
+    {
+      "a": "Roth.abs_coeff_diag_le",
+      "b": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "relation": "The diagonal estimate bounds coefficients by the actual support cardinality times a coefficient bound.257 specializes to a Hasse derivative, replaces actual support by the coordinate box and then applies a univariate remainder estimate. Its output includes divisor coefficient and degree factors absent from the diagonal theorem.",
+      "action": "Share diagonal and support bounds as existing ingredients; do not replace the remainder output by the weaker pre-remainder estimate.",
+      "evidence": [
+        {
+          "declaration": "Roth.abs_coeff_diag_le",
+          "canonical_index": 92,
+          "file": "Roth/CoeffNorm.lean",
+          "start_line": 174,
+          "end_line": 179,
+          "source_sha256": "b0d93520fd0fe3c9960fc82681715dc7b28ec95b7ef21d9789d6520f383b49d2",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_le.md",
+          "report_sha256": "3c66cf7b7c7ab85a7a01133ac09b2f01a7d2f53c092ce16ebab475da9a607a35"
+        },
+        {
+          "declaration": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+          "canonical_index": 257,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 497,
+          "end_line": 513,
+          "source_sha256": "4379fff6892510f6d08274e4961f1953d72b6151d470de57f6f83b9a4e50c704",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux.md",
+          "report_sha256": "88d6af0648ec4eb74baa91f7d90b10b639d2dc6b179c3fd99548311b7fcf28fc"
+        }
+      ]
+    },
+    {
+      "a": "Roth.card_le_card_box",
+      "b": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "relation": "The box cardinality result bounds an exponent support, not coefficients.257 uses it after degreeOf_hasseDeriv_le and multiplies this combinatorial bound with Hasse coefficient and remainder growth factors.",
+      "action": "Keep combinatorial support cardinality and numerical coefficient growth as separate reusable stages.",
+      "evidence": [
+        {
+          "declaration": "Roth.card_le_card_box",
+          "canonical_index": 30,
+          "file": "Roth/Box.lean",
+          "start_line": 65,
+          "end_line": 68,
+          "source_sha256": "9880f658eec724ab32e34a3517ae2ff2bde1276565009e5e4a8db3375e15b6b1",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.card_le_card_box.md",
+          "report_sha256": "6f91fde5aaffdb259592e4c9c3982d402a4ff2d9a1bd8ca716618ea25a676f2a"
+        },
+        {
+          "declaration": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+          "canonical_index": 257,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 497,
+          "end_line": 513,
+          "source_sha256": "4379fff6892510f6d08274e4961f1953d72b6151d470de57f6f83b9a4e50c704",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux.md",
+          "report_sha256": "88d6af0648ec4eb74baa91f7d90b10b639d2dc6b179c3fd99548311b7fcf28fc"
+        }
+      ]
+    },
+    {
+      "a": "Roth.floor_rpow_count_lt_aux",
+      "b": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+      "relation": "247 proves a strict comparison of powers of finite alphabets involving floor(B^c).258 instead converts an integer coefficient absolute value bounded in R by B*beta^3 into an integer natural-floor bound, after three growth estimates. Shared floor/cast order primitives do not identify the conclusions or strictness.",
+      "action": "Keep the integer-floor conversion distinct from the later strict alphabet-power estimate.",
+      "evidence": [
+        {
+          "declaration": "Roth.floor_rpow_count_lt_aux",
+          "canonical_index": 247,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 320,
+          "end_line": 327,
+          "source_sha256": "2d0d1b086522ac03ec6e327d1d64174f2b392ee709a65b050c0787ed5e777579",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.floor_rpow_count_lt_aux.md",
+          "report_sha256": "3f20ea05ffae388baffcf9739352edce5731b01aa9e0a4e9578ce2dcbb934629"
+        },
+        {
+          "declaration": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+          "canonical_index": 258,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 515,
+          "end_line": 548,
+          "source_sha256": "7056648912f9c499eaf4d0615094b9fecf7a0857362da74665106449c8769bc7",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux.md",
+          "report_sha256": "ac488fa97597e9a4ee5642a14a07405bbd635c98fcbd570ce38b0111ca785a85"
+        }
+      ]
+    },
+    {
+      "a": "Roth.exists_ne_modByMonic_eq",
+      "b": "Roth.exists_mem_RSet_le_index_aux",
+      "relation": "249 produces two distinct box-family polynomials with matching selected remainders from a strict count.259 invokes it and then constructs their difference, transfers zero observations at the root and proves a real index lower bound. The larger existence output is built on the collision output; they are not independent proofs of the same result.",
+      "action": "Retain collision as reusable finite-observation API and259 as internal arithmetic-to-index assembly; preserve monicity where coefficient reconstruction needs it.",
+      "evidence": [
+        {
+          "declaration": "Roth.exists_ne_modByMonic_eq",
+          "canonical_index": 249,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 359,
+          "end_line": 379,
+          "source_sha256": "ce954bda5fe58acf65591ae7cb1ad09559476bb8b100710eedaa6a3cdc0a081f",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.exists_ne_modByMonic_eq.md",
+          "report_sha256": "ca405e0c1bc442ad4e4192fad0dfbe8045215b474a5fbb8cadb829dc2d9425a6"
+        },
+        {
+          "declaration": "Roth.exists_mem_RSet_le_index_aux",
+          "canonical_index": 259,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 550,
+          "end_line": 567,
+          "source_sha256": "acc391440f39f8916ce72ebead5f80d3222f6d10c73030138668cdcf500bca97",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_aux.md",
+          "report_sha256": "57da49aebf4f686ce5478c4c2331c127695d1df998e0402be4d9da0e8be0cc1c"
+        }
+      ]
+    },
+    {
+      "a": "Roth.sub_mem_RSet",
+      "b": "Roth.exists_mem_RSet_le_index_aux",
+      "relation": "250 supplies the nonzero difference with the sharp coefficient bound B from two coefficients in [0,B].259 uses that bound rather than a generic 2B triangle bound, plus remainder equality and the root relation to force low-index Hasse zeros.",
+      "action": "Reuse the sharp interval-difference API; do not lose the B constant in counting-to-index assembly.",
+      "evidence": [
+        {
+          "declaration": "Roth.sub_mem_RSet",
+          "canonical_index": 250,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 388,
+          "end_line": 394,
+          "source_sha256": "1139c568454efb108d65dfe60c22e1409f5ec07bc6e451231d8b8665841e4a83",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.sub_mem_RSet.md",
+          "report_sha256": "7a31e7b5e695b8cd5e4f0adab55266a0da8c1b26444db3dc68e6b35a46ee9bf5"
+        },
+        {
+          "declaration": "Roth.exists_mem_RSet_le_index_aux",
+          "canonical_index": 259,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 550,
+          "end_line": 567,
+          "source_sha256": "acc391440f39f8916ce72ebead5f80d3222f6d10c73030138668cdcf500bca97",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_aux.md",
+          "report_sha256": "57da49aebf4f686ce5478c4c2331c127695d1df998e0402be4d9da0e8be0cc1c"
+        }
+      ]
+    },
+    {
+      "a": "Roth.eval_hasseDeriv_sub_eq_zero",
+      "b": "Roth.exists_mem_RSet_le_index_aux",
+      "relation": "251 converts equality modulo f into evaluation zero at a root, with no monicity premise.259 obtains equality from249, which still needs monicity, then proves all selected Hasse zeros and hence an index bound. Removing monicity from251 does not remove the independent coefficient-reconstruction need in259.",
+      "action": "Keep root-annihilation and collision hypotheses separate; do not propagate an unjustified monicity removal through the construction.",
+      "evidence": [
+        {
+          "declaration": "Roth.eval_hasseDeriv_sub_eq_zero",
+          "canonical_index": 251,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 402,
+          "end_line": 411,
+          "source_sha256": "82557019f40d3247076d4cc31e0775e5ba740d8f08b038157979e62376cd91c4",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md",
+          "report_sha256": "9ff92ba08b68b47d303aea86dfe2a8fbca1c1cdb4f89efdb33023ea1a55ad2d3"
+        },
+        {
+          "declaration": "Roth.exists_mem_RSet_le_index_aux",
+          "canonical_index": 259,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 550,
+          "end_line": 567,
+          "source_sha256": "acc391440f39f8916ce72ebead5f80d3222f6d10c73030138668cdcf500bca97",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_aux.md",
+          "report_sha256": "57da49aebf4f686ce5478c4c2331c127695d1df998e0402be4d9da0e8be0cc1c"
+        }
+      ]
+    },
+    {
+      "a": "Roth.le_index_of_forall_eval_eq_zero",
+      "b": "Roth.exists_mem_RSet_le_index_aux",
+      "relation": "252 accepts a nonzero polynomial, coordinate-degree bound and vanishing tests within the degree box below gamma.259 constructs that polynomial as the sharp difference, preserves mapped degrees and supplies vanishing via hJ and251. Thus259 discharges all substantive premises of252 rather than repeating its support-confinement proof.",
+      "action": "Use bounded-test index API once, preserving its actual degree/confinement requirement.",
+      "evidence": [
+        {
+          "declaration": "Roth.le_index_of_forall_eval_eq_zero",
+          "canonical_index": 252,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 419,
+          "end_line": 425,
+          "source_sha256": "552ba89d49ca5b7160e92ebba4f2b2e4dd39f367d222c410d12c13550bad75c6",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.le_index_of_forall_eval_eq_zero.md",
+          "report_sha256": "66455ec906655986a7df18b6af5183a0d06b5d7a5813b805c44701ae59dd39ac"
+        },
+        {
+          "declaration": "Roth.exists_mem_RSet_le_index_aux",
+          "canonical_index": 259,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 550,
+          "end_line": 567,
+          "source_sha256": "acc391440f39f8916ce72ebead5f80d3222f6d10c73030138668cdcf500bca97",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_aux.md",
+          "report_sha256": "57da49aebf4f686ce5478c4c2331c127695d1df998e0402be4d9da0e8be0cc1c"
+        }
+      ]
+    },
+    {
+      "a": "Roth.card_filter_weight_le",
+      "b": "Roth.mul_card_filter_weight_le_aux",
+      "relation": "The lattice theorem permits m=0 and has positive loss lambda.260 requires m>0 and positive r, substitutes lambda=4*a*sqrt(m) only when a>0, multiplies by a and cancels to half the box cardinality. When a<=0 it proves the signed inequality directly and does not call the positive-loss theorem at lambda0/negative loss.",
+      "action": "Retain the concentration theorem and the all-real-scale consequence with its separate nonpositive branch; no false unconditional cancellation.",
+      "evidence": [
+        {
+          "declaration": "Roth.card_filter_weight_le",
+          "canonical_index": 132,
+          "file": "Roth/Lattice.lean",
+          "start_line": 202,
+          "end_line": 218,
+          "source_sha256": "001f5ec6d1a8a0416a7ddb37602b2292931831ecbf152e332e14a7f39048af36",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le.md",
+          "report_sha256": "2bf63c5cf5e998d5aabecac109f1850b56c62435fd23cb669e2d26c5ae15bf4a"
+        },
+        {
+          "declaration": "Roth.mul_card_filter_weight_le_aux",
+          "canonical_index": 260,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 569,
+          "end_line": 579,
+          "source_sha256": "b8b6245544980b4a105764d086adbb90a8da69fcf459df9da18c59981c78bc87",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.mul_card_filter_weight_le_aux.md",
+          "report_sha256": "0e64ae639533938695a4418ec10466ae12ccb22e493849aa19a1164534731091"
+        }
+      ]
+    },
+    {
+      "a": "Roth.pigeonhole_count",
+      "b": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+      "relation": "248 proves a strict alphabet-power comparison from B>0,c>=1 and a weighted cardinality budget.261 derives c>=1 from its power/coefficient premises, supplies the budget via260, bounds remainder coefficients via258 and applies259 for polynomial existence. Counting is a required input, not the full construction.",
+      "action": "Keep the numerical strict count and the algebraic existence construction distinct; preserve the floor and positive-dimension steps.",
+      "evidence": [
+        {
+          "declaration": "Roth.pigeonhole_count",
+          "canonical_index": 248,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 334,
+          "end_line": 349,
+          "source_sha256": "e0943534c5b86f97846e70c3dc87c8501444f181782533f0deeaa1ac53752890",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.pigeonhole_count.md",
+          "report_sha256": "fed204383f0fe4a6dad9412cfe0cc4dca0f8f477f3341ff653beabcf14e1b60b"
+        },
+        {
+          "declaration": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+          "canonical_index": 261,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 581,
+          "end_line": 616,
+          "source_sha256": "d35def09cffea3966d19da542844f090f77e574715d58bf15e9275290b95d73e",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_of_rpow_bound_aux.md",
+          "report_sha256": "e83ea351cabcc790af0be06f20b6d25df93f2f01669194f075d0e405e8fea345"
+        }
+      ]
+    },
+    {
+      "a": "Roth.three_small_factors",
+      "b": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+      "relation": "241 controls three growth factors using a combined logarithmic threshold.262 invokes the alpha=0 specialization for the divisor growth factor, proves mainCoeffBound positive and sets the power budget exactly. It does not yet claim double-Hasse value bounds at the actual root alpha.",
+      "action": "Reuse the verified factor bounds at the appropriate specialization; actual-root evaluation is added later in263.",
+      "evidence": [
+        {
+          "declaration": "Roth.three_small_factors",
+          "canonical_index": 241,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 180,
+          "end_line": 210,
+          "source_sha256": "2d6ff2e02267e6953f39d6a657ff3fb9b264fbc9b0f275431e3799613720a71d",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.three_small_factors.md",
+          "report_sha256": "faf277ac3c499c4e7d16b21b68cd892f960fb227c118cb5367da983e46d33ce6"
+        },
+        {
+          "declaration": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+          "canonical_index": 262,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 618,
+          "end_line": 641,
+          "source_sha256": "2b3c3b22619e7274526ca173fbf320dfcbfa59e5ec26d5033617ff490d16beaf",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_of_log_bound_aux.md",
+          "report_sha256": "add29108734fce368755bf758429923519f652ef2728e219a4ee00bdadcceab6"
+        }
+      ]
+    },
+    {
+      "a": "Roth.index_sub_weight_le_index_hasseDeriv",
+      "b": "Roth.exists_hasseDeriv_index_eval_bound_aux",
+      "relation": "The index theorem gives weak index loss for a specified nonzero Hasse derivative.256 first selects k by a strict low index at z, proves its evaluation and derivative nonzero, and transports gamma<=old index plus weight(k)<c into gamma-c<new index; it also retains degrees and all height bounds.",
+      "action": "Keep the general index-loss API and the controlled two-point selection step separate; strictness comes from the selected cutoff witness.",
+      "evidence": [
+        {
+          "declaration": "Roth.index_sub_weight_le_index_hasseDeriv",
+          "canonical_index": 140,
+          "file": "Roth/Index.lean",
+          "start_line": 109,
+          "end_line": 114,
+          "source_sha256": "f4910d9f1a182adcd49b260f33c4605d21f2c5f340a2339c80b56581c3fd948d",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.index_sub_weight_le_index_hasseDeriv.md",
+          "report_sha256": "ca4a3857cd436885e70f2e90912c8d7a8d2e82b942c3b3465b45c716a0d07db5"
+        },
+        {
+          "declaration": "Roth.exists_hasseDeriv_index_eval_bound_aux",
+          "canonical_index": 256,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 477,
+          "end_line": 495,
+          "source_sha256": "63e6429a55f067af408844aeb3e7c69da271b087f26f6b3c218df78bcca1b8b6",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.exists_hasseDeriv_index_eval_bound_aux.md",
+          "report_sha256": "8c29ca56f7438b249932b52a5f1bb656c3cc5422e6b25164386f6b22aba2cd1a"
+        }
+      ]
+    },
+    {
+      "a": "Roth.Θ_lt",
+      "b": "Roth.theta_lt_eta_of_sq_log_bound_aux",
+      "relation": "228 gives the general strict Theta bound under its logarithmic growth/degree-ratio hypotheses.264 writes m=n+1, derives delta>0, obtains that logarithmic threshold from the stronger square-log premise using weak delta*m<=1, converts degree assumptions and unfolds eta. It is a source-specific numerical specialization of the existing project theorem, not a second proof of the recursive Theta estimate.",
+      "action": "Reuse Θ_lt and retain weak boundary handling; the unused strict scalar253 cannot substitute at equality.",
+      "evidence": [
+        {
+          "declaration": "Roth.Θ_lt",
+          "canonical_index": 228,
+          "file": "Roth/Theta.lean",
+          "start_line": 962,
+          "end_line": 981,
+          "source_sha256": "c76baedc30f77019a8ba98ea49fe48c1637db2a75dd20a287752f88622318135",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.Θ_lt.md",
+          "report_sha256": "dac420c5abde2f581297dce9fa3587bee44e831c51d6f4752cdb51b660bcd142"
+        },
+        {
+          "declaration": "Roth.theta_lt_eta_of_sq_log_bound_aux",
+          "canonical_index": 264,
+          "file": "Roth/MainLemma.lean",
+          "start_line": 671,
+          "end_line": 690,
+          "source_sha256": "e4e9990cd9a663ace2e510a235595a3f29313dafef3a9e2839fe6fdb8eaf9400",
+          "report": ".mathlib-quality/overview/mathlibable/Roth.theta_lt_eta_of_sq_log_bound_aux.md",
+          "report_sha256": "67fa7a387b9f931ba468d38fc1e5798be63b8cb277be2f7310f243280bd4b81a"
+        }
+      ]
+    }
+  ],
+  "production_changes": false
+}

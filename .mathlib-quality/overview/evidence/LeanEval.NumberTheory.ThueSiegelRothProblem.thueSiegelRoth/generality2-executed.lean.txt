@@ -1,0 +1,58 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Endpoint293Generality
+open Real
+open LeanEval.NumberTheory.ThueSiegelRothProblem
+#check @IsFractionRing.isAlgebraic_iff
+#check @IsAlgebraic.extendScalars
+lemma algebraic_int_iff_rat (x : ℝ) : IsAlgebraic ℤ x ↔ IsAlgebraic ℚ x :=
+  IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ
+-- Same mathematical hypothesis in the standard field spelling, not a strict weakening.
+theorem endpoint_rat (x : ℝ) (hx : Irrational x) (ha : IsAlgebraic ℚ x) :
+    IsDiophantine x := (isDiophantine_iff hx).mpr (Roth.roth hx ha)
+theorem endpoint_finite (x : ℝ) (hx : Irrational x) (ha : IsAlgebraic ℚ x)
+    (ε : ℝ) (hε : 0 < ε) : (Roth.approxSet x (2 + ε)).Finite := by
+  exact Set.not_infinite.mp fun h ↦ (by linarith : ¬ (2 + ε ≤ 2)) (Roth.roth hx ha h)
+theorem endpoint_weak (x : ℝ) (hx : Irrational x) (ha : IsAlgebraic ℚ x)
+    (ε : ℝ) (hε : 0 < ε) : ∃ C : ℝ, 0 < C ∧ ∀ p q : ℤ, 0 < q →
+      C / (q : ℝ) ^ (2 + ε) ≤ |x - (p : ℝ) / q| := by
+  obtain ⟨C, hC, hb⟩ := endpoint_rat x hx ha ε hε
+  exact ⟨C, hC, fun p q hq ↦ (hb p q hq).le⟩
+lemma diophantine_irrational {x : ℝ} (h : IsDiophantine x) : Irrational x := by
+  rintro ⟨r, rfl⟩
+  obtain ⟨C, hC, hb⟩ := h 1 zero_lt_one
+  have hp := hb r.num r.den (by exact_mod_cast r.den_pos)
+  have heq : (r.num : ℝ) / r.den = (r : ℝ) := (Rat.cast_def r).symm
+  simp only [Int.cast_natCast] at hp
+  rw [heq, sub_self, abs_zero] at hp
+  exact (div_pos hC (rpow_pos_of_pos (by positivity) _)).not_gt hp
+lemma rational_counterexample (r : ℚ) : ¬ IsDiophantine (r : ℝ) := by
+  intro h
+  exact (diophantine_irrational h).ne_rat r rfl
+example : IsAlgebraic ℤ (0 : ℝ) := isAlgebraic_zero
+example : ¬ IsDiophantine (0 : ℝ) := by simpa using rational_counterexample 0
+-- Exact original-signature recovery from the Q statement.
+theorem recovered (x : ℝ) (_h_irr : Irrational x) (_h_alg : IsAlgebraic ℤ x) :
+    IsDiophantine x := endpoint_rat x _h_irr ((algebraic_int_iff_rat x).mp _h_alg)
+example : @LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth =
+    @Endpoint293Generality.recovered := Subsingleton.elim _ _
+#print axioms Endpoint293Generality.endpoint_rat
+#print axioms Endpoint293Generality.endpoint_finite
+#print axioms Endpoint293Generality.endpoint_weak
+#print axioms Endpoint293Generality.rational_counterexample
+#print axioms Endpoint293Generality.recovered
+end Endpoint293Generality

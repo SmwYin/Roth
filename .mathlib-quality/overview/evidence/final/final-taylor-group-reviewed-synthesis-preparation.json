@@ -1,0 +1,66 @@
+{
+  "status": "ROOT-REVIEWED PARTIAL SYNTHESIS; not final293 acceptance or a prepared PR",
+  "scope": "Five accepted Taylor YES reports. Root read their entire actionable sections2026-10-28; no new declaration verdicts or production edits.",
+  "sources": [
+    {
+      "declaration": "MvPolynomial.coeff_taylor",
+      "report": ".mathlib-quality/overview/mathlibable/MvPolynomial.coeff_taylor.md",
+      "report_sha256": "bac6c7c09d7b23f04697d45e83dabec674dcf8207482750f9914bec39b99bd61",
+      "action_section_sha256": [
+        "664351f403336f6a874eacd5bb01b8fc45061611f0f91bc83810419f91e32f37"
+      ]
+    },
+    {
+      "declaration": "MvPolynomial.degreeOf_taylor_le",
+      "report": ".mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_taylor_le.md",
+      "report_sha256": "428d6756a85824d364398548b4c2f23e5529ac54883b7e5168c7969a8906de5d",
+      "action_section_sha256": [
+        "a08d998bff9fe450d8b25814ad5f0e79745de8f155b561458aad2c729b6af812"
+      ]
+    },
+    {
+      "declaration": "MvPolynomial.taylor_eq_zero_iff",
+      "report": ".mathlib-quality/overview/mathlibable/MvPolynomial.taylor_eq_zero_iff.md",
+      "report_sha256": "1d706966e20548cdd14e431d15febe42d6a9b1c7de36e4139dbe6b30d3a66d30",
+      "action_section_sha256": [
+        "6abbeb389bc886433b17c6ae04ff991132fab6c88a809bf5a822ba83b6a24f4d"
+      ]
+    },
+    {
+      "declaration": "MvPolynomial.eq_sum_box_hasseDeriv",
+      "report": ".mathlib-quality/overview/mathlibable/MvPolynomial.eq_sum_box_hasseDeriv.md",
+      "report_sha256": "53a1c6389d8ba195da393cad0cab4045c08f2804b489c826bbf10d4fe31335de",
+      "action_section_sha256": [
+        "21c260c13d27cc95ee8c8cd7b1d1203306b6503d8671da250e0a58ec6a4d483f"
+      ]
+    },
+    {
+      "declaration": "MvPolynomial.eval_eq_sum_box",
+      "report": ".mathlib-quality/overview/mathlibable/MvPolynomial.eval_eq_sum_box.md",
+      "report_sha256": "8325ef9acb3dd8fa02f82e635fbbb8336d6849028f23acd5c3a395cb3d9b4f14",
+      "action_section_sha256": [
+        "3824fca1f9d915ffdfcffc04bb3b74bced3c95764053e07201c2f116fd0a7b67"
+      ]
+    }
+  ],
+  "proposed_home": "Mathlib/Algebra/MvPolynomial/Taylor.lean",
+  "proposed_combined_title": "feat(Algebra/MvPolynomial/Taylor): coefficients and finite Hasse Taylor expansion",
+  "layering": "Depends on the proposed algebraic Hasse core; do not import downstream index, coefficient estimates or fraction-field arithmetic into the foundational Taylor module.",
+  "reconciled_actions": [
+    "Keep the accepted coefficient/Hasse bridge and arbitrary-variable semiring coordinate-degree bound. The optional named taylor operator has a separate BORDERLINE packaging verdict; if its name is declined, use aeval(X+Cα) without discarding these substantive laws.",
+    "Use the verified CommSemiring zero-reflection theorem for taylor_eq_zero_iff. It is not merely the old ring-injectivity corollary: zero reflection can hold while translation is noninjective. Do not claim semiring injectivity or an unconditional semiring AlgEquiv.",
+    "For eq_sum_box_hasseDeriv, remove the explicit DecidableEq binder using the verified propositional old-instance recovery. Retain Fintype and CommRing in that same-statement theorem; an arbitrary-variable support-sum experiment changes the range/product and does not prove their deletion in the original box statement.",
+    "For eval_eq_sum_box, use the separately verified stronger interface: coefficient CommSemiring A and center/point in a CommRing A-algebra B, no explicit DecidableEq. Recover original scalar evaluation with B=A. The target CommRing assumption enables subtraction of center from point and is not silently dropped.",
+    "Migrate Roth.box to standard Finsupp finite-interval infrastructure for an eventual upstream module. That representation migration has not been performed by this read-only review and must receive its own native/dependent verification.",
+    "Group the foundational coefficient law with degree and zero-reflection API, then finite polynomial/evaluated expansions as PR size permits; routine consequences of new parent mathematics are not existing mathlib replacements."
+  ],
+  "future_pre_pr_actions": [
+    "Run /generalise for all five in their actual intended upstream context, retaining exactly verified distinctions above.",
+    "Run /cleanup and complete upstream import, whole dependent, simplify and performance checks, with Main strict-evaluation consumer included.",
+    "Recheck then-current mathlib and choose human reviewers from the actual relevant histories retained in accepted reports; Yaël Dillies and Aaron Liu recur, Kenny Lau has relevant Taylor history. No one contacted."
+  ],
+  "not_claimed": [
+    "No upstream PR/module/representation migration created.",
+    "Other groups and unfinished declarations still require final reconciliation."
+  ]
+}

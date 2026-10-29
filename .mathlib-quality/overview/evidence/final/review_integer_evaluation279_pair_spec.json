@@ -1,0 +1,56 @@
+{
+  "canonical_index": 279,
+  "declaration": "Roth.one_le_prod_pow_mul_abs_eval",
+  "root_reviewed": true,
+  "accepted_report_sha256": "ee7409af2bd279eafa7d5b4df7ae85ddc67bed0f1184588b27d56b8e7cbf8b3f",
+  "verdict": "YES-but-generalise-first",
+  "mathematical_content": "An integral multivariate polynomial of coordinate degrees at most r, evaluated at integer numerators divided by positive natural denominators, has absolute value times the sharp product of denominator powers at least one if nonzero. A new ordered-field/Fintype proof and signed-nonzero integer denominator version with absolute product compile. A separate new algebraic identity works over arbitrary commutative semiring source and target with a ring homomorphism and supplied coordinate denominator inverses: a finite coefficient sum maps to the sharp product-scaled eval2. It needs no injectivity, characteristic zero, field, order or nonvanishing. An integer-image separation premise is explicitly required for the normed-field lower bound. Exact original recovery, all of Main with original proof inlined at the actual caller, empty-index specialization and counterexamples compile. This is a new multivariate extension of existing univariate denominator clearing, not a claimed existing library theorem.",
+  "module_context_overrides": {
+    "Roth/Main.lean": "Main uses279 to obtain an arithmetic lower bound for a nonzero rational-point polynomial value, then combines it with an analytic Taylor upper bound to contradict the parameter budget. This clearing step is independent of selecting approximants or degrees and of constructing the polynomial.",
+    "Roth/LeanEval.lean": "LeanEval packages a uniform approximation lower bound for irrational algebraic reals.279 is a conditional finite-polynomial evaluation estimate inside the proof, not a uniform lower bound for arbitrary rational approximation errors."
+  },
+  "specific_comparisons": {
+    "Roth.exists_nat_smul_eq_map": {
+      "same_statement": false,
+      "comparison": "171 clears rational polynomial coefficients by choosing one positive natural scalar.279 starts with integral coefficients and clears denominators of the evaluation coordinates with the prescribed sharp product of coordinate powers, then proves an absolute lower bound. Coefficient normalization and point evaluation are distinct denominator operations."
+    },
+    "Roth.exists_primitive_smul_eq": {
+      "same_statement": false,
+      "comparison": "172 scales a nonzero rational polynomial to integral primitive coefficients.279 does not impose primitiveness or choose a coefficient scalar; its polynomial is already integral and its denominator product depends on the rational point and degree ceilings."
+    },
+    "Roth.exists_int_factors": {
+      "same_statement": false,
+      "comparison": "176 descends a separated rational factorization to integer factors while preserving degrees.279 proves a scalar integer-image evaluation equality and lower bound, without any factorization or variable-block separation."
+    },
+    "Roth.pow_rootMultiplicity_le": {
+      "same_statement": false,
+      "comparison": "197 bounds powers of a reduced root denominator using leading coefficients and multiplicity at a zero.279 assumes the evaluated value is nonzero and clears all coordinate denominators before integer separation. Zero versus nonzero evaluation, multiplicity versus multidegree and leading coefficient versus value are different content."
+    },
+    "Roth.abs_coeff_le_normOne": {
+      "same_statement": false,
+      "comparison": "81 gives an upper bound on one coefficient from the coefficient absolute sum.279 gives a lower bound on a denominator-scaled nonzero evaluation. Both involve absolute values but neither supplies the other, and the clearing identity is absent from coefficient estimates."
+    },
+    "Roth.main_lemma": {
+      "same_statement": false,
+      "comparison": "266 constructs a nonzero integer auxiliary polynomial with quantitative index/derivative bounds and nonzero rational evaluation.279 consumes degree bounds and nonzero evaluation to obtain the arithmetic lower bound; it does not construct that polynomial or establish its nonvanishing."
+    },
+    "Roth.exists_approximants": {
+      "same_statement": false,
+      "comparison": "277 selects rational approximating pairs with cofinal separated heights.279 assumes arbitrary integer numerators and positive natural denominators, with no coprimality, approximation error, irrational center or infinitude, and estimates a supplied polynomial value."
+    },
+    "Roth.exists_degrees": {
+      "same_statement": false,
+      "comparison": "278 rounds inverse logarithmic heights to balanced natural degree vectors.279 accepts arbitrary coordinate degree ceilings and proves denominator cancellation and integer separation. The former is a finite order/rounding construction, the latter a polynomial evaluation identity plus arithmetic inequality."
+    }
+  },
+  "pair_action": "Keep coefficient normalization, rational witness selection, degree rounding, polynomial construction and nonzero evaluation lower bounds distinct. Recommend a new generic commsemiring coordinate-denominator clearing helper, ordered-field signed/natural corollaries and exact local recovery; production sources unchanged.",
+  "root_review_method": "Root independently reconstructed exact original and full Main proof replay after deleting only target/orphan doc and inlining the complete original proof at its sole actual caller, with local hQ/hq substitutions and wrapping. Ten clean actual native receipts, formal15 plus semiring5, primary/pinned source reading, fresh17 and exact293 support the judgment. Root-authored pair comparisons are mathematical reviews, not machine proofs of inequivalence.",
+  "synthesis_artifact": "final-integer-evaluation279-reviewed-synthesis-preparation.json",
+  "new_yes_group": "Multivariate coordinate-denominator clearing and integer evaluation separation",
+  "action_synthesis": {
+    "root_synthesis": "YES-but-generalise-first: new finite-variable commsemiring ringhom clearing identity with unit denominator images, followed by ordered-field signed/natural lower bounds. Existing univariate DenomsClearable and scalar Int.one_le_abs are building blocks, not an existing sharp multivariate replacement.",
+    "native_scope": "Ten accepted clean actual natives: original4320ms,generic87787ms,signed1274ms,recovery784ms,edges467ms,clearing1141ms,composition1237ms,fullMain2670ms,eval2shape1060ms,commsemiringclearing1925ms. Four failed/warning attempts retained; preparation-only width failures were never invoked. Original kernel printer elides89281 characters; full written source and native type retained.",
+    "primary_scope": "Root read Waldschmidt LIL introduction printedii lines51-53 rational denominator estimate and Stacks00CM Definition10.9.2/Proposition10.9.3 localization. Local clean.tex1646-1656 equation54 is exact coordinate clearing step. Existing pinned univariate theorem65-110 read; characteristic zero alone is not integer norm separation. Root separately inspected MO400596 algebraic linear forms and April9 2025 arxiv2504.06665 rational-point counts; both are contextual, not the exact coordinate-clearing API.",
+    "preservation": "Production17 and pins unchanged; shared18/disk9 fixed prefixes, no extra imports. Assessment draft completed flags corrected before actual packaging gates; no partial assessment published."
+  }
+}

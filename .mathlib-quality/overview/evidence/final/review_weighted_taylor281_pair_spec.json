@@ -1,0 +1,55 @@
+{
+  "canonical_index": 281,
+  "declaration": "Roth.abs_eval_lt_of_le_index",
+  "root_reviewed": true,
+  "accepted_report_sha256": "239042cd5bb5e8f715a17e66a455b1f22ebdbbc7bf6b6a89386a3a89f0947ce2",
+  "verdict": "BORDERLINE-needs-human",
+  "mathematical_content": "A finite multivariate Taylor expansion, vanishing below a reciprocal-degree index cutoff, yields a strict upper bound on polynomial evaluation: box cardinality times a strict Hasse coefficient bound times common weighted error decay. The all-index coefficient premise can be restricted to the degree box. New mathlib-only real and NormedCommRing+NormOneClass expansion bounds allow arbitrary finite variables including empty, arbitrary centers/evaluation, real coordinate costs, base>=1 and a lower cost bound only for nonzero coefficients. A separate project Hasse/Taylor bridge and complete original recovery use costs r0*kappa/rj and cutoff r0*c*kappa, preserving totalized division at zero degree. Zero polynomial and mixed zero degrees remain allowed; nonempty expansion and strict coefficient bounds provide strictness. Three completed future upstream API-granularity questions do not weaken the definite local generality recommendations.",
+  "module_context_overrides": {
+    "Roth/Main.lean": "Main281 is the analytic upper half of the contradiction: finite Taylor expansion and high index make evaluation small. It consumes derivative bounds and coordinate approximation errors; the arithmetic denominator lower bound and polynomial construction are separate steps.",
+    "Roth/LeanEval.lean": "LeanEval states a uniform lower bound for rational approximation errors.281 is a conditional upper estimate for one finite polynomial evaluation, not a direct uniform irrationality theorem."
+  },
+  "specific_comparisons": {
+    "Roth.abs_prod_pow_le_rpow_of_le_weight": {
+      "same_statement": false,
+      "comparison": "280 bounds a single monomial product from coordinate errors and reciprocal-degree weights.281 expands a polynomial, eliminates low-weight nonzero coefficients using index, handles zero terms and strict coefficient bounds, and sums over a nonempty box. The private bridge is a component, not an equivalent theorem."
+    },
+    "Roth.one_le_prod_pow_mul_abs_eval": {
+      "same_statement": false,
+      "comparison": "279 gives a lower bound for nonzero integer polynomial evaluation using denominator clearing and integer separation.281 gives an upper bound for real polynomial evaluation via Taylor vanishing and coordinate radii, allowing zero Q. Its normed-ring extension needs no nonzero integer-image separation property; the inequalities are complementary in the actual caller."
+    },
+    "MvPolynomial.eval_eq_sum_box": {
+      "same_statement": false,
+      "comparison": "The finite box Taylor identity rewrites a polynomial value as a finite sum of Hasse coefficients and error monomials.281 adds weighted vanishing, coefficient magnitude/radius hypotheses and a strict numeric bound; the exact identity alone has no smallness content."
+    },
+    "Roth.index_le_weight": {
+      "same_statement": false,
+      "comparison": "The index/weight comparison states that a nonvanishing Hasse coefficient has weight at least the polynomial index.281 combines this with c<=index to determine which terms survive and then estimates an evaluation. Qualitative vanishing/order information and a quantitative finite-sum bound are distinct."
+    },
+    "Roth.abs_eval_le": {
+      "same_statement": false,
+      "comparison": "The earlier coefficient/evaluation upper-bound interface controls ordinary polynomial coefficients and coordinate sizes.281 uses shifted Hasse coefficients at an arbitrary center, ignores vanished low-cost terms and gains a threshold-dependent decay factor. Both use finite triangle/product bounds, but the translation/vanishing/cost mechanism is additional content."
+    },
+    "Roth.main_lemma": {
+      "same_statement": false,
+      "comparison": "266 constructs a nonzero integer polynomial with index, nonvanishing and derivative bounds.281 is an analytic consequence of supplied degree/index/derivative/error hypotheses and does not construct that polynomial."
+    },
+    "Roth.exists_degrees": {
+      "same_statement": false,
+      "comparison": "278 selects balanced natural degrees from prescribed logarithmic heights.281 uses arbitrary degree/radius data in a Taylor upper estimate. It does not choose degree witnesses or prove their separation."
+    },
+    "Roth.exists_approximants": {
+      "same_statement": false,
+      "comparison": "277 selects sparse rational approximating pairs, while281 estimates a supplied polynomial at a supplied tuple. The generic estimate removes the integer/rational presentation entirely and assumes only actual coordinate error bounds."
+    }
+  },
+  "pair_action": "Keep Taylor identity, monomial decay, weighted index comparison, derivative construction and arithmetic lower bound distinct. Recommend definite localization of coefficient bounds to the box and reuse of the verified arbitrary-center/cost/normed-ring expansion; choose public finite-expansion versus weighted-support packaging in future upstream design. Production remains unchanged.",
+  "root_review_method": "Root independently reconstructed exact target+private-helper original replay, both complete actual private caller forms (literal original inlining and generic replacement), and full Main replay with only target/orphan doc removal and literal caller replacement. Eight clean actual natives, full formal15+normed5, primary/pinned source reading, exact293 and fresh17 support the assessment; pair judgments are human mathematical comparisons, not machine inequivalence proofs.",
+  "synthesis_artifact": "final-weighted-taylor281-reviewed-synthesis-preparation.json",
+  "action_synthesis": {
+    "root_synthesis": "Completed BORDERLINE: three future API design questions concern naming/locality, explicit finite expansions versus weighted support/order, and which Roth corollaries stay local. Definite verified hC box localization and arbitrary-center/cost/normed-ring reformulations remain recommendations, independent of cost or adjacent verdict.",
+    "native_scope": "Eight accepted clean actual natives original3293ms,generic1655ms,project948ms,completecallers2618ms,normedfield1331ms,normedring1722ms,shape2124ms,fullMain2733ms. Three warning-bearing executions retained separately; callers01/normed01 failed preexecution width checks and were never invoked. Original kernel printer elides89054 characters; full written source/native type retained.",
+    "primary_scope": "Root opened January2022 Milojevic exposition PDFpage12 (zero-based11) lines1719-1800: finite Taylor expansion, index-based surviving weights and degree-cardinality upper bound. Local clean.tex1650-1699 gives exact derivative bound/strictness mechanism; formal indexed-revision limitations retained.",
+    "preservation": "Production17 and pins unchanged; exact stable18/disk9 prefixes, default limits and standard axioms. Normed-ring proof uses submultiplicative inequalities and explicitly NormOneClass for empty products/zeroth powers; no port of the project real Hasse/index definitions is claimed."
+  }
+}

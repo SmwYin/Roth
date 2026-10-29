@@ -1,0 +1,50 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
+
+#check_failure Roth.roth
+#check_failure LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth
+namespace Endpoint293Composition
+open Real
+def UniformBound (t x : ℝ) : Prop :=
+  ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
+    ∀ p q : ℤ, 0 < q → C / (q : ℝ) ^ (t + ε) < |x - (p : ℝ) / q|
+def pairSet (α κ : ℝ) : Set (ℤ × ℕ) :=
+  {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}
+example (x : ℝ) (hx : Irrational x) (ha : IsAlgebraic ℤ x) : True := by
+  fail_if_success
+    have : UniformBound 2 x := by exact?
+  fail_if_success
+    have : UniformBound 2 x := by simp only [UniformBound]
+  exact (fun (_ : Irrational x) (_ : IsAlgebraic ℤ x) ↦ True.intro) hx ha
+example (x : ℝ) (hx : Irrational x) (ha : IsAlgebraic ℚ x) : True := by
+  fail_if_success
+    have : ∀ {κ : ℝ}, (pairSet x κ).Infinite → κ ≤ 2 := by exact?
+  fail_if_success
+    have : Irrational x ∧ ∀ {p : ℝ}, LiouvilleWith p x → p ≤ 2 := by exact?
+  exact (fun (_ : Irrational x) (_ : IsAlgebraic ℚ x) ↦ True.intro) hx ha
+#check @Liouville.exists_pos_real_of_irrational_root
+#check @LiouvilleWith.exists_pos
+#check @LiouvilleWith.frequently_lt_rpow_neg
+#check @LiouvilleWith.irrational
+#check @LiouvilleWith.add_rat_iff
+#check @LiouvilleWith.mul_rat_iff
+#print axioms Liouville.exists_pos_real_of_irrational_root
+#print axioms LiouvilleWith.frequently_lt_rpow_neg
+end Endpoint293Composition

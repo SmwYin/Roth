@@ -1,9 +1,9 @@
 # Completed-only overview progress
 
-Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
+Status: **complete**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 292 / 293 written declarations.**
+**Completed: 293 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -300,8 +300,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 290 | `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine.md) |
 | 291 | `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux.md) |
 | 292 | `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff.md) |
+| 293 | `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth.md) |
 
-**Next declaration: `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth`**, `Roth/LeanEval.lean:61`.
+**All declarations complete.**
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and
