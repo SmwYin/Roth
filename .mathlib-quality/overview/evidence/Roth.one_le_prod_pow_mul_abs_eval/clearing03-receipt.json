@@ -1,0 +1,62 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem clearing {\u03b9 K : Type*} [Fintype \u03b9] [Field K] [CharZero K]\n    (Q : MvPolynomial \u03b9 \u2124) {r : \u03b9 \u2192 \u2115}\n    (hQ : \u2200 j, degreeOf j Q \u2264 r j) (h : \u03b9 \u2192 \u2124) {q : \u03b9 \u2192 \u2124} (hq : \u2200 j, q j \u2260 0)\n    : \u2203 N : \u2124, (N : K) = (\u220f j, (q j : K) ^ r j) *\n      eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n  have hqR : \u2200 j, (q j : K) \u2260 0 := fun j \u21a6 by exact_mod_cast hq j\n  set N : \u2124 := \u2211 d \u2208 Q.support, Q.coeff d * \u220f j, h j ^ d j * (q j : \u2124) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (\u220f j, (q j : K) ^ r j) *\n      eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd \u21a6 ?_\n    rw [coeff_map, mul_left_comm, \u2190 Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ \u21a6 ?_\n    rw [\u2190 pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel\u2080 _ (pow_ne_zero _ (hqR j)), mul_comm]\n  exact \u27e8N, hNeq\u27e9\n\ntheorem separatedNorm {\u03b9 K : Type*} [Fintype \u03b9] [NormedField K] [CharZero K]\n    (Q : MvPolynomial \u03b9 \u2124) {r : \u03b9 \u2192 \u2115} (hQ : \u2200 j, degreeOf j Q \u2264 r j)\n    (h : \u03b9 \u2192 \u2124) {q : \u03b9 \u2192 \u2124} (hq : \u2200 j, q j \u2260 0)\n    (hsep : \u2200 z : \u2124, z \u2260 0 \u2192 1 \u2264 \u2016(z : K)\u2016)\n    (hne : eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q) \u2260 0) :\n    1 \u2264 \u2016\u220f j, (q j : K) ^ r j\u2016 *\n      \u2016eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q)\u2016 := by\n  obtain \u27e8N, hN\u27e9 := clearing (K := K) Q hQ h hq\n  have hP : (\u220f j, (q j : K) ^ r j) \u2260 0 :=\n    Finset.prod_ne_zero_iff.mpr fun j _ \u21a6 pow_ne_zero _ (Int.cast_ne_zero.mpr (hq j))\n  have hNz : N \u2260 0 := Int.cast_ne_zero.mp (hN.symm \u25b8 mul_ne_zero hP hne)\n  simpa only [hN, norm_mul] using hsep N hNz\n#print axioms clearing\n#print axioms separatedNorm\n\nend Integer279\n"
+  },
+  "elapsed_ms": 1141,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "clearing03",
+      "operation": "run_code",
+      "source": "clearing3-executed.lean.txt",
+      "source_sha256": "c71acb5c53fef0710af826a0ea904e006b89effa10773dc3bd812eb62aff804c",
+      "receipt": "clearing03-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.one_le_prod_pow_mul_abs_eval/root-requests/clearing03.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.one_le_prod_pow_mul_abs_eval/clearing3-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.one_le_prod_pow_mul_abs_eval`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Integer279.clearing' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 54,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Integer279.separatedNorm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 55,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.one_le_prod_pow_mul_abs_eval`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Integer279.clearing' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 54,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Integer279.separatedNorm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 55,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

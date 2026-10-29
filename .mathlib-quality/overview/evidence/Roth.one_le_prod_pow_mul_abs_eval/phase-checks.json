@@ -1,0 +1,143 @@
+{
+  "modern9": [
+    [
+      "Typeclasses",
+      "yes",
+      "Replace fixed real realization by Field K, LinearOrder K, IsStrictOrderedRing K; verified generic01.",
+      "Same integer estimate applies over ℚ and other ordered fields."
+    ],
+    [
+      "Filters/nets",
+      "no",
+      "Finite algebraic sum/product identity, no convergence.",
+      "No topology introduced."
+    ],
+    [
+      "Universal property",
+      "partial",
+      "Verified commutative-semiring/ringhom clearing with denominator inverse equations; localization explains interface but does not supply separation.",
+      "clearing03 separates image membership from archimedean bound."
+    ],
+    [
+      "Bundled substructure",
+      "partial",
+      "Image/range membership or ∃N equality can express clearing; no bespoke class required.",
+      "New clearing proof can be reused without order."
+    ],
+    [
+      "Hierarchy weakening",
+      "yes",
+      "Real to linearly ordered field mechanically; field division and finite commutative products genuinely used.",
+      "Univariate existing ordered-field API gives the correct hierarchy target."
+    ],
+    [
+      "Higher categories",
+      "no",
+      "No categorical coherence content.",
+      "None."
+    ],
+    [
+      "Concrete index",
+      "yes",
+      "Fin m to arbitrary Fintype ι, including empty types.",
+      "No coordinate-renaming/equivalence transport required by callers."
+    ],
+    [
+      "Concrete-via-abstract diagnostic",
+      "yes",
+      "Fin m occurs zero times in proof body; real annotations throughout serve only casts, field arithmetic and order. Integer coefficients remain semantic: Int.one_le_abs supplies discrete separation.",
+      "Generic field proof and explicit hsep norm proof compile; not mere identifier-count speculation."
+    ],
+    [
+      "False-generalization guard",
+      "PASS",
+      "Signed denominators require absolute product; CharZero alone insufficient for norm separation; q=0 and missing hne/degree rejected by compiled counterexamples.",
+      "Exact original signature recovered, including Fin0."
+    ]
+  ],
+  "proofstrategy5": [
+    [
+      "Topology epsilon/delta",
+      "n/a",
+      "No topology"
+    ],
+    [
+      "Point-free algebra",
+      "partial",
+      "Separate integer-image equality (clearing) from arithmetic lower bound; localization alone misses sharp exponent product."
+    ],
+    [
+      "Analysis sequences",
+      "n/a",
+      "No limits"
+    ],
+    [
+      "Universal-property construction",
+      "n/a",
+      "Witness integer numerator is computational finite-sum identity, not a new object requiring category machinery."
+    ],
+    [
+      "Missing helpers",
+      "yes",
+      "Verified new clearing_semiring helper: arbitrary CommSemiring source/target and denominator inverse equations, eval₂ avoids injectivity. Separate integer lower bound."
+    ]
+  ],
+  "statement_shape3": [
+    [
+      "Normal form",
+      "RESTATE",
+      "eval₂ Int.castRingHom avoids map+eval transport; algebraic ∃N identity plus lower-bound corollary. Product-times-absolute form directly matches caller trans_lt; reciprocal form equivalent with positive denominator product."
+    ],
+    [
+      "Syntactic generality",
+      "RESTATE",
+      "Use arbitrary Fintype variables and ordered target field. signed q!=0 with absolute product, plus positive-natural convenience wrapper. shape02 verifies eval₂ bridge."
+    ],
+    [
+      "Superfluous arguments",
+      "NONE mathematically; representation restrictions",
+      "Q,r,h,q determine actual polynomial and points. hQ,hq,hne each needed by counterexamples; no NeZero m, coprimality, algebraicity, irrationality, or positivity of r assumed. Fin/Real restrictions can be widened."
+    ]
+  ],
+  "infrastructure_risks": [
+    {
+      "risk": "Typeclass diamond",
+      "status": "n/a",
+      "reason": "Theorem; introduces no definitional equality, coercion or instance search path."
+    },
+    {
+      "risk": "Reducibility leak",
+      "status": "n/a",
+      "reason": "Theorem; introduces no definitional equality, coercion or instance search path."
+    },
+    {
+      "risk": "Non-canonical unfolding",
+      "status": "n/a",
+      "reason": "Theorem; introduces no definitional equality, coercion or instance search path."
+    },
+    {
+      "risk": "Instance priority collision",
+      "status": "n/a",
+      "reason": "Theorem; introduces no definitional equality, coercion or instance search path."
+    },
+    {
+      "risk": "Universe-polymorphism issues",
+      "status": "n/a",
+      "reason": "Theorem; introduces no definitional equality, coercion or instance search path."
+    },
+    {
+      "risk": "Coercion ambiguity",
+      "status": "n/a",
+      "reason": "Theorem; introduces no definitional equality, coercion or instance search path."
+    }
+  ],
+  "size": {
+    "verdict": "SMALL",
+    "reason": "Arithmetic helper; not a new structure, named theorem, or module main result."
+  },
+  "definition_one_line": "n/a: theorem",
+  "generality": "STRICTLY NARROWER; mechanical arbitrary Fintype and ordered-field proof verified",
+  "strategy_verdict": "REFACTOR-RECOMMENDED: expose algebraic clearing equality, derive lower bound using integer separation",
+  "statement_shape_verdict": "RESTATE-BEFORE-SHIP",
+  "composition": "NOT-COMPOSABLE from <=3 existing calls"
+}

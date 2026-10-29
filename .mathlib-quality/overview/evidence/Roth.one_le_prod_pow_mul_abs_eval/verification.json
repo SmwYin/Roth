@@ -1,0 +1,222 @@
+{
+  "declaration": "Roth.one_le_prod_pow_mul_abs_eval",
+  "canonical_index": 279,
+  "completed": true,
+  "unresolved": [],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "source_sha256": "ce9ca14afd9cd2ca6071d75f9bf9cea1cc1935f44d1636e6eb9bd2fe87134a3a",
+      "elapsed_ms": 4320,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "INT279_FULL_TYPE:",
+        "INT279_AUDIT: requested=293; unique=293",
+        "INT279_AUDIT_PRESENT: present=293; values=293",
+        "'Integer279Original.replay' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "generic",
+      "source": "generic-executed.lean.txt",
+      "receipt": "generic01-receipt.json",
+      "format": "run_code",
+      "source_sha256": "44bff226deae7e72cfd1e0dcfb632ac7e26f8c149bd110873508802d3633c51e",
+      "elapsed_ms": 87787,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem generic {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℕ} (hq : ∀ j, 0 < q j)\n    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :\n    1 ≤ (∏ j, (q j : K) ^ r j) * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)| := by\n  have hqR : ∀ j, (0 : K) < q j := fun j ↦ by exact_mod_cast hq j\n  have hP : (0 : K) < ∏ j, (q j : K) ^ r j := Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _\n  set N : ℤ := ∑ d ∈ Q.support, Q.coeff d * ∏ j, h j ^ d j * (q j : ℤ) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (∏ j, (q j : K) ^ r j) *\n      eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd ↦ ?_\n    rw [coeff_map, mul_left_comm, ← Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ ↦ ?_\n    rw [← pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ (hqR j).ne'), mul_comm]\n  have h1 : (1 : K) ≤ |(N : K)| := by\n    rw [← Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm ▸ mul_ne_zero hP.ne' hne))\n  rwa [hNeq, abs_mul, abs_of_pos hP] at h1\n\n#print axioms generic\nend Integer279\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Integer279.generic' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "signed",
+      "source": "signed-executed.lean.txt",
+      "receipt": "signed01-receipt.json",
+      "format": "run_code",
+      "source_sha256": "74158f1a2ac636f6dd7a184e932b72bb68061456f08b66d3449b00c41eb5dda4",
+      "elapsed_ms": 1274,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem signed {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℤ} (hq : ∀ j, q j ≠ 0)\n    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :\n    1 ≤ |∏ j, (q j : K) ^ r j| * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)| := by\n  have hqR : ∀ j, (q j : K) ≠ 0 := fun j ↦ by exact_mod_cast hq j\n  have hP : (∏ j, (q j : K) ^ r j) ≠ 0 :=\n    Finset.prod_ne_zero_iff.mpr fun j _ ↦ pow_ne_zero _ (hqR j)\n  set N : ℤ := ∑ d ∈ Q.support, Q.coeff d * ∏ j, h j ^ d j * (q j : ℤ) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (∏ j, (q j : K) ^ r j) *\n      eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd ↦ ?_\n    rw [coeff_map, mul_left_comm, ← Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ ↦ ?_\n    rw [← pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ (hqR j)), mul_comm]\n  have h1 : (1 : K) ≤ |(N : K)| := by\n    rw [← Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm ▸ mul_ne_zero hP hne))\n  rwa [hNeq, abs_mul] at h1\n\n#print axioms signed\nend Integer279\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Integer279.signed' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "recovery",
+      "source": "recovery-executed.lean.txt",
+      "receipt": "recovery01-receipt.json",
+      "format": "run_code",
+      "source_sha256": "b91b35d97285cb567a57a9990dbd0b3762d41c6fa9e63bf2f4f407080e15faa8",
+      "elapsed_ms": 784,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem generic {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℕ} (hq : ∀ j, 0 < q j)\n    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :\n    1 ≤ (∏ j, (q j : K) ^ r j) * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)| := by\n  have hqR : ∀ j, (0 : K) < q j := fun j ↦ by exact_mod_cast hq j\n  have hP : (0 : K) < ∏ j, (q j : K) ^ r j := Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _\n  set N : ℤ := ∑ d ∈ Q.support, Q.coeff d * ∏ j, h j ^ d j * (q j : ℤ) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (∏ j, (q j : K) ^ r j) *\n      eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd ↦ ?_\n    rw [coeff_map, mul_left_comm, ← Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ ↦ ?_\n    rw [← pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ (hqR j).ne'), mul_comm]\n  have h1 : (1 : K) ≤ |(N : K)| := by\n    rw [← Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm ▸ mul_ne_zero hP.ne' hne))\n  rwa [hNeq, abs_mul, abs_of_pos hP] at h1\n\ntheorem recovery {m : ℕ} (Q : MvPolynomial (Fin m) ℤ) {r : Fin m → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : Fin m → ℤ) {q : Fin m → ℕ} (hq : ∀ j, 0 < q j)\n    (hne : eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0) :\n    1 ≤ (∏ j, (q j : ℝ) ^ r j) * |eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q)| := by\n  exact Integer279.generic Q hQ h hq hne\n\n#print axioms recovery\nend Integer279\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Integer279.recovery' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "edges",
+      "source": "edges-executed.lean.txt",
+      "receipt": "edges01-receipt.json",
+      "format": "run_code",
+      "source_sha256": "4fd231e8dccb8c8f205093a0aa5447a33d126fea200d54b9dfc9724ae7b32fc2",
+      "elapsed_ms": 467,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem generic {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℕ} (hq : ∀ j, 0 < q j)\n    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :\n    1 ≤ (∏ j, (q j : K) ^ r j) * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)| := by\n  have hqR : ∀ j, (0 : K) < q j := fun j ↦ by exact_mod_cast hq j\n  have hP : (0 : K) < ∏ j, (q j : K) ^ r j := Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _\n  set N : ℤ := ∑ d ∈ Q.support, Q.coeff d * ∏ j, h j ^ d j * (q j : ℤ) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (∏ j, (q j : K) ^ r j) *\n      eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd ↦ ?_\n    rw [coeff_map, mul_left_comm, ← Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ ↦ ?_\n    rw [← pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ (hqR j).ne'), mul_comm]\n  have h1 : (1 : K) ≤ |(N : K)| := by\n    rw [← Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm ▸ mul_ne_zero hP.ne' hne))\n  rwa [hNeq, abs_mul, abs_of_pos hP] at h1\n\n-- A zero denominator invalidates the original conclusion even for Q=1.\nexample : eval (fun _ : Fin 1 ↦ (0 : ℝ) / 0)\n    (map (Int.castRingHom ℝ) (1 : MvPolynomial (Fin 1) ℤ)) ≠ 0 ∧\n    ¬ (1 ≤ (∏ _j : Fin 1, (0 : ℝ) ^ (1 : ℕ)) *\n      |eval (fun _ : Fin 1 ↦ (0 : ℝ) / 0)\n        (map (Int.castRingHom ℝ) (1 : MvPolynomial (Fin 1) ℤ))|) := by\n  norm_num\n-- Nonvanishing cannot be dropped.\nexample : ¬ (1 ≤ (∏ _j : Fin 1, (1 : ℝ) ^ (1 : ℕ)) *\n    |eval (fun _ : Fin 1 ↦ (0 : ℝ))\n      (map (Int.castRingHom ℝ) (0 : MvPolynomial (Fin 1) ℤ))|) := by\n  norm_num\n-- Degree bounds cannot be dropped: X squared evaluated at 1/2 with r=1.\nexample : eval (fun _ : Fin 1 ↦ (1 : ℝ) / 2)\n    (map (Int.castRingHom ℝ) ((X 0)^2 : MvPolynomial (Fin 1) ℤ)) ≠ 0 ∧\n    ¬ (1 ≤ (∏ _j : Fin 1, (2 : ℝ) ^ (1 : ℕ)) *\n      |eval (fun _ : Fin 1 ↦ (1 : ℝ) / 2)\n        (map (Int.castRingHom ℝ) ((X 0)^2 : MvPolynomial (Fin 1) ℤ))|) := by\n  norm_num\n-- Empty-variable recovery needs no nonemptiness assumption.\nexample (Q : MvPolynomial (Fin 0) ℤ) {r : Fin 0 → ℕ}\n    (h : Fin 0 → ℤ) {q : Fin 0 → ℕ}\n    (hne : eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0) :\n    1 ≤ (∏ j, (q j : ℝ) ^ r j) *\n      |eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q)| :=\n  generic Q (fun j ↦ Fin.elim0 j) h (fun j ↦ Fin.elim0 j) hne\n-- Rational coefficients invalidate the separated integer image bound.\nexample : ¬ ((1 : ℝ) ≤ |((1 / 2 : ℚ) : ℝ)|) := by norm_num\n\nend Integer279\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [],
+      "axiom_print_required": false
+    },
+    {
+      "label": "clearing",
+      "source": "clearing3-executed.lean.txt",
+      "receipt": "clearing03-receipt.json",
+      "format": "run_code",
+      "source_sha256": "c71acb5c53fef0710af826a0ea904e006b89effa10773dc3bd812eb62aff804c",
+      "elapsed_ms": 1141,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem clearing {ι K : Type*} [Fintype ι] [Field K] [CharZero K]\n    (Q : MvPolynomial ι ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℤ} (hq : ∀ j, q j ≠ 0)\n    : ∃ N : ℤ, (N : K) = (∏ j, (q j : K) ^ r j) *\n      eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n  have hqR : ∀ j, (q j : K) ≠ 0 := fun j ↦ by exact_mod_cast hq j\n  set N : ℤ := ∑ d ∈ Q.support, Q.coeff d * ∏ j, h j ^ d j * (q j : ℤ) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (∏ j, (q j : K) ^ r j) *\n      eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd ↦ ?_\n    rw [coeff_map, mul_left_comm, ← Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ ↦ ?_\n    rw [← pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ (hqR j)), mul_comm]\n  exact ⟨N, hNeq⟩\n\ntheorem separatedNorm {ι K : Type*} [Fintype ι] [NormedField K] [CharZero K]\n    (Q : MvPolynomial ι ℤ) {r : ι → ℕ} (hQ : ∀ j, degreeOf j Q ≤ r j)\n    (h : ι → ℤ) {q : ι → ℤ} (hq : ∀ j, q j ≠ 0)\n    (hsep : ∀ z : ℤ, z ≠ 0 → 1 ≤ ‖(z : K)‖)\n    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :\n    1 ≤ ‖∏ j, (q j : K) ^ r j‖ *\n      ‖eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)‖ := by\n  obtain ⟨N, hN⟩ := clearing (K := K) Q hQ h hq\n  have hP : (∏ j, (q j : K) ^ r j) ≠ 0 :=\n    Finset.prod_ne_zero_iff.mpr fun j _ ↦ pow_ne_zero _ (Int.cast_ne_zero.mpr (hq j))\n  have hNz : N ≠ 0 := Int.cast_ne_zero.mp (hN.symm ▸ mul_ne_zero hP hne)\n  simpa only [hN, norm_mul] using hsep N hNz\n#print axioms clearing\n#print axioms separatedNorm\n\nend Integer279\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Integer279.clearing' depends on axioms:",
+        "'Integer279.separatedNorm' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "composition",
+      "source": "composition3-executed.lean.txt",
+      "receipt": "composition03-receipt.json",
+      "format": "run_code",
+      "source_sha256": "da8daba69c3256bcf3195dc14dbf2a405771b987c4f53cca4e37029d810f7c23",
+      "elapsed_ms": 1237,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\n#check one_le_pow_mul_abs_eval_div\n#check denomsClearable_of_natDegree_le\n#check denomsClearable_natDegree\n#check Int.one_le_abs\n#check MvPolynomial.eval_eq'\n#check MvPolynomial.monomial_le_degreeOf\n#check MvPolynomial.isLocalization\ntheorem generic {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℕ} (hq : ∀ j, 0 < q j)\n    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :\n    1 ≤ (∏ j, (q j : K) ^ r j) * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)| := by\n  have hqR : ∀ j, (0 : K) < q j := fun j ↦ by exact_mod_cast hq j\n  have hP : (0 : K) < ∏ j, (q j : K) ^ r j := Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _\n  set N : ℤ := ∑ d ∈ Q.support, Q.coeff d * ∏ j, h j ^ d j * (q j : ℤ) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (∏ j, (q j : K) ^ r j) *\n      eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd ↦ ?_\n    rw [coeff_map, mul_left_comm, ← Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ ↦ ?_\n    rw [← pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ (hqR j).ne'), mul_comm]\n  have h1 : (1 : K) ≤ |(N : K)| := by\n    rw [← Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm ▸ mul_ne_zero hP.ne' hne))\n  rwa [hNeq, abs_mul, abs_of_pos hP] at h1\n\ntheorem compositionProbe {m : ℕ} (Q : MvPolynomial (Fin m) ℤ) {r : Fin m → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : Fin m → ℤ) {q : Fin m → ℕ} (hq : ∀ j, 0 < q j)\n    (hne : eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0) :\n    1 ≤ (∏ j, (q j : ℝ) ^ r j) * |eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q)| := by\n  fail_if_success\n    exact one_le_pow_mul_abs_eval_div (K := ℝ) (b := 1) zero_lt_one hne\n  fail_if_success\n    exact Int.one_le_abs hne\n  fail_if_success\n    solve | simp only [eval_map]\n  exact generic Q hQ h hq hne\n\n#print axioms compositionProbe\nend Integer279\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Integer279.compositionProbe' depends on axioms:",
+        "one_le_pow_mul_abs_eval_div."
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "callers",
+      "source": "callers3-executed.lean.txt",
+      "receipt": "callers03-receipt.json",
+      "format": "disk",
+      "source_sha256": "c979dbc3928d9015788b9db1e04d8f97a6b623df79323dfc990e01c4bf2ae8d7",
+      "elapsed_ms": 2670,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "'Integer279Full.roth_rat' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "shape",
+      "source": "shape2-executed.lean.txt",
+      "receipt": "shape02-receipt.json",
+      "format": "run_code",
+      "source_sha256": "1684ad8e90803ae3b7908c177d6cb83bd673b70114bb0843f37e539627d3a57e",
+      "elapsed_ms": 1060,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem signed {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℤ} (hq : ∀ j, q j ≠ 0)\n    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :\n    1 ≤ |∏ j, (q j : K) ^ r j| * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)| := by\n  have hqR : ∀ j, (q j : K) ≠ 0 := fun j ↦ by exact_mod_cast hq j\n  have hP : (∏ j, (q j : K) ^ r j) ≠ 0 :=\n    Finset.prod_ne_zero_iff.mpr fun j _ ↦ pow_ne_zero _ (hqR j)\n  set N : ℤ := ∑ d ∈ Q.support, Q.coeff d * ∏ j, h j ^ d j * (q j : ℤ) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (∏ j, (q j : K) ^ r j) *\n      eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd ↦ ?_\n    rw [coeff_map, mul_left_comm, ← Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ ↦ ?_\n    rw [← pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ (hqR j)), mul_comm]\n  have h1 : (1 : K) ≤ |(N : K)| := by\n    rw [← Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm ▸ mul_ne_zero hP hne))\n  rwa [hNeq, abs_mul] at h1\n\ntheorem eval₂Form {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℤ} (hq : ∀ j, q j ≠ 0)\n    (hne : eval₂ (Int.castRingHom K) (fun j ↦ (h j : K) / q j) Q ≠ 0) :\n    1 ≤ |∏ j, (q j : K) ^ r j| * |eval₂ (Int.castRingHom K) (fun j ↦ (h j : K) / q j) Q| := by\n  have hn : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0 := by\n    simpa only [eval_map] using hne\n  simpa only [eval_map] using signed (K := K) Q hQ h hq hn\n\n#print axioms eval₂Form\nend Integer279\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Integer279.eval₂Form' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    },
+    {
+      "label": "semiring-clearing",
+      "source": "generic-clearing-executed.lean.txt",
+      "receipt": "generic-clearing01-receipt.json",
+      "format": "run_code",
+      "source_sha256": "b28e032d799c4176d71504af20893303223e44bbed0350dd6409540cd9afee13",
+      "elapsed_ms": 1925,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem clearing_semiring {ι R S : Type*} [Fintype ι] [CommSemiring R] [CommSemiring S]\n    (f : R →+* S) (Q : MvPolynomial ι R) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (a b : ι → R) (bi : ι → S)\n    (hbi : ∀ j, bi j * f (b j) = 1) :\n    ∃ N : R, f N = (∏ j, f (b j) ^ r j) * eval₂ f (fun j ↦ f (a j) * bi j) Q := by\n  classical\n  refine ⟨∑ d ∈ Q.support, Q.coeff d * ∏ j, a j ^ d j * b j ^ (r j - d j), ?_⟩\n  rw [eval₂_eq', Finset.mul_sum]\n  simp only [map_sum, map_mul, map_prod, map_pow]\n  refine Finset.sum_congr rfl fun d hd ↦ ?_\n  rw [mul_left_comm, ← Finset.prod_mul_distrib]\n  congr 1\n  refine Finset.prod_congr rfl fun j _ ↦ ?_\n  have hdj := (monomial_le_degreeOf j hd).trans (hQ j)\n  rw [← tsub_add_cancel_of_le hdj]\n  conv_lhs => rw [← mul_one (f (a j)), ← hbi j]\n  simp [mul_assoc, mul_comm, mul_left_comm, pow_add, mul_pow]\n\n#print axioms clearing_semiring\nend Integer279\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Integer279.clearing_semiring' depends on axioms:"
+      ],
+      "axiom_print_required": true
+    }
+  ],
+  "other_executions": [
+    {
+      "source": "clearing2-executed.lean.txt",
+      "receipt": "clearing02-receipt.json",
+      "source_sha256": "10cf153e1cf468f7fc4cdb620c79af910fabee761e0a89b42a32a0c05e85c02f",
+      "reason": "Implicit field metavariable in helper application; recovered sorryAx, rejected.",
+      "elapsed_ms": 1218
+    },
+    {
+      "source": "composition2-executed.lean.txt",
+      "receipt": "composition02-receipt.json",
+      "source_sha256": "6e713c5d7a6b98dd3041c19fe66331d6781b8fa70ce9d72d7c3c69a2ec5a1678",
+      "reason": "Unreachable nested positivity tactic warning, rejected.",
+      "elapsed_ms": 1055
+    },
+    {
+      "source": "callers2-executed.lean.txt",
+      "receipt": "callers02-receipt.json",
+      "source_sha256": "d3345063f8446b4ceda0d749ffaac1ec955f05af7cd9b99c9109bdf008102dcc",
+      "reason": "Orphan target docstring created empty-line style warning, rejected.",
+      "elapsed_ms": 3409
+    },
+    {
+      "source": "shape-executed.lean.txt",
+      "receipt": "shape01-receipt.json",
+      "source_sha256": "dc0efdde475f3b6703d43ea1b65266e1875089fa1f3e51cf1aa8c0633019f7b2",
+      "reason": "eval₂ hne supplied before eval_map normalization; recovered sorryAx, rejected.",
+      "elapsed_ms": 1661
+    }
+  ],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "attempt_accounting": {
+    "native_executions": 14,
+    "accepted": 10,
+    "rejected": 4,
+    "preparation_only": {
+      "composition01": "superseded unexecuted preparation; third probe counted tactic progress, corrected02 requires solve closure",
+      "clearing01": "Root preexecution width guard rejected; no native execution or receipt. Wrapped02 source submitted.",
+      "callers01": "Root preexecution width guard rejected111charline, no native invocation. Wrapped02 source submitted."
+    }
+  },
+  "root_exclusive_executor": true,
+  "full_literal_build": "not due279; accepted unchanged baseline2467jobs and previous228 boundary; next due289",
+  "native_ownership": "root throughout, worker never invoked native/projectLSP or wrote persistent scratch",
+  "release": "worker has no further native requests; ownership remains root"
+}

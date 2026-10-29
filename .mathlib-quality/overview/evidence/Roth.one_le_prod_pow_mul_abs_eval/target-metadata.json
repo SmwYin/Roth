@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Main.lean",
+  "line": 324,
+  "name": "Roth.one_le_prod_pow_mul_abs_eval",
+  "short": "one_le_prod_pow_mul_abs_eval",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 344,
+  "source": "theorem one_le_prod_pow_mul_abs_eval {m : \u2115} (Q : MvPolynomial (Fin m) \u2124) {r : Fin m \u2192 \u2115}\n    (hQ : \u2200 j, degreeOf j Q \u2264 r j) (h : Fin m \u2192 \u2124) {q : Fin m \u2192 \u2115} (hq : \u2200 j, 0 < q j)\n    (hne : eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q) \u2260 0) :\n    1 \u2264 (\u220f j, (q j : \u211d) ^ r j) * |eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q)| := by\n  have hqR : \u2200 j, (0 : \u211d) < q j := fun j \u21a6 by exact_mod_cast hq j\n  have hP : (0 : \u211d) < \u220f j, (q j : \u211d) ^ r j := Finset.prod_pos fun j _ \u21a6 pow_pos (hqR j) _\n  set N : \u2124 := \u2211 d \u2208 Q.support, Q.coeff d * \u220f j, h j ^ d j * (q j : \u2124) ^ (r j - d j) with hN\n  have hNeq : (N : \u211d) = (\u220f j, (q j : \u211d) ^ r j) *\n      eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd \u21a6 ?_\n    rw [coeff_map, mul_left_comm, \u2190 Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ \u21a6 ?_\n    rw [\u2190 pow_sub_mul_pow (q j : \u211d) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel\u2080 _ (pow_ne_zero _ (hqR j).ne'), mul_comm]\n  have h1 : (1 : \u211d) \u2264 |(N : \u211d)| := by\n    rw [\u2190 Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm \u25b8 mul_ne_zero hP.ne' hne))\n  rwa [hNeq, abs_mul, abs_of_pos hP] at h1",
+  "signature": "theorem one_le_prod_pow_mul_abs_eval {m : \u2115} (Q : MvPolynomial (Fin m) \u2124) {r : Fin m \u2192 \u2115}\n    (hQ : \u2200 j, degreeOf j Q \u2264 r j) (h : Fin m \u2192 \u2124) {q : Fin m \u2192 \u2115} (hq : \u2200 j, 0 < q j)\n    (hne : eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q) \u2260 0) :\n    1 \u2264 (\u220f j, (q j : \u211d) ^ r j) * |eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q)|",
+  "body": "by\n  have hqR : \u2200 j, (0 : \u211d) < q j := fun j \u21a6 by exact_mod_cast hq j\n  have hP : (0 : \u211d) < \u220f j, (q j : \u211d) ^ r j := Finset.prod_pos fun j _ \u21a6 pow_pos (hqR j) _\n  set N : \u2124 := \u2211 d \u2208 Q.support, Q.coeff d * \u220f j, h j ^ d j * (q j : \u2124) ^ (r j - d j) with hN\n  have hNeq : (N : \u211d) = (\u220f j, (q j : \u211d) ^ r j) *\n      eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd \u21a6 ?_\n    rw [coeff_map, mul_left_comm, \u2190 Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ \u21a6 ?_\n    rw [\u2190 pow_sub_mul_pow (q j : \u211d) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel\u2080 _ (pow_ne_zero _ (hqR j).ne'), mul_comm]\n  have h1 : (1 : \u211d) \u2264 |(N : \u211d)| := by\n    rw [\u2190 Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm \u25b8 mul_ne_zero hP.ne' hne))\n  rwa [hNeq, abs_mul, abs_of_pos hP] at h1",
+  "proof_lines": 18,
+  "sha256": "1f12bced6ff118685ba29e7662abb3bdae4257f60e2818ca50741d0caf71cd1a",
+  "what": "A nonzero rational-point value of an integral polynomial becomes at least one in absolute value after clearing denominators.",
+  "how": "Construct the integral coefficient sum explicitly, compare it with denominator product times evaluation using eval_eq', then apply Int.one_le_abs.",
+  "hypotheses": "Integral polynomial with coordinate degree bounds, positive denominators and nonzero evaluated value.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.one_lt_roth_eval_bound_aux",
+      "file": "Roth/Main.lean",
+      "line": 453
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. All section/typeclass binders are explicit in each source signature.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.one_lt_roth_eval_bound_aux"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 348,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.one_lt_roth_eval_bound_aux",
+      "file": "Roth/Main.lean",
+      "line": 453
+    }
+  ]
+}

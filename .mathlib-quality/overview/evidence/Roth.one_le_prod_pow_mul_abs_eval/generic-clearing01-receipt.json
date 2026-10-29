@@ -1,0 +1,53 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem clearing_semiring {\u03b9 R S : Type*} [Fintype \u03b9] [CommSemiring R] [CommSemiring S]\n    (f : R \u2192+* S) (Q : MvPolynomial \u03b9 R) {r : \u03b9 \u2192 \u2115}\n    (hQ : \u2200 j, degreeOf j Q \u2264 r j) (a b : \u03b9 \u2192 R) (bi : \u03b9 \u2192 S)\n    (hbi : \u2200 j, bi j * f (b j) = 1) :\n    \u2203 N : R, f N = (\u220f j, f (b j) ^ r j) * eval\u2082 f (fun j \u21a6 f (a j) * bi j) Q := by\n  classical\n  refine \u27e8\u2211 d \u2208 Q.support, Q.coeff d * \u220f j, a j ^ d j * b j ^ (r j - d j), ?_\u27e9\n  rw [eval\u2082_eq', Finset.mul_sum]\n  simp only [map_sum, map_mul, map_prod, map_pow]\n  refine Finset.sum_congr rfl fun d hd \u21a6 ?_\n  rw [mul_left_comm, \u2190 Finset.prod_mul_distrib]\n  congr 1\n  refine Finset.prod_congr rfl fun j _ \u21a6 ?_\n  have hdj := (monomial_le_degreeOf j hd).trans (hQ j)\n  rw [\u2190 tsub_add_cancel_of_le hdj]\n  conv_lhs => rw [\u2190 mul_one (f (a j)), \u2190 hbi j]\n  simp [mul_assoc, mul_comm, mul_left_comm, pow_add, mul_pow]\n\n#print axioms clearing_semiring\nend Integer279\n"
+  },
+  "elapsed_ms": 1925,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "generic-clearing01",
+      "operation": "run_code",
+      "source": "generic-clearing-executed.lean.txt",
+      "source_sha256": "b28e032d799c4176d71504af20893303223e44bbed0350dd6409540cd9afee13",
+      "receipt": "generic-clearing01-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.one_le_prod_pow_mul_abs_eval/root-requests/generic-clearing01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.one_le_prod_pow_mul_abs_eval/generic-clearing-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.one_le_prod_pow_mul_abs_eval`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Integer279.clearing_semiring' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.one_le_prod_pow_mul_abs_eval`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Integer279.clearing_semiring' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

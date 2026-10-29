@@ -1,0 +1,83 @@
+{
+  "request": {
+    "query": "Nonzero image integer absolute value at least one in ordered field polynomial evaluation",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"one_le_pow_mul_abs_eval_div\",\n      \"informal_name\": \"Lower Bound for Polynomial Evaluation at Rational Points\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial ℤ} {a b : ℤ},\\n  0 < b →\\n    Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f) ≠ 0 →\\n      1 ≤ ↑b ^ f.natDegree * |Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f)|\",\n      \"informal_description\": \"For any linearly ordered field $ K $ with strict ordered ring structure, given a non-zero polynomial $ f \\\\in \\\\mathbb{Z}[X] $, integers $ a, b $ with $ b > 0 $, and assuming $ f\\\\left(\\\\frac{a}{b}\\\\right) \\\\neq 0 $, it holds that $ 1 \\\\leq b^{\\\\deg(f)} \\\\cdot \\\\left| f\\\\left(\\\\frac{a}{b}\\\\right) \\\\right| $, where $ \\\\deg(f) $ denotes the natural degree of $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.DenomsClearable\"\n    },\n    {\n      \"formal_name\": \"Polynomial.Chebyshev.one_lt_abs_eval_T_real\",\n      \"informal_name\": \"Absolute Value of Chebyshev Polynomial $ T_n(x) $ Exceeds 1 for $ |x| > 1 $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : ℤ}, n ≠ 0 → ∀ {x : ℝ}, 1 < |x| → 1 < |Polynomial.eval x (Polynomial.Chebyshev.T ℝ n)|\",\n      \"informal_description\": \"For any non-zero integer $ n $ and real number $ x $ with $ |x| > 1 $, the absolute value of the Chebyshev polynomial $ T_n(x) $ satisfies $ |T_n(x)| > 1 $.\",\n      \"path\": \"Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.RootsExtrema\"\n    },\n    {\n      \"formal_name\": \"Polynomial.Chebyshev.one_le_abs_eval_T_real\",\n      \"informal_name\": \"Chebyshev Polynomial Evaluation Lower Bound for |x| ≥ 1\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℤ) {x : ℝ}, 1 ≤ |x| → 1 ≤ |Polynomial.eval x (Polynomial.Chebyshev.T ℝ n)|\",\n      \"informal_description\": \"For any integer $n$ and real number $x$ with $|x| \\\\geq 1$, the absolute value of the Chebyshev polynomial $T_n$ evaluated at $x$ satisfies $1 \\\\leq |T_n(x)|$.\",\n      \"path\": \"Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.RootsExtrema\"\n    },\n    {\n      \"formal_name\": \"Polynomial.tendsto_abv_aeval_atTop\",\n      \"informal_name\": \"Absolute Value of Polynomial Evaluation Tends to Infinity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} {k : Type u_3} {α : Type u_4} [inst : CommSemiring R] [inst_1 : Ring A]\\n  [inst_2 : Algebra R A] [inst_3 : Field k] [inst_4 : LinearOrder k] [IsStrictOrderedRing k] (abv : A → k)\\n  [IsAbsoluteValue abv] (p : Polynomial R),\\n  0 < p.degree →\\n    (algebraMap R A) p.leadingCoeff ≠ 0 →\\n      ∀ {l : Filter α} {z : α → A},\\n        Filter.Tendsto (abv ∘ z) l Filter.atTop →\\n          Filter.Tendsto (fun x => abv ((Polynomial.aeval (z x)) p)) l Filter.atTop\",\n      \"informal_description\": \"For a polynomial $ p $ with positive degree and non-zero leading coefficient in $ R[X] $, if the absolute value of $ z(x) $ tends to infinity along a filter $ l $, then the absolute value of $ p $ evaluated at $ z(x) $ also tends to infinity along $ l $.\",\n      \"path\": \"Mathlib.Topology.Algebra.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Dioph.abs_poly_dioph\",\n      \"informal_name\": \"Absolute Value of Integer Polynomial is Diophantine\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} (p : Poly α), Dioph.DiophFn fun v => (p v).natAbs\",\n      \"informal_description\": \"For any polynomial $ p $ with integer coefficients in variables indexed by $ \\\\alpha $, the function that maps each valuation $ v : \\\\alpha \\\\to \\\\mathbb{N} $ to the absolute value of $ p(v) $ is a Diophantine function. This means there exists a polynomial equation in variables indexed by $ \\\\alpha \\\\oplus \\\\beta $ with integer coefficients such that for any $ v : \\\\alpha \\\\to \\\\mathbb{N} $, there exists $ t : \\\\beta \\\\to \\\\mathbb{N} $ making the equation hold if and only if $ |p(v)| $ equals the extended valuation at $ \\\\text{none} $.\",\n      \"path\": \"Mathlib.NumberTheory.Dioph\"\n    },\n    {\n      \"formal_name\": \"Polynomial.tendsto_abv_eval₂_atTop\",\n      \"informal_name\": \"Polynomial Evaluation Tends to Infinity with Input Absolute Value\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} {k : Type u_3} {α : Type u_4} [inst : Semiring R] [inst_1 : Ring S] [inst_2 : Field k]\\n  [inst_3 : LinearOrder k] [IsStrictOrderedRing k] (f : R →+* S) (abv : S → k) [IsAbsoluteValue abv] (p : Polynomial R),\\n  0 < p.degree →\\n    f p.leadingCoeff ≠ 0 →\\n      ∀ {l : Filter α} {z : α → S},\\n        Filter.Tendsto (abv ∘ z) l Filter.atTop →\\n          Filter.Tendsto (fun x => abv (Polynomial.eval₂ f (z x) p)) l Filter.atTop\",\n      \"informal_description\": \"For a polynomial $ p $ with positive degree and non-zero leading coefficient, if the absolute value of a sequence $ z $ tends to infinity, then the absolute value of $ p $ evaluated at $ z $ also tends to infinity.\",\n      \"path\": \"Mathlib.Topology.Algebra.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Polynomial.one_le_mahlerMeasure_of_ne_zero\",\n      \"informal_name\": \"Mahler Measure of Nonzero Integer Polynomial is at Least One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {p : Polynomial ℤ}, p ≠ 0 → 1 ≤ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure\",\n      \"informal_description\": \"For any nonzero polynomial $ p \\\\in \\\\mathbb{Z}[X] $, the Mahler measure of the complex polynomial obtained by mapping $ p $'s coefficients to $ \\\\mathbb{C} $ via the canonical ring homomorphism is at least 1.\",\n      \"path\": \"Mathlib.NumberTheory.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.abs_isBoundedUnder_iff\",\n      \"informal_name\": \"Boundedness of Polynomial Absolute Value at Infinity iff Constant Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_1} [inst : NormedField 𝕜] [inst_1 : LinearOrder 𝕜] [IsStrictOrderedRing 𝕜] (P : Polynomial 𝕜)\\n  [OrderTopology 𝕜],\\n  (Filter.IsBoundedUnder (fun x1 x2 => x1 ≤ x2) Filter.atTop fun x => |Polynomial.eval x P|) ↔ P.degree ≤ 0\",\n      \"informal_description\": \"The absolute value of the polynomial $ P $ evaluated at $ x $ is bounded as $ x $ approaches infinity (in the sense of the filter at top) if and only if the degree of $ P $ is less than or equal to zero, i.e., $ P $ is a constant polynomial.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.Basic\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "one_le_pow_mul_abs_eval_div",
+          "informal_name": "Lower Bound for Polynomial Evaluation at Rational Points",
+          "kind": "theorem",
+          "type": "∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial ℤ} {a b : ℤ},\n  0 < b →\n    Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f) ≠ 0 →\n      1 ≤ ↑b ^ f.natDegree * |Polynomial.eval (↑a / ↑b) (Polynomial.map (algebraMap ℤ K) f)|",
+          "informal_description": "For any linearly ordered field $ K $ with strict ordered ring structure, given a non-zero polynomial $ f \\in \\mathbb{Z}[X] $, integers $ a, b $ with $ b > 0 $, and assuming $ f\\left(\\frac{a}{b}\\right) \\neq 0 $, it holds that $ 1 \\leq b^{\\deg(f)} \\cdot \\left| f\\left(\\frac{a}{b}\\right) \\right| $, where $ \\deg(f) $ denotes the natural degree of $ f $.",
+          "path": "Mathlib.Algebra.Polynomial.DenomsClearable"
+        },
+        {
+          "formal_name": "Polynomial.Chebyshev.one_lt_abs_eval_T_real",
+          "informal_name": "Absolute Value of Chebyshev Polynomial $ T_n(x) $ Exceeds 1 for $ |x| > 1 $",
+          "kind": "theorem",
+          "type": "∀ {n : ℤ}, n ≠ 0 → ∀ {x : ℝ}, 1 < |x| → 1 < |Polynomial.eval x (Polynomial.Chebyshev.T ℝ n)|",
+          "informal_description": "For any non-zero integer $ n $ and real number $ x $ with $ |x| > 1 $, the absolute value of the Chebyshev polynomial $ T_n(x) $ satisfies $ |T_n(x)| > 1 $.",
+          "path": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.RootsExtrema"
+        },
+        {
+          "formal_name": "Polynomial.Chebyshev.one_le_abs_eval_T_real",
+          "informal_name": "Chebyshev Polynomial Evaluation Lower Bound for |x| ≥ 1",
+          "kind": "theorem",
+          "type": "∀ (n : ℤ) {x : ℝ}, 1 ≤ |x| → 1 ≤ |Polynomial.eval x (Polynomial.Chebyshev.T ℝ n)|",
+          "informal_description": "For any integer $n$ and real number $x$ with $|x| \\geq 1$, the absolute value of the Chebyshev polynomial $T_n$ evaluated at $x$ satisfies $1 \\leq |T_n(x)|$.",
+          "path": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.RootsExtrema"
+        },
+        {
+          "formal_name": "Polynomial.tendsto_abv_aeval_atTop",
+          "informal_name": "Absolute Value of Polynomial Evaluation Tends to Infinity",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {A : Type u_2} {k : Type u_3} {α : Type u_4} [inst : CommSemiring R] [inst_1 : Ring A]\n  [inst_2 : Algebra R A] [inst_3 : Field k] [inst_4 : LinearOrder k] [IsStrictOrderedRing k] (abv : A → k)\n  [IsAbsoluteValue abv] (p : Polynomial R),\n  0 < p.degree →\n    (algebraMap R A) p.leadingCoeff ≠ 0 →\n      ∀ {l : Filter α} {z : α → A},\n        Filter.Tendsto (abv ∘ z) l Filter.atTop →\n          Filter.Tendsto (fun x => abv ((Polynomial.aeval (z x)) p)) l Filter.atTop",
+          "informal_description": "For a polynomial $ p $ with positive degree and non-zero leading coefficient in $ R[X] $, if the absolute value of $ z(x) $ tends to infinity along a filter $ l $, then the absolute value of $ p $ evaluated at $ z(x) $ also tends to infinity along $ l $.",
+          "path": "Mathlib.Topology.Algebra.Polynomial"
+        },
+        {
+          "formal_name": "Dioph.abs_poly_dioph",
+          "informal_name": "Absolute Value of Integer Polynomial is Diophantine",
+          "kind": "theorem",
+          "type": "∀ {α : Type u} (p : Poly α), Dioph.DiophFn fun v => (p v).natAbs",
+          "informal_description": "For any polynomial $ p $ with integer coefficients in variables indexed by $ \\alpha $, the function that maps each valuation $ v : \\alpha \\to \\mathbb{N} $ to the absolute value of $ p(v) $ is a Diophantine function. This means there exists a polynomial equation in variables indexed by $ \\alpha \\oplus \\beta $ with integer coefficients such that for any $ v : \\alpha \\to \\mathbb{N} $, there exists $ t : \\beta \\to \\mathbb{N} $ making the equation hold if and only if $ |p(v)| $ equals the extended valuation at $ \\text{none} $.",
+          "path": "Mathlib.NumberTheory.Dioph"
+        },
+        {
+          "formal_name": "Polynomial.tendsto_abv_eval₂_atTop",
+          "informal_name": "Polynomial Evaluation Tends to Infinity with Input Absolute Value",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {S : Type u_2} {k : Type u_3} {α : Type u_4} [inst : Semiring R] [inst_1 : Ring S] [inst_2 : Field k]\n  [inst_3 : LinearOrder k] [IsStrictOrderedRing k] (f : R →+* S) (abv : S → k) [IsAbsoluteValue abv] (p : Polynomial R),\n  0 < p.degree →\n    f p.leadingCoeff ≠ 0 →\n      ∀ {l : Filter α} {z : α → S},\n        Filter.Tendsto (abv ∘ z) l Filter.atTop →\n          Filter.Tendsto (fun x => abv (Polynomial.eval₂ f (z x) p)) l Filter.atTop",
+          "informal_description": "For a polynomial $ p $ with positive degree and non-zero leading coefficient, if the absolute value of a sequence $ z $ tends to infinity, then the absolute value of $ p $ evaluated at $ z $ also tends to infinity.",
+          "path": "Mathlib.Topology.Algebra.Polynomial"
+        },
+        {
+          "formal_name": "Polynomial.one_le_mahlerMeasure_of_ne_zero",
+          "informal_name": "Mahler Measure of Nonzero Integer Polynomial is at Least One",
+          "kind": "theorem",
+          "type": "∀ {p : Polynomial ℤ}, p ≠ 0 → 1 ≤ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure",
+          "informal_description": "For any nonzero polynomial $ p \\in \\mathbb{Z}[X] $, the Mahler measure of the complex polynomial obtained by mapping $ p $'s coefficients to $ \\mathbb{C} $ via the canonical ring homomorphism is at least 1.",
+          "path": "Mathlib.NumberTheory.MahlerMeasure"
+        },
+        {
+          "formal_name": "Polynomial.abs_isBoundedUnder_iff",
+          "informal_name": "Boundedness of Polynomial Absolute Value at Infinity iff Constant Polynomial",
+          "kind": "theorem",
+          "type": "∀ {𝕜 : Type u_1} [inst : NormedField 𝕜] [inst_1 : LinearOrder 𝕜] [IsStrictOrderedRing 𝕜] (P : Polynomial 𝕜)\n  [OrderTopology 𝕜],\n  (Filter.IsBoundedUnder (fun x1 x2 => x1 ≤ x2) Filter.atTop fun x => |Polynomial.eval x P|) ↔ P.degree ≤ 0",
+          "informal_description": "The absolute value of the polynomial $ P $ evaluated at $ x $ is bounded as $ x $ approaches infinity (in the sense of the filter at top) if and only if the degree of $ P $ is less than or equal to zero, i.e., $ P $ is a constant polynomial.",
+          "path": "Mathlib.Analysis.Polynomial.Basic"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

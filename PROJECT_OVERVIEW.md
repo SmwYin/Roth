@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 278/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 279/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 278; remaining: 15.
-- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 30 YES-but-generalise-first, 46 NO-mathlib-has-it, 97 BORDERLINE-needs-human, 71 SKIP.
+- Completed applicable assessments: 279; remaining: 14.
+- Verdicts: 20 NO-composable-from-mathlib, 14 YES-add-as-is, 31 YES-but-generalise-first, 46 NO-mathlib-has-it, 97 BORDERLINE-needs-human, 71 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3557,6 +3557,21 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit caller count: 1; external to file count: 0; callers: {'name': 'Roth.exists_roth_approximants_aux', 'file': 'Roth/Main.lean', 'declaration_line': 429, 'declaration_end_line': 450, 'call_line': 440}; reading: Entire Roth/Main.lean1–588, Entire Roth/LeanEval.lean1–73; verification scope: Full actual caller literal inline and all-positive-delta replacement, exact original caller signature equality. hδ1 remains needed for caller antitonicity and last degree>=3; no claim it can be removed there.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_degrees.md).
 
+### Completed: `Roth.one_le_prod_pow_mul_abs_eval`
+
+- Type: `∀ {m : ℕ} (Q : MvPolynomial (Fin m) ℤ) {r : Fin m → ℕ},
+  (∀ (j : Fin m), degreeOf j Q ≤ r j) →
+    ∀ (h : Fin m → ℤ) {q : Fin m → ℕ},
+      (∀ (j : Fin m), 0 < q j) →
+        (eval fun (j : Fin m) ↦ ↑(h j) / ↑(q j)) ((map (Int.castRingHom ℝ)) Q) ≠ 0 →
+          1 ≤ (∏ j : Fin m, ↑(q j) ^ r j) * |(eval fun (j : Fin m) ↦ ↑(h j) / ↑(q j)) ((map (Int.castRingHom ℝ)) Q)|`
+- What: A nonzero integer multivariate polynomial value at rational coordinates has absolute value at least the reciprocal of the product of denominators raised to coordinate degree bounds.
+- How: Constructs the integer numerator N by summing cleared monomials; MvPolynomial.monomial_le_degreeOf bounds exponents and MvPolynomial.eval_eq' identifies its cast with the scaled evaluation. Nonvanishing and Int.one_le_abs then give the lower bound.
+- Hypotheses: Integer coefficients; coordinate degree bounds r; positive natural denominators; nonzero evaluation. No coprimality, algebraicity, irrationality, nonempty dimension or positive degree hypothesis.
+- Project dependencies: None
+- Caller summary: One explicit proof use, same file private one_lt_roth_eval_bound_aux at Main:476 (full453–478); zero external-file source calls. One direct canonical body consumer, no type consumers. Full original Main proof replay with literal inlining succeeds; LeanEval is a transitive consumer only.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.one_le_prod_pow_mul_abs_eval.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -4139,6 +4154,8 @@ Completed `Roth.exists_approximants`: Set.seq_of_forall_finite_exists, Nat.exist
 
 Completed `Roth.exists_degrees`: Existing Nat.ceil_lt_mul is scalar rounding; tendsto_nat_ceil_mul_div_atTop is asymptotic. Neither is a verified existing full finite package; generic helper is newly proved scratch mathematics.
 
+Completed `Roth.one_le_prod_pow_mul_abs_eval`: Existing one_le_pow_mul_abs_eval_div and DenomsClearable are univariate; MvPolynomial.isLocalization localizes coefficient rings but does not supply coordinatewise denominator degree clearing or its separation estimate.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4696,6 +4713,8 @@ Completed `Roth.exists_delta`: Shares neighborhood shrinking with exists_delta_b
 Completed `Roth.exists_approximants`: Reduced selector supplies arithmetic existence; target adds recursive finite selection and strict log growth. exists_degrees consumes that output and has a different rounding/balancing argument. No separate source inline rederivation found.
 
 Completed `Roth.exists_degrees`: {'a': 'Roth.exists_degrees', 'b': 'Roth.exists_approximants', 'same_statement': False, 'same_proof': False, 'verdict': 'Complementary denominator selection versus degree rounding; do not unify.'}, {'a': 'Roth.exists_degrees', 'b': 'Nat.ceil_lt_mul', 'same_statement': False, 'same_proof': 'Partial ceiling estimate only', 'verdict': 'Reuse scalar candidate in future cleanup; finite synchronization/separation is new proof.'}, {'a': 'Roth.exists_degrees', 'b': 'tendsto_nat_ceil_mul_div_atTop', 'same_statement': False, 'same_proof': 'Asymptotic version of one-coordinate rounding', 'verdict': 'A finite quantitative theorem still needs scale selection and arithmetic assembly.'}
+
+Completed `Roth.one_le_prod_pow_mul_abs_eval`: Shares discrete integer separation with Theta coefficient estimates and univariate Liouville bound; not the same statement. Taylor upper bound is complementary, not duplicate.
 
 ## Part 5: Generalization opportunities
 
@@ -5276,6 +5295,20 @@ theorem exists_separated_nat_multiples {ι : Type*} [Finite ι] (b : ι) {ℓ : 
       (∀ j, (r b : K) * ℓ b ≤ r j * ℓ j) ∧
       ∀ j, (r j : K) * ℓ j < (1 + ε) * (r b * ℓ b) ; remove: δ≤1 from original target; retain: δ>0 for positive ε=δ/10 and B=10/δ in original quantitative recovery, q>1/log positivity, strict adjacent ratio and strict upper balanced product; weak lower product; scope: Generic ordered field with FloorRing; arbitrary Finite ι, base b, positive ℓ, ε,B, c>1, arbitrary relation R, unrestricted generic δ. Original full type recovered exactly.
 
+Completed `Roth.one_le_prod_pow_mul_abs_eval`: verified: True; reason: LITERATURE-WEAKENING, MODERN-IDIOM; proposed type: theorem signed {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}
+    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℤ} (hq : ∀ j, q j ≠ 0)
+    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :
+    1 ≤ |∏ j, (q j : K) ^ r j| * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)|; natural wrapper type: theorem generic {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}
+    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℕ} (hq : ∀ j, 0 < q j)
+    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :
+    1 ≤ (∏ j, (q j : K) ^ r j) * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)|; mechanical: Fin m -> arbitrary Fintype; ℝ -> ordered field; original body otherwise unchanged; extended: Signed integer denominators with absolute product; CharZero field algebraic clearing; norm target requires explicit integer separation bound; recovery: recovery01 exact original written signature, Fin0 edges01; algebraic helper type: theorem clearing_semiring {ι R S : Type*} [Fintype ι] [CommSemiring R] [CommSemiring S]
+    (f : R →+* S) (Q : MvPolynomial ι R) {r : ι → ℕ}
+    (hQ : ∀ j, degreeOf j Q ≤ r j) (a b : ι → R) (bi : ι → S)
+    (hbi : ∀ j, bi j * f (b j) = 1) :
+    ∃ N : R, f N = (∏ j, f (b j) ^ r j) * eval₂ f (fun j ↦ f (a j) * bi j) Q; algebraic generality: Verified arbitrary commutative semirings and ring hom with coordinate denominator inverses, no CharZero/injective map/field/order. Numeric bound requires integer separation separately.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5834,6 +5867,8 @@ Completed `Roth.exists_delta`: Potential simultaneous quantitative perturbation 
 Completed `Roth.exists_approximants`: Possible cofinal real-height recursive-growth selection theorem, with finite-chain corollary. Generic scratch theorem is new proof; upstream API granularity remains a future design question.
 
 Completed `Roth.exists_degrees`: Finite simultaneous positive-weight natural rounding with an arbitrary relative error, lower degree bound and strict separation margin.
+
+Completed `Roth.one_le_prod_pow_mul_abs_eval`: Coordinatewise multivariate polynomial denominator-clearing equality at arbitrary rational points with individual degree bounds, and nonzero integer lower-bound corollary.
 
 ## Part 7: Junk / removable
 
@@ -6396,6 +6431,8 @@ Completed `Roth.exists_approximants`: Used theorem, complete proof can inline in
 
 Completed `Roth.exists_degrees`: Not dead: one complete actual private caller and terminal dependency chain. No ≤3-existing-call replacement verified; retain local wrapper until upstream generic API exists.
 
+Completed `Roth.one_le_prod_pow_mul_abs_eval`: KEEP: substantive clearing argument, used in the Roth contradiction. No dead-code or trivial existing-mathlib composition justification for deletion.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6678,6 +6715,7 @@ Completed `Roth.exists_degrees`: Not dead: one complete actual private caller an
 | 276 | `Roth.exists_delta` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_delta.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_delta/root-acceptance.json) |
 | 277 | `Roth.exists_approximants` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_approximants.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_approximants/root-acceptance.json) |
 | 278 | `Roth.exists_degrees` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_degrees.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_degrees/root-acceptance.json) |
+| 279 | `Roth.one_le_prod_pow_mul_abs_eval` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.one_le_prod_pow_mul_abs_eval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_le_prod_pow_mul_abs_eval/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -7233,12 +7271,14 @@ Completed `Roth.exists_approximants` action: BORDERLINE-needs-human: keep this a
 
 Completed `Roth.exists_degrees` action: verdict: YES-but-generalise-first; home: Mathlib/Algebra/Order/Floor/Finite.lean (new leaf); pr title: feat(Algebra/Order/Floor): balance natural multiples of finite positive weights; next: Run /generalise Roth.exists_degrees and /cleanup on the generic finite-weight lemmas; replace current caller via the verified all-positive-delta recovery.; grouping: Own small balancing+separation PR. Keep separate from accepted YES Roth.eventually_div_rpow_lt and Roth.exists_reduced_approx (analytic/Diophantine interfaces), and Roth.main_lemma (project theorem); progress snapshot confirms those verdicts.; reviewers: Yaël Dillies (a78f66ab84/e06eff5f95) or Seewoo Lee (caabe1c7b0): recent relevant order/floor commits, not endorsements.
 
+Completed `Roth.one_le_prod_pow_mul_abs_eval` action: Generalize and split clearing equality from ordered-field estimate, retain natural-positive convenience theorem for current caller. Proposed new Mathlib/Algebra/MvPolynomial/DenomsClearable.lean; use eval₂ normal form; review independent algebraic PR before replacing project wrapper.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.one_le_prod_pow_mul_abs_eval` next. Supporting identities receive their own applicable checks.
+   `Roth.abs_prod_pow_le_rpow_of_le_weight` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

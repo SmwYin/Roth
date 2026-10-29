@@ -1,0 +1,44 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\ntheorem generic {\u03b9 K : Type*} [Fintype \u03b9] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (\u03b9) \u2124) {r : \u03b9 \u2192 \u2115}\n    (hQ : \u2200 j, degreeOf j Q \u2264 r j) (h : \u03b9 \u2192 \u2124) {q : \u03b9 \u2192 \u2115} (hq : \u2200 j, 0 < q j)\n    (hne : eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q) \u2260 0) :\n    1 \u2264 (\u220f j, (q j : K) ^ r j) * |eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q)| := by\n  have hqR : \u2200 j, (0 : K) < q j := fun j \u21a6 by exact_mod_cast hq j\n  have hP : (0 : K) < \u220f j, (q j : K) ^ r j := Finset.prod_pos fun j _ \u21a6 pow_pos (hqR j) _\n  set N : \u2124 := \u2211 d \u2208 Q.support, Q.coeff d * \u220f j, h j ^ d j * (q j : \u2124) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (\u220f j, (q j : K) ^ r j) *\n      eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd \u21a6 ?_\n    rw [coeff_map, mul_left_comm, \u2190 Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ \u21a6 ?_\n    rw [\u2190 pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel\u2080 _ (pow_ne_zero _ (hqR j).ne'), mul_comm]\n  have h1 : (1 : K) \u2264 |(N : K)| := by\n    rw [\u2190 Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm \u25b8 mul_ne_zero hP.ne' hne))\n  rwa [hNeq, abs_mul, abs_of_pos hP] at h1\n\n-- A zero denominator invalidates the original conclusion even for Q=1.\nexample : eval (fun _ : Fin 1 \u21a6 (0 : \u211d) / 0)\n    (map (Int.castRingHom \u211d) (1 : MvPolynomial (Fin 1) \u2124)) \u2260 0 \u2227\n    \u00ac (1 \u2264 (\u220f _j : Fin 1, (0 : \u211d) ^ (1 : \u2115)) *\n      |eval (fun _ : Fin 1 \u21a6 (0 : \u211d) / 0)\n        (map (Int.castRingHom \u211d) (1 : MvPolynomial (Fin 1) \u2124))|) := by\n  norm_num\n-- Nonvanishing cannot be dropped.\nexample : \u00ac (1 \u2264 (\u220f _j : Fin 1, (1 : \u211d) ^ (1 : \u2115)) *\n    |eval (fun _ : Fin 1 \u21a6 (0 : \u211d))\n      (map (Int.castRingHom \u211d) (0 : MvPolynomial (Fin 1) \u2124))|) := by\n  norm_num\n-- Degree bounds cannot be dropped: X squared evaluated at 1/2 with r=1.\nexample : eval (fun _ : Fin 1 \u21a6 (1 : \u211d) / 2)\n    (map (Int.castRingHom \u211d) ((X 0)^2 : MvPolynomial (Fin 1) \u2124)) \u2260 0 \u2227\n    \u00ac (1 \u2264 (\u220f _j : Fin 1, (2 : \u211d) ^ (1 : \u2115)) *\n      |eval (fun _ : Fin 1 \u21a6 (1 : \u211d) / 2)\n        (map (Int.castRingHom \u211d) ((X 0)^2 : MvPolynomial (Fin 1) \u2124))|) := by\n  norm_num\n-- Empty-variable recovery needs no nonemptiness assumption.\nexample (Q : MvPolynomial (Fin 0) \u2124) {r : Fin 0 \u2192 \u2115}\n    (h : Fin 0 \u2192 \u2124) {q : Fin 0 \u2192 \u2115}\n    (hne : eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q) \u2260 0) :\n    1 \u2264 (\u220f j, (q j : \u211d) ^ r j) *\n      |eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q)| :=\n  generic Q (fun j \u21a6 Fin.elim0 j) h (fun j \u21a6 Fin.elim0 j) hne\n-- Rational coefficients invalidate the separated integer image bound.\nexample : \u00ac ((1 : \u211d) \u2264 |((1 / 2 : \u211a) : \u211d)|) := by norm_num\n\nend Integer279\n"
+  },
+  "elapsed_ms": 467,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "edges01",
+      "operation": "run_code",
+      "source": "edges-executed.lean.txt",
+      "source_sha256": "4fd231e8dccb8c8f205093a0aa5447a33d126fea200d54b9dfc9724ae7b32fc2",
+      "receipt": "edges01-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.one_le_prod_pow_mul_abs_eval/root-requests/edges01.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.one_le_prod_pow_mul_abs_eval/edges-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.one_le_prod_pow_mul_abs_eval`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.one_le_prod_pow_mul_abs_eval`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

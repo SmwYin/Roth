@@ -1,0 +1,17 @@
+theorem clearing_semiring {ι R S : Type*} [Fintype ι] [CommSemiring R] [CommSemiring S]
+    (f : R →+* S) (Q : MvPolynomial ι R) {r : ι → ℕ}
+    (hQ : ∀ j, degreeOf j Q ≤ r j) (a b : ι → R) (bi : ι → S)
+    (hbi : ∀ j, bi j * f (b j) = 1) :
+    ∃ N : R, f N = (∏ j, f (b j) ^ r j) * eval₂ f (fun j ↦ f (a j) * bi j) Q := by
+  classical
+  refine ⟨∑ d ∈ Q.support, Q.coeff d * ∏ j, a j ^ d j * b j ^ (r j - d j), ?_⟩
+  rw [eval₂_eq', Finset.mul_sum]
+  simp only [map_sum, map_mul, map_prod, map_pow]
+  refine Finset.sum_congr rfl fun d hd ↦ ?_
+  rw [mul_left_comm, ← Finset.prod_mul_distrib]
+  congr 1
+  refine Finset.prod_congr rfl fun j _ ↦ ?_
+  have hdj := (monomial_le_degreeOf j hd).trans (hQ j)
+  rw [← tsub_add_cancel_of_le hdj]
+  conv_lhs => rw [← mul_one (f (a j)), ← hbi j]
+  simp [mul_assoc, mul_comm, mul_left_comm, pow_add, mul_pow]

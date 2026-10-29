@@ -1,0 +1,116 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\n#check_failure Roth.one_le_prod_pow_mul_abs_eval\nnamespace Integer279\n#check one_le_pow_mul_abs_eval_div\n#check denomsClearable_of_natDegree_le\n#check denomsClearable_natDegree\n#check Int.one_le_abs\n#check MvPolynomial.eval_eq'\n#check MvPolynomial.monomial_le_degreeOf\n#check MvPolynomial.isLocalization\ntheorem generic {\u03b9 K : Type*} [Fintype \u03b9] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (\u03b9) \u2124) {r : \u03b9 \u2192 \u2115}\n    (hQ : \u2200 j, degreeOf j Q \u2264 r j) (h : \u03b9 \u2192 \u2124) {q : \u03b9 \u2192 \u2115} (hq : \u2200 j, 0 < q j)\n    (hne : eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q) \u2260 0) :\n    1 \u2264 (\u220f j, (q j : K) ^ r j) * |eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q)| := by\n  have hqR : \u2200 j, (0 : K) < q j := fun j \u21a6 by exact_mod_cast hq j\n  have hP : (0 : K) < \u220f j, (q j : K) ^ r j := Finset.prod_pos fun j _ \u21a6 pow_pos (hqR j) _\n  set N : \u2124 := \u2211 d \u2208 Q.support, Q.coeff d * \u220f j, h j ^ d j * (q j : \u2124) ^ (r j - d j) with hN\n  have hNeq : (N : K) = (\u220f j, (q j : K) ^ r j) *\n      eval (fun j \u21a6 (h j : K) / q j) (map (Int.castRingHom K) Q) := by\n    rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]\n    push_cast\n    refine Finset.sum_congr rfl fun d hd \u21a6 ?_\n    rw [coeff_map, mul_left_comm, \u2190 Finset.prod_mul_distrib]\n    congr 1\n    refine Finset.prod_congr rfl fun j _ \u21a6 ?_\n    rw [\u2190 pow_sub_mul_pow (q j : K) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]\n    rw [mul_assoc, mul_div_cancel\u2080 _ (pow_ne_zero _ (hqR j).ne'), mul_comm]\n  have h1 : (1 : K) \u2264 |(N : K)| := by\n    rw [\u2190 Int.cast_abs]\n    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm \u25b8 mul_ne_zero hP.ne' hne))\n  rwa [hNeq, abs_mul, abs_of_pos hP] at h1\n\ntheorem compositionProbe {m : \u2115} (Q : MvPolynomial (Fin m) \u2124) {r : Fin m \u2192 \u2115}\n    (hQ : \u2200 j, degreeOf j Q \u2264 r j) (h : Fin m \u2192 \u2124) {q : Fin m \u2192 \u2115} (hq : \u2200 j, 0 < q j)\n    (hne : eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q) \u2260 0) :\n    1 \u2264 (\u220f j, (q j : \u211d) ^ r j) * |eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q)| := by\n  fail_if_success\n    exact one_le_pow_mul_abs_eval_div (K := \u211d) (b := 1) zero_lt_one hne\n  fail_if_success\n    exact Int.one_le_abs hne\n  fail_if_success\n    solve | simp only [eval_map]\n  exact generic Q hQ h hq hne\n\n#print axioms compositionProbe\nend Integer279\n"
+  },
+  "elapsed_ms": 1237,
+  "executor": {
+    "owner": "root",
+    "worker_request": {
+      "id": "composition03",
+      "operation": "run_code",
+      "source": "composition3-executed.lean.txt",
+      "source_sha256": "da8daba69c3256bcf3195dc14dbf2a405771b987c4f53cca4e37029d810f7c23",
+      "receipt": "composition03-receipt.json",
+      "arguments": {}
+    },
+    "request_file": "/private/tmp/roth-overview/assess/Roth.one_le_prod_pow_mul_abs_eval/root-requests/composition03.json",
+    "source_archive": "/private/tmp/roth-overview/assess/Roth.one_le_prod_pow_mul_abs_eval/composition3-executed.lean.txt",
+    "preexecution_audit": null
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.one_le_prod_pow_mul_abs_eval`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"one_le_pow_mul_abs_eval_div.{u_1} {K : Type u_1} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial \u2124}\\n  {a b : \u2124} (b0 : 0 < b) (fab : Polynomial.eval (\u2191a / \u2191b) (Polynomial.map (algebraMap \u2124 K) f) \u2260 0) :\\n  1 \u2264 \u2191b ^ f.natDegree * |Polynomial.eval (\u2191a / \u2191b) (Polynomial.map (algebraMap \u2124 K) f)|\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"denomsClearable_of_natDegree_le.{u_1, u_2} {R : Type u_1} {K : Type u_2} [Semiring R] [CommSemiring K] {i : R \u2192+* K}\\n  {b : R} {bi : K} (N : \u2115) (a : R) (bu : bi * i b = 1) (f : Polynomial R) : f.natDegree \u2264 N \u2192 DenomsClearable a b N f i\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"denomsClearable_natDegree.{u_1, u_2} {R : Type u_1} {K : Type u_2} [Semiring R] [CommSemiring K] {b : R} {bi : K}\\n  (i : R \u2192+* K) (f : Polynomial R) (a : R) (bu : bi * i b = 1) : DenomsClearable a b f.natDegree f i\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Int.one_le_abs {z : \u2124} (h\u2080 : z \u2260 0) : 1 \u2264 |z|\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.eval_eq'.{u, u_1} {R : Type u} {\u03c3 : Type u_1} [CommSemiring R] [Fintype \u03c3] (X : \u03c3 \u2192 R)\\n  (f : MvPolynomial \u03c3 R) : (eval X) f = \u2211 d \u2208 f.support, f.coeff d * \u220f i, X i ^ d i\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.monomial_le_degreeOf.{u, u_1} {R : Type u} {\u03c3 : Type u_1} [CommSemiring R] (i : \u03c3) {f : MvPolynomial \u03c3 R}\\n  {m : \u03c3 \u2192\u2080 \u2115} (h_m : m \u2208 f.support) : m i \u2264 degreeOf i f\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.isLocalization.{u_1, u_2, u_3} {\u03c3 : Type u_1} {R : Type u_2} [CommRing R] (M : Submonoid R) (S : Type u_3)\\n  [CommRing S] [Algebra R S] [IsLocalization M S] : IsLocalization (Submonoid.map C M) (MvPolynomial \u03c3 S)\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Integer279.compositionProbe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 65,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.one_le_prod_pow_mul_abs_eval`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "one_le_pow_mul_abs_eval_div.{u_1} {K : Type u_1} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {f : Polynomial \u2124}\n  {a b : \u2124} (b0 : 0 < b) (fab : Polynomial.eval (\u2191a / \u2191b) (Polynomial.map (algebraMap \u2124 K) f) \u2260 0) :\n  1 \u2264 \u2191b ^ f.natDegree * |Polynomial.eval (\u2191a / \u2191b) (Polynomial.map (algebraMap \u2124 K) f)|",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "denomsClearable_of_natDegree_le.{u_1, u_2} {R : Type u_1} {K : Type u_2} [Semiring R] [CommSemiring K] {i : R \u2192+* K}\n  {b : R} {bi : K} (N : \u2115) (a : R) (bu : bi * i b = 1) (f : Polynomial R) : f.natDegree \u2264 N \u2192 DenomsClearable a b N f i",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "denomsClearable_natDegree.{u_1, u_2} {R : Type u_1} {K : Type u_2} [Semiring R] [CommSemiring K] {b : R} {bi : K}\n  (i : R \u2192+* K) (f : Polynomial R) (a : R) (bu : bi * i b = 1) : DenomsClearable a b f.natDegree f i",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Int.one_le_abs {z : \u2124} (h\u2080 : z \u2260 0) : 1 \u2264 |z|",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.eval_eq'.{u, u_1} {R : Type u} {\u03c3 : Type u_1} [CommSemiring R] [Fintype \u03c3] (X : \u03c3 \u2192 R)\n  (f : MvPolynomial \u03c3 R) : (eval X) f = \u2211 d \u2208 f.support, f.coeff d * \u220f i, X i ^ d i",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.monomial_le_degreeOf.{u, u_1} {R : Type u} {\u03c3 : Type u_1} [CommSemiring R] (i : \u03c3) {f : MvPolynomial \u03c3 R}\n  {m : \u03c3 \u2192\u2080 \u2115} (h_m : m \u2208 f.support) : m i \u2264 degreeOf i f",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.isLocalization.{u_1, u_2, u_3} {\u03c3 : Type u_1} {R : Type u_2} [CommRing R] (M : Submonoid R) (S : Type u_3)\n  [CommRing S] [Algebra R S] [IsLocalization M S] : IsLocalization (Submonoid.map C M) (MvPolynomial \u03c3 S)",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Integer279.compositionProbe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 65,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

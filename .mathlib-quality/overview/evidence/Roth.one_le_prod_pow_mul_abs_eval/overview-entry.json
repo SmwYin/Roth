@@ -1,0 +1,29 @@
+{
+  "declaration": "Roth.one_le_prod_pow_mul_abs_eval",
+  "kind": "theorem",
+  "type": "∀ {m : ℕ} (Q : MvPolynomial (Fin m) ℤ) {r : Fin m → ℕ},\n  (∀ (j : Fin m), degreeOf j Q ≤ r j) →\n    ∀ (h : Fin m → ℤ) {q : Fin m → ℕ},\n      (∀ (j : Fin m), 0 < q j) →\n        (eval fun (j : Fin m) ↦ ↑(h j) / ↑(q j)) ((map (Int.castRingHom ℝ)) Q) ≠ 0 →\n          1 ≤ (∏ j : Fin m, ↑(q j) ^ r j) * |(eval fun (j : Fin m) ↦ ↑(h j) / ↑(q j)) ((map (Int.castRingHom ℝ)) Q)|",
+  "what": "A nonzero integer multivariate polynomial value at rational coordinates has absolute value at least the reciprocal of the product of denominators raised to coordinate degree bounds.",
+  "how": "Constructs the integer numerator N by summing cleared monomials; MvPolynomial.monomial_le_degreeOf bounds exponents and MvPolynomial.eval_eq' identifies its cast with the scaled evaluation. Nonvanishing and Int.one_le_abs then give the lower bound.",
+  "hypotheses": "Integer coefficients; coordinate degree bounds r; positive natural denominators; nonzero evaluation. No coprimality, algebraicity, irrationality, nonempty dimension or positive degree hypothesis.",
+  "project_dependencies": [],
+  "caller_summary": "One explicit proof use, same file private one_lt_roth_eval_bound_aux at Main:476 (full453–478); zero external-file source calls. One direct canonical body consumer, no type consumers. Full original Main proof replay with literal inlining succeeds; LeanEval is a transitive consumer only.",
+  "mathlib_api_audit": "Existing one_le_pow_mul_abs_eval_div and DenomsClearable are univariate; MvPolynomial.isLocalization localizes coefficient rings but does not supply coordinatewise denominator degree clearing or its separation estimate.",
+  "moral_duplications": "Shares discrete integer separation with Theta coefficient estimates and univariate Liouville bound; not the same statement. Taylor upper bound is complementary, not duplicate.",
+  "generalization": {
+    "verified": true,
+    "reason": [
+      "LITERATURE-WEAKENING",
+      "MODERN-IDIOM"
+    ],
+    "proposed_type": "theorem signed {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℤ} (hq : ∀ j, q j ≠ 0)\n    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :\n    1 ≤ |∏ j, (q j : K) ^ r j| * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)|",
+    "natural_wrapper_type": "theorem generic {ι K : Type*} [Fintype ι] [Field K] [LinearOrder K]\n    [IsStrictOrderedRing K] (Q : MvPolynomial (ι) ℤ) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (h : ι → ℤ) {q : ι → ℕ} (hq : ∀ j, 0 < q j)\n    (hne : eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q) ≠ 0) :\n    1 ≤ (∏ j, (q j : K) ^ r j) * |eval (fun j ↦ (h j : K) / q j) (map (Int.castRingHom K) Q)|",
+    "mechanical": "Fin m -> arbitrary Fintype; ℝ -> ordered field; original body otherwise unchanged",
+    "extended": "Signed integer denominators with absolute product; CharZero field algebraic clearing; norm target requires explicit integer separation bound",
+    "recovery": "recovery01 exact original written signature, Fin0 edges01",
+    "algebraic_helper_type": "theorem clearing_semiring {ι R S : Type*} [Fintype ι] [CommSemiring R] [CommSemiring S]\n    (f : R →+* S) (Q : MvPolynomial ι R) {r : ι → ℕ}\n    (hQ : ∀ j, degreeOf j Q ≤ r j) (a b : ι → R) (bi : ι → S)\n    (hbi : ∀ j, bi j * f (b j) = 1) :\n    ∃ N : R, f N = (∏ j, f (b j) ^ r j) * eval₂ f (fun j ↦ f (a j) * bi j) Q",
+    "algebraic_generality": "Verified arbitrary commutative semirings and ring hom with coordinate denominator inverses, no CharZero/injective map/field/order. Numeric bound requires integer separation separately."
+  },
+  "missing_api": "Coordinatewise multivariate polynomial denominator-clearing equality at arbitrary rational points with individual degree bounds, and nonzero integer lower-bound corollary.",
+  "junk": "KEEP: substantive clearing argument, used in the Roth contradiction. No dead-code or trivial existing-mathlib composition justification for deletion.",
+  "action": "Generalize and split clearing equality from ordered-field estimate, retain natural-positive convenience theorem for current caller. Proposed new Mathlib/Algebra/MvPolynomial/DenomsClearable.lean; use eval₂ normal form; review independent algebraic PR before replacing project wrapper."
+}
