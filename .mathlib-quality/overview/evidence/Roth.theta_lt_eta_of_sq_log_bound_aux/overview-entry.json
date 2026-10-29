@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.theta_lt_eta_of_sq_log_bound_aux",
+  "kind": "lemma",
+  "type": "∀ {m : ℕ} [inst : NeZero m] {δ : ℝ},\n  0 ≤ δ →\n    δ * ↑m ≤ 1 →\n      ∀ {r q : Fin m → ℕ},\n        3 ≤ r (Fin.rev 0) →\n          (∀ (i j : Fin m), ↑i + 1 = ↑j → ↑(r j) / δ ≤ ↑(r i)) →\n            2 * ↑m + 1 ≤ δ ^ 2 * Real.log ↑(q 0) →\n              (∀ (j : Fin m), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →\n                Roth.Θ (↑(q 0) ^ (δ * ↑(r 0))) q r < Roth.eta δ m",
+  "what": "Converts the square-logarithm and adjacent-degree hypotheses into the strict bound Theta<eta for the chosen real coefficient power.",
+  "how": "Rewrite the positive dimension as a successor, derive delta positivity and the Lemma7 logarithm bound, and specialize Θ_lt.",
+  "hypotheses": "Nonzero dimension, nonnegative delta with delta times dimension at most one, last degree at least three and ratio/balancing/logarithmic hypotheses. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.eta",
+    "Roth.Θ",
+    "Roth.Θ_lt"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Write the nonzero dimension m as n+1. The positive square-log bound and delta>=0 imply delta>0; multiply through delta squared to derive the weaker logarithmic hypothesis needed by Theta_lt from delta*m<=1. Translate the last degree and adjacent ratio premises with Nat.cast_le and div_le_iff, invoke Theta_lt, and unfold eta. The sole index-gap caller first drops the nonnegative A/alpha logarithm terms. This is the numerical Theta-to-selected-eta specialization, distinct from constructing the auxiliary polynomial.",
+  "moral_duplications": "The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

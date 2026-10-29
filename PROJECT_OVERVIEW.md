@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 263/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 264/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 263; remaining: 30.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 68 SKIP.
+- Completed applicable assessments: 264; remaining: 29.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 45 NO-mathlib-has-it, 90 BORDERLINE-needs-human, 69 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3313,6 +3313,24 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_auxiliary_polynomial_of_log_bound_aux.md).
 
+### Completed: `Roth.theta_lt_eta_of_sq_log_bound_aux`
+
+- Type: `∀ {m : ℕ} [inst : NeZero m] {δ : ℝ},
+  0 ≤ δ →
+    δ * ↑m ≤ 1 →
+      ∀ {r q : Fin m → ℕ},
+        3 ≤ r (Fin.rev 0) →
+          (∀ (i j : Fin m), ↑i + 1 = ↑j → ↑(r j) / δ ≤ ↑(r i)) →
+            2 * ↑m + 1 ≤ δ ^ 2 * Real.log ↑(q 0) →
+              (∀ (j : Fin m), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →
+                Roth.Θ (↑(q 0) ^ (δ * ↑(r 0))) q r < Roth.eta δ m`
+- What: Converts the square-logarithm and adjacent-degree hypotheses into the strict bound Theta<eta for the chosen real coefficient power.
+- How: Rewrite the positive dimension as a successor, derive delta positivity and the Lemma7 logarithm bound, and specialize Θ_lt.
+- Hypotheses: Nonzero dimension, nonnegative delta with delta times dimension at most one, last degree at least three and ratio/balancing/logarithmic hypotheses. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.eta, Roth.Θ, Roth.Θ_lt
+- Caller summary: 1 explicit source caller declarations, all in MainLemma.lean; 1 direct original value consumers. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_eta_of_sq_log_bound_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3865,6 +3883,8 @@ Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: Use monicity to obta
 
 Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: Obtain P and its index from the log-budget helper after dropping the nonnegative alpha logarithm term. Use three_small_factors for powers of2 and 1+abs(alpha), deduce positivity of B from a nonzero coefficient of P, and identify B*(B^delta)^3 with B^(1+3delta). Use Nat.floor_le to enlarge RSet and abs_eval_iterated_hasseDeriv_lt_aux for the uniform evaluation estimate, then linear_combination closes the power identity. The sole index-gap caller additionally bounds Theta by eta; it is not part of this helper.
 
+Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: Write the nonzero dimension m as n+1. The positive square-log bound and delta>=0 imply delta>0; multiply through delta squared to derive the weaker logarithmic hypothesis needed by Theta_lt from delta*m<=1. Translate the last degree and adjacent ratio premises with Nat.cast_le and div_le_iff, invoke Theta_lt, and unfold eta. The sole index-gap caller first drops the nonnegative A/alpha logarithm terms. This is the numerical Theta-to-selected-eta specialization, distinct from constructing the auxiliary polynomial.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4392,6 +4412,8 @@ Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: The structural revi
 Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
+
+Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: The structural review distinguishes this helper from adjacent construction and numerical-estimate stages; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -4932,6 +4954,8 @@ Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: No public generality
 
 Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5460,6 +5484,8 @@ Completed `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux`: No new primitive is
 Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -5992,6 +6018,8 @@ Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux`: Retain a live privat
 
 Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.theta_lt_eta_of_sq_log_bound_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -6259,6 +6287,7 @@ Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux`: Retain a live pri
 | 261 | `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_of_rpow_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_mem_RSet_le_index_of_rpow_bound_aux/root-acceptance.json) |
 | 262 | `Roth.exists_mem_RSet_le_index_of_log_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_mem_RSet_le_index_of_log_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_mem_RSet_le_index_of_log_bound_aux/root-acceptance.json) |
 | 263 | `Roth.exists_auxiliary_polynomial_of_log_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_auxiliary_polynomial_of_log_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_auxiliary_polynomial_of_log_bound_aux/root-acceptance.json) |
+| 264 | `Roth.theta_lt_eta_of_sq_log_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_eta_of_sq_log_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_lt_eta_of_sq_log_bound_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6784,12 +6813,14 @@ Completed `Roth.exists_mem_RSet_le_index_of_log_bound_aux` action: Keep unchange
 
 Completed `Roth.exists_auxiliary_polynomial_of_log_bound_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.theta_lt_eta_of_sq_log_bound_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.theta_lt_eta_of_sq_log_bound_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_auxiliary_polynomial_with_index_gap_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

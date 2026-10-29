@@ -1,0 +1,20 @@
+private lemma theta_lt_eta_of_sq_log_bound_aux {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ)
+    (hδm : δ * (m : ℝ) ≤ 1) {r q : Fin m → ℕ} (hrlast : 3 ≤ r (Fin.rev 0))
+    (hratio : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)
+    (hL : 2 * (m : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
+    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < eta δ m := by
+  obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)
+  let M : ℝ := (n + 1 : ℕ)
+  have hδpos : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by
+    simpa [← he] using ((by positivity : 0 < 2 * M + 1).trans_le hL)
+  have hq : M * (2 * M + 1) / δ ≤ Real.log (q 0) := by
+    apply (mul_le_mul_iff_of_pos_right (sq_pos_of_pos hδpos)).1
+    convert ((mul_le_mul_of_nonneg_right hδm (by positivity : 0 ≤ 2 * M + 1)).trans_eq
+      (one_mul _)).trans hL using 1
+    all_goals field_simp
+    all_goals ring
+  simpa [eta] using Θ_lt n hδpos
+    (by simpa only [Fin.rev_zero, Nat.cast_ofNat] using (Nat.cast_le (α := ℝ)).2 hrlast)
+    (fun i ↦ by simpa [mul_comm] using ((div_le_iff₀ hδpos).1 (hratio _ _ (by simp))))
+    (by simpa [M] using hq) hqr
