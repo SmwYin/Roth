@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-29. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 249 / 293 written declarations.**
+**Completed: 250 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -257,10 +257,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 247 | `Roth.floor_rpow_count_lt_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.floor_rpow_count_lt_aux.md) |
 | 248 | `Roth.pigeonhole_count` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.pigeonhole_count.md) |
 | 249 | `Roth.exists_ne_modByMonic_eq` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.exists_ne_modByMonic_eq.md) |
+| 250 | `Roth.sub_mem_RSet` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.sub_mem_RSet.md) |
 
-Completed reassessment of `Roth.exists_ne_modByMonic_eq`: the finite-support assumption is verified removable; the detailed report and evidence supersede the earlier completed assessment. Production Lean is unchanged.
-
-**Next declaration: `Roth.sub_mem_RSet`**, `Roth/MainLemma.lean:388`.
+**Next declaration: `Roth.eval_hasseDeriv_sub_eq_zero`**, `Roth/MainLemma.lean:402`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

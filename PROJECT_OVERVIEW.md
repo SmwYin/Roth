@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-29. **IN PROGRESS — 249/293 declaration assessments complete.**
+Updated: 2026-10-29. **IN PROGRESS — 250/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 249; remaining: 44.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 86 BORDERLINE-needs-human, 59 SKIP.
+- Completed applicable assessments: 250; remaining: 43.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 87 BORDERLINE-needs-human, 59 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -3064,6 +3064,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit proof caller, private Roth.exists_mem_RSet_le_index_aux at MainLemma:550, call557. No external-to-file proof callers or direct type consumers. Full caller inlining preserves its signature. Additional full-module replay replaces the target by its noFinite-support strengthening, recovers the exact original type, and preserves the actual caller signature; stronger proof/caller contain no original target call.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_ne_modByMonic_eq.md).
 
+### Completed: `Roth.sub_mem_RSet`
+
+- Type: `∀ {σ : Type u_1} {r : σ → ℕ} {B : ℕ} {W' W'' : MvPolynomial σ ℤ},
+  W' ∈ Roth.boxFamily r B → W'' ∈ Roth.boxFamily r B → W' ≠ W'' → W' - W'' ∈ Roth.RSet (↑B) r`
+- What: The difference of distinct integer polynomials in the nonnegative coefficient box is nonzero, has the same coordinate degree bounds, and has absolute coefficients bounded by B.
+- How: Combine sub_ne_zero, coordinate-degree subadditivity/max_le, and the interval diameter theorem abs_sub_le_of_nonneg_of_le after coefficient and cast transport.
+- Hypotheses: An arbitrary variable type, arbitrary natural degree bounds and natural B, two boxFamily memberships, and distinctness; no finiteness or positivity assumptions.
+- Project dependencies: Roth.boxFamily
+- Caller summary: One actual proof caller, the private exists_mem_RSet_le_index_aux in MainLemma at560; no external-to-file uses or direct type consumers. Full caller inlining retains its signature and continuation.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sub_mem_RSet.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3588,6 +3599,8 @@ Completed `Roth.pigeonhole_count`: Existing rpow/floor/order primitives are appr
 
 Completed `Roth.exists_ne_modByMonic_eq`: Existing finite-map collision and low-degree monic remainder reconstruction verified; finite-ring polynomial collision is related but does not apply to integer interval alphabets. Complete original is not <=3 existing mathlib calls. Infinite-source finite-target collision is also already mathlib as Finite.exists_ne_map_eq_of_infinite; all five new abstract-form searches and pinned native checks confirm it. Finprod default semantics do not give a source cardinality for infinite boxFamily.
 
+Completed `Roth.sub_mem_RSet`: Existing degreeOf_sub_le, coeff_sub, sub_ne_zero and generated ordered-group abs_sub_le_of_nonneg_of_le/abs_sub_le_of_le_of_le cover the leaves. No verified exact whole-tuple replacement.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -4087,6 +4100,8 @@ Completed `Roth.floor_rpow_count_lt_aux`: The structural review distinguishes th
 Completed `Roth.pigeonhole_count`: {'other': 'Roth.floor_rpow_count_lt_aux', 'same_statement': False, 'same_proof': False, 'action': 'Keep scalar floor bound distinct from exponent-budget lifting.'}, {'other': 'Roth.exists_ne_modByMonic_eq', 'same_statement': False, 'same_proof': False, 'action': 'Keep arithmetic size comparison distinct from finite pigeonhole existence.'}
 
 Completed `Roth.exists_ne_modByMonic_eq`: Generic collision duplicates Fintype pigeonhole only after a substantive polynomial encoding and project box cardinality bridge; pigeonhole_count supplies the budget and ncard_boxFamily supplies source size, neither is the same theorem.
+
+Completed `Roth.sub_mem_RSet`: Only scalar/degree/nonzero leaves coincide with existing mathlib theorems. The complete membership tuple is not identical to any one of them; a new scratch generic interval helper is a specialization route, not existing API.
 
 ## Part 5: Generalization opportunities
 
@@ -4599,6 +4614,8 @@ Completed `Roth.pigeonhole_count`: verified: theorem powerBudget {a b t : ℝ} {
 
 Completed `Roth.exists_ne_modByMonic_eq`: STRICTLY NARROWER THAN STANDARD: deleting [Finite (Function.support r)] alone is verified by two clean independent proofs. Preferred constants route: finite branch original proof; infinite support gives finprod(r+1)=1 and the all-zero degree subfamily suffices. Independent Xi route uses infinitely many admissible variables and existing Finite.exists_ne_map_eq_of_infinite. Abstract finite/infinite polynomial observations are both compiled; full generalized Lean type is in generalized-type.json.
 
+Completed `Roth.sub_mem_RSet`: Verified ordered commutative ring interval endpoints yield diameter ub-lb, with original integer/RSet specialization preserving B. A size/set diameter helper supports semantic coefficient ranges. Parent-family representation changes are a separate API decision.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -5099,6 +5116,8 @@ Completed `Roth.floor_rpow_count_lt_aux`: No new primitive is needed for this in
 Completed `Roth.pigeonhole_count`: Possible arbitrary strict-base/exponent-budget lifting law with explicit zero-exponent behavior; public value undecided., Possible scalar floor-count estimate; supplied project helper is not existing mathlib.
 
 Completed `Roth.exists_ne_modByMonic_eq`: Potential finite-alphabet polynomial-observation collision bridge, with finite/infinite source handling. Both outer pigeonhole principles and low-degree monic reconstruction already exist; finite support is not a missing mathematical prerequisite.
+
+Completed `Roth.sub_mem_RSet`: Possible combined coefficient-family subtraction inclusion with degree bounds; three concrete future upstream design questions in report.
 
 ## Part 7: Junk / removable
 
@@ -5603,6 +5622,8 @@ Completed `Roth.pigeonhole_count`: Not dead: one private actual caller and trans
 
 Completed `Roth.exists_ne_modByMonic_eq`: Used once in the central auxiliary-polynomial construction. Inlining verified but expands the caller by the complete encoding proof; no dead-code or <=3-call wrapper finding.
 
+Completed `Roth.sub_mem_RSet`: Used by one actual caller and transitively main_lemma; not dead code. Optional local inlining compiled, but the full tuple is not a ≤3 existing-call wrapper.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5856,6 +5877,7 @@ Completed `Roth.exists_ne_modByMonic_eq`: Used once in the central auxiliary-pol
 | 247 | `Roth.floor_rpow_count_lt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.floor_rpow_count_lt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.floor_rpow_count_lt_aux/root-acceptance.json) |
 | 248 | `Roth.pigeonhole_count` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.pigeonhole_count.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.pigeonhole_count/root-acceptance.json) |
 | 249 | `Roth.exists_ne_modByMonic_eq` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_ne_modByMonic_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_ne_modByMonic_eq/root-acceptance.json) |
+| 250 | `Roth.sub_mem_RSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sub_mem_RSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sub_mem_RSet/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -6353,12 +6375,14 @@ Completed `Roth.pigeonhole_count` action: Retain locally while considering the t
 
 Completed `Roth.exists_ne_modByMonic_eq` action: Recommend dropping the finite-support premise using the verified constants proof and keeping the Hasse specialization project-local while deciding the public polynomial-observation API. The verified strengthening does not by itself decide mathlib audience/API grain. No production edits in this assessment.
 
+Completed `Roth.sub_mem_RSet` action: BORDERLINE-needs-human: retain local in MainLemma; decide coefficient-family API and whether nonzero is separate before any upstream proposal. Future questions do not block this completed read-only assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.sub_mem_RSet` next. Supporting identities receive their own applicable checks.
+   `Roth.eval_hasseDeriv_sub_eq_zero` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

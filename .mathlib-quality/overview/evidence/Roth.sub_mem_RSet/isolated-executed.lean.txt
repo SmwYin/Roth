@@ -1,0 +1,113 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.sub_mem_RSet
+#check @MvPolynomial.degreeOf_sub_le
+#check @MvPolynomial.coeff_sub
+#check @sub_ne_zero
+#check @abs_sub_le_of_nonneg_of_le
+#check @abs_sub_le_of_le_of_le
+namespace Difference250
+open MvPolynomial
+
+theorem interval_sub {σ R : Type*} [CommRing R] [LinearOrder R] [IsOrderedAddMonoid R]
+    {r : σ → ℕ} {lb ub : R} {p q : MvPolynomial σ R}
+    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, lb ≤ p.coeff d ∧ p.coeff d ≤ ub)
+    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, lb ≤ q.coeff d ∧ q.coeff d ≤ ub)
+    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧
+      ∀ d, |(p - q).coeff d| ≤ ub - lb := by
+  refine ⟨sub_ne_zero.mpr hne, fun j ↦ (degreeOf_sub_le j p q).trans
+    (max_le (hp.1 j) (hq.1 j)), fun d ↦ ?_⟩
+  rw [coeff_sub]
+  exact abs_sub_le_of_le_of_le (hp.2 d).1 (hp.2 d).2 (hq.2 d).1 (hq.2 d).2
+
+theorem integer_recovery {σ : Type*} {r : σ → ℕ} {B : ℕ} {p q : MvPolynomial σ ℤ}
+    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ B)
+    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, 0 ≤ q.coeff d ∧ q.coeff d ≤ B)
+    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧
+      ∀ d, |(p - q).coeff d| ≤ (B : ℤ) := by
+  simpa only [sub_zero] using interval_sub hp hq hne
+
+theorem sized_set_sub {σ R : Type*} [CommRing R] {r : σ → ℕ}
+    (S : (σ →₀ ℕ) → Set R) (size : R → ℝ) (B : (σ →₀ ℕ) → ℝ)
+    (hdiam : ∀ d, ∀ a ∈ S d, ∀ b ∈ S d, size (a - b) ≤ B d)
+    {p q : MvPolynomial σ R}
+    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, p.coeff d ∈ S d)
+    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, q.coeff d ∈ S d)
+    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧
+      ∀ d, size ((p - q).coeff d) ≤ B d := by
+  refine ⟨sub_ne_zero.mpr hne, fun j ↦ (degreeOf_sub_le j p q).trans
+    (max_le (hp.1 j) (hq.1 j)), fun d ↦ ?_⟩
+  rw [coeff_sub]
+  exact hdiam d _ (hp.2 d) _ (hq.2 d)
+
+theorem coefficients_zero {σ : Type*} {p : MvPolynomial σ ℤ}
+    (hp : ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ 0) : p = 0 := by
+  ext d
+  exact le_antisymm (hp d).2 (hp d).1
+
+theorem zero_bound_no_distinct {σ : Type*} {p q : MvPolynomial σ ℤ}
+    (hp : ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ 0)
+    (hq : ∀ d, 0 ≤ q.coeff d ∧ q.coeff d ≤ 0) : p = q :=
+  (coefficients_zero hp).trans (coefficients_zero hq).symm
+
+theorem equal_difference_not_nonzero {σ : Type*} (p : MvPolynomial σ ℤ) :
+    ¬ p - p ≠ 0 := by simp
+
+theorem sharp_constant (B : ℕ) :
+    |((C (B : ℤ) - (0 : MvPolynomial Empty ℤ)).coeff 0)| = (B : ℤ) := by simp
+
+theorem sharp_nonzero_empty {B : ℕ} (hB : 0 < B) :
+    (C (B : ℤ) : MvPolynomial Empty ℤ) ≠ 0 ∧
+      |((C (B : ℤ) - (0 : MvPolynomial Empty ℤ)).coeff 0)| = (B : ℤ) := by
+  refine ⟨C_ne_zero.mpr ?_, sharp_constant B⟩
+  exact_mod_cast (Nat.ne_of_gt hB)
+
+theorem zero_degree_constant (B : ℕ) :
+    (∀ j : ℕ, degreeOf j (C (B : ℤ) : MvPolynomial ℕ ℤ) ≤ 0) ∧
+    ∀ d, 0 ≤ (C (B : ℤ) : MvPolynomial ℕ ℤ).coeff d ∧
+      (C (B : ℤ) : MvPolynomial ℕ ℤ).coeff d ≤ B := by
+  constructor
+  · intro j
+    exact (degreeOf_C _ _).le
+  · intro d
+    by_cases hd : d = 0
+    · subst d
+      simp
+    · simp [hd]
+
+theorem lack_nonneg_fails : |((1 : ℤ) - (-1))| > 1 := by norm_num
+
+theorem lack_upper_fails : |((2 : ℤ) - 0)| > 1 := by norm_num
+
+example {σ : Type*} {r : σ → ℕ} {B : ℕ} {p q : MvPolynomial σ ℤ}
+    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ B)
+    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, 0 ≤ q.coeff d ∧ q.coeff d ≤ B)
+    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧
+      ∀ d, |(p - q).coeff d| ≤ (B : ℤ) := by
+  fail_if_success solve | simp only [coeff_sub, sub_ne_zero]
+  exact integer_recovery hp hq hne
+end Difference250
+#print axioms Difference250.interval_sub
+#print axioms Difference250.integer_recovery
+#print axioms Difference250.sized_set_sub
+#print axioms Difference250.zero_bound_no_distinct
+#print axioms Difference250.sharp_constant
+#print axioms Difference250.sharp_nonzero_empty
+#print axioms Difference250.zero_degree_constant

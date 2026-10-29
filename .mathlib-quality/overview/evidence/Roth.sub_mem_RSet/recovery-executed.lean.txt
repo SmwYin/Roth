@@ -1,0 +1,45 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+namespace Difference250Project
+open Roth MvPolynomial
+theorem interval_sub {σ R : Type*} [CommRing R] [LinearOrder R] [IsOrderedAddMonoid R]
+    {r : σ → ℕ} {lb ub : R} {p q : MvPolynomial σ R}
+    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, lb ≤ p.coeff d ∧ p.coeff d ≤ ub)
+    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, lb ≤ q.coeff d ∧ q.coeff d ≤ ub)
+    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧
+      ∀ d, |(p - q).coeff d| ≤ ub - lb := by
+  refine ⟨sub_ne_zero.mpr hne, fun j ↦ (degreeOf_sub_le j p q).trans
+    (max_le (hp.1 j) (hq.1 j)), fun d ↦ ?_⟩
+  rw [coeff_sub]
+  exact abs_sub_le_of_le_of_le (hp.2 d).1 (hp.2 d).2 (hq.2 d).1 (hq.2 d).2
+
+theorem recovery {σ : Type*} {r : σ → ℕ} {B : ℕ} {W' W'' : MvPolynomial σ ℤ}
+    (h' : W' ∈ boxFamily r B) (h'' : W'' ∈ boxFamily r B) (hne : W' ≠ W'') :
+    W' - W'' ∈ RSet B r := by
+  obtain ⟨hn, hd, hc⟩ := interval_sub (lb := (0 : ℤ)) (ub := (B : ℤ)) h' h'' hne
+  refine ⟨hn, hd, fun d ↦ ?_⟩
+  have hc' : |(W' - W'').coeff d| ≤ (B : ℤ) := by
+    simpa only [sub_zero] using hc d
+  exact_mod_cast hc'
+
+end Difference250Project
+#print axioms Difference250Project.recovery
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let old ← Lean.getConstInfo `Roth.sub_mem_RSet
+  let new ← Lean.getConstInfo `Difference250Project.recovery
+  unless ← Lean.Meta.isDefEq old.type new.type do throwError "DIFF250_RECOVERY_SIGNATURE_CHANGED"
+  Lean.logInfo "DIFF250_RECOVERY_SIGNATURE_IDENTICAL"

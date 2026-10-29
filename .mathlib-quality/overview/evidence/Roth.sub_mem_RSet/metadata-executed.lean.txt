@@ -1,0 +1,23 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+
+/-! Scratch checks for the read-only whole-project overview. -/
+
+open MvPolynomial
+
+
+
+
+run_cmd do
+  let ci ← Lean.getConstInfo `Roth.sub_mem_RSet
+  Lean.logInfo m!"DIFF250_TYPE_CONSTANTS: {ci.type.getUsedConstants}"
+  let some v := ci.value? (allowOpaque := true) | throwError "DIFF250_NO_VALUE"
+  Lean.logInfo m!"DIFF250_BODY_CONSTANTS: {v.getUsedConstants}"
+#print axioms Roth.sub_mem_RSet

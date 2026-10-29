@@ -1,0 +1,17 @@
+{
+  "type": "∀ {σ : Type u_1} {r : σ → ℕ} {B : ℕ} {W' W'' : MvPolynomial σ ℤ},\n  W' ∈ Roth.boxFamily r B → W'' ∈ Roth.boxFamily r B → W' ≠ W'' → W' - W'' ∈ Roth.RSet (↑B) r",
+  "kind": "theorem",
+  "what": "The difference of distinct integer polynomials in the nonnegative coefficient box is nonzero, has the same coordinate degree bounds, and has absolute coefficients bounded by B.",
+  "how": "Combine sub_ne_zero, coordinate-degree subadditivity/max_le, and the interval diameter theorem abs_sub_le_of_nonneg_of_le after coefficient and cast transport.",
+  "hypotheses": "An arbitrary variable type, arbitrary natural degree bounds and natural B, two boxFamily memberships, and distinctness; no finiteness or positivity assumptions.",
+  "project_dependencies": [
+    "Roth.boxFamily"
+  ],
+  "caller_summary": "One actual proof caller, the private exists_mem_RSet_le_index_aux in MainLemma at560; no external-to-file uses or direct type consumers. Full caller inlining retains its signature and continuation.",
+  "mathlib_api_audit": "Existing degreeOf_sub_le, coeff_sub, sub_ne_zero and generated ordered-group abs_sub_le_of_nonneg_of_le/abs_sub_le_of_le_of_le cover the leaves. No verified exact whole-tuple replacement.",
+  "moral_duplications": "Only scalar/degree/nonzero leaves coincide with existing mathlib theorems. The complete membership tuple is not identical to any one of them; a new scratch generic interval helper is a specialization route, not existing API.",
+  "generalization": "Verified ordered commutative ring interval endpoints yield diameter ub-lb, with original integer/RSet specialization preserving B. A size/set diameter helper supports semantic coefficient ranges. Parent-family representation changes are a separate API decision.",
+  "missing_api": "Possible combined coefficient-family subtraction inclusion with degree bounds; three concrete future upstream design questions in report.",
+  "junk": "Used by one actual caller and transitively main_lemma; not dead code. Optional local inlining compiled, but the full tuple is not a ≤3 existing-call wrapper.",
+  "action": "BORDERLINE-needs-human: retain local in MainLemma; decide coefficient-family API and whether nonzero is separate before any upstream proposal. Future questions do not block this completed read-only assessment."
+}

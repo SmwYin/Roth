@@ -1,0 +1,158 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sub_mem_RSet\n#check @MvPolynomial.degreeOf_sub_le\n#check @MvPolynomial.coeff_sub\n#check @sub_ne_zero\n#check @abs_sub_le_of_nonneg_of_le\n#check @abs_sub_le_of_le_of_le\nnamespace Difference250\nopen MvPolynomial\n\ntheorem interval_sub {σ R : Type*} [CommRing R] [LinearOrder R] [IsOrderedAddMonoid R]\n    {r : σ → ℕ} {lb ub : R} {p q : MvPolynomial σ R}\n    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, lb ≤ p.coeff d ∧ p.coeff d ≤ ub)\n    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, lb ≤ q.coeff d ∧ q.coeff d ≤ ub)\n    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧\n      ∀ d, |(p - q).coeff d| ≤ ub - lb := by\n  refine ⟨sub_ne_zero.mpr hne, fun j ↦ (degreeOf_sub_le j p q).trans\n    (max_le (hp.1 j) (hq.1 j)), fun d ↦ ?_⟩\n  rw [coeff_sub]\n  exact abs_sub_le_of_le_of_le (hp.2 d).1 (hp.2 d).2 (hq.2 d).1 (hq.2 d).2\n\ntheorem integer_recovery {σ : Type*} {r : σ → ℕ} {B : ℕ} {p q : MvPolynomial σ ℤ}\n    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ B)\n    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, 0 ≤ q.coeff d ∧ q.coeff d ≤ B)\n    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧\n      ∀ d, |(p - q).coeff d| ≤ (B : ℤ) := by\n  simpa only [sub_zero] using interval_sub hp hq hne\n\ntheorem sized_set_sub {σ R : Type*} [CommRing R] {r : σ → ℕ}\n    (S : (σ →₀ ℕ) → Set R) (size : R → ℝ) (B : (σ →₀ ℕ) → ℝ)\n    (hdiam : ∀ d, ∀ a ∈ S d, ∀ b ∈ S d, size (a - b) ≤ B d)\n    {p q : MvPolynomial σ R}\n    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, p.coeff d ∈ S d)\n    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, q.coeff d ∈ S d)\n    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧\n      ∀ d, size ((p - q).coeff d) ≤ B d := by\n  refine ⟨sub_ne_zero.mpr hne, fun j ↦ (degreeOf_sub_le j p q).trans\n    (max_le (hp.1 j) (hq.1 j)), fun d ↦ ?_⟩\n  rw [coeff_sub]\n  exact hdiam d _ (hp.2 d) _ (hq.2 d)\n\ntheorem coefficients_zero {σ : Type*} {p : MvPolynomial σ ℤ}\n    (hp : ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ 0) : p = 0 := by\n  ext d\n  exact le_antisymm (hp d).2 (hp d).1\n\ntheorem zero_bound_no_distinct {σ : Type*} {p q : MvPolynomial σ ℤ}\n    (hp : ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ 0)\n    (hq : ∀ d, 0 ≤ q.coeff d ∧ q.coeff d ≤ 0) : p = q :=\n  (coefficients_zero hp).trans (coefficients_zero hq).symm\n\ntheorem equal_difference_not_nonzero {σ : Type*} (p : MvPolynomial σ ℤ) :\n    ¬ p - p ≠ 0 := by simp\n\ntheorem sharp_constant (B : ℕ) :\n    |((C (B : ℤ) - (0 : MvPolynomial Empty ℤ)).coeff 0)| = (B : ℤ) := by simp\n\ntheorem sharp_nonzero_empty {B : ℕ} (hB : 0 < B) :\n    (C (B : ℤ) : MvPolynomial Empty ℤ) ≠ 0 ∧\n      |((C (B : ℤ) - (0 : MvPolynomial Empty ℤ)).coeff 0)| = (B : ℤ) := by\n  refine ⟨C_ne_zero.mpr ?_, sharp_constant B⟩\n  exact_mod_cast (Nat.ne_of_gt hB)\n\ntheorem zero_degree_constant (B : ℕ) :\n    (∀ j : ℕ, degreeOf j (C (B : ℤ) : MvPolynomial ℕ ℤ) ≤ 0) ∧\n    ∀ d, 0 ≤ (C (B : ℤ) : MvPolynomial ℕ ℤ).coeff d ∧\n      (C (B : ℤ) : MvPolynomial ℕ ℤ).coeff d ≤ B := by\n  constructor\n  · intro j\n    simp\n  · intro d\n    by_cases hd : d = 0\n    · subst d\n      simp\n    · simp [coeff_C, hd]\n\ntheorem lack_nonneg_fails : |((1 : ℤ) - (-1))| > 1 := by norm_num\n\ntheorem lack_upper_fails : |((2 : ℤ) - 0)| > 1 := by norm_num\n\nexample {σ : Type*} {r : σ → ℕ} {B : ℕ} {p q : MvPolynomial σ ℤ}\n    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ B)\n    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, 0 ≤ q.coeff d ∧ q.coeff d ≤ B)\n    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧\n      ∀ d, |(p - q).coeff d| ≤ (B : ℤ) := by\n  fail_if_success solve | simp only [coeff_sub, sub_ne_zero]\n  exact integer_recovery hp hq hne\nend Difference250\n#print axioms Difference250.interval_sub\n#print axioms Difference250.integer_recovery\n#print axioms Difference250.sized_set_sub\n#print axioms Difference250.zero_bound_no_distinct\n#print axioms Difference250.sharp_constant\n#print axioms Difference250.sharp_nonzero_empty\n#print axioms Difference250.zero_degree_constant\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sub_mem_RSet`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.degreeOf_sub_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommRing R] (i : σ) (p q : MvPolynomial σ R),\\n  MvPolynomial.degreeOf i (p - q) ≤ max (MvPolynomial.degreeOf i p) (MvPolynomial.degreeOf i q)\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.coeff_sub : ∀ {R : Type u_1} (σ : Type u_2) [inst : CommRing R] (m : σ →₀ ℕ) (p q : MvPolynomial σ R),\\n  (p - q).coeff m = p.coeff m - q.coeff m\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@sub_ne_zero : ∀ {G : Type u_1} [inst : AddGroup G] {a b : G}, a - b ≠ 0 ↔ a ≠ b\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@abs_sub_le_of_nonneg_of_le : ∀ {G : Type u_1} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [IsOrderedAddMonoid G]\\n  {a b n : G}, 0 ≤ a → a ≤ n → 0 ≤ b → b ≤ n → |a - b| ≤ n\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@abs_sub_le_of_le_of_le : ∀ {G : Type u_1} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [IsOrderedAddMonoid G]\\n  {a b lb ub : G}, lb ≤ a → a ≤ ub → lb ≤ b → b ≤ ub → |a - b| ≤ ub - lb\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\ncase left\\nB j : ℕ\\n⊢ degreeOf j ↑B = 0\",\n      \"line\": 87,\n      \"column\": 3,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  coeff_C\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp [hd]\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 93,\n      \"column\": 13,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Difference250.interval_sub' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 107,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Difference250.integer_recovery' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 108,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Difference250.sized_set_sub' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 109,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Difference250.zero_bound_no_distinct' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 110,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Difference250.sharp_constant' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 111,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Difference250.sharp_nonzero_empty' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 112,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Difference250.zero_degree_constant' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 113,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sub_mem_RSet`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.degreeOf_sub_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommRing R] (i : σ) (p q : MvPolynomial σ R),\n  MvPolynomial.degreeOf i (p - q) ≤ max (MvPolynomial.degreeOf i p) (MvPolynomial.degreeOf i q)",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.coeff_sub : ∀ {R : Type u_1} (σ : Type u_2) [inst : CommRing R] (m : σ →₀ ℕ) (p q : MvPolynomial σ R),\n  (p - q).coeff m = p.coeff m - q.coeff m",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@sub_ne_zero : ∀ {G : Type u_1} [inst : AddGroup G] {a b : G}, a - b ≠ 0 ↔ a ≠ b",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@abs_sub_le_of_nonneg_of_le : ∀ {G : Type u_1} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [IsOrderedAddMonoid G]\n  {a b n : G}, 0 ≤ a → a ≤ n → 0 ≤ b → b ≤ n → |a - b| ≤ n",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@abs_sub_le_of_le_of_le : ∀ {G : Type u_1} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [IsOrderedAddMonoid G]\n  {a b lb ub : G}, lb ≤ a → a ≤ ub → lb ≤ b → b ≤ ub → |a - b| ≤ ub - lb",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\ncase left\nB j : ℕ\n⊢ degreeOf j ↑B = 0",
+          "line": 87,
+          "column": 3,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  coeff_C\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hd]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 93,
+          "column": 13,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Difference250.interval_sub' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 107,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Difference250.integer_recovery' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 108,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Difference250.sized_set_sub' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 109,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Difference250.zero_bound_no_distinct' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 110,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Difference250.sharp_constant' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 111,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Difference250.sharp_nonzero_empty' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 112,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Difference250.zero_degree_constant' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 113,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 118215
+}

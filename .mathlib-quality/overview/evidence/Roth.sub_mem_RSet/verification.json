@@ -1,0 +1,124 @@
+{
+  "declaration": "Roth.sub_mem_RSet",
+  "canonical_index": 250,
+  "completed": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-final-receipt.json",
+      "source_sha256": "231f344275c5c11717fb6fea22d1f9682aed7c991a6d698a4c25706fbe0cc7a2",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "DIFF250_SIGNATURE_IDENTICAL",
+        "DIFF250_AUDIT: requested=293; unique=293",
+        "DIFF250_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "run_code",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "0aba9784479b10dca4ba985277d82d3b855206cbc1ee4d250053e865715435f1",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sub_mem_RSet\n#check @MvPolynomial.degreeOf_sub_le\n#check @MvPolynomial.coeff_sub\n#check @sub_ne_zero\n#check @abs_sub_le_of_nonneg_of_le\n#check @abs_sub_le_of_le_of_le\nnamespace Difference250\nopen MvPolynomial\n\ntheorem interval_sub {σ R : Type*} [CommRing R] [LinearOrder R] [IsOrderedAddMonoid R]\n    {r : σ → ℕ} {lb ub : R} {p q : MvPolynomial σ R}\n    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, lb ≤ p.coeff d ∧ p.coeff d ≤ ub)\n    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, lb ≤ q.coeff d ∧ q.coeff d ≤ ub)\n    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧\n      ∀ d, |(p - q).coeff d| ≤ ub - lb := by\n  refine ⟨sub_ne_zero.mpr hne, fun j ↦ (degreeOf_sub_le j p q).trans\n    (max_le (hp.1 j) (hq.1 j)), fun d ↦ ?_⟩\n  rw [coeff_sub]\n  exact abs_sub_le_of_le_of_le (hp.2 d).1 (hp.2 d).2 (hq.2 d).1 (hq.2 d).2\n\ntheorem integer_recovery {σ : Type*} {r : σ → ℕ} {B : ℕ} {p q : MvPolynomial σ ℤ}\n    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ B)\n    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, 0 ≤ q.coeff d ∧ q.coeff d ≤ B)\n    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧\n      ∀ d, |(p - q).coeff d| ≤ (B : ℤ) := by\n  simpa only [sub_zero] using interval_sub hp hq hne\n\ntheorem sized_set_sub {σ R : Type*} [CommRing R] {r : σ → ℕ}\n    (S : (σ →₀ ℕ) → Set R) (size : R → ℝ) (B : (σ →₀ ℕ) → ℝ)\n    (hdiam : ∀ d, ∀ a ∈ S d, ∀ b ∈ S d, size (a - b) ≤ B d)\n    {p q : MvPolynomial σ R}\n    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, p.coeff d ∈ S d)\n    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, q.coeff d ∈ S d)\n    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧\n      ∀ d, size ((p - q).coeff d) ≤ B d := by\n  refine ⟨sub_ne_zero.mpr hne, fun j ↦ (degreeOf_sub_le j p q).trans\n    (max_le (hp.1 j) (hq.1 j)), fun d ↦ ?_⟩\n  rw [coeff_sub]\n  exact hdiam d _ (hp.2 d) _ (hq.2 d)\n\ntheorem coefficients_zero {σ : Type*} {p : MvPolynomial σ ℤ}\n    (hp : ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ 0) : p = 0 := by\n  ext d\n  exact le_antisymm (hp d).2 (hp d).1\n\ntheorem zero_bound_no_distinct {σ : Type*} {p q : MvPolynomial σ ℤ}\n    (hp : ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ 0)\n    (hq : ∀ d, 0 ≤ q.coeff d ∧ q.coeff d ≤ 0) : p = q :=\n  (coefficients_zero hp).trans (coefficients_zero hq).symm\n\ntheorem equal_difference_not_nonzero {σ : Type*} (p : MvPolynomial σ ℤ) :\n    ¬ p - p ≠ 0 := by simp\n\ntheorem sharp_constant (B : ℕ) :\n    |((C (B : ℤ) - (0 : MvPolynomial Empty ℤ)).coeff 0)| = (B : ℤ) := by simp\n\ntheorem sharp_nonzero_empty {B : ℕ} (hB : 0 < B) :\n    (C (B : ℤ) : MvPolynomial Empty ℤ) ≠ 0 ∧\n      |((C (B : ℤ) - (0 : MvPolynomial Empty ℤ)).coeff 0)| = (B : ℤ) := by\n  refine ⟨C_ne_zero.mpr ?_, sharp_constant B⟩\n  exact_mod_cast (Nat.ne_of_gt hB)\n\ntheorem zero_degree_constant (B : ℕ) :\n    (∀ j : ℕ, degreeOf j (C (B : ℤ) : MvPolynomial ℕ ℤ) ≤ 0) ∧\n    ∀ d, 0 ≤ (C (B : ℤ) : MvPolynomial ℕ ℤ).coeff d ∧\n      (C (B : ℤ) : MvPolynomial ℕ ℤ).coeff d ≤ B := by\n  constructor\n  · intro j\n    exact (degreeOf_C _ _).le\n  · intro d\n    by_cases hd : d = 0\n    · subst d\n      simp\n    · simp [hd]\n\ntheorem lack_nonneg_fails : |((1 : ℤ) - (-1))| > 1 := by norm_num\n\ntheorem lack_upper_fails : |((2 : ℤ) - 0)| > 1 := by norm_num\n\nexample {σ : Type*} {r : σ → ℕ} {B : ℕ} {p q : MvPolynomial σ ℤ}\n    (hp : (∀ j, degreeOf j p ≤ r j) ∧ ∀ d, 0 ≤ p.coeff d ∧ p.coeff d ≤ B)\n    (hq : (∀ j, degreeOf j q ≤ r j) ∧ ∀ d, 0 ≤ q.coeff d ∧ q.coeff d ≤ B)\n    (hne : p ≠ q) : p - q ≠ 0 ∧ (∀ j, degreeOf j (p - q) ≤ r j) ∧\n      ∀ d, |(p - q).coeff d| ≤ (B : ℤ) := by\n  fail_if_success solve | simp only [coeff_sub, sub_ne_zero]\n  exact integer_recovery hp hq hne\nend Difference250\n#print axioms Difference250.interval_sub\n#print axioms Difference250.integer_recovery\n#print axioms Difference250.sized_set_sub\n#print axioms Difference250.zero_bound_no_distinct\n#print axioms Difference250.sharp_constant\n#print axioms Difference250.sharp_nonzero_empty\n#print axioms Difference250.zero_degree_constant\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "Difference250.interval_sub",
+        "Difference250.integer_recovery",
+        "Difference250.sized_set_sub",
+        "Difference250.zero_bound_no_distinct",
+        "Difference250.sharp_constant",
+        "Difference250.zero_degree_constant"
+      ]
+    },
+    {
+      "label": "recovery",
+      "format": "disk",
+      "source": "recovery-executed.lean.txt",
+      "receipt": "recovery-receipt.json",
+      "source_sha256": "b7efe7b85417fbccb5fa254c1e9df3b4c836ae6d3079c7fda36c5480f4aa3f89",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "DIFF250_RECOVERY_SIGNATURE_IDENTICAL"
+      ]
+    },
+    {
+      "label": "inline",
+      "format": "disk",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "source_sha256": "958076424dc61cedb8af7da63ac30bd6146ecb3297c70ce560807690ca697c96",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "DIFF250_INLINE_SIGNATURE_IDENTICAL",
+        "DIFF250_INLINE_NO_TARGET"
+      ]
+    },
+    {
+      "label": "metadata",
+      "format": "disk",
+      "source": "metadata-executed.lean.txt",
+      "receipt": "metadata-receipt.json",
+      "source_sha256": "75c17dd98b45ec33b352d85eca35dd6fa2c6b5b73570e1f90e350a451c0a6a17",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 60
+      },
+      "native_region_start_line": 17,
+      "required_info": [
+        "DIFF250_TYPE_CONSTANTS:",
+        "DIFF250_BODY_CONSTANTS:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "isolated-rejected-executed.lean.txt",
+      "receipt": "isolated-rejected-receipt.json",
+      "format": "run_code"
+    }
+  ],
+  "warming": [
+    {
+      "receipt": "original-receipt.json",
+      "source": "original-executed.lean.txt"
+    }
+  ],
+  "full_actual_callers": {
+    "count": 1,
+    "original_signatures_verified": 1,
+    "complete_original_module_inline": true,
+    "target_absent_from_new_caller": true
+  },
+  "controls": {
+    "shared_prefix_sha256": "21ab5855caf720fa179e2823c041474682e949f2c298e3096be6e1877dd55217",
+    "disk_prefix_sha256": "fad927215a124d6928eaf99af55185c1261bcc2a834a2c2fcbda3946fa3ceafc",
+    "production_sources_unchanged": true,
+    "extra_isolated_imports": 0,
+    "shared_import_count": 18,
+    "disk_import_count": 9,
+    "file_end_build": "Not required at250; accepted228 file-end build reused; next266."
+  }
+}
