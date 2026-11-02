@@ -23,18 +23,18 @@ namespace Roth
 
 open Finset
 
-/-- If `m ≥ 2` and `λ > 2 √m`, then `√(1 - 1/m) < 1 - λ⁻²`.
+/-- If `m ≥ 1` and `λ > 2 √m`, then `√(1 - 1/m) < 1 - λ⁻²`.
 
 Source: §6, proof of Lemma 8 ("`1 - λ⁻² > 1 - 1/(4m) > √(1 - 1/m) > 0`"). -/
-theorem sqrt_one_sub_inv_lt {m : ℕ} (hm : 2 ≤ m) {lam : ℝ} (hlam : 2 * √(m : ℝ) < lam) :
+theorem sqrt_one_sub_inv_lt {m : ℕ} (hm : 1 ≤ m) {lam : ℝ} (hlam : 2 * √(m : ℝ) < lam) :
     √(1 - 1 / (m : ℝ)) < 1 - lam⁻¹ ^ 2 := by
-  have hm' : (2 : ℝ) ≤ m := by exact_mod_cast hm
+  have hm' : (1 : ℝ) ≤ m := by exact_mod_cast hm
   have hsq : 4 * (m : ℝ) < lam ^ 2 := by
     nlinarith [Real.sqrt_nonneg (m : ℝ), Real.sq_sqrt (Nat.cast_nonneg m)]
   have hu : lam⁻¹ ^ 2 < 1 / m / 4 := by
     rw [inv_pow, div_div, ← one_div]
     exact one_div_lt_one_div_of_lt (by positivity) (by linarith)
-  rw [Real.sqrt_lt' (by linarith [one_div_le_one_div_of_le two_pos hm'])]
+  rw [Real.sqrt_lt' (by linarith [one_div_le_one_div_of_le one_pos hm'])]
   nlinarith [sq_nonneg (lam⁻¹ ^ 2)]
 
 private lemma inv_add_inv_le {lam x : ℝ} (hlam : 2 < lam) (hx0 : 0 ≤ x) (hx2 : x ≤ 2) :
@@ -49,13 +49,11 @@ private lemma sum_inv_le {r : ℕ} (hr : 1 ≤ r) {lam : ℝ} (hlam : 2 < lam) :
   have hr' : (0 : ℝ) < r := by exact_mod_cast hr
   have h := Finset.sum_le_sum fun j (hj : j ∈ range (r + 1)) ↦ by
     have hjr : j ≤ r := Nat.lt_succ_iff.1 (mem_range.1 hj)
-    have hx2 : 2 * (j : ℝ) / r ≤ 2 := by
-      rw [div_le_iff₀ hr']
-      gcongr
-    simpa only [show 2 - 2 * (j : ℝ) / r = 2 * ((r + 1 - 1 - j : ℕ) : ℝ) / r by
-      rw [Nat.add_sub_cancel, Nat.cast_sub hjr]
+    have hx2 : 2 * (j : ℝ) / r ≤ 2 := (div_le_iff₀ hr').2 (by gcongr)
+    simpa only [show 2 - 2 * (j : ℝ) / r = 2 * ((r - j : ℕ) : ℝ) / r by
+      rw [Nat.cast_sub hjr]
       field_simp] using inv_add_inv_le hlam (by positivity) hx2
-  rw [Finset.sum_add_distrib, Finset.sum_range_reflect (fun j : ℕ ↦ (lam - 1 + 2 * (j : ℝ) / r)⁻¹),
+  rw [Finset.sum_add_distrib, Finset.sum_flip (fun j : ℕ ↦ (lam - 1 + 2 * (j : ℝ) / r)⁻¹),
     Finset.sum_const, card_range, nsmul_eq_mul, mul_div_assoc] at h
   push_cast at h
   linarith
@@ -84,7 +82,7 @@ theorem sum_inv_lt {r m : ℕ} (hr : 1 ≤ r) (hm : 2 ≤ m) {lam : ℝ} (hlam :
     _ < (r + 1) * (lam⁻¹ / √(1 - 1 / (m : ℝ))) := by
       rw [hlam']
       gcongr
-      exact sqrt_one_sub_inv_lt hm hlam
+      exact sqrt_one_sub_inv_lt (one_le_two.trans hm) hlam
     _ = _ := by
       rw [hsqrt]
       field_simp
@@ -152,7 +150,7 @@ private lemma card_filter_fiber_eq {n : ℕ} (r : Fin (n + 1) → ℕ) (lam : �
         ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / r (Fin.last n))) / 2).card : ℝ) := by
   congr 2
   refine Finset.filter_congr fun d _ ↦ ?_
-  rw [weight_add, weight_mapDomain (Fin.castSucc_injective n), weight_single, mul_div_assoc]
+  rw [weight_add, weight_mapDomain, weight_single, mul_div_assoc]
   grind
 
 private lemma card_filter_weight_le_of_le_sqrt_aux (m : ℕ) (r : Fin m → ℕ) {lam : ℝ}

@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Ramin Takloo-Bighash, Samuel Yin
 -/
 
-import Mathlib.Algebra.Order.Group.Int.Sum
 import Mathlib.Algebra.Polynomial.HasseDeriv
 import Mathlib.LinearAlgebra.Dimension.OrzechProperty
 import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
@@ -14,8 +13,8 @@ import Mathlib.LinearAlgebra.Vandermonde
 # Wronskians of finitely many univariate polynomials
 
 For `φ : Fin l → K[X]` the Wronskian is `det (hasseDeriv μ (φ ν))_{μ ν}` (Hasse derivatives
-`(1/μ!) d^μ/dt^μ`). Over a field of characteristic zero it vanishes iff the family is linearly
-dependent. Mathlib's `Polynomial.wronskian` only treats two polynomials, so the `l × l`
+`(1/μ!) d^μ/dt^μ`). Over a field of characteristic zero, a linearly independent family has nonzero
+Wronskian. Mathlib's `Polynomial.wronskian` only treats two polynomials, so the `l × l`
 determinant is set up here.
 
 ## Main definitions
@@ -29,16 +28,16 @@ determinant is set up here.
   divided by `∏ μ!`.
 * `Roth.wronskian_ne_zero_of_natDegree_injective`: a family of nonzero polynomials of pairwise
   distinct degrees has nonzero Wronskian.
-* `Roth.wronskian_eq_zero_iff`: in characteristic zero, the Wronskian vanishes iff the family is
-  linearly dependent.
+* `Roth.wronskian_ne_zero_of_linearIndependent`: in characteristic zero, a linearly independent
+  family has nonzero Wronskian.
 
 ## Implementation notes
 
-The hard direction reduces to the case of distinct degrees by column operations
+The proof reduces to the case of distinct degrees by column operations
 `φ ν' ↦ φ ν' - c φ ν` (`Roth.wronskian_update_sub_smul`), which preserve linear independence and,
 for a suitable `c`, strictly decrease the total degree (`Roth.sum_natDegree_update_lt`). In the
 distinct-degree case the coefficient of the top possible degree is computed explicitly
-(`Roth.coeff_wronskian_of_natDegree_injective`).
+(`Roth.coeff_wronskian_sum_natDegree_sub`).
 
 ## References
 
@@ -58,18 +57,6 @@ noncomputable def wronskianMatrix (φ : Fin l → K[X]) : Matrix (Fin l) (Fin l)
 
 /-- The Wronskian `det (hasseDeriv μ (φ ν))_{μ, ν}`. Source: §2, definition of `W`. -/
 noncomputable def wronskian (φ : Fin l → K[X]) : K[X] := (wronskianMatrix φ).det
-
-/-- A linearly dependent family has vanishing Wronskian; this holds over any field.
-Source: §2, first lemma, easy direction ("Linear dependence gives a nontrivial constant linear
-relation between the columns, so the determinant vanishes"). -/
-theorem wronskian_eq_zero_of_not_linearIndependent {φ : Fin l → K[X]} (h : ¬ LinearIndependent K φ)
-    : wronskian φ = 0 := by
-  obtain ⟨g, hg, ν₀, hν₀⟩ := Fintype.not_linearIndependent_iff.1 h
-  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν ↦ C (g ν), fun h0 ↦ hν₀ ?_, ?_⟩
-  · simpa using congrFun h0 ν₀
-  · ext1 μ
-    simpa [wronskianMatrix, Matrix.mulVec, dotProduct, ← smul_eq_C_mul, mul_comm]
-      using congrArg (hasseDeriv μ) hg
 
 /-- The determinant of the binomial matrix `(d ν choose μ)_{μ, ν}` is the Vandermonde product
 `∏_{i<j} (d j - d i)` times `∏ μ, (μ!)⁻¹`.
@@ -102,24 +89,13 @@ private lemma coeff_prod_of_natDegree_le' {ι : Type*} (s : Finset ι) (f : ι �
       coeff_mul_add_eq_of_natDegree_le h.1 ((natDegree_prod_le _ _).trans (Finset.sum_le_sum h.2)),
       ih h.2]
 
-/-- `l` distinct natural numbers sum to at least `0 + 1 + ⋯ + (l - 1)`.
-Source: §2, first lemma (`D = ∑ d_ν - l(l-1)/2 ≥ 0` for distinct degrees). -/
-theorem sum_range_le_sum_of_injective (d : Fin l → ℕ) (hd : Function.Injective d) :
-    ∑ ν : Fin l, (ν : ℕ) ≤ ∑ ν, d ν := by
-  exact_mod_cast (show ((∑ ν : Fin l, (ν : ℕ) : ℕ) : ℤ) ≤
-      ((∑ ν, d ν : ℕ) : ℤ) by
-    simpa [Finset.card_image_of_injective _ hd, Finset.sum_image hd.injOn,
-      ← Fin.sum_univ_eq_sum_range, Nat.cast_sum] using
-      Finset.sum_range_le_sum (s := (Finset.univ.image d).map Nat.castEmbedding)
-        (c := 0) (by simp))
-
 /-- For a family of pairwise distinct degrees `d ν`, the coefficient of the Wronskian in degree
 `∑ d ν - ∑ ν` is `∏ (leading coefficients)` times the binomial determinant `det (d ν choose μ)`.
 The hypotheses are not needed for the identity itself, which holds for any family (both sides
 may vanish), but they are the setting in which it is used.
 Source: §2, first lemma ("The coefficient of `t^D` in the new Wronskian is
 `(∏ a_ν) det (d_ν choose μ)`... All other contributions have lower total degree"). -/
-theorem coeff_wronskian_of_natDegree_injective {φ : Fin l → K[X]} :
+theorem coeff_wronskian_sum_natDegree_sub {φ : Fin l → K[X]} :
     (wronskian φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) = (∏ ν, (φ ν).leadingCoeff) *
       (Matrix.of fun μ ν : Fin l ↦ ((φ ν).natDegree.choose μ : K)).det := by
   classical
@@ -149,7 +125,7 @@ theorem wronskian_ne_zero_of_natDegree_injective [CharZero K] {φ : Fin l → K[
     (hd : Function.Injective fun ν ↦ (φ ν).natDegree) : wronskian φ ≠ 0 := by
   intro h0
   simpa [h0, det_choose_eq, eq_comm (a := 0), Finset.prod_eq_zero_iff, sub_eq_zero, hφ,
-    Nat.factorial_ne_zero, hd.eq_iff] using coeff_wronskian_of_natDegree_injective (φ := φ)
+    Nat.factorial_ne_zero, hd.eq_iff] using coeff_wronskian_sum_natDegree_sub (φ := φ)
 
 /-- Subtracting a constant multiple of one member of the family from another does not change
 the Wronskian.
@@ -174,25 +150,23 @@ theorem linearIndependent_update_sub_smul {φ : Fin l → K[X]} {ν ν' : Fin l}
     Submodule.span_range_update_sub_smul h]
   exact linearIndependent_iff_card_eq_finrank_span.mp hφ
 
-/-- If two members `φ ν`, `φ ν'` of a linearly independent family have the same degree, cancelling
-the leading coefficient of `φ ν'` against `φ ν` strictly lowers the total degree.
+/-- If `φ ν ≠ 0` has the same degree as `φ ν'` and the difference below is nonzero, cancelling the
+leading coefficient of `φ ν'` against `φ ν` strictly lowers the total degree.
 Source: §2, first lemma ("Such a basis is obtained by eliminating equal leading degrees": a
-column operation that cancels a leading coefficient strictly lowers the sum of the degrees; the
-difference is nonzero because the family is linearly independent). -/
-theorem sum_natDegree_update_lt {φ : Fin l → K[X]} (hφ : LinearIndependent K φ) {ν ν' : Fin l}
-    (h : ν ≠ ν') (hdeg : (φ ν).natDegree = (φ ν').natDegree) : ∑ ρ, (Function.update φ ν'
+column operation that cancels a leading coefficient strictly lowers the sum of the degrees). -/
+theorem sum_natDegree_update_lt {K ι : Type*} [DivisionRing K] [Fintype ι] [DecidableEq ι]
+    {φ : ι → K[X]} {ν ν' : ι} (hp : φ ν ≠ 0)
+    (hne : φ ν' - C ((φ ν').leadingCoeff / (φ ν).leadingCoeff) * φ ν ≠ 0)
+    (hdeg : (φ ν).natDegree = (φ ν').natDegree) : ∑ ρ, (Function.update φ ν'
       (φ ν' - C ((φ ν').leadingCoeff / (φ ν).leadingCoeff) * φ ν) ρ).natDegree
       < ∑ ρ, (φ ρ).natDegree := by
-  set a := (φ ν').leadingCoeff / (φ ν).leadingCoeff
-  have h0 : ∀ i, φ i ≠ 0 := hφ.ne_zero
-  have hlc : (φ ν).leadingCoeff ≠ 0 := leadingCoeff_ne_zero.2 (h0 ν)
-  have hne : φ ν' - C a * φ ν ≠ 0 := by
-    simpa using (linearIndependent_update_sub_smul h a hφ).ne_zero ν'
-  have hdeg' : degree (φ ν') = degree (C a * φ ν) := by
-    rw [degree_C_mul (div_ne_zero (leadingCoeff_ne_zero.2 (h0 ν')) hlc),
-      degree_eq_natDegree (h0 ν), degree_eq_natDegree (h0 ν'), hdeg]
-  have hlt : (φ ν' - C a * φ ν).natDegree < (φ ν').natDegree :=
-    natDegree_lt_natDegree hne (degree_sub_lt_left hdeg' (h0 ν') (by
+  have hq : φ ν' ≠ 0 := fun h ↦ hne (by simp [h])
+  have hlc : (φ ν).leadingCoeff ≠ 0 := leadingCoeff_ne_zero.2 hp
+  have hlt : (φ ν' - C ((φ ν').leadingCoeff / (φ ν).leadingCoeff) * φ ν).natDegree <
+      (φ ν').natDegree :=
+    natDegree_lt_natDegree hne (degree_sub_lt_left (by
+      rw [degree_C_mul (div_ne_zero (leadingCoeff_ne_zero.2 hq) hlc), degree_eq_natDegree hp,
+        degree_eq_natDegree hq, hdeg]) hq (by
       rw [leadingCoeff_mul, leadingCoeff_C, div_mul_cancel₀ _ hlc]))
   refine Finset.sum_lt_sum (fun i _ ↦ ?_) ⟨ν', Finset.mem_univ _, by simpa⟩
   by_cases hi : i = ν'
@@ -210,15 +184,8 @@ theorem wronskian_ne_zero_of_linearIndependent [CharZero K] {φ : Fin l → K[X]
     · exact wronskian_ne_zero_of_natDegree_injective h.ne_zero hinj
     obtain ⟨ν, ν', hdeg, hne⟩ := Function.not_injective_iff.1 hinj
     rw [← wronskian_update_sub_smul hne ((φ ν').leadingCoeff / (φ ν).leadingCoeff)]
-    exact ih _ (hN ▸ sum_natDegree_update_lt h hne hdeg)
+    exact ih _ (hN ▸ sum_natDegree_update_lt (h.ne_zero ν)
+        (by simpa using (linearIndependent_update_sub_smul hne _ h).ne_zero ν') hdeg)
       (linearIndependent_update_sub_smul hne _ h) rfl
-
-/-- In characteristic zero, the Wronskian vanishes iff the family is linearly dependent.
-Source: §2, first lemma ("the Wronskian vanishes if and only if they are linearly
-dependent"). -/
-theorem wronskian_eq_zero_iff [CharZero K] {φ : Fin l → K[X]} :
-    wronskian φ = 0 ↔ ¬ LinearIndependent K φ :=
-  ⟨imp_not_comm.mp wronskian_ne_zero_of_linearIndependent,
-    wronskian_eq_zero_of_not_linearIndependent⟩
 
 end Roth

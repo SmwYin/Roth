@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Ramin Takloo-Bighash, Samuel Yin
 -/
 
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
 import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.RingTheory.Algebraic.Integral
 
@@ -18,7 +19,8 @@ If `α` is an irrational real algebraic number and `κ` is a real number such th
 ## Main results
 
 * `Roth.roth`: Roth's theorem, stated with the set `Roth.approxSet α κ` of pairs `(h, q)`.
-* `Roth.roth_rat`: the same statement for rational numbers `x` and their denominators `x.den`.
+* `Roth.roth_rat`: the same statement for rational numbers `x` and their denominators `x.den`;
+  here `α` need not be irrational.
 * `Roth.roth_of_isIntegral`: Roth's theorem for irrational real algebraic integers.
 
 ## Proof outline
@@ -54,16 +56,6 @@ open MvPolynomial
 of quality `κ`. Source: §6, eq. (1). -/
 def approxSet (α κ : ℝ) : Set (ℤ × ℕ) :=
   {hq | 0 < hq.2 ∧ |α - (hq.1 : ℝ) / hq.2| < 1 / (hq.2 : ℝ) ^ κ}
-
-/-- Every real algebraic number has a positive integer multiple that is an algebraic integer.
-
-Source: §6, Lemma ("If `α` is an algebraic number, there is an integer `M > 0` such that `Mα`
-is an algebraic integer"). -/
-theorem exists_nat_mul_isIntegral {α : ℝ} (hα : IsAlgebraic ℚ α) :
-    ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by
-  obtain ⟨y, hy, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_integral_multiple
-  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩
-  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign
 
 /-- There are only finitely many approximations `(h, q) ∈ approxSet α κ` with bounded
 denominator `q ≤ Q₀`.
@@ -118,7 +110,10 @@ integer"). -/
 theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)
     (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧
     (approxSet α' κ').Infinite := by
-  obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg
+  obtain ⟨M, hM0, hMint⟩ : ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by
+    obtain ⟨y, hy, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 halg).exists_integral_multiple
+    refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩
+    simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign
   obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)
   refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩
   refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image
@@ -132,19 +127,6 @@ theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {
   calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by
         simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
     _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
-
-/-- An algebraic integer is a root of a monic integer polynomial of degree at least `2`.
-The witness may be reducible and have larger degree than the minimal polynomial.
-
-Source: §6 ("Since `α` is an algebraic integer, by definition, there is a polynomial
-`f(x) = x^n + a_1 x^{n-1} + ⋯ + a_n` with integral coefficients such that `f(α) = 0`. Its degree
-`n` is at least `2`, since `α` is irrational"). -/
-theorem exists_monic_aeval_eq_zero {α : ℝ} (hint : IsIntegral ℤ α) :
-    ∃ f : Polynomial ℤ, f.Monic ∧ Polynomial.aeval α f = 0 ∧ 2 ≤ f.natDegree := by
-  obtain ⟨f, hf, hf0⟩ := hint
-  refine ⟨f * Polynomial.X ^ 2, hf.mul (Polynomial.monic_X_pow 2), ?_, ?_⟩
-  · rw [map_mul, Polynomial.aeval_def, hf0, zero_mul]
-  · simp [hf.ne_zero]
 
 private theorem approxSet_num_den_mem_aux {α κ : ℝ} (hκ : 0 ≤ κ) {h : ℤ} {q : ℕ}
     (hq : (h, q) ∈ approxSet α κ) : (((h : ℚ) / q).num, ((h : ℚ) / q).den) ∈ approxSet α κ := by
@@ -188,13 +170,13 @@ theorem exists_reduced_approx {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ :
     exact not_lt_of_gt hbound <| by simpa [← hρx, ρ] using hm.2
   exact hinf (Set.Finite.of_finite_fibers ρ hV hfib)
 
-/-- For `κ > 2` there is a positive integer `m > 16 n²` with `4 n √m < m` and
-`2m / (m - 4 n √m) < κ`. The parameter `n` may be zero.
+/-- For `κ > 2` there is a positive integer `m > 16 n²` with `2m / (m - 4 n √m) < κ`.
+The parameter `n` may be zero.
 
 Source: §7, eq. (47) ("We choose a positive integer `m` large enough that `m > 4n m^{1/2}`
 and `2m/(m - 4n m^{1/2}) < κ`, which is possible as `κ > 2`"), together with `m > 16n²`. -/
-theorem exists_m {n : ℕ} {κ : ℝ} (hκ : 2 < κ) : ∃ m : ℕ, 16 * n ^ 2 < m ∧ 4 * n * √(m : ℝ) < m ∧
-    2 * m / (m - 4 * n * √(m : ℝ)) < κ := by
+theorem exists_m {n : ℕ} {κ : ℝ} (hκ : 2 < κ) :
+    ∃ m : ℕ, 16 * n ^ 2 < m ∧ 2 * m / (m - 4 * n * √(m : ℝ)) < κ := by
   let s := ⌈4 * κ * n / (κ - 2)⌉₊ + 4 * n + 1
   have hs4 : 4 * n < s := by
     dsimp [s]
@@ -209,10 +191,9 @@ theorem exists_m {n : ℕ} {κ : ℝ} (hκ : 2 < κ) : ∃ m : ℕ, 16 * n ^ 2 <
       lia)
   have hmul : 4 * n * (s : ℝ) < (s : ℝ) ^ 2 := by
     simpa only [pow_two] using mul_lt_mul_of_pos_right hs4R hspos
-  refine ⟨s ^ 2, ?_, ?_, ?_⟩
+  refine ⟨s ^ 2, ?_, ?_⟩
   · simpa only [mul_pow, show (4 : ℕ) ^ 2 = 16 from rfl] using
       Nat.pow_lt_pow_left hs4 (by decide : 2 ≠ 0)
-  · simpa only [Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg s)] using hmul
   · push_cast
     rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff₀ (sub_pos.mpr hmul)]
     nlinarith only [mul_lt_mul_of_pos_right hkey hspos]
@@ -412,11 +393,15 @@ private lemma exists_roth_parameters_aux {α κ : ℝ} (hint : IsIntegral ℤ α
       (∀ i, |(f.coeff i : ℝ)| ≤ A) ∧ 2 ≤ m ∧ 0 < δ ∧ δ < 1 / m ∧
       eta δ m + 2 * (1 + 3 * δ) * f.natDegree * √(m : ℝ) < m / 2 ∧
       (m : ℝ) * (1 + 4 * δ) / (gam δ f.natDegree m - eta δ m) < κ := by
-  obtain ⟨f, hf, hfα, hdeg⟩ := exists_monic_aeval_eq_zero hint
+  -- a monic multiple of the minimal polynomial with degree at least `2`
+  obtain ⟨f, hf, hfα, hdeg⟩ : ∃ f : Polynomial ℤ, f.Monic ∧ Polynomial.aeval α f = 0 ∧
+      2 ≤ f.natDegree :=
+    ⟨minpoly ℤ α * Polynomial.X ^ 2, (minpoly.monic hint).mul (Polynomial.monic_X_pow 2), by simp,
+      by simp [(minpoly.monic hint).ne_zero]⟩
   -- a bound for the coefficients of `f`
   let A : ℝ := 1 + ∑ i ∈ f.support, |(f.coeff i : ℝ)|
   -- choice of `m` and `δ`
-  obtain ⟨m, hm, -, h47'⟩ := exists_m (n := f.natDegree) hκ
+  obtain ⟨m, hm, h47'⟩ := exists_m (n := f.natDegree) hκ
   obtain ⟨δ, hδ0, hδm, h30, h49⟩ := exists_delta hm h47'
   refine ⟨f, A, m, δ, hf, hfα, ?_, ?_, ?_, hδ0, hδm, h30, h49⟩
   · exact le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ ↦ abs_nonneg _)
@@ -577,10 +562,16 @@ theorem roth {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : 
   exact (roth_of_isIntegral hα' hint' hinf').not_gt hκ'
 
 /-- Roth's theorem for rational approximations: if `|α - x| < 1 / x.den ^ κ` for infinitely many
-rationals `x`, where `α` is an irrational real algebraic number, then `κ ≤ 2`. -/
-theorem roth_rat {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
+rationals `x`, where `α` is a real algebraic number, then `κ ≤ 2`. -/
+theorem roth_rat {α : ℝ} (halg : IsAlgebraic ℚ α) {κ : ℝ}
     (hinf : {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite) : κ ≤ 2 := by
-  refine roth hα halg ((hinf.image (f := fun x : ℚ ↦ (x.num, x.den))
+  refine le_of_not_gt fun hκ ↦ ?_
+  have hα : Irrational α := (Real.infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational α).1 <|
+    hinf.mono fun x (hx : |α - x| < _) ↦ hx.trans_le <|
+      one_div_le_one_div_of_le (by positivity) <| by
+        simpa only [Real.rpow_two] using Real.rpow_le_rpow_of_exponent_le
+          (by exact_mod_cast x.den_pos : (1 : ℝ) ≤ x.den) hκ.le
+  refine hκ.not_ge <| roth hα halg ((hinf.image (f := fun x : ℚ ↦ (x.num, x.den))
     (fun _ _ _ _ hxy ↦ Rat.ext (congrArg Prod.fst hxy) (congrArg Prod.snd hxy))).mono ?_)
   rintro _ ⟨x, hx, rfl⟩
   exact ⟨x.den_pos, by rwa [← Rat.cast_def]⟩

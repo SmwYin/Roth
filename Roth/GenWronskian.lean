@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Ramin Takloo-Bighash, Samuel Yin
 -/
 
+import Mathlib.Algebra.CharP.Algebra
 import Mathlib.Data.List.Indexes
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Localization.Module
 
 import Roth.HasseDeriv
 import Roth.Wronskian
@@ -29,24 +32,9 @@ variable {K : Type*} [Field K] {σ : Type*} [Fintype σ] {l : ℕ}
 
 /-- The generalized Wronskian `det (Δ_{D μ} φ_ν)_{μ, ν}`. Source: §2, definition of
 `W(φ_0, …, φ_{l-1}; Δ_0, …, Δ_{l-1})`. -/
-noncomputable def genWronskian (D : Fin l → σ →₀ ℕ) (φ : Fin l → MvPolynomial σ K) :
-    MvPolynomial σ K :=
+noncomputable def genWronskian {R : Type*} [CommRing R] (D : Fin l → σ →₀ ℕ)
+    (φ : Fin l → MvPolynomial σ R) : MvPolynomial σ R :=
   (Matrix.of fun μ ν ↦ hasseDeriv (D μ) (φ ν)).det
-
-omit [Fintype σ] in
-/-- Linearly dependent polynomials have identically vanishing generalized Wronskians.
-
-Source: §2, second lemma ("If `φ_0, …, φ_{l-1}` ... are linearly dependent ..., then all of
-their generalized Wronskians are identically zero"). -/
-theorem genWronskian_eq_zero_of_not_linearIndependent (D : Fin l → (σ →₀ ℕ))
-    {φ : Fin l → MvPolynomial σ K} (h : ¬ LinearIndependent K φ) : genWronskian D φ = 0 := by
-  classical
-  obtain ⟨g, hg, ν₀, hν₀⟩ := Fintype.not_linearIndependent_iff.1 h
-  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν ↦ C (g ν), fun h0 ↦ hν₀ ?_, ?_⟩
-  · simpa using congrFun h0 ν₀
-  · ext1 μ
-    simpa [Matrix.mulVec, dotProduct, map_smul, ← smul_eq_C_mul, mul_comm] using
-      congrArg (hasseDeriv (D μ)) hg
 
 /-- Kronecker substitution `x_j ↦ t^{k^{e j}}` where `e : σ ≃ Fin (card σ)` is the chosen
 enumeration. Source: §2, proof of Lemma 1 (`h_ν(t) = φ_ν(t, t^k, …, t^{k^{p-1}})`). -/
@@ -66,9 +54,14 @@ theorem kronecker_monomial (k : ℕ) (d : σ →₀ ℕ) (a : K) :
 
 Source: §2, proof of Lemma 1, FACT ("Since each `s_i` is strictly smaller than `k`, the
 representation of any natural number in the form `s_1 + k s_2 + ⋯ + k^{p-1} s_p` is unique"). -/
-theorem kroneckerExp_injOn {k : ℕ} (hk : 1 < k) :
+theorem kroneckerExp_injOn {k : ℕ} :
     Set.InjOn (kroneckerExp (σ := σ) k) {d | ∀ j, d j < k} := by
   intro d hd d' hd' h
+  rcases le_or_gt k 1 with hk | hk
+  · exact DFunLike.ext _ _ fun j ↦ by
+      have := hd j
+      have := hd' j
+      omega
   set e := Fintype.equivFin σ
   have hsum (d : σ →₀ ℕ) : Nat.ofDigits k (List.ofFn fun i ↦ d (e.symm i)) = kroneckerExp k d := by
     simp only [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn, kroneckerExp,
@@ -85,7 +78,7 @@ theorem kroneckerExp_injOn {k : ℕ} (hk : 1 < k) :
 of `X^d` for every `d` with entries `< k`.
 
 Source: §2, proof of Lemma 1 ("Comparing the coefficient of `t^{s_1 + k s_2 + ⋯}` gives ..."). -/
-theorem coeff_kronecker {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K} (hP : ∀ j, degreeOf j P < k)
+theorem coeff_kronecker {k : ℕ} {P : MvPolynomial σ K} (hP : ∀ j, degreeOf j P < k)
     {d : σ →₀ ℕ} (hd : ∀ j, d j < k) : (kronecker k P).coeff (kroneckerExp k d) = P.coeff d := by
   classical
   conv_lhs => rw [P.as_sum]
@@ -94,7 +87,7 @@ theorem coeff_kronecker {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K} (hP : ∀
   rw [Finset.sum_eq_single d]
   · simp
   · intro e he hed
-    exact ite_eq_right fun h ↦ hed (kroneckerExp_injOn hk
+    exact ite_eq_right fun h ↦ hed (kroneckerExp_injOn
       (fun j ↦ (monomial_le_degreeOf j he).trans_lt (hP j)) hd h.symm)
   · intro hdP
     simp [notMem_support_iff.1 hdP]
@@ -103,26 +96,25 @@ theorem coeff_kronecker {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K} (hP : ∀
 
 Source: §2, Lean implementation note ("prove injectivity only on the subspace where every
 individual exponent is less than `k`"). -/
-theorem kronecker_eq_zero_iff {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K}
+theorem kronecker_eq_zero_iff {k : ℕ} {P : MvPolynomial σ K}
     (hP : ∀ j, degreeOf j P < k) : kronecker k P = 0 ↔ P = 0 := by
   refine ⟨fun h ↦ support_eq_empty.1 <| Finset.eq_empty_iff_forall_notMem.2 fun d hd ↦ ?_,
     fun h ↦ by rw [h, map_zero]⟩
   apply mem_support_iff.1 hd
-  simpa [h] using (coeff_kronecker hk hP fun j ↦ (monomial_le_degreeOf j hd).trans_lt (hP j)).symm
+  simpa [h] using (coeff_kronecker hP fun j ↦ (monomial_le_degreeOf j hd).trans_lt (hP j)).symm
 
 /-- The Kronecker substitution preserves linear independence of polynomials whose partial degrees
 are all `< k`.
 
 Source: §2, proof of Lemma 1 ("We claim that these polynomials are linearly independent"). -/
-theorem linearIndependent_kronecker {k : ℕ} (hk : 1 < k) {φ : Fin l → MvPolynomial σ K}
+theorem linearIndependent_kronecker {k : ℕ} {φ : Fin l → MvPolynomial σ K}
     (hφ : ∀ ν j, degreeOf j (φ ν) < k) (h : LinearIndependent K φ) :
     LinearIndependent K fun ν ↦ kronecker k (φ ν) := by
   rw [Fintype.linearIndependent_iff] at h ⊢
-  intro g hg
-  apply h g
-  refine (kronecker_eq_zero_iff hk fun j ↦ ?_).mp ?_
+  intro g hg ν
+  refine h g ((kronecker_eq_zero_iff (k := k) fun j ↦ ?_).mp ?_) ν
   · refine (degreeOf_sum_le _ _ _).trans_lt <|
-      (Finset.sup_lt_iff (Nat.zero_lt_of_lt hk)).2 fun i _ ↦ ?_
+      (Finset.sup_lt_iff (Nat.zero_lt_of_lt (hφ ν j))).2 fun i _ ↦ ?_
     simpa [smul_eq_C_mul] using (degreeOf_C_mul_le (φ i) j (g i)).trans_lt (hφ i j)
   · simpa [map_sum, map_smul] using hg
 
@@ -245,14 +237,8 @@ private lemma wronskian_kronecker_eq_sum_aux (k : ℕ) (φ : Fin l → MvPolynom
     det_sum_rows s c (fun μ d ν ↦ kronecker k (hasseDeriv d (φ ν)))
 
 omit [Fintype σ] in
-/-- **Lemma 1**: a linearly independent family of polynomials has a generalized Wronskian (with
-Hasse operators of orders `|D μ| ≤ μ`) that is not identically zero.
-
-Source: §2, Lemma `roth:lem1` ("If `φ_0, …, φ_{l-1}` are `l` linearly independent
-polynomials in `p` variables with rational coefficients, then at least one of their generalized
-Wronskians is not identically zero"). -/
-theorem exists_genWronskian_ne_zero [Finite σ] [CharZero K] {φ : Fin l → MvPolynomial σ K}
-    (h : LinearIndependent K φ) :
+private lemma exists_genWronskian_ne_zero_of_finite_aux [Finite σ] [CharZero K]
+    {φ : Fin l → MvPolynomial σ K} (h : LinearIndependent K φ) :
     ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0 := by
   classical
   let := Fintype.ofFinite σ
@@ -260,7 +246,7 @@ theorem exists_genWronskian_ne_zero [Finite σ] [CharZero K] {φ : Fin l → MvP
   choose s c hs hc using fun μ : Fin l ↦ exists_hasseDeriv_kronecker_eq_sum (K := K) (σ := σ) k μ
   by_contra! hcon
   apply wronskian_ne_zero_of_linearIndependent
-    (linearIndependent_kronecker (Nat.lt_add_right _ (by decide)) (fun ν j ↦
+    (linearIndependent_kronecker (fun ν j ↦
       lt_of_le_of_lt ((Finset.single_le_sum (f := fun j ↦ degreeOf j (φ ν))
         (by simp) (Finset.mem_univ j)).trans (Finset.single_le_sum
           (f := fun ν ↦ ∑ j, degreeOf j (φ ν)) (by simp) (Finset.mem_univ ν)))
@@ -268,5 +254,51 @@ theorem exists_genWronskian_ne_zero [Finite σ] [CharZero K] {φ : Fin l → MvP
   rw [wronskian_kronecker_eq_sum_aux k φ s c (fun μ ν ↦ hc μ (φ ν))]
   refine Finset.sum_eq_zero fun f hf ↦ ?_
   rw [hcon f fun μ ↦ hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]
+
+omit [Fintype σ] in
+private lemma exists_genWronskian_ne_zero_of_field_aux [CharZero K] {φ : Fin l → MvPolynomial σ K}
+    (h : LinearIndependent K φ) :
+    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0 := by
+  classical
+  let s : Finset σ := Finset.univ.biUnion fun ν ↦ (φ ν).vars
+  choose ψ hψ using fun ν ↦ exists_rename_eq_of_vars_subset_range (φ ν) (Subtype.val : s → σ)
+    Subtype.val_injective fun x hx ↦ ⟨⟨x, Finset.mem_biUnion.2 ⟨ν, Finset.mem_univ _, hx⟩⟩, rfl⟩
+  have hli : LinearIndependent K ψ := by
+    refine LinearIndependent.of_comp (rename (R := K) Subtype.val).toLinearMap ?_
+    convert h using 1
+    exact funext hψ
+  obtain ⟨D, hD, hne⟩ := exists_genWronskian_ne_zero_of_finite_aux hli
+  refine ⟨fun μ ↦ (D μ).mapDomain Subtype.val, fun μ ↦ by simpa using hD μ, fun h0 ↦ hne ?_⟩
+  apply rename_injective (R := K) _ (Subtype.val_injective (p := (· ∈ s)))
+  rw [map_zero, ← h0, genWronskian, genWronskian, AlgHom.map_det]
+  refine congrArg Matrix.det (Matrix.ext fun μ ν ↦ ?_)
+  simp [← hψ, hasseDeriv_rename Subtype.val_injective]
+
+omit [Fintype σ] in
+/-- **Lemma 1**: a linearly independent family of polynomials has a generalized Wronskian (with
+Hasse operators of orders `|D μ| ≤ μ`) that is not identically zero.
+
+Source: §2, Lemma `roth:lem1` ("If `φ_0, …, φ_{l-1}` are `l` linearly independent
+polynomials in `p` variables with rational coefficients, then at least one of their generalized
+Wronskians is not identically zero"). -/
+theorem exists_genWronskian_ne_zero {R : Type*} [CommRing R] [IsDomain R] [CharZero R]
+    {φ : Fin l → MvPolynomial σ R} (h : LinearIndependent R φ) :
+    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0 := by
+  have hinj : Function.Injective (algebraMap R (FractionRing R)) :=
+    IsFractionRing.injective R (FractionRing R)
+  have : CharZero (FractionRing R) := charZero_of_injective_algebraMap hinj
+  have hli : LinearIndependent (FractionRing R)
+      (fun ν ↦ map (algebraMap R (FractionRing R)) (φ ν)) := by
+    rw [← LinearIndependent.iff_fractionRing R (FractionRing R)]
+    exact h.map' (mapAlgHom (Algebra.ofId R (FractionRing R))).toLinearMap
+      (LinearMap.ker_eq_bot.2 (map_injective _ hinj))
+  obtain ⟨D, hD, hne⟩ := exists_genWronskian_ne_zero_of_field_aux hli
+  refine ⟨D, hD, fun h0 ↦ hne ?_⟩
+  have := congrArg (map (algebraMap R (FractionRing R))) h0
+  rw [genWronskian, RingHom.map_det, map_zero] at this
+  rw [genWronskian, ← this]
+  congr 1
+  ext μ ν
+  simp [hasseDeriv_map]
 
 end Roth

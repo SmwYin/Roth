@@ -8,6 +8,7 @@ import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Algebra.Polynomial.RingDivision
 import Mathlib.Algebra.Polynomial.Taylor
 import Mathlib.Basic.Real.Pointwise
+import Mathlib.Data.ENat.BigOperators
 import Mathlib.Data.Nat.Cast.Field
 import Mathlib.Order.ConditionallyCompleteLattice.Finset
 import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
@@ -31,7 +32,6 @@ is how the convention is used in the source).
 ## Main results
 
 * `Roth.le_index_iff`: lower bounds for the index of a nonzero polynomial.
-* `Roth.index_eq_zero_iff`: the index vanishes iff `P(α) ≠ 0`.
 * `Roth.index_sub_weight_le_index_hasseDeriv`: differentiating lowers the index by at most
   the weight.
 * `Roth.le_index_sum`, `Roth.index_mul`, `Roth.index_prod`: the index of sums and products.
@@ -93,17 +93,6 @@ theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} 
 theorem index_nonneg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : 0 ≤ index P α r :=
   Real.sInf_nonneg (Set.forall_mem_image.mpr fun d _ ↦ weight_nonneg r d)
 
-/-- For nonzero `P` and positive weights, the index vanishes iff `P(α) ≠ 0`.
-Source: §4, first lemma on the index ("`ind(P) = 0` if and only if `P(α_1, …, α_p) ≠ 0`"). -/
-theorem index_eq_zero_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j)
-    (α : σ → ℝ) : index P α r = 0 ↔ eval α P ≠ 0 := by
-  refine ⟨fun h ↦ ?_, fun h ↦ (index_nonneg P α r).antisymm' ?_⟩
-  · obtain ⟨d, hd, hdw⟩ := exists_weight_eq_index hP α r
-    rw [h, weight_eq_zero_iff hr] at hdw
-    subst hdw
-    simpa [hasseDeriv_zero_apply] using hd
-  · simpa using index_le_weight (r := r) (d := 0) (by simpa [hasseDeriv_zero_apply] using h)
-
 /-- Applying `Δ_k` lowers the index by at most the weight of `k`.
 Source: §4, Lemma `lem:index-of-derivative` ("`ind(Δ_k P) ≥ ind(P) - ∑ k_j / r_j`"). -/
 theorem index_sub_weight_le_index_hasseDeriv {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ}
@@ -140,10 +129,12 @@ theorem weight_eq_finsuppWeight_div {r : σ → ℕ} (hr : ∀ j, 0 < r j) (d : 
 divided by `D = ∏ r_j`. Source: §4, Lean implementation note ("use the natural weights in
 `MvPowerSeries.weightedOrder`, then divide the finite value by `D` after embedding `P_α` as a
 power series"). -/
-theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}
+theorem index_eq_weightedOrder_div (P : MvPolynomial σ ℝ) {r : σ → ℕ}
     (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =
       (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /
         ∏ i, r i := by
+  rcases eq_or_ne P 0 with rfl | hP
+  · simp [index]
   set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j
   set F : MvPowerSeries σ ℝ := ↑(taylor α P)
   obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)
@@ -161,8 +152,8 @@ theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r :
 Source: §4, Lemma 4-1 ("`ind(P Q) = ind(P) + ind(Q)`"). -/
 theorem index_mul {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α : σ → ℝ) {r : σ → ℕ}
     (hr : ∀ j, 0 < r j) : index (P * Q) α r = index P α r + index Q α r := by
-  rw [index_eq_weightedOrder_div hP hr, index_eq_weightedOrder_div hQ hr,
-    index_eq_weightedOrder_div (mul_ne_zero hP hQ) hr, ← add_div, map_mul, MvPolynomial.coe_mul,
+  rw [index_eq_weightedOrder_div P hr, index_eq_weightedOrder_div Q hr,
+    index_eq_weightedOrder_div (P * Q) hr, ← add_div, map_mul, MvPolynomial.coe_mul,
     MvPowerSeries.weightedOrder_mul]
   congr 1
   have hfin : ∀ R : MvPolynomial σ ℝ, R ≠ 0 →
@@ -175,21 +166,10 @@ Lemma 6). -/
 theorem index_prod {ι : Type*} (s : Finset ι) {f : ι → MvPolynomial σ ℝ} (hf : ∀ i ∈ s, f i ≠ 0)
     (α : σ → ℝ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
     index (∏ i ∈ s, f i) α r = ∑ i ∈ s, index (f i) α r := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-    rw [Finset.prod_empty, Finset.sum_empty]
-    exact (index_eq_zero_iff one_ne_zero hr α).2 (by simp)
-  | insert a s has ih =>
-    rw [Finset.prod_insert has, Finset.sum_insert has,
-      index_mul (hf a (Finset.mem_insert_self a s))
-        (Finset.prod_ne_zero_iff.2 fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)) α hr,
-      ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)]
-
-/-- Source: §5, proof of Lemma 6 ("Multiplication by a sign does not change the index"). -/
-theorem index_neg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
-    index (-P) α r = index P α r := by
-  simp [index, support_neg]
+  rw [index_eq_weightedOrder_div _ hr, map_prod,
+    ← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_prod, MvPowerSeries.weightedOrder_prod,
+    ENat.toNat_sum fun i hi ↦ by simp [hf i hi], Nat.cast_sum, Finset.sum_div]
+  exact Finset.sum_congr rfl fun i hi ↦ (index_eq_weightedOrder_div _ hr α).symm
 
 /-- Source: §4, end ("`ind(cP; α; r) = ind(P; α; r)`" for nonzero `c`). -/
 theorem index_C_mul {c : ℝ} (hc : c ≠ 0) (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
@@ -216,13 +196,15 @@ theorem index_rename {τ : Type*} [Fintype τ] {f : σ → τ} (hf : Function.In
   rw [index, index, taylor_rename, support_rename_of_injective hf, Finset.coe_image,
     Set.image_image]
   refine congrArg sInf (Set.image_congr fun d _ ↦ ?_)
-  exact weight_mapDomain hf r d
+  exact weight_mapDomain r d
 
 /-- If `P` has degree at most `r j` in each `x_j`, its index is at most the number of variables.
 Source: §5 ("Taylor's theorem gives a nonzero derivative with `0 ≤ i_j ≤ r_j`, of weight at
 most `m`"). -/
-theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j)
+theorem index_le_card {P : MvPolynomial σ ℝ} {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j)
     (α : σ → ℝ) : index P α r ≤ Fintype.card σ := by
+  rcases eq_or_ne P 0 with rfl | hP
+  · simp [index]
   obtain ⟨d, hd0, hdw⟩ := exists_weight_eq_index hP α r
   exact hdw ▸ weight_le_card fun j ↦
     (monomial_le_degreeOf j (mem_support_taylor_iff.2 hd0)).trans
@@ -231,12 +213,14 @@ theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} 
 /-- In one variable, the index is the multiplicity of `α` as a root divided by the weight.
 Source: §5, proof of Lemma 5 ("Let `t` be the multiplicity of `h_1/q_1` as a root of `R`;
 Taylor's theorem gives `ind(R; h_1/q_1; r_1) = t/r_1`"). -/
-theorem index_unique [Unique σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+theorem index_unique [Unique σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
     index P α r =
       (Polynomial.rootMultiplicity (α default) (uniqueAlgEquiv ℝ σ P) : ℝ) / r default := by
+  rcases eq_or_ne P 0 with rfl | hP
+  · simp [index]
   set q := Polynomial.taylor (α default) (uniqueAlgEquiv ℝ σ P) with hqdef
   have key (d : σ →₀ ℕ) : eval α (hasseDeriv d P) = q.coeff (d default) := by
-    rw [Polynomial.taylor_coeff, ← uniqueAlgEquiv_hasseDeriv, ← Finsupp.unique_single d]
+    rw [Polynomial.taylor_coeff, ← uniqueAlgEquiv_hasseDeriv]
     exact (eval₂_uniqueAlgEquiv (f := hasseDeriv d P) (φ := RingHom.id ℝ) (a := α)).symm
   have hq : q ≠ 0 := by
     rwa [hqdef, Ne, Polynomial.taylor_eq_zero, map_eq_zero_iff _ (uniqueAlgEquiv ℝ σ).injective]

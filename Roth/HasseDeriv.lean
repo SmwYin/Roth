@@ -32,7 +32,6 @@ monomials by `Δ_d (X ^ k) = (∏ j, (k j).choose (d j)) • X ^ (k - d)`; it va
 * `MvPolynomial.hasseDeriv_hasseDeriv`: the composition rule
   `Δ_d Δ_e = hasseCoeff d (d + e) • Δ_{d + e}`.
 * `MvPolynomial.pderiv_hasseDeriv`: `∂_j Δ_d = (d j + 1) • Δ_{d + e_j}`.
-* `MvPolynomial.factorial_smul_hasseDeriv_single`: `n! • Δ_{n e_j} = ∂_j ^ n`.
 * `MvPolynomial.hasseDeriv_single_aeval_X`, `MvPolynomial.uniqueAlgEquiv_hasseDeriv`:
   compatibility with the univariate `Polynomial.hasseDeriv`.
 
@@ -98,13 +97,6 @@ theorem coeff_hasseDeriv (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
     · simp [hk, tsub_eq_iff_eq_add_of_le hdk]
     · simp [hk, (hasseCoeff_eq_zero_iff d k).2 hdk]
   | add p q hp hq => simp [hp, hq, mul_add]
-
-/-- Over a finite set of variables, `hasseCoeff d k` is the full product
-`∏ j, (k j).choose (d j)`.
-
-Source: §1, Lean implementation note. -/
-theorem hasseCoeff_eq_prod [Fintype σ] (d k : σ →₀ ℕ) : hasseCoeff d k = ∏ j, (k j).choose (d j) :=
-  d.prod_fintype _ fun _ ↦ Nat.choose_zero_right _
 
 /-- `Δ_0` is the identity, pointwise version of `hasseDeriv_zero`.
 
@@ -263,32 +255,23 @@ theorem hasseDeriv_single_aeval_X (j : σ) (n : ℕ) (f : Polynomial R) :
 `MvPolynomial.uniqueAlgEquiv`.
 
 Source: §1. -/
-theorem uniqueAlgEquiv_hasseDeriv [Unique σ] (n : ℕ) (P : MvPolynomial σ R) :
-    uniqueAlgEquiv R σ (hasseDeriv (R := R) (Finsupp.single (default : σ) n) P) =
-      Polynomial.hasseDeriv n (uniqueAlgEquiv R σ P) := by
+theorem uniqueAlgEquiv_hasseDeriv [Unique σ] (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    uniqueAlgEquiv R σ (hasseDeriv d P) =
+      Polynomial.hasseDeriv (d default) (uniqueAlgEquiv R σ P) := by
   ext m
   rw [coeff_uniqueAlgEquiv, coeff_hasseDeriv, Polynomial.hasseDeriv_coeff, coeff_uniqueAlgEquiv]
+  conv_lhs => rw [Finsupp.unique_single d]
   simp [hasseCoeff, Finsupp.single_add]
 
-/-- The binomial factor of a Hasse derivative is at most `2 ^ (∑ j, r j)` on the box `k ≤ r`.
+/-- The binomial factor of a Hasse derivative at `k` is at most `2 ^ |k|`.
 
 Source: §3, proof of Lemma 3. -/
-theorem hasseCoeff_le_two_pow [Fintype σ] {d k : σ →₀ ℕ} {r : σ → ℕ} (hk : ∀ j, k j ≤ r j) :
-    hasseCoeff d k ≤ 2 ^ (∑ j, r j) := by
-  rw [hasseCoeff_eq_prod, ← Finset.prod_pow_eq_pow_sum]
-  exact Finset.prod_le_prod fun j _ ↦
-    (Nat.choose_le_two_pow _ _).trans (Nat.pow_le_pow_right two_pos (hk j))
-
-/-- `n! • Δ_{n e_j} = ∂_j ^ n`; as for `Polynomial.factorial_smul_hasseDeriv`, this holds over
-any commutative semiring. Over a `ℚ`-algebra it identifies `Δ_{n e_j}` with `(1 / n!) ∂_j ^ n`.
-
-Source: §1. -/
-theorem factorial_smul_hasseDeriv_single (j : σ) (n : ℕ) (P : MvPolynomial σ R) :
-    (n.factorial : R) • hasseDeriv (Finsupp.single j n) P = (⇑(pderiv (R := R) j))^[n] P := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [Function.iterate_succ_apply', ← ih, Derivation.map_smul, pderiv_hasseDeriv, smul_smul,
-      Finsupp.single_eq_same, ← Finsupp.single_add, Nat.factorial_succ, Nat.cast_mul, mul_comm]
+theorem hasseCoeff_le_two_pow (d k : σ →₀ ℕ) : hasseCoeff d k ≤ 2 ^ k.degree := by
+  classical
+  calc hasseCoeff d k = ∏ j ∈ d.support, (k j).choose (d j) := rfl
+    _ ≤ ∏ j ∈ d.support, 2 ^ k j := Finset.prod_le_prod fun j _ ↦ Nat.choose_le_two_pow _ _
+    _ = 2 ^ ∑ j ∈ d.support, k j := Finset.prod_pow_eq_pow_sum _ _ _
+    _ ≤ 2 ^ k.degree := Nat.pow_le_pow_right two_pos <|
+        Finset.sum_le_sum_of_ne_zero fun j _ hj ↦ Finsupp.mem_support_iff.2 hj
 
 end MvPolynomial

@@ -127,6 +127,12 @@ theorem normOne_det_le {l : ℕ} (M : Matrix (Fin l) (Fin l) (MvPolynomial σ �
     simpa [h, normOne_neg] using (normOne_prod_le Finset.univ fun i ↦ M (τ i) i).trans
       ((Finset.prod_le_prod₀ (fun _ _ ↦ normOne_nonneg _) fun i _ ↦ hM _ _).trans_eq (by simp))
 
+private lemma hasseCoeff_le_two_pow_sum_aux [Fintype σ] (d : σ →₀ ℕ) {k : σ →₀ ℕ} {r : σ → ℕ}
+    (hk : ∀ j, k j ≤ r j) : hasseCoeff d k ≤ 2 ^ (∑ j, r j) :=
+  (hasseCoeff_le_two_pow d k).trans <| Nat.pow_le_pow_right two_pos <| by
+    rw [Finsupp.degree_eq_sum]
+    exact Finset.sum_le_sum fun j _ ↦ hk j
+
 /-- Coefficient bound for a Hasse derivative of a polynomial with `deg_{X_j} P ≤ r_j`.
 Source: §3, proof of Lemma 3 and §6, proof of Lemma 9 ("`abc(Δ_j W) ≤ 2^{r_1+⋯+r_m} B_1`":
 each output coefficient of a fixed Hasse derivative receives at most one input coefficient,
@@ -137,7 +143,8 @@ theorem abs_coeff_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomi
   rw [coeff_hasseDeriv, Int.cast_mul, Int.cast_natCast, abs_mul, Nat.abs_cast]
   by_cases he : e + d ∈ P.support
   · have hc : (hasseCoeff d (e + d) : ℝ) ≤ 2 ^ (∑ j, r j) := by
-      exact_mod_cast hasseCoeff_le_two_pow fun j ↦ (monomial_le_degreeOf j he).trans (hP j)
+      exact_mod_cast hasseCoeff_le_two_pow_sum_aux d fun j ↦
+        (monomial_le_degreeOf j he).trans (hP j)
     exact mul_le_mul hc (hB _) (abs_nonneg _) (by positivity)
   · rw [notMem_support_iff.1 he]
     simpa using mul_nonneg (by positivity : (0 : ℝ) ≤ 2 ^ (∑ j, r j)) ((abs_nonneg _).trans (hB e))
@@ -154,7 +161,8 @@ theorem normOne_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial
   refine Finset.sum_le_sum fun k hk ↦ ?_
   rw [normOne_monomial, Int.cast_mul, Int.cast_natCast, abs_mul, Nat.abs_cast]
   refine mul_le_mul_of_nonneg_right ?_ (abs_nonneg _)
-  exact_mod_cast hasseCoeff_le_two_pow fun j ↦ (monomial_le_degreeOf j hk).trans (hP j)
+  exact_mod_cast hasseCoeff_le_two_pow_sum_aux d fun j ↦
+    (monomial_le_degreeOf j hk).trans (hP j)
 
 /-- Diagonal substitution `P(x, …, x)`. Source: §6, proof of Lemma 9 ("When we replace
 `x_1, …, x_m` by the same variable `x`"). -/
@@ -187,17 +195,6 @@ theorem natDegree_diag_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ
     (Polynomial.natDegree_monomial_le _).trans ?_
   rw [Finsupp.degree_eq_sum]
   exact Finset.sum_le_sum fun j _ ↦ (monomial_le_degreeOf j hk).trans (hP j)
-
-/-- Evaluating `diag P` at `x` is evaluating `P` at the diagonal point `(x, …, x)`.
-Source: §6, proof of Lemma 9 ("`Δ_j W^*(x_1, …, x_m)` are zero when `x_1 = ⋯ = x_m = α`"). -/
-theorem eval_diag (P : MvPolynomial σ ℤ) (x : ℝ) :
-    Polynomial.eval x (Polynomial.map (Int.castRingHom ℝ) (diag P)) =
-      eval (fun _ ↦ x) (map (Int.castRingHom ℝ) P) := by
-  induction P using MvPolynomial.induction_on <;> simp_all [diag]
-
-/-- `diag` is additive. -/
-theorem diag_sub (P Q : MvPolynomial σ ℤ) : diag (P - Q) = diag P - diag Q :=
-  map_sub _ _ _
 
 /-- A truncated geometric sum `∑_{s ≤ r} t^s` is at most `(1 + t)^r` for `0 ≤ t`.
 Source: §6, proof of Lemma 9 ("for every `t ≥ 0` and integer `r ≥ 0`, `∑_{j=0}^r t^j ≤
@@ -256,10 +253,11 @@ theorem degreeOf_det_hasseDeriv_le {l : ℕ} (E : Fin l → Fin l → (σ →₀
 bounded by `((r_1 + 1) ⋯ (r_p + 1))^l l! B^l 2^{(r_1 + ⋯ + r_p) l}`"), stated for a determinant
 of Hasse derivatives of arbitrary multi-indices. -/
 theorem abs_coeff_det_hasseDeriv_le [Fintype σ] {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ))
-    (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB0 : 0 ≤ B)
+    (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ}
     (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (d : σ →₀ ℕ) :
     |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det.coeff d : ℤ) : ℝ)| ≤
       (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l * 2 ^ ((∑ j, r j) * l) := by
+  have hB0 : 0 ≤ B := (abs_nonneg _).trans (hB 0)
   have hsupp : (P.support.card : ℝ) ≤ ∏ j, ((r j : ℝ) + 1) := by
     exact_mod_cast card_le_card_box fun d hd j ↦ (monomial_le_degreeOf j hd).trans (hP j)
   calc _ ≤ normOne (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det :=

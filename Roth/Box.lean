@@ -28,9 +28,8 @@ weight of a multi-index with respect to `r`.
 ## Main results
 
 * `Roth.card_box`: the box `box r` has `∏ j, (r j + 1)` elements.
-* `Roth.weight_eq_zero_iff`: for positive `r`, a multi-index has weight zero iff it is zero.
 * `Roth.weight_le_card`: a multi-index in the box `box r` has weight at most `card σ`.
-* `Roth.weight_mapDomain`: weights are unchanged by an injective change of variables.
+* `Roth.weight_mapDomain`: weights are unchanged by a change of variables.
 
 ## References
 
@@ -75,22 +74,10 @@ Source: §4, proof of the lemma `index ≥ 0` ("Every weight `∑ i_j / r_j` is 
 theorem weight_nonneg (r : σ → ℕ) (d : σ →₀ ℕ) : 0 ≤ weight r d :=
   Fintype.sum_nonneg fun _ ↦ by positivity
 
-/-- The zero multi-index has weight zero. -/
-@[simp]
-theorem weight_zero (r : σ → ℕ) : weight r 0 = 0 := by
-  simp [weight]
-
 /-- The weight is additive in the multi-index.
 Source: §4, proof of Lemma `index-of-derivative` (`∑ (i_j + k_j)/r_j = … + ∑ k_j/r_j`). -/
 theorem weight_add (r : σ → ℕ) (d e : σ →₀ ℕ) : weight r (d + e) = weight r d + weight r e := by
   simp [weight, add_div, Finset.sum_add_distrib]
-
-/-- For positive parameters `r`, only the zero multi-index has weight zero.
-Source: §4, proof of the lemma `index = 0 ↔ P(α) ≠ 0` ("Since each `r_j > 0`, such a weight
-is zero exactly when every `i_j = 0`"). -/
-theorem weight_eq_zero_iff {r : σ → ℕ} (hr : ∀ j, 0 < r j) {d : σ →₀ ℕ} :
-    weight r d = 0 ↔ d = 0 := by
-  simp [weight, Finset.sum_eq_zero_iff_of_nonneg, div_nonneg, (hr _).ne', Finsupp.ext_iff]
 
 /-- The weight of the single multi-index `n • e_j` is `n / r j`. -/
 theorem weight_single (r : σ → ℕ) (j : σ) (n : ℕ) : weight r (Finsupp.single j n) = n / r j := by
@@ -111,22 +98,13 @@ theorem weight_mul_left {l : ℕ} (r : σ → ℕ) (d : σ →₀ ℕ) :
     weight (fun j ↦ l * r j) d = weight r d / l := by
   simp [weight, Finset.sum_div, div_div, mul_comm]
 
-/-- If every parameter is at least `m`, a multi-index of total degree `w` has weight at most
-`w / m`.
-Source: §5, proof of Lemma 6 ("`∑_{j<p} i_j / r_j ≤ w / r_{p-1}`": a multi-index of total
-degree `w` has weight at most `w / min r`). -/
-theorem weight_le_degree_div {r : σ → ℕ} {m : ℕ} (hm : 0 < m) (hr : ∀ j, m ≤ r j) (d : σ →₀ ℕ) :
-    weight r d ≤ d.degree / m := by
-  rw [weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
-  gcongr with j
-  exact hr j
-
-/-- Weights are invariant under an injective change of variables `f : σ → τ`.
+/-- Weights are invariant under a change of variables `f : σ → τ`.
 Source: §4, Lemma 4-2 (embedding a polynomial in fewer variables does not change the weights
 of its monomials). -/
-theorem weight_mapDomain {τ : Type*} [Fintype τ] {f : σ → τ} (hf : Function.Injective f) (r : τ → ℕ)
-    (d : σ →₀ ℕ) : weight r (d.mapDomain f) = weight (r ∘ f) d := by
-  simpa [Finsupp.sum_fintype, weight] using
-    Finsupp.sum_mapDomain_index_inj (s := d) (h := fun j n ↦ (n : ℝ) / r j) hf
+theorem weight_mapDomain {τ : Type*} [Fintype τ] {f : σ → τ} (r : τ → ℕ) (d : σ →₀ ℕ) :
+    weight r (d.mapDomain f) = weight (r ∘ f) d := by
+  simpa [Finsupp.sum_fintype, weight, add_div] using
+    Finsupp.sum_mapDomain_index (s := d) (h := fun j n ↦ (n : ℝ) / r j)
+      (fun _ ↦ by simp) (fun _ _ _ ↦ by push_cast; ring)
 
 end Roth

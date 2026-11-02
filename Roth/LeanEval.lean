@@ -38,8 +38,22 @@ private lemma exists_pos_div_rpow_lt_aux {x κ : ℝ} (hx : Irrational x)
   · apply ((min_le_left _ _).trans_lt (by norm_num : (1 : ℝ) / 2 < 1)).trans_le
     exact le_of_not_gt fun h ↦ hmem ⟨by exact_mod_cast hq, (lt_div_iff₀ hq').mpr h⟩
 
-/-- For irrational `x`, the LeanEval bounds are equivalent to the exponent bound in `Roth.roth`. -/
-theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :
+private lemma approxSet_rat_infinite_aux (r : ℚ) (κ : ℝ) : (Roth.approxSet r κ).Infinite := by
+  refine Set.infinite_of_injective_forall_mem
+    (f := fun k : ℕ ↦ ((r.num * (k + 1) : ℤ), r.den * (k + 1))) (fun a b hab ↦ ?_) fun k ↦ ?_
+  · simpa [r.den_ne_zero] using congrArg Prod.snd hab
+  · refine ⟨Nat.mul_pos r.pos k.succ_pos, ?_⟩
+    have hk : ((k : ℝ) + 1) ≠ 0 := by positivity
+    have h0 : (r : ℝ) - ((r.num * (k + 1) : ℤ) : ℝ) / ((r.den * (k + 1) : ℕ) : ℝ) = 0 := by
+      push_cast
+      rw [mul_div_mul_right _ _ hk, sub_eq_zero]
+      exact_mod_cast (Rat.num_div_den r).symm
+    rw [h0, abs_zero]
+    exact one_div_pos.2 (rpow_pos_of_pos (by exact_mod_cast Nat.mul_pos r.pos k.succ_pos) _)
+
+/-- The LeanEval bounds are equivalent to the exponent bound in `Roth.roth`; for rational `x`,
+both sides are false. -/
+theorem isDiophantine_iff {x : ℝ} :
     IsDiophantine x ↔ ∀ {κ : ℝ}, (Roth.approxSet x κ).Infinite → κ ≤ 2 := by
   refine ⟨fun h κ hinf ↦ le_of_not_gt fun hκ ↦ ?_, fun h ε hε ↦ ?_⟩
   · obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)
@@ -51,7 +65,10 @@ theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :
       simpa [div_eq_mul_inv, ← mul_assoc, hC.ne'] using
         mul_lt_mul_of_pos_left (hQ q (lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩)) hC
     exact (hpq.2.trans hgap).not_gt (by simpa using hbound p q (by exact_mod_cast hpq.1))
-  · apply exists_pos_div_rpow_lt_aux hx
+  · have hx : Irrational x := by
+      rintro ⟨r, rfl⟩
+      linarith only [h (approxSet_rat_infinite_aux r (2 + ε)), hε]
+    apply exists_pos_div_rpow_lt_aux hx
     exact Set.not_infinite.mp fun hinf ↦
       (by linarith : ¬ (2 + ε ≤ 2)) (h hinf)
 
@@ -60,7 +77,7 @@ algebraic real is Diophantine: its irrationality measure is at most
 `2`. -/
 theorem thueSiegelRoth (x : ℝ) (_h_irr : Irrational x) (_h_alg : IsAlgebraic ℤ x) :
     IsDiophantine x :=
-  (isDiophantine_iff _h_irr).mpr
+  isDiophantine_iff.mpr
     (Roth.roth _h_irr (_h_alg.extendScalars (FaithfulSMul.algebraMap_injective ℤ ℚ)))
 
 end LeanEval.NumberTheory.ThueSiegelRothProblem

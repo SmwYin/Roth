@@ -42,10 +42,6 @@ variable {σ R : Type*} [CommSemiring R]
 noncomputable def taylor (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
   aeval fun j ↦ X j + C (α j)
 
-/-- `taylor α` is evaluation at `X + α`. -/
-theorem taylor_apply (α : σ → R) (P : MvPolynomial σ R) :
-    taylor α P = aeval (fun j ↦ X j + C (α j)) P := rfl
-
 /-- `taylor α` sends the variable `X j` to `X j + α j`. -/
 @[simp]
 theorem taylor_X (α : σ → R) (j : σ) : taylor α (X j) = X j + C (α j) := aeval_X _ _
@@ -137,11 +133,6 @@ theorem coeff_taylor (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R)
   | add p q hp hq => simp [hp, hq]
   | monomial k a => exact coeff_taylor_monomial_aux α d k a
 
-/-- Evaluating `P(X + α)` at `x` is evaluating `P` at `x + α`. -/
-theorem eval_taylor (α x : σ → R) (P : MvPolynomial σ R) :
-    eval x (taylor α P) = eval (fun j ↦ x j + α j) P := by
-  simp [taylor, aeval_def, ← eval_assoc, Function.comp_def]
-
 /-- Translations compose additively. -/
 theorem taylor_taylor (α β : σ → R) (P : MvPolynomial σ R) :
     taylor α (taylor β P) = taylor (fun j ↦ α j + β j) P := by
@@ -149,14 +140,8 @@ theorem taylor_taylor (α β : σ → R) (P : MvPolynomial σ R) :
 
 /-- Translation by `0` is the identity. -/
 @[simp]
-theorem taylor_zero (P : MvPolynomial σ R) : taylor (fun _ ↦ (0 : R)) P = P := by
+theorem taylor_zero (P : MvPolynomial σ R) : taylor 0 P = P := by
   simp [taylor, aeval_X_left_apply]
-
-/-- Translation commutes with changing the coefficient ring along `f`.
-Source: §1, Lean implementation note ("compatibility with coefficient maps"). -/
-theorem taylor_map {S : Type*} [CommSemiring S] (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R) :
-    taylor (fun j ↦ f (α j)) (map f P) = map f (taylor α P) := by
-  simp [taylor, aeval_def, map_eval₂, Function.comp_def]
 
 /-- Translation commutes with renaming variables.
 Source: §4, Lemma 4-2 ("When `P` is embedded into the larger polynomial ring, its translated
@@ -181,7 +166,7 @@ variable {σ A : Type*} [CommRing A]
 /-- Translation by `-α` undoes translation by `α`. -/
 theorem taylor_neg_taylor (α : σ → A) (P : MvPolynomial σ A) : taylor (fun j ↦ -α j) (taylor α P) =
     P := by
-  simp [taylor_taylor]
+  simp [taylor_taylor, ← Pi.zero_def]
 
 /-- Over a ring, translation is injective, since translation by `-α` is a left inverse. -/
 theorem taylor_injective (α : σ → A) : Function.Injective (taylor α : MvPolynomial σ A → _) :=
