@@ -6,6 +6,7 @@ import Roth.CoeffNorm
 import Roth.GenWronskian
 import Roth.Lattice
 import Roth.Index
+import Roth.Primitive
 import Roth.Separation
 import Roth.Theta
 import Roth.MainLemma

@@ -4,14 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Ramin Takloo-Bighash, Samuel Yin
 -/
 
-import Mathlib.Algebra.MvPolynomial.CommRing
 import Mathlib.Algebra.MvPolynomial.Degrees
 import Mathlib.Algebra.MvPolynomial.Equiv
 import Mathlib.Algebra.MvPolynomial.PDeriv
 import Mathlib.Algebra.Polynomial.HasseDeriv
 import Mathlib.Data.Finsupp.Weight
 import Mathlib.Data.Nat.Choose.Bounds
-import Mathlib.Tactic.Ring
 
 /-!
 # Multivariate Hasse derivatives
@@ -32,7 +30,7 @@ monomials by `Δ_d (X ^ k) = (∏ j, (k j).choose (d j)) • X ^ (k - d)`; it va
 * `MvPolynomial.hasseDeriv_hasseDeriv`: the composition rule
   `Δ_d Δ_e = hasseCoeff d (d + e) • Δ_{d + e}`.
 * `MvPolynomial.pderiv_hasseDeriv`: `∂_j Δ_d = (d j + 1) • Δ_{d + e_j}`.
-* `MvPolynomial.hasseDeriv_single_aeval_X`, `MvPolynomial.uniqueAlgEquiv_hasseDeriv`:
+* `MvPolynomial.hasseDeriv_single_toMvPolynomial`, `MvPolynomial.uniqueAlgEquiv_hasseDeriv`:
   compatibility with the univariate `Polynomial.hasseDeriv`.
 
 ## References
@@ -80,9 +78,31 @@ theorem hasseCoeff_eq_zero_iff (d k : σ →₀ ℕ) : hasseCoeff d k = 0 ↔ ¬
   simp [hasseCoeff, Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff, Finsupp.le_iff,
     not_forall]
 
-/-- The coefficient identity `[X^e] Δ_d P = hasseCoeff d (e + d) * [X^(e + d)] P`. This is the
-main computational interface to `hasseDeriv`; most identities below are proved by `ext` followed
-by rewriting with it.
+/-- The binomial factor of the zeroth derivative is `1` (the empty product). -/
+@[simp]
+theorem hasseCoeff_zero_left (k : σ →₀ ℕ) : hasseCoeff 0 k = 1 := by
+  simp [hasseCoeff]
+
+/-- The binomial factor of the derivative `n e_j` is the single binomial coefficient
+`(k j).choose n`. -/
+@[simp]
+theorem hasseCoeff_single_left (j : σ) (n : ℕ) (k : σ →₀ ℕ) :
+    hasseCoeff (Finsupp.single j n) k = (k j).choose n := by
+  simp [hasseCoeff]
+
+/-- Splitting the binomial factor along one coordinate `i` in which `k'` vanishes. -/
+theorem hasseCoeff_single_add {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0) (d : σ →₀ ℕ) :
+    hasseCoeff d (Finsupp.single i n + k') = n.choose (d i) * hasseCoeff (d.erase i) k' := by
+  classical
+  rw [hasseCoeff, ← Finsupp.mul_prod_erase' d i _ (by simp), hasseCoeff]
+  congr 1
+  · simp [hi]
+  · refine Finsupp.prod_congr fun j hj ↦ ?_
+    rw [Finsupp.support_erase] at hj
+    simp [Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hj)]
+
+/-- The coefficient identity `[X^e] Δ_d P = hasseCoeff d (e + d) * [X^(e + d)] P`, the main
+computational interface to `hasseDeriv`.
 
 Source: §1, Lean implementation note. -/
 theorem coeff_hasseDeriv (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
@@ -103,7 +123,7 @@ theorem coeff_hasseDeriv (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
 Source: §1. -/
 theorem hasseDeriv_zero_apply (P : MvPolynomial σ R) : hasseDeriv 0 P = P := by
   ext e
-  simp [coeff_hasseDeriv, hasseCoeff]
+  simp [coeff_hasseDeriv]
 
 /-- `Δ_0` is the identity, since all binomial coefficients `(k j).choose 0` equal `1`.
 
@@ -123,6 +143,7 @@ theorem hasseDeriv_C {d : σ →₀ ℕ} (hd : d ≠ 0) (a : R) : hasseDeriv d (
 `ℤ`, `ℚ` and `ℝ`.
 
 Source: §1, Lean implementation note. -/
+@[simp]
 theorem hasseDeriv_map {S : Type*} [CommSemiring S] (f : R →+* S) (d : σ →₀ ℕ)
     (P : MvPolynomial σ R) : hasseDeriv d (map f P) = map f (hasseDeriv d P) := by
   ext e
@@ -135,14 +156,15 @@ Source: §4, Lean implementation note after Lemma 4-2. -/
 theorem hasseDeriv_rename {τ : Type*} {f : σ → τ} (hf : Function.Injective f) (d : σ →₀ ℕ)
     (P : MvPolynomial σ R) :
     hasseDeriv (d.mapDomain f) (rename f P) = rename f (hasseDeriv d P) := by
-  classical
   induction P using MvPolynomial.induction_on' with
   | monomial k a =>
     simp [rename_monomial, hasseCoeff, Finsupp.prod_mapDomain_index_inj hf,
       Finsupp.mapDomain_apply_of_injective hf, ← Finsupp.mapDomain_tsub hf]
   | add p q hp hq => simp [hp, hq]
 
-private lemma hasseCoeff_mul_hasseCoeff (f d e : σ →₀ ℕ) :
+/-- The multivariate form of `Nat.choose_mul`: the binomial factors of `Δ_d ∘ Δ_e` and of
+`Δ_{d + e}` agree up to the constant `hasseCoeff d (d + e)`. -/
+theorem hasseCoeff_mul_hasseCoeff (f d e : σ →₀ ℕ) :
     hasseCoeff d (f + d) * hasseCoeff e (f + d + e) =
       hasseCoeff d (d + e) * hasseCoeff (d + e) (f + (d + e)) := by
   classical
@@ -180,7 +202,7 @@ theorem hasseDeriv_hasseDeriv_of_disjoint {d e : σ →₀ ℕ} (h : Disjoint d.
     Finset.prod_eq_one fun i hi ↦ by
       simp [Finsupp.notMem_support_iff.1 (Finset.disjoint_left.1 h hi)], Nat.cast_one, one_smul]
 
-private lemma hasseCoeff_mul_succ (j : σ) (d e : σ →₀ ℕ) :
+private lemma hasseCoeff_mul_succ_aux (j : σ) (d e : σ →₀ ℕ) :
     hasseCoeff d (e + Finsupp.single j 1 + d) * (e j + 1) =
       (d j + 1) * hasseCoeff (d + Finsupp.single j 1) (e + Finsupp.single j 1 + d) := by
   simpa [hasseCoeff, add_comm, add_left_comm, add_assoc, mul_comm] using
@@ -194,16 +216,23 @@ theorem pderiv_hasseDeriv (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
   ext e
   rw [coeff_pderiv, coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul,
     ← add_assoc e d, add_right_comm e d, mul_right_comm, ← Nat.cast_add_one, ← Nat.cast_mul,
-    hasseCoeff_mul_succ, Nat.cast_mul, mul_assoc]
+    hasseCoeff_mul_succ_aux, Nat.cast_mul, mul_assoc]
 
-/-- Hasse derivatives do not increase the degree in any variable.
+/-- `Δ_d` lowers the degree in the variable `j` by at least `d j`.
 
 Source: §2, proof of Lemma 2. -/
 theorem degreeOf_hasseDeriv_le (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
-    degreeOf j (hasseDeriv d P) ≤ degreeOf j P := by
+    degreeOf j (hasseDeriv d P) ≤ degreeOf j P - d j := by
   refine degreeOf_le_iff.2 fun m hm ↦ ?_
   rw [mem_support_iff, coeff_hasseDeriv] at hm
-  exact (monomial_le_degreeOf j (mem_support_iff.2 (right_ne_zero_of_mul hm))).trans' (by simp)
+  have := monomial_le_degreeOf j (mem_support_iff.2 (right_ne_zero_of_mul hm))
+  simp only [Finsupp.coe_add, Pi.add_apply] at this
+  lia
+
+/-- A bound on the degree of `P` in `j` is a bound on the degree of `Δ_d P` in `j`. -/
+theorem degreeOf_hasseDeriv_le_of_le {j : σ} {d : σ →₀ ℕ} {P : MvPolynomial σ R} {n : ℕ}
+    (h : degreeOf j P ≤ n) : degreeOf j (hasseDeriv d P) ≤ n :=
+  (degreeOf_hasseDeriv_le j d P).trans ((Nat.sub_le _ _).trans h)
 
 /-- `Δ_d P = 0` as soon as `d j` exceeds the degree of `P` in some variable `j`.
 
@@ -214,9 +243,8 @@ theorem hasseDeriv_eq_zero_of_degreeOf_lt {j : σ} {d : σ →₀ ℕ} {P : MvPo
   simp [coeff_hasseDeriv, notMem_support_iff.1
     (notMem_support_of_degreeOf_lt j (s := e + d) (h.trans_le (by simp)))]
 
-private lemma hasseDeriv_monomial_mul {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)
+private lemma hasseDeriv_monomial_mul_aux {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)
     (g : MvPolynomial σ R) : hasseDeriv d (monomial a c * g) = monomial a c * hasseDeriv d g := by
-  classical
   induction g using MvPolynomial.induction_on' with
   | monomial b c' =>
     have hs : a + b - d = a + (b - d) := by
@@ -235,21 +263,21 @@ Source: §2, proof of Lemma 2. -/
 theorem hasseDeriv_mul_of_degreeOf_eq_zero {d : σ →₀ ℕ} {f g : MvPolynomial σ R}
     (hf : ∀ j ∈ d.support, degreeOf j f = 0) : hasseDeriv d (f * g) = f * hasseDeriv d g := by
   rw [f.as_sum, Finset.sum_mul, Finset.sum_mul, map_sum]
-  exact Finset.sum_congr rfl fun a haf ↦ hasseDeriv_monomial_mul
+  exact Finset.sum_congr rfl fun a haf ↦ hasseDeriv_monomial_mul_aux
     (fun j hj ↦ Nat.eq_zero_of_le_zero (hf j hj ▸ monomial_le_degreeOf j haf)) _ _
 
 /-- The operator `Δ_{n e_j}` restricted to polynomials in the single variable `X j` is the
 univariate Hasse derivative `Polynomial.hasseDeriv n`.
 
 Source: §1. -/
-theorem hasseDeriv_single_aeval_X (j : σ) (n : ℕ) (f : Polynomial R) :
-    hasseDeriv (Finsupp.single j n) (Polynomial.aeval (X j : MvPolynomial σ R) f) =
-      Polynomial.aeval (X j : MvPolynomial σ R) (Polynomial.hasseDeriv n f) := by
+theorem hasseDeriv_single_toMvPolynomial (j : σ) (n : ℕ) (f : Polynomial R) :
+    hasseDeriv (Finsupp.single j n) (f.toMvPolynomial j) =
+      (Polynomial.hasseDeriv n f).toMvPolynomial j := by
   induction f using Polynomial.induction_on' with
   | add p q hp hq => simp [hp, hq]
   | monomial m a =>
-    simp [-map_natCast, X_pow_eq_monomial, C_mul_monomial, hasseCoeff, Finsupp.single_tsub,
-      mul_assoc]
+    simp [-map_natCast, Polynomial.toMvPolynomial, X_pow_eq_monomial, C_mul_monomial,
+      Finsupp.single_tsub, mul_assoc]
 
 /-- For a single variable, `hasseDeriv` corresponds to `Polynomial.hasseDeriv` under
 `MvPolynomial.uniqueAlgEquiv`.
@@ -261,13 +289,12 @@ theorem uniqueAlgEquiv_hasseDeriv [Unique σ] (d : σ →₀ ℕ) (P : MvPolynom
   ext m
   rw [coeff_uniqueAlgEquiv, coeff_hasseDeriv, Polynomial.hasseDeriv_coeff, coeff_uniqueAlgEquiv]
   conv_lhs => rw [Finsupp.unique_single d]
-  simp [hasseCoeff, Finsupp.single_add]
+  simp [Finsupp.single_add]
 
 /-- The binomial factor of a Hasse derivative at `k` is at most `2 ^ |k|`.
 
 Source: §3, proof of Lemma 3. -/
 theorem hasseCoeff_le_two_pow (d k : σ →₀ ℕ) : hasseCoeff d k ≤ 2 ^ k.degree := by
-  classical
   calc hasseCoeff d k = ∏ j ∈ d.support, (k j).choose (d j) := rfl
     _ ≤ ∏ j ∈ d.support, 2 ^ k j := Finset.prod_le_prod fun j _ ↦ Nat.choose_le_two_pow _ _
     _ = 2 ^ ∑ j ∈ d.support, k j := Finset.prod_pow_eq_pow_sum _ _ _

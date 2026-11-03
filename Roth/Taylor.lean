@@ -56,13 +56,11 @@ theorem taylor_monomial (α : σ → R) (k : σ →₀ ℕ) (a : R) :
     taylor α (monomial k a) = C a * k.prod fun j n ↦ (X j + C (α j)) ^ n :=
   aeval_monomial _ _ _
 
-private lemma coeff_aeval_X_mul (i : σ) (f : Polynomial R) (B : MvPolynomial σ R)
+private lemma coeff_toMvPolynomial_mul_aux (i : σ) (f : Polynomial R) (B : MvPolynomial σ R)
     (hB : ∀ e ∈ B.support, e i = 0) (d : σ →₀ ℕ) :
-    (Polynomial.aeval (X i : MvPolynomial σ R) f * B).coeff d =
-      f.coeff (d i) * B.coeff (d.erase i) := by
-  classical
-  rw [Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def, Finset.sum_mul,
-    coeff_sum]
+    (f.toMvPolynomial i * B).coeff d = f.coeff (d i) * B.coeff (d.erase i) := by
+  rw [Polynomial.toMvPolynomial, Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def,
+    Finset.sum_mul, coeff_sum]
   simp_rw [algebraMap_eq, X_pow_eq_monomial, C_mul_monomial, coeff_monomial_mul']
   rw [Finset.sum_eq_single (d i)]
   · simp [tsub_eq_of_eq_add (Finsupp.erase_add_single i d).symm]
@@ -75,20 +73,9 @@ private lemma coeff_aeval_X_mul (i : σ) (f : Polynomial R) (B : MvPolynomial σ
   · intro hnot
     simp [Polynomial.notMem_support_iff.1 hnot]
 
-private lemma hasseCoeff_single_add_eq {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0) (d : σ →₀ ℕ) :
-    hasseCoeff d (Finsupp.single i n + k') = n.choose (d i) * hasseCoeff (d.erase i) k' := by
-  classical
-  rw [hasseCoeff, ← Finsupp.mul_prod_erase' d i _ (by simp), hasseCoeff]
-  congr 1
-  · simp [hi]
-  · refine Finsupp.prod_congr fun j hj ↦ ?_
-    rw [Finsupp.support_erase] at hj
-    simp [Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hj)]
-
-private lemma prod_pow_single_add_tsub (α : σ → R) {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0)
+private lemma prod_pow_single_add_tsub_aux (α : σ → R) {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0)
     (d : σ →₀ ℕ) : ((Finsupp.single i n + k') - d).prod (fun j e ↦ α j ^ e) = α i ^ (n - d i) *
       (k' - d.erase i).prod (fun j e ↦ α j ^ e) := by
-  classical
   have h : Finsupp.single i n + k' - d = Finsupp.single i (n - d i) + (k' - d.erase i) := by
     ext j
     obtain rfl | hj := eq_or_ne j i <;> simp [*, Finsupp.erase_ne]
@@ -100,7 +87,7 @@ private lemma coeff_taylor_monomial_single_add_aux (α : σ → R) (a : R) {i : 
     (d : σ →₀ ℕ) : (taylor α (monomial (Finsupp.single i n + k) a)).coeff d =
       eval α (hasseDeriv d (monomial (Finsupp.single i n + k) a)) := by
   have hXC : (X i + C (α i) : MvPolynomial σ R) ^ n =
-      Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (α i)) ^ n) := by
+      ((Polynomial.X + Polynomial.C (α i)) ^ n).toMvPolynomial i := by
     simp
   have hsupp : ∀ e ∈ (taylor α (monomial k a)).support, e i = 0 := by
     intro e he
@@ -108,9 +95,9 @@ private lemma coeff_taylor_monomial_single_add_aux (α : σ → R) (a : R) {i : 
     by_contra h
     simp [(hasseCoeff_eq_zero_iff e k).2 fun hle ↦ h (le_zero_iff.1 (hi ▸ hle i))] at he
   rw [monomial_single_add, map_mul, map_pow, taylor_X, hXC,
-    coeff_aeval_X_mul i _ _ hsupp, ih, Polynomial.coeff_X_add_C_pow,
+    coeff_toMvPolynomial_mul_aux i _ _ hsupp, ih, Polynomial.coeff_X_add_C_pow,
     ← monomial_single_add, hasseDeriv_monomial, hasseDeriv_monomial, eval_monomial,
-    eval_monomial, hasseCoeff_single_add_eq hi, prod_pow_single_add_tsub α hi]
+    eval_monomial, hasseCoeff_single_add hi, prod_pow_single_add_tsub_aux α hi]
   simp [mul_assoc, mul_comm, mul_left_comm]
 
 private lemma coeff_taylor_monomial_aux (α : σ → R) (d k : σ →₀ ℕ) (a : R) :
@@ -133,9 +120,14 @@ theorem coeff_taylor (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R)
   | add p q hp hq => simp [hp, hq]
   | monomial k a => exact coeff_taylor_monomial_aux α d k a
 
+/-- `d` lies in the support of the translate `P(X + α)` iff `(Δ_d P)(α) ≠ 0`. -/
+theorem mem_support_taylor {α : σ → R} {d : σ →₀ ℕ} {P : MvPolynomial σ R} :
+    d ∈ (taylor α P).support ↔ eval α (hasseDeriv d P) ≠ 0 := by
+  rw [mem_support_iff, coeff_taylor]
+
 /-- Translations compose additively. -/
 theorem taylor_taylor (α β : σ → R) (P : MvPolynomial σ R) :
-    taylor α (taylor β P) = taylor (fun j ↦ α j + β j) P := by
+    taylor α (taylor β P) = taylor (α + β) P := by
   simp [taylor, comp_aeval_apply, add_assoc]
 
 /-- Translation by `0` is the identity. -/
@@ -164,9 +156,8 @@ section CommRing
 variable {σ A : Type*} [CommRing A]
 
 /-- Translation by `-α` undoes translation by `α`. -/
-theorem taylor_neg_taylor (α : σ → A) (P : MvPolynomial σ A) : taylor (fun j ↦ -α j) (taylor α P) =
-    P := by
-  simp [taylor_taylor, ← Pi.zero_def]
+theorem taylor_neg_taylor (α : σ → A) (P : MvPolynomial σ A) : taylor (-α) (taylor α P) = P := by
+  simp [taylor_taylor]
 
 /-- Over a ring, translation is injective, since translation by `-α` is a left inverse. -/
 theorem taylor_injective (α : σ → A) : Function.Injective (taylor α : MvPolynomial σ A → _) :=
@@ -190,7 +181,7 @@ theorem eq_sum_box_hasseDeriv [Fintype σ] [DecidableEq σ] (α : σ → A) (r :
     · obtain ⟨j, hj⟩ : ∃ j, r j < e j := by
         simpa [Roth.mem_box] using he
       rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hP j).trans_lt hj), map_zero]
-  calc P = taylor (fun j ↦ -α j) (taylor α P) := (taylor_neg_taylor α P).symm
+  calc P = taylor (-α) (taylor α P) := (taylor_neg_taylor α P).symm
     _ = _ := by
       rw [h1, map_sum]
       refine Finset.sum_congr rfl fun d _ ↦ ?_

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Ramin Takloo-Bighash, Samuel Yin. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Ramin Takloo-Bighash, Samuel Yin
+-/
+
 import Roth.Main
 
 /-!
@@ -57,13 +63,13 @@ theorem isDiophantine_iff {x : ℝ} :
     IsDiophantine x ↔ ∀ {κ : ℝ}, (Roth.approxSet x κ).Infinite → κ ≤ 2 := by
   refine ⟨fun h κ hinf ↦ le_of_not_gt fun hκ ↦ ?_, fun h ε hε ↦ ?_⟩
   · obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)
-    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (M := 1 / C)
-      (by linarith : 2 + (κ - 2) / 2 < κ)
+    obtain ⟨Q, hQ⟩ := Filter.eventually_atTop.1
+      (Roth.eventually_div_rpow_lt (1 / C) (by linarith : 2 + (κ - 2) / 2 < κ))
     obtain ⟨⟨p, q⟩, hpq, hq⟩ :=
       (hinf.sdiff (Roth.approxSet_den_le_finite x κ Q)).nonempty
     have hgap : 1 / (q : ℝ) ^ κ < C / (q : ℝ) ^ (2 + (κ - 2) / 2) := by
       simpa [div_eq_mul_inv, ← mul_assoc, hC.ne'] using
-        mul_lt_mul_of_pos_left (hQ q (lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩)) hC
+        mul_lt_mul_of_pos_left (hQ q (lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩).le) hC
     exact (hpq.2.trans hgap).not_gt (by simpa using hbound p q (by exact_mod_cast hpq.1))
   · have hx : Irrational x := by
       rintro ⟨r, rfl⟩
@@ -75,6 +81,7 @@ theorem isDiophantine_iff {x : ℝ} :
 /-- **Thue–Siegel–Roth theorem** (Klaus Roth, 1955). Every irrational
 algebraic real is Diophantine: its irrationality measure is at most
 `2`. -/
+-- The underscore-prefixed hypothesis names are kept verbatim from the upstream statement.
 theorem thueSiegelRoth (x : ℝ) (_h_irr : Irrational x) (_h_alg : IsAlgebraic ℤ x) :
     IsDiophantine x :=
   isDiophantine_iff.mpr

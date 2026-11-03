@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Ramin Takloo-Bighash, Samuel Yin
 -/
 
+import Mathlib.Algebra.MvPolynomial.CommRing
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
 import Roth.Box
@@ -44,7 +45,7 @@ open MvPolynomial
 variable {σ : Type*}
 
 /-- The ℓ¹ norm `‖P‖₁ = ∑ |a_e|` of the coefficients. Source: §3, proof of Lemma 3. -/
-noncomputable def normOne (P : MvPolynomial σ ℤ) : ℝ := ∑ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)|
+noncomputable def normOne (P : MvPolynomial σ ℤ) : ℝ := ∑ d ∈ P.support, |(P.coeff d : ℝ)|
 
 /-- The ℓ¹ norm of the coefficients is nonnegative. -/
 theorem normOne_nonneg (P : MvPolynomial σ ℤ) : 0 ≤ normOne P :=
@@ -52,7 +53,7 @@ theorem normOne_nonneg (P : MvPolynomial σ ℤ) : 0 ≤ normOne P :=
 
 /-- `normOne P` can be computed over any finite set of exponents containing the support. -/
 theorem normOne_eq_sum_of_support_subset {P : MvPolynomial σ ℤ} {s : Finset (σ →₀ ℕ)}
-    (hs : P.support ⊆ s) : normOne P = ∑ d ∈ s, |((P.coeff d : ℤ) : ℝ)| :=
+    (hs : P.support ⊆ s) : normOne P = ∑ d ∈ s, |(P.coeff d : ℝ)| :=
   Finset.sum_subset hs fun d _ hd ↦ by simp [notMem_support_iff.1 hd]
 
 /-- The ℓ¹ norm of a monomial is the absolute value of its coefficient. -/
@@ -69,7 +70,7 @@ theorem normOne_zero : normOne (0 : MvPolynomial σ ℤ) = 0 := by
 /-- Each coefficient is bounded in absolute value by the ℓ¹ norm.
 Source: §3, Lean note ("Prove `abc(f) ≤ ‖f‖₁`"). -/
 theorem abs_coeff_le_normOne (P : MvPolynomial σ ℤ) (d : σ →₀ ℕ) :
-    |((P.coeff d : ℤ) : ℝ)| ≤ normOne P :=
+    |(P.coeff d : ℝ)| ≤ normOne P :=
   Finsupp.single_eval_le_sum P.coeff (g := fun z ↦ |(z : ℝ)|) (by simp) (fun _ ↦ abs_nonneg _) d
 
 /-- The triangle inequality for `normOne`. Source: §3, proof of Lemma 3 ("The triangle inequality
@@ -94,7 +95,6 @@ theorem normOne_sum_le {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ 
 /-- `normOne` is submultiplicative.
 Source: §3, Lean note ("submultiplicativity for `‖·‖₁`"). -/
 theorem normOne_mul_le (P Q : MvPolynomial σ ℤ) : normOne (P * Q) ≤ normOne P * normOne Q := by
-  classical
   rw [MvPolynomial.mul_def]
   refine (normOne_sum_le _ _).trans ?_
   rw [normOne, normOne, Finset.sum_mul_sum]
@@ -109,8 +109,8 @@ theorem normOne_prod_le {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ
 
 /-- A polynomial with coefficients bounded by `B` has `normOne` at most `#support * B`.
 Source: §3, proof of Lemma 3 ("Pad the monomial expansion of `R` by zero terms and write
-`R = ∑_{i=1}^N α_i`" — a polynomial with `N` terms of size `≤ B` has `‖R‖₁ ≤ N B`). -/
-theorem normOne_le_card_mul (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) :
+`R = ∑_{i=1}^N α_i`"). -/
+theorem normOne_le_card_mul (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |(P.coeff d : ℝ)| ≤ B) :
     normOne P ≤ P.support.card * B := by
   simpa [normOne] using P.support.sum_le_card_nsmul _ _ (fun d _ ↦ hB d)
 
@@ -118,7 +118,6 @@ theorem normOne_le_card_mul (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |((
 at most `l! C^l`. Source: §3, proof of Lemma 3 ("`‖det(...)‖₁ ≤ ∑_σ ‖∏_ν ...‖₁ ≤ l! (B 2^S)^l`"). -/
 theorem normOne_det_le {l : ℕ} (M : Matrix (Fin l) (Fin l) (MvPolynomial σ ℤ)) {C : ℝ}
     (hM : ∀ μ ν, normOne (M μ ν) ≤ C) : normOne M.det ≤ l.factorial * C ^ l := by
-  classical
   rw [Matrix.det_apply']
   calc _ ≤ ∑ τ : Equiv.Perm (Fin l), normOne (_ * ∏ i, M (τ i) i) := normOne_sum_le _ _
     _ ≤ ∑ _τ : Equiv.Perm (Fin l), C ^ l := Finset.sum_le_sum fun τ _ ↦ ?_
@@ -133,13 +132,13 @@ private lemma hasseCoeff_le_two_pow_sum_aux [Fintype σ] (d : σ →₀ ℕ) {k 
     rw [Finsupp.degree_eq_sum]
     exact Finset.sum_le_sum fun j _ ↦ hk j
 
-/-- Coefficient bound for a Hasse derivative of a polynomial with `deg_{X_j} P ≤ r_j`.
-Source: §3, proof of Lemma 3 and §6, proof of Lemma 9 ("`abc(Δ_j W) ≤ 2^{r_1+⋯+r_m} B_1`":
-each output coefficient of a fixed Hasse derivative receives at most one input coefficient,
-multiplied by a binomial factor at most `2^{∑ r_j}`). -/
+/-- The coefficients of a Hasse derivative of a polynomial with `deg_{X_j} P ≤ r_j` and
+coefficients bounded by `B` are bounded by `2^{∑ r_j} B`.
+Source: §3, proof of Lemma 3 and §6, proof of Lemma 9 ("`abc(Δ_j W) ≤ 2^{r_1+⋯+r_m} B_1`"). -/
 theorem abs_coeff_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}
-    (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB : ∀ e, |((P.coeff e : ℤ) : ℝ)| ≤ B) (e : σ →₀ ℕ) :
-    |(((hasseDeriv d P).coeff e : ℤ) : ℝ)| ≤ 2 ^ (∑ j, r j) * B := by
+    (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB : ∀ e, |(P.coeff e : ℝ)| ≤ B) (e : σ →₀ ℕ) :
+    |((hasseDeriv d P).coeff e : ℝ)| ≤ 2 ^ (∑ j, r j) * B := by
+  -- each output coefficient receives one input coefficient, times a binomial factor `≤ 2^{∑ r_j}`
   rw [coeff_hasseDeriv, Int.cast_mul, Int.cast_natCast, abs_mul, Nat.abs_cast]
   by_cases he : e + d ∈ P.support
   · have hc : (hasseCoeff d (e + d) : ℝ) ≤ 2 ^ (∑ j, r j) := by
@@ -154,7 +153,6 @@ factor `2^{∑ r_j}`. Source: §3, proof of Lemma 3 ("An individual Hasse deriva
 is zero or a monomial whose coefficient has absolute value at most `B 2^S`"). -/
 theorem normOne_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}
     (hP : ∀ j, degreeOf j P ≤ r j) : normOne (hasseDeriv d P) ≤ 2 ^ (∑ j, r j) * normOne P := by
-  classical
   rw [hasseDeriv_apply]
   refine (normOne_sum_le _ _).trans ?_
   rw [normOne, Finset.mul_sum]
@@ -164,12 +162,13 @@ theorem normOne_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial
   exact_mod_cast hasseCoeff_le_two_pow_sum_aux d fun j ↦
     (monomial_le_degreeOf j hk).trans (hP j)
 
-/-- Diagonal substitution `P(x, …, x)`. Source: §6, proof of Lemma 9 ("When we replace
-`x_1, …, x_m` by the same variable `x`"). -/
-noncomputable def diag (P : MvPolynomial σ ℤ) : Polynomial ℤ := aeval (fun _ ↦ Polynomial.X) P
+/-- Diagonal substitution `P ↦ P(x, …, x)`, as an algebra homomorphism. Source: §6, proof of
+Lemma 9 ("When we replace `x_1, …, x_m` by the same variable `x`"). -/
+noncomputable def diag {R : Type*} [CommSemiring R] : MvPolynomial σ R →ₐ[R] Polynomial R :=
+  aeval fun _ ↦ Polynomial.X
 
 /-- `diag P` collects each monomial `a_k X^k` into `a_k x^{|k|}`. -/
-theorem diag_eq_sum (P : MvPolynomial σ ℤ) :
+theorem diag_eq_sum {R : Type*} [CommSemiring R] (P : MvPolynomial σ R) :
     diag P = ∑ k ∈ P.support, Polynomial.monomial k.degree (P.coeff k) := by
   rw [diag, aeval_def, eval₂_eq]
   simp_rw [Finset.prod_pow_eq_pow_sum, ← Finsupp.degree_apply, Polynomial.algebraMap_eq,
@@ -179,8 +178,8 @@ theorem diag_eq_sum (P : MvPolynomial σ ℤ) :
 Source: §6, proof of Lemma 9 ("the absolute value of the coefficients of the resulting
 polynomial is at most the number of terms of the polynomial ... multiplied by the coefficient
 bound"). -/
-theorem abs_coeff_diag_le (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B)
-    (n : ℕ) : |(((diag P).coeff n : ℤ) : ℝ)| ≤ P.support.card * B := by
+theorem abs_coeff_diag_le (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |(P.coeff d : ℝ)| ≤ B)
+    (n : ℕ) : |((diag P).coeff n : ℝ)| ≤ P.support.card * B := by
   rw [diag_eq_sum, Polynomial.finsetSum_coeff, Int.cast_sum, ← nsmul_eq_mul]
   refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_card_nsmul _ _ B fun k _ ↦ ?_)
   rw [Polynomial.coeff_monomial]
@@ -188,8 +187,8 @@ theorem abs_coeff_diag_le (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |((P.
 
 /-- The degree of `diag P` is at most `∑ r_j` when `deg_{X_j} P ≤ r_j`.
 Source: §6, proof of Lemma 9 ("`s ≤ ∑ r_j ≤ m r_1`"). -/
-theorem natDegree_diag_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ}
-    (hP : ∀ j, degreeOf j P ≤ r j) : (diag P).natDegree ≤ ∑ j, r j := by
+theorem natDegree_diag_le [Fintype σ] {R : Type*} [CommSemiring R] (P : MvPolynomial σ R)
+    {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) : (diag P).natDegree ≤ ∑ j, r j := by
   rw [diag_eq_sum]
   refine Polynomial.natDegree_sum_le_of_forall_le _ _ fun k hk ↦
     (Polynomial.natDegree_monomial_le _).trans ?_
@@ -199,18 +198,19 @@ theorem natDegree_diag_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ
 /-- A truncated geometric sum `∑_{s ≤ r} t^s` is at most `(1 + t)^r` for `0 ≤ t`.
 Source: §6, proof of Lemma 9 ("for every `t ≥ 0` and integer `r ≥ 0`, `∑_{j=0}^r t^j ≤
 (1+t)^r`, since each binomial coefficient is at least `1`"). -/
-theorem geom_sum_le_one_add_pow {t : ℝ} (ht : 0 ≤ t) (r : ℕ) :
+theorem geom_sum_le_one_add_pow {R : Type*} [CommSemiring R] [PartialOrder R]
+    [IsOrderedRing R] {t : R} (ht : 0 ≤ t) (r : ℕ) :
     ∑ s ∈ Finset.range (r + 1), t ^ s ≤ (1 + t) ^ r := by
-  rw [add_comm (1 : ℝ) t, add_pow]
+  rw [add_comm (1 : R) t, add_pow]
   refine Finset.sum_le_sum fun m hm ↦ ?_
   rw [one_pow, mul_one]
   refine le_mul_of_one_le_right (pow_nonneg ht m) ?_
-  exact_mod_cast Nat.choose_pos (Finset.mem_range_succ_iff.1 hm)
+  simpa using Nat.mono_cast (α := R) (Nat.choose_pos (Finset.mem_range_succ_iff.1 hm))
 
-open scoped Classical in
-private theorem sum_box_prod_pow_le_aux [Fintype σ] (r : σ → ℕ) {B : ℝ} (hB : 0 ≤ B) (x : σ → ℝ) :
+private theorem sum_box_prod_pow_le_aux [Fintype σ] [DecidableEq σ] (r : σ → ℕ) {B : ℝ}
+    (hB : 0 ≤ B) (x : σ → ℝ) :
     ∑ k ∈ box r, B * ∏ j, |x j| ^ k j ≤ B * ∏ j, (1 + |x j|) ^ r j := by
-  simpa [← Finset.mul_sum, box, Finset.prod_univ_sum] using
+  simpa [← Finset.mul_sum, box_eq_map, Finset.prod_univ_sum] using
     mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (s := Finset.univ) (fun _ _ ↦ by positivity)
       fun j _ ↦ geom_sum_le_one_add_pow (abs_nonneg (x j)) (r j)) hB
 
@@ -218,7 +218,7 @@ private theorem sum_box_prod_pow_le_aux [Fintype σ] (r : σ → ℕ) {B : ℝ} 
 Source: §6, proof of Lemma 9 ("`|(Δ_i Q)(α, …, α)| ≤ abc(Δ_i Q) ∏_j ∑_{s ≤ r_j} |α|^s`",
 combined with the geometric-sum bound). -/
 theorem abs_eval_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j)
-    {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (x : σ → ℝ) :
+    {B : ℝ} (hB : ∀ d, |(P.coeff d : ℝ)| ≤ B) (x : σ → ℝ) :
     |eval x (map (Int.castRingHom ℝ) P)| ≤ B * ∏ j, (1 + |x j|) ^ r j := by
   classical
   have hB0 : 0 ≤ B := (abs_nonneg _).trans (hB 0)
@@ -235,27 +235,35 @@ theorem abs_eval_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP 
     _ ≤ B * ∏ j, (1 + |x j|) ^ r j :=
         sum_box_prod_pow_le_aux r hB0 x
 
+/-- The determinant of an `l × l` matrix of polynomials of degree at most `n` in `x_j` has degree
+at most `l n` in `x_j`. -/
+theorem degreeOf_det_le {R : Type*} [CommRing R] {l : ℕ}
+    (M : Matrix (Fin l) (Fin l) (MvPolynomial σ R)) {n : ℕ} (j : σ)
+    (hM : ∀ μ ν, degreeOf j (M μ ν) ≤ n) : degreeOf j M.det ≤ l * n := by
+  rw [Matrix.det_apply']
+  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ ↦ ?_)
+  rw [← map_intCast (C : R →+* MvPolynomial σ R)]
+  refine (degreeOf_C_mul_le _ j _).trans ?_
+  refine (degreeOf_prod_le _ _ _).trans ?_
+  simpa using Finset.sum_le_sum (s := Finset.univ) fun (i : Fin l) _ ↦ hM (τ i) i
+
 /-- Degree bound for a determinant of Hasse derivatives of `P`.
 Source: §2, end of the proof of Lemma 2 ("Since `F` is a determinant of an `l × l` matrix whose
 entries are polynomials of degree at most `r_j` in `x_j`, `F` will be of degree at most `l r_j` in
 each variable `x_j`"). -/
-theorem degreeOf_det_hasseDeriv_le {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ)) (P : MvPolynomial σ ℤ)
-    {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (j : σ) :
-    degreeOf j (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det ≤ l * r j := by
-  rw [Matrix.det_apply']
-  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ ↦ ?_)
-  refine (degreeOf_C_mul_le _ j (Equiv.Perm.sign τ : ℤ)).trans ?_
-  refine (degreeOf_prod_le _ _ _).trans ?_
-  simpa using Finset.sum_le_sum (s := Finset.univ)
-    (fun (i : Fin l) _ ↦ (degreeOf_hasseDeriv_le _ _ _).trans (hP j))
+theorem degreeOf_det_hasseDeriv_le {R : Type*} [CommRing R] {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ))
+    (P : MvPolynomial σ R) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (j : σ) :
+    degreeOf j (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det ≤ l * r j :=
+  degreeOf_det_le _ j fun _ _ ↦ degreeOf_hasseDeriv_le_of_le (hP j)
 
-/-- Lemma 3. Source: §3, Lemma `roth:lem3` ("all the coefficients of `F` have absolute value
-bounded by `((r_1 + 1) ⋯ (r_p + 1))^l l! B^l 2^{(r_1 + ⋯ + r_p) l}`"), stated for a determinant
-of Hasse derivatives of arbitrary multi-indices. -/
+/-- Lemma 3: every coefficient of a determinant of Hasse derivatives of `P` is at most
+`((r_1 + 1) ⋯ (r_p + 1))^l l! B^l 2^{(∑ r_j) l}` in absolute value.
+Source: §3, Lemma `roth:lem3`, stated for a determinant of Hasse derivatives of arbitrary
+multi-indices. -/
 theorem abs_coeff_det_hasseDeriv_le [Fintype σ] {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ))
     (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ}
-    (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (d : σ →₀ ℕ) :
-    |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det.coeff d : ℤ) : ℝ)| ≤
+    (hB : ∀ d, |(P.coeff d : ℝ)| ≤ B) (d : σ →₀ ℕ) :
+    |((Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det.coeff d : ℝ)| ≤
       (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l * 2 ^ ((∑ j, r j) * l) := by
   have hB0 : 0 ≤ B := (abs_nonneg _).trans (hB 0)
   have hsupp : (P.support.card : ℝ) ≤ ∏ j, ((r j : ℝ) + 1) := by

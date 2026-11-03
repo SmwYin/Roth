@@ -9,6 +9,7 @@ import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 import Mathlib.Basic.Real.Basic
 import Mathlib.Data.Finsupp.Interval
 import Mathlib.Data.Finsupp.Weight
+import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Tactic.Positivity
 
 /-!
@@ -41,20 +42,30 @@ namespace Roth
 
 variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 
-/-- The box `{d | ∀ j, d j ≤ r j}` of multi-indices, as a `Finset`.
+/-- The box `{d | ∀ j, d j ≤ r j}` of multi-indices: the interval `Finset.Iic r` of `σ →₀ ℕ`.
 Source: §6, Lemma 8 ("`0 ≤ j_1 ≤ r_1, …, 0 ≤ j_m ≤ r_m`"). -/
 noncomputable def box (r : σ → ℕ) : Finset (σ →₀ ℕ) :=
-  (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map Finsupp.equivFunOnFinite.symm.toEmbedding
+  Finset.Iic (Finsupp.equivFunOnFinite.symm r)
 
 /-- Membership in `box r` is the coordinatewise bound `d j ≤ r j`. Source: §6, Lemma 8. -/
 theorem mem_box {r : σ → ℕ} {d : σ →₀ ℕ} : d ∈ box r ↔ ∀ j, d j ≤ r j := by
-  simp [box, Nat.lt_succ_iff]
+  simp [box, Finsupp.le_def]
+
+/-- `box r` is the image of the product of the ranges `[0, r j]` under
+`Finsupp.equivFunOnFinite.symm`. -/
+theorem box_eq_map (r : σ → ℕ) : box r = (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map
+    Finsupp.equivFunOnFinite.symm.toEmbedding := by
+  ext d
+  simp [mem_box, Nat.lt_succ_iff]
 
 /-- The box `box r` has `∏ j, (r j + 1)` elements.
 Source: §6, Lemma 9, equation (43) (`r = (r_1 + 1) ⋯ (r_m + 1)`), and §6, Lemma 8 ("the
 latter is equal to the number of solutions ... `0 ≤ j_1 ≤ r_1, …`"). -/
 theorem card_box (r : σ → ℕ) : (box r).card = ∏ j, (r j + 1) := by
-  simp [box]
+  rw [box, Finsupp.card_Iic]
+  simp only [Nat.card_Iic, Finsupp.coe_equivFunOnFinite_symm]
+  exact Finset.prod_subset (Finset.subset_univ _) fun j _ hj ↦ by
+    simpa using Finsupp.notMem_support_iff.1 hj
 
 omit [DecidableEq σ]
 
@@ -94,7 +105,7 @@ theorem weight_le_card {r : σ → ℕ} {d : σ →₀ ℕ} (hd : ∀ j, d j ≤
 
 /-- Scaling all parameters by `l` divides the weight by `l`.
 Source: §4, end ("`ind(P; α; l r) = (1/l) ind(P; α; r)`"). -/
-theorem weight_mul_left {l : ℕ} (r : σ → ℕ) (d : σ →₀ ℕ) :
+theorem weight_mul_left (l : ℕ) (r : σ → ℕ) (d : σ →₀ ℕ) :
     weight (fun j ↦ l * r j) d = weight r d / l := by
   simp [weight, Finset.sum_div, div_div, mul_comm]
 
